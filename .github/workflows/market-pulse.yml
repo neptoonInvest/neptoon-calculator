@@ -1,4 +1,9 @@
 
+# =====================================================
+# NW-111 · MARKET PULSE
+# EODHD AUTOMATIC PRICE UPDATE
+# =====================================================
+
 name: NW-111 Market Pulse
 
 on:
@@ -7,36 +12,73 @@ on:
   schedule:
     - cron: "*/15 * * * 1-5"
 
+
+# =====================================================
+# PERMISSIONS
+# =====================================================
+
 permissions:
   contents: write
 
+
+# =====================================================
+# UPDATE MARKET DATA
+# =====================================================
+
 jobs:
+
   update-market-pulse:
 
     runs-on: ubuntu-latest
 
     steps:
 
+      # -----------------------------------------------
+      # 01 · CHECKOUT REPOSITORY
+      # -----------------------------------------------
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
+
+      # -----------------------------------------------
+      # 02 · SETUP PYTHON
+      # -----------------------------------------------
+
       - name: Setup Python
         uses: actions/setup-python@v5
+
         with:
           python-version: "3.12"
 
+
+      # -----------------------------------------------
+      # 03 · FETCH EODHD QUOTES
+      # -----------------------------------------------
+
       - name: Fetch EODHD quotes
+
+        working-directory: wealthcalculator
+
         env:
           EODHD_TOKEN: ${{ secrets.EODHD_TOKEN }}
+
         run: python scripts/update_market_pulse.py
 
+
+      # -----------------------------------------------
+      # 04 · COMMIT MARKET JSON
+      # -----------------------------------------------
+
       - name: Commit updated JSON
+
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add market_pulse.json
+
+          git add wealthcalculator/market_pulse.json
+
           if ! git diff --cached --quiet; then
             git commit -m "Update Market Pulse quotes"
             git push
           fi
-
