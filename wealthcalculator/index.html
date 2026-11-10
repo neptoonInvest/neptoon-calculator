@@ -1478,6 +1478,203 @@ renderMarketIndices();
   }
 }
 
+
+/* =====================================================
+   NW-111 · INSTRUMENT DATABASE
+===================================================== */
+
+const INSTRUMENTS_URL =
+  "https://neptooninvest.github.io/neptoon-data/instruments_v1.json";
+
+const INSTRUMENT_STATE = {
+  all: [],
+  stocks: [],
+  loading: false,
+  error: null
+};
+
+
+/* =====================================================
+   FETCH + FLATTEN
+===================================================== */
+
+async function loadInstrumentDatabase(){
+
+  if(INSTRUMENT_STATE.loading) return;
+
+  INSTRUMENT_STATE.loading = true;
+  INSTRUMENT_STATE.error = null;
+
+  try{
+
+    const response = await fetch(
+      INSTRUMENTS_URL,
+      { cache: "no-store" }
+    );
+
+    if(!response.ok){
+      throw new Error(
+        `Instrument JSON HTTP ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+
+    if(!Array.isArray(data.groups)){
+      throw new Error(
+        "Invalid instrument database structure"
+      );
+    }
+
+    // Flatten all class groups into one instrument array.
+
+    INSTRUMENT_STATE.all =
+      data.groups.flatMap(
+        group => group.instruments || []
+      );
+
+    // Stocks are identified by classNo = 100.
+
+    INSTRUMENT_STATE.stocks =
+      INSTRUMENT_STATE.all.filter(
+        instrument =>
+          Number(instrument.classNo) === 100
+      );
+
+    console.log(
+      "NW-111 INSTRUMENT DATABASE LOADED",
+      {
+        total: INSTRUMENT_STATE.all.length,
+        stocks: INSTRUMENT_STATE.stocks.length
+      }
+    );
+
+  }catch(error){
+
+    INSTRUMENT_STATE.error = error.message;
+
+    console.error(
+      "NW-111 INSTRUMENT DATABASE ERROR",
+      error
+    );
+
+  }finally{
+
+    INSTRUMENT_STATE.loading = false;
+
+  }
+
+}
+
+
+/* =====================================================
+   NW-111 · MODEL PORTFOLIO DATABASE
+===================================================== */
+
+const PORTFOLIOS_URL =
+  "https://neptooninvest.github.io/neptoon-data/portfolios_v1.json";
+
+const PORTFOLIO_STATE = {
+
+  all: [],
+  byModelNo: new Map(),
+
+  loading: false,
+  loaded: false,
+  error: null,
+
+  updatedAt: null
+
+};
+
+
+/* =====================================================
+   FETCH MODEL PORTFOLIOS
+===================================================== */
+
+async function loadPortfolioDatabase(){
+
+  if(PORTFOLIO_STATE.loading) return;
+
+  PORTFOLIO_STATE.loading = true;
+  PORTFOLIO_STATE.error = null;
+
+  try{
+
+    const response = await fetch(
+      PORTFOLIOS_URL,
+      { cache: "no-store" }
+    );
+
+    if(!response.ok){
+      throw new Error(
+        `Portfolio JSON HTTP ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+
+    if(!Array.isArray(data.portfolios)){
+      throw new Error(
+        "Invalid portfolio database structure"
+      );
+    }
+
+    PORTFOLIO_STATE.all = data.portfolios;
+
+    PORTFOLIO_STATE.byModelNo = new Map(
+      data.portfolios.map(
+        portfolio => [
+          Number(portfolio.modelNo),
+          portfolio
+        ]
+      )
+    );
+
+    PORTFOLIO_STATE.updatedAt =
+      data.updatedAt || null;
+
+    PORTFOLIO_STATE.loaded = true;
+
+    console.log(
+      "NW-111 PORTFOLIOS LOADED",
+      {
+        count: PORTFOLIO_STATE.all.length,
+        updatedAt: PORTFOLIO_STATE.updatedAt
+      }
+    );
+
+  }catch(error){
+
+    PORTFOLIO_STATE.error = error.message;
+
+    console.error(
+      "NW-111 PORTFOLIO DATABASE ERROR",
+      error
+    );
+
+  }finally{
+
+    PORTFOLIO_STATE.loading = false;
+
+  }
+
+}
+
+
+/* =====================================================
+   GET PORTFOLIO BY MODEL NUMBER
+===================================================== */
+
+function getPortfolioByModelNo(modelNo){
+
+  return PORTFOLIO_STATE.byModelNo.get(
+    Number(modelNo)
+  ) || null;
+
+}
+
+
 /* =====================================================
    29 · MARKET PULSE · FORMATTING
 ===================================================== */
@@ -1576,6 +1773,9 @@ window.addEventListener('resize', renderMarketPulse);
 renderLanguage();
 openTab('welcome');
 loadMarketPulse();
+loadInstrumentDatabase();
+loadPortfolioDatabase();
+
 setInterval(loadMarketPulse, 15 * 60 * 1000);
 
 
