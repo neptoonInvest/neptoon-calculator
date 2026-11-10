@@ -1,0 +1,55 @@
+{
+  "updatedAt": "2026-11-10T19:53:48.013712+00:00",
+  "quotes": {
+    "AAPL.US": {
+      "realtimePrice": 348.675,
+      "return": -0.005746,
+      "timestamp": 1794339480
+    },
+    "MSFT.US": {
+      "realtimePrice": 535.0101,
+      "return": -0.018654,
+      "timestamp": 1794339480
+    },
+    "NVDA.US": {
+      "realtimePrice": 167.16,
+      "return": -0.06442,
+      "timestamp": 1794339480
+    },
+    "GOOGL.US": {
+      "realtimePrice": 287.3,
+      "return": -0.00295,
+      "timestamp": 1794339480
+    },
+    "AMZN.US": {
+      "realtimePrice": 270.81,
+      "return": 0.014536,
+      "timestamp": 1794339480
+    },
+    "META.US": {
+      "realtimePrice": 641.76,
+      "return": 0.000608,
+      "timestamp": 1794339480
+    },
+    "TSLA.US": {
+      "realtimePrice": 378.005,
+      "return": -0.000119,
+      "timestamp": 1794339480
+    },
+    "RHM.XETRA": {
+      "realtimePrice": 853.3,
+      "return": 0.009345,
+      "timestamp": 1794328740
+    },
+    "NOVO-B.CO": {
+      "realtimePrice": 271.5,
+      "return": -0.004765,
+      "timestamp": 1794326340
+    },
+    "ASML.AS": {
+      "realtimePrice": 1361.0,
+      "return": 0.0128,
+      "timestamp": 1794328740
+    }
+  }
+}
