@@ -18,7 +18,13 @@ TOKEN = os.environ["EODHD_TOKEN"]
 # Replace these examples with the 10 agreed tickers.
 # Use exact EODHD tickerExchange identifiers.
 
+
 TICKERS = [
+
+    # ==========================================
+    # STOCKS · 10
+    # ==========================================
+
     "AAPL.US",
     "MSFT.US",
     "NVDA.US",
@@ -29,7 +35,30 @@ TICKERS = [
     "RHM.XETRA",
     "NOVO-B.CO",
     "ASML.AS",
+
+    # ==========================================
+    # MARKET INDICES / ETFs · 7
+    # ==========================================
+
+    # Permanent
+    "SXR8.XETRA",       # S&P 500
+    "EXW1.XETRA",       # STOXX Europe 50
+
+    # Editorial
+    "LSMC.XETRA",       # Semiconductors
+
+    # Local
+    "XACTC25.CO",       # Denmark
+    "XACT-OMXS30.ST",   # Sweden
+    "IS3U.XETRA",       # France
+    "EXS1.XETRA",       # germany
+    "DBXZ.XETRA",       # UK
+
+    # Fallback
+    "EUNL.XETRA"        # MSCI World
+
 ]
+
 
 
 # =====================================================
