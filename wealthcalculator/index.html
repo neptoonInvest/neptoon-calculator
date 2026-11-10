@@ -752,6 +752,118 @@ const icon = (name) => `<i data-lucide="${name}"></i>`;
    07 · LUCIDE ICONS AND RISK DOTS
 ===================================================== */
 
+
+/* =====================================================
+   MARKET PULSE · INDEX / ETF INSTRUMENTS
+   ===================================================== */
+
+const MARKET_INDICES = [
+
+  // 01 · PERMANENT · UNITED STATES
+  {
+    id: "US",
+    name: "S&P 500",
+    tickerExchange: "SXR8.XETRA",
+    currency: "USD",
+    type: "etf",
+    role: "permanent",
+    country: "US"
+  },
+
+  // 02 · PERMANENT · EUROPE
+  {
+    id: "EUROPE",
+    name: "STOXX Europe 50",
+    tickerExchange: "EXW1.XETRA",
+    currency: "EUR",
+    type: "etf",
+    role: "permanent",
+    country: "EU"
+  },
+
+  // 03 · EDITORIAL · MARKET FOCUS
+  {
+    id: "SEMICONDUCTORS",
+    name: "Semiconductors",
+    tickerExchange: "LSMC.XETRA",
+    currency: "USD",
+    type: "etf",
+    role: "editorial",
+    country: "US"
+  },
+
+  // 04 · LOCAL · DENMARK
+  {
+    id: "DENMARK",
+    name: "Denmark",
+    tickerExchange: "XACTC25.CO",
+    currency: "DKK",
+    type: "etf",
+    role: "local",
+    country: "DK"
+  },
+
+  // 05 · LOCAL · GERMANY
+  {
+    id: "GERMANY",
+    name: "Germany",
+    tickerExchange: "EXS1.XETRA",
+    currency: "EUR",
+    type: "etf",
+    role: "local",
+    country: "DE"
+  },
+
+  // 06 · LOCAL · UNITED KINGDOM
+  {
+    id: "UNITED_KINGDOM",
+    name: "United Kingdom",
+    tickerExchange: "	",
+    currency: "EUR",
+    type: "etf",
+    role: "local",
+    country: "GB"
+  },
+
+  // 07 · LOCAL · SWEDEN
+  {
+    id: "SWEDEN",
+    name: "Sweden",
+    tickerExchange: "XACT-OMXS30.ST",
+    currency: "SEK",
+    type: "etf",
+    role: "local",
+    country: "SE"
+  },
+
+  // 08 · LOCAL · FRANCE
+  {
+    id: "FRANCE",
+    name: "France",
+    tickerExchange: "IS3U.XETRA",
+    currency: "",
+    type: "etf",
+    role: "local",
+    country: "FR"
+  },
+
+  // 09 · FALLBACK · GLOBAL MARKET
+  {
+    id: "WORLD",
+    name: "MSCI World",
+    tickerExchange: "EUNL.XETRA",
+    currency: "EUR",
+    type: "etf",
+    role: "fallback",
+    country: "GLOBAL"
+  }
+
+];
+
+
+
+
+
 function icons() {
     if (window.lucide)
         window.lucide.createIcons();
@@ -763,6 +875,169 @@ function riskDots(n) {
 /* =====================================================
    08 · HERO AND BOTTOM NAVIGATION
 ===================================================== */
+
+
+/* =====================================================
+   MARKET PULSE · INDEX RENDERING
+   ===================================================== */
+
+const MARKET_INDEX_CONFIG = {
+  permanent: ["US", "EUROPE"],
+  editorial: "SEMICONDUCTORS",
+
+  local: {
+    DK: "DENMARK",
+    DE: "GERMANY",
+    GB: "UNITED_KINGDOM",
+    SE: "SWEDEN",
+    FR: "FRANCE"
+  },
+
+  fallback: "WORLD"
+};
+
+
+// Initial country selection.
+// Later replaced by geographic country detection.
+let MARKET_COUNTRY = "DK";
+
+
+function getMarketIndexSelection(){
+
+  const country =
+    MARKET_COUNTRY.toUpperCase();
+
+  const localId =
+    MARKET_INDEX_CONFIG.local[country] ||
+    MARKET_INDEX_CONFIG.fallback;
+
+  const localInstrument =
+    MARKET_INDICES.find(
+      x => x.id === localId &&
+           x.tickerExchange
+    );
+
+  const selectedLocal =
+    localInstrument
+      ? localId
+      : MARKET_INDEX_CONFIG.fallback;
+
+  return [
+    ...MARKET_INDEX_CONFIG.permanent,
+    MARKET_INDEX_CONFIG.editorial,
+    selectedLocal
+  ]
+  .map(id =>
+    MARKET_INDICES.find(x => x.id === id)
+  )
+  .filter(Boolean);
+
+}
+
+
+function renderMarketIndices(){
+
+  const host =
+    document.getElementById("market-index-grid");
+
+  if(!host) return;
+
+  const instruments =
+    getMarketIndexSelection();
+
+  const quotes =
+    MARKET_STATE.quotes || {};
+
+  host.innerHTML =
+    instruments.map(instrument => {
+
+      const quote =
+        quotes[instrument.tickerExchange] || {};
+
+      const price =
+        Number.isFinite(quote.realtimePrice)
+          ? quote.realtimePrice
+          : null;
+
+      const dailyReturn =
+        Number.isFinite(quote.return)
+          ? quote.return
+          : null;
+
+      const priceText =
+        price !== null
+          ? new Intl.NumberFormat(
+              APP.lang === "da" ? "da-DK" : "en-US",
+              {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              }
+            ).format(price)
+          : "—";
+
+      const changeText =
+        dailyReturn !== null
+          ? `${dailyReturn >= 0 ? "+" : ""}${(
+              dailyReturn * 100
+            ).toFixed(2)}%`
+          : "—";
+
+      const changeClass =
+        dailyReturn === null
+          ? "unknown"
+          : dailyReturn >= 0
+            ? "up"
+            : "down";
+
+      return `
+        <article class="market-index-card">
+
+          <div class="market-index-top">
+
+            <div>
+              <div class="market-name">
+                ${esc(instrument.name)}
+              </div>
+
+              <div class="market-symbol">
+                ${esc(instrument.tickerExchange)}
+              </div>
+            </div>
+
+            ${icon(
+              instrument.role === "editorial"
+                ? "cpu"
+                : instrument.role === "local"
+                  ? "map-pin"
+                  : "chart-no-axes-column-increasing"
+            )}
+
+          </div>
+
+          <div class="market-quote">
+
+            <div class="market-price">
+              ${priceText}
+              <span class="market-symbol">
+                ${esc(instrument.currency)}
+              </span>
+            </div>
+
+            <div class="market-change ${changeClass}">
+              ${changeText}
+            </div>
+
+          </div>
+
+        </article>
+      `;
+
+    }).join("");
+
+  icons();
+
+}
+
 
 function renderHeroes() {
     document.querySelectorAll('[data-hero]').forEach(el => {
@@ -1171,10 +1446,13 @@ async function loadMarketPulse() {
     const res = await fetch('./market_pulse.json', { cache: 'no-store' });
     if (!res.ok) throw new Error(`Market JSON HTTP ${res.status}`);
 
-    const data = await res.json();
-    if (!data || typeof data.quotes !== 'object' || !data.quotes) {
-      throw new Error('Invalid market_pulse.json structure');
-    }
+const data = await res.json();
+
+if (!data || !data.quotes || typeof data.quotes !== 'object') {
+  throw new Error('Invalid market_pulse.json structure');
+}
+
+MARKET_STATE.quotes = data.quotes;
 
     MARKET_STATE.instruments = MARKET_INSTRUMENTS.map(item => {
       const quote = data.quotes[item.tickerExchange] || {};
@@ -1195,6 +1473,8 @@ async function loadMarketPulse() {
   } finally {
     MARKET_STATE.loading = false;
     renderMarketPulse();
+renderMarketIndices();
+
   }
 }
 
