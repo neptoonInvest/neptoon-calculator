@@ -4288,17 +4288,32 @@ function bindPortfolioSelectors(){
 
 
 /* =====================================================
-   12 · EXPANDABLE HOLDINGS
+   12 · EXPANDABLE HOLDINGS · LIVE PORTFOLIO DATA
 ===================================================== */
 
 function renderPlanDetails(){
 
-  const details =
-    document.getElementById("plan-details");
+  /*
+    ==========================================
+    REMOVE PREVIOUS HOLDINGS EXPANSIONS
+    ==========================================
+  */
 
-  if(details){
-    details.innerHTML = "";
-  }
+  const basket =
+    document.getElementById("portfolios-basket");
+
+  if(!basket) return;
+
+  basket
+    .querySelectorAll(".wealthplan-holdings")
+    .forEach(el => el.remove());
+
+
+  /*
+    ==========================================
+    SELECTED PLAN
+    ==========================================
+  */
 
   const index = APP.expandedPlan;
 
@@ -4310,52 +4325,56 @@ function renderPlanDetails(){
     return;
   }
 
-  const slot = APP.planSlots[index];
+  const slot =
+    APP.planSlots[index];
 
-  const p = DEMO_PLANS.find(
-    x => String(x.modelNo) === String(slot?.modelNo)
-  );
+  const modelNo =
+    slot?.modelNo;
 
-  if(!p) return;
+  if(
+    modelNo === null ||
+    modelNo === undefined ||
+    modelNo === ""
+  ){
+    return;
+  }
 
-  const basket =
-    document.getElementById("portfolios-basket");
-
-  if(!basket) return;
-
-  const row =
-    basket.querySelectorAll(".wealthplan-row")[index];
-
-  if(!row) return;
 
   /*
     ==========================================
-    INSTRUMENT LOOKUP
+    LIVE PORTFOLIO LOOKUP
     ==========================================
   */
 
-  const instruments =
-    INSTRUMENT_STATE.all || [];
+  const p =
+    (PORTFOLIO_STATE.all || []).find(
+      x =>
+        Number(x.modelNo) ===
+        Number(modelNo)
+    );
 
-  const instrumentMap = new Map();
+  if(!p) return;
 
-  instruments.forEach(x => {
+  const rows =
+    basket.querySelectorAll(".wealthplan-row");
 
-    if(x.isin){
-      instrumentMap.set(
-        String(x.isin).trim().toUpperCase(),
-        x
-      );
-    }
+  const row = rows[index];
 
-    if(x.tickerExchange){
-      instrumentMap.set(
-        String(x.tickerExchange).trim().toUpperCase(),
-        x
-      );
-    }
+  if(!row) return;
 
-  });
+
+  /*
+    ==========================================
+    LANGUAGE
+    ==========================================
+  */
+
+  const da =
+    APP.lang === "da";
+
+  const lang =
+    da ? "da" : "en";
+
 
   /*
     ==========================================
@@ -4363,152 +4382,189 @@ function renderPlanDetails(){
     ==========================================
   */
 
-  const lang = APP.lang === "da" ? "da" : "en";
-
   const boolText = (value, yes, no) => {
 
     if(value === true) return yes;
+
     if(value === false) return no;
 
     return null;
 
   };
 
-const formatWeight = value => {
 
-  if(
-    value === null ||
-    value === undefined ||
-    value === ""
-  ){
-    return "—";
-  }
+  const formatWeight = value => {
 
-  const n = Number(value);
+    if(
+      value === null ||
+      value === undefined ||
+      value === ""
+    ){
+      return "—";
+    }
 
-  if(!Number.isFinite(n)){
-    return "—";
-  }
+    const n = Number(value);
 
-  return (n * 100).toFixed(1) + "%";
+    if(!Number.isFinite(n)){
+      return "—";
+    }
 
-};
+    return (
+      (n * 100).toLocaleString(
+        da ? "da-DK" : "en-US",
+        {
+          minimumFractionDigits:1,
+          maximumFractionDigits:1
+        }
+      ) + "%"
+    );
+
+  };
+
 
   /*
     ==========================================
-    BUILD HOLDINGS
+    BUILD LIVE HOLDINGS
     ==========================================
   */
 
-  const holdings = (p.holdings || []).map(h => {
+  const holdings =
+    (Array.isArray(p.arrayHoldings)
+      ? p.arrayHoldings
+      : []
+    ).map(h => {
 
-    const key =
-      String(
-        h.isin ||
+      /*
+        Instrument name
+      */
+
+      const name =
+        h.instrumentName ||
+        h.name ||
         h.tickerExchange ||
-        h.ticker ||
-        ""
-      ).trim().toUpperCase();
+        "—";
 
-    const instrument =
-      instrumentMap.get(key) || {};
 
-    const name =
-      instrument.name ||
-      h.instrumentName ||
-      h.name ||
-      key ||
-      "—";
+      /*
+        Asset class
+      */
 
-    const assetClass =
-      instrument.classMajorTopEng ||
-      h.classMajorTopEng ||
-      h.classMajorTop ||
-      "—";
+      const assetClass =
+        da
+          ? (
+              h.classMajorTop ||
+              h.class_major_top_eng ||
+              "—"
+            )
+          : (
+              h.class_major_top_eng ||
+              h.classMajorTop ||
+              "—"
+            );
 
-    const type =
-      lang === "da"
-        ? (
-            instrument.typeLabelDk ||
-            h.typeLabelDk ||
-            instrument.typeLabelEng ||
-            h.typeLabelEng ||
-            "—"
-          )
-        : (
-            instrument.typeLabelEng ||
-            h.typeLabelEng ||
-            "—"
-          );
 
-    const isin =
-      instrument.isin ||
-      h.isin ||
-      "—";
+      /*
+        Instrument type
+      */
 
-    const ccy =
-      instrument.ccy ||
-      h.ccy ||
-      "—";
+      const type =
+        da
+          ? (
+              h.type_label_dk ||
+              h.type_label_eng ||
+              "—"
+            )
+          : (
+              h.type_label_eng ||
+              h.type_label_dk ||
+              "—"
+            );
 
-    const isAcc =
-      instrument.isAcc ?? h.isAcc ?? null;
 
-    const isActive =
-      instrument.isActive ?? h.isActive ?? null;
+      /*
+        Identifiers
+      */
 
-    const isPositivListe =
-      instrument.isPositivListe ??
-      h.isPositivListe ??
-      null;
+      const isin =
+        h.isin || "—";
 
-    const meta = [];
+      const ccy =
+        h.ccy || "—";
 
-    const accumulation = boolText(
-      isAcc,
-      lang === "da" ? "Akkumulerende" : "Accumulating",
-      lang === "da" ? "Udbyttebetalende" : "Distributing"
-    );
 
-    if(accumulation){
-      meta.push(accumulation);
-    }
+      /*
+        Instrument characteristics
+      */
 
-    const management = boolText(
-      isActive,
-      lang === "da" ? "Aktivt forvaltet" : "Actively managed",
-      lang === "da" ? "Passivt forvaltet" : "Passively managed"
-    );
+      const meta = [];
 
-    if(management){
-      meta.push(management);
-    }
-
-    if(lang === "da"){
-
-      const positiveList = boolText(
-        isPositivListe,
-        "På positivlisten",
-        "Ikke på positivlisten"
+      const accumulation = boolText(
+        h.isAcc,
+        da
+          ? "Akkumulerende"
+          : "Accumulating",
+        da
+          ? "Udbyttebetalende"
+          : "Distributing"
       );
 
-      if(positiveList){
-        meta.push(positiveList);
+      if(accumulation){
+        meta.push(accumulation);
       }
 
-    }
 
-    return {
-      name,
-      assetClass,
-      type,
-      isin,
-      ccy,
-      weight: h.weight,
-      meta
-    };
+      const management = boolText(
+        h.isActive,
+        da
+          ? "Aktivt forvaltet"
+          : "Actively managed",
+        da
+          ? "Passivt forvaltet"
+          : "Passively managed"
+      );
 
-  });
+      if(management){
+        meta.push(management);
+      }
+
+
+      /*
+        Danish positive list
+      */
+
+      if(da){
+
+        const positiveList = boolText(
+          h.isPositivListe,
+          "På positivlisten",
+          "Ikke på positivlisten"
+        );
+
+        if(positiveList){
+          meta.push(positiveList);
+        }
+
+      }
+
+
+      /*
+        Final normalized holding
+      */
+
+      return {
+
+        name,
+        assetClass,
+        type,
+        isin,
+        ccy,
+        weight:h.weight,
+        meta
+
+      };
+
+    });
+
 
   /*
     ==========================================
@@ -4517,13 +4573,16 @@ const formatWeight = value => {
   */
 
   const title =
-    lang === "da"
+    da
       ? "Beholdninger"
       : "Holdings";
+
 
   const html = `
 
     <div class="wealthplan-holdings">
+
+      <!-- HEADER -->
 
       <div class="wealthplan-holdings-title">
 
@@ -4533,54 +4592,92 @@ const formatWeight = value => {
 
       </div>
 
+
+      <!-- COLUMN HEADINGS -->
+
       <div class="wealthplan-holdings-header">
 
-        <span>${lang === "da" ? "Instrument" : "Instrument"}</span>
-        <span>${lang === "da" ? "Aktivklasse" : "Asset class"}</span>
-        <span>${lang === "da" ? "Type" : "Type"}</span>
-        <span>ISIN</span>
-        <span>CCY</span>
+        <span>
+          Instrument
+        </span>
+
+        <span>
+          ${da ? "Aktivklasse" : "Asset class"}
+        </span>
+
+        <span>
+          Type
+        </span>
+
+        <span>
+          ISIN
+        </span>
+
+        <span>
+          CCY
+        </span>
+
         <span class="wealthplan-holding-weight">
-          ${lang === "da" ? "Vægt" : "Weight"}
+          ${da ? "Vægt" : "Weight"}
         </span>
 
       </div>
+
+
+      <!-- LIVE HOLDINGS -->
 
       ${holdings.map(h => `
 
         <div class="wealthplan-holding-row">
 
+          <!-- INSTRUMENT -->
+
           <div class="wealthplan-holding-name">
 
             ${esc(h.name)}
 
-            ${
-              h.meta.length
-                ? `
-                  <div class="wealthplan-holding-meta">
-                    ${h.meta.map(esc).join(" · ")}
-                  </div>
-                `
-                : ""
-            }
+            ${h.meta.length ? `
+
+              <div class="wealthplan-holding-meta">
+
+                ${h.meta.map(esc).join(" · ")}
+
+              </div>
+
+            ` : ""}
 
           </div>
+
+
+          <!-- ASSET CLASS -->
 
           <div class="wealthplan-holding-class">
             ${esc(h.assetClass)}
           </div>
 
+
+          <!-- TYPE -->
+
           <div class="wealthplan-holding-type">
             ${esc(h.type)}
           </div>
+
+
+          <!-- ISIN -->
 
           <div class="wealthplan-holding-isin">
             ${esc(h.isin)}
           </div>
 
+
+          <!-- CURRENCY -->
+
           <div class="wealthplan-holding-ccy">
             ${esc(h.ccy)}
           </div>
+
+
+          <!-- WEIGHT -->
 
           <div class="wealthplan-holding-weight">
             ${formatWeight(h.weight)}
@@ -4594,8 +4691,11 @@ const formatWeight = value => {
 
   `;
 
+
   /*
-    Insert immediately after selected row.
+    ==========================================
+    INSERT BELOW SELECTED BASKET ROW
+    ==========================================
   */
 
   row.insertAdjacentHTML(
