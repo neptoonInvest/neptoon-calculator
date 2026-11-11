@@ -2490,21 +2490,16 @@ function renderAssets(){
 
   /*
     ==========================================
-    UPDATE 5-ASSET HISTORY VIEWER
+    INITIALIZE / UPDATE HISTORY VIEWER
     ==========================================
   */
 
-  if(
-    document.getElementById("page-assets")
-      ?.classList.contains("active")
-  ){
-    initAssetHistoryViewer().catch(err => {
-      console.error(
-        "ASSET HISTORY VIEWER ERROR",
-        err
-      );
-    });
-  }
+  initAssetHistoryViewer().catch(err => {
+    console.error(
+      "ASSET HISTORY VIEWER ERROR",
+      err
+    );
+  });
 
 }
 /* =====================================================
