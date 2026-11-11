@@ -3584,6 +3584,9 @@ function renderPlanMetrics(){
 
   const m = p.objKeyFigures || {};
 
+const riskDotsCount =
+  dotsCountConverter(m.risk);
+
   const da = APP.lang === "da";
 
   /*
@@ -3786,30 +3789,42 @@ function renderPlanMetrics(){
       <div class="detail-meta">
 
         <span>
-          ${
-            da
-              ? "Udsteder"
-              : "Issuer"
-          }:
+          ${da ? "Udsteder" : "Issuer"}:
           <b>${esc(p.issuerName || "—")}</b>
         </span>
 
         <span>
-          ${
-            da
-              ? "Beholdninger"
-              : "Holdings"
-          }:
+          ${da ? "Beholdninger" : "Holdings"}:
           <b>${holdingCount}</b>
         </span>
 
         <span>
-          ${
-            da
-              ? "Strategi"
-              : "Strategy"
-          }:
+          ${da ? "Strategi" : "Strategy"}:
           <b>${esc(p.anchorStrategyId || "—")}</b>
+        </span>
+
+        <!-- RISK INDICATOR -->
+
+        <span class="wealthplan-risk-indicator">
+
+          <span>
+            ${da ? "Risikoindikator" : "Risk indicator"}:
+          </span>
+
+          <span class="wealthplan-risk-dots">
+
+            ${Array.from({length:7}, (_, i) => `
+
+              <span
+                class="dot ${i < riskDotsCount ? "on" : ""}"
+              ></span>
+
+            `).join("")}
+
+          </span>
+
+          <b>${riskDotsCount}/7</b>
+
         </span>
 
       </div>
@@ -3993,17 +4008,10 @@ function renderPlanExpectedWealth(){
     already used by the Welcome statistics.
   */
 
-  const expected =
-    Number(result.expected);
-
-  const median =
-    Number(result.median);
-
-  const p10 =
-    Number(result.p10);
-
-  const p90 =
-    Number(result.p90);
+const expected = Number(result.expectedWealth);
+const median = Number(result.medianWealth);
+const p10 = Number(result.q10);
+const p90 = Number(result.q90);
 
   if(
     ![
@@ -4712,10 +4720,36 @@ function renderPlanDetails(){
    13 · SELECTED INVESTMENT
 ===================================================== */
 
-function currentSelection() {
-    const { source, ids, selectedIndex } = APP.myWealth;
-    const id = ids[selectedIndex];
-    return source === 'assets' ? DEMO_ASSETS.find(a => a.id === id) : DEMO_PLANS.find(p => p.modelNo === id);
+/* =====================================================
+   MYWEALTH · CURRENT SELECTION
+===================================================== */
+
+function currentSelection(){
+
+  const {
+    source,
+    ids,
+    selectedIndex
+  } = APP.myWealth;
+
+  const id = ids[selectedIndex];
+
+  if(id === null || id === undefined || id === ""){
+    return null;
+  }
+
+  if(source === "assets"){
+
+    return DEMO_ASSETS.find(
+      a => String(a.id) === String(id)
+    ) || null;
+
+  }
+
+  return (PORTFOLIO_STATE.all || []).find(
+    p => String(p.modelNo) === String(id)
+  ) || null;
+
 }
 
 /* =====================================================
@@ -6640,16 +6674,35 @@ window.addEventListener('resize', renderMarketPulse);
    32 · APPLICATION STARTUP
 ===================================================== */
 
-renderLanguage();
-openTab('welcome');
-loadMarketPulse();
-loadInstrumentDatabase();
-loadPortfolioDatabase();
-renderPortfolios();
-bindPortfolioSelectors();
-setInterval(loadMarketPulse, 15 * 60 * 1000);
-bindPortfolioModelSelection();
-bindPortfolioMetrics();
+async function initializeApp(){
+
+  renderLanguage();
+  openTab("welcome");
+
+  loadMarketPulse();
+
+  // Start loading instruments independently.
+  loadInstrumentDatabase();
+
+  // Wait for live portfolio models.
+  await loadPortfolioDatabase();
+
+  // Render basket with live data.
+  renderPortfolios();
+
+  // Install event listeners once.
+  bindPortfolioSelectors();
+  bindPortfolioModelSelection();
+  bindPortfolioMetrics();
+
+  setInterval(
+    loadMarketPulse,
+    15 * 60 * 1000
+  );
+
+}
+
+initializeApp();
 
 </script>
 </body></html>
