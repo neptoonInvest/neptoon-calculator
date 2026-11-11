@@ -693,6 +693,349 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
 }
 
+/* =====================================================
+   WEALTHPLANS · BASKET ROWS
+===================================================== */
+
+.wealthplan-row{
+  display:grid;
+  grid-template-columns:
+    minmax(155px,1.15fr)
+    minmax(110px,.65fr)
+    minmax(170px,1.2fr)
+    auto
+    24px;
+
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  min-width:0;
+}
+
+.wealthplan-identity{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+
+.wealthplan-identity .row-icon{
+  flex:0 0 auto;
+  color:#38d6e8;
+}
+
+.wealthplan-name{
+  min-width:0;
+}
+
+.wealthplan-name .row-name,
+.wealthplan-name .row-meta{
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.wealthplan-field-label{
+  display:block;
+  margin-bottom:5px;
+  color:#9bb5d5;
+  font-size:10px;
+  font-weight:600;
+}
+
+.wealthplan-risk,
+.wealthplan-model{
+  min-width:0;
+}
+
+.wealthplan-risk select,
+.wealthplan-model select{
+  display:block;
+  width:100%;
+  min-width:0;
+  height:36px;
+  padding:0 10px;
+  background:#102b50;
+  color:#f1f7ff;
+  border:1px solid #31547e;
+  border-radius:8px;
+  font-size:11px;
+  cursor:pointer;
+}
+
+.wealthplan-risk select:focus,
+.wealthplan-model select:focus{
+  outline:1px solid #38d6e8;
+  border-color:#38d6e8;
+}
+
+/* =====================================================
+   BORDERLESS VIEW ACTIONS
+===================================================== */
+
+.wealthplan-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:14px;
+  white-space:nowrap;
+}
+
+.wealthplan-action{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+
+  padding:5px 0;
+  border:0;
+  background:transparent;
+
+  color:#38d6e8;
+  font-size:11px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.wealthplan-action svg{
+  width:14px;
+  height:14px;
+}
+
+.wealthplan-action:hover,
+.wealthplan-action.active{
+  color:#ffffff;
+}
+
+.wealthplan-remove{
+  justify-self:end;
+}
+
+/* =====================================================
+   HOLDINGS EXPANSION
+===================================================== */
+
+.wealthplan-holdings{
+  padding:14px 16px 18px;
+  background:#10284c;
+  border-top:1px solid #29476c;
+}
+
+.wealthplan-holdings-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+  color:#f1f7ff;
+  font-size:12px;
+  font-weight:700;
+}
+
+.wealthplan-holdings-summary{
+  color:#9bb5d5;
+  font-size:10px;
+  font-weight:400;
+}
+
+/* =====================================================
+   HOLDINGS TABLE · SIX COLUMNS
+===================================================== */
+
+.wealthplan-holdings-header,
+.wealthplan-holding-row{
+  display:grid;
+
+  grid-template-columns:
+    minmax(180px,2.5fr)
+    minmax(90px,1fr)
+    minmax(65px,.65fr)
+    minmax(125px,1fr)
+    48px
+    65px;
+
+  align-items:center;
+  column-gap:12px;
+}
+
+.wealthplan-holdings-header{
+  padding:10px 12px;
+  background:#1b3a65;
+  color:#c3d5eb;
+  font-size:10px;
+  font-weight:600;
+}
+
+.wealthplan-holding-row{
+  padding:11px 12px;
+  border-bottom:1px solid #29476c;
+  color:#e8f1ff;
+  font-size:11px;
+}
+
+.wealthplan-holding-row:last-child{
+  border-bottom:0;
+}
+
+.wealthplan-holding-name{
+  min-width:0;
+  font-weight:600;
+  overflow-wrap:anywhere;
+}
+
+.wealthplan-holding-meta{
+  margin-top:4px;
+  color:#9bb5d5;
+  font-size:10px;
+  font-weight:400;
+  line-height:1.5;
+}
+
+.wealthplan-holding-class,
+.wealthplan-holding-type,
+.wealthplan-holding-isin{
+  color:#c3d5eb;
+  overflow-wrap:anywhere;
+}
+
+.wealthplan-holding-ccy{
+  color:#9bb5d5;
+  font-size:10px;
+  font-weight:600;
+  white-space:nowrap;
+}
+
+.wealthplan-holding-weight{
+  text-align:right;
+  color:#ffffff;
+  font-size:12px;
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+.wealthplan-holdings-header
+.wealthplan-holding-weight{
+  color:#c3d5eb;
+  font-size:10px;
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media(max-width:1100px){
+
+  .wealthplan-row{
+    grid-template-columns:
+      minmax(150px,1fr)
+      minmax(100px,.7fr)
+      minmax(170px,1.2fr)
+      24px;
+  }
+
+  .wealthplan-actions{
+    grid-column:1 / 4;
+    justify-content:flex-start;
+    padding-left:36px;
+  }
+
+  .wealthplan-remove{
+    grid-column:4;
+    grid-row:1;
+  }
+
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:650px){
+
+  .wealthplan-row{
+    grid-template-columns:minmax(0,1fr) 24px;
+    gap:10px;
+    padding:14px 12px;
+  }
+
+  .wealthplan-identity{
+    grid-column:1;
+    grid-row:1;
+  }
+
+  .wealthplan-remove{
+    grid-column:2;
+    grid-row:1;
+  }
+
+  .wealthplan-risk{
+    grid-column:1 / -1;
+    grid-row:2;
+  }
+
+  .wealthplan-model{
+    grid-column:1 / -1;
+    grid-row:3;
+  }
+
+  .wealthplan-actions{
+    grid-column:1 / -1;
+    grid-row:4;
+    padding-left:0;
+    justify-content:space-between;
+    gap:10px;
+  }
+
+  .wealthplan-action{
+    font-size:11px;
+  }
+
+  .wealthplan-holdings{
+    padding:12px;
+  }
+
+  .wealthplan-holdings-title{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  /* Compact mobile holding layout */
+
+  .wealthplan-holdings-header{
+    display:none;
+  }
+
+  .wealthplan-holding-row{
+    grid-template-columns:minmax(0,1fr) 65px;
+    gap:5px 10px;
+    padding:12px 4px;
+  }
+
+  .wealthplan-holding-name{
+    grid-column:1;
+    grid-row:1;
+  }
+
+  .wealthplan-holding-weight{
+    grid-column:2;
+    grid-row:1;
+    align-self:start;
+  }
+
+  .wealthplan-holding-class,
+  .wealthplan-holding-type,
+  .wealthplan-holding-isin,
+  .wealthplan-holding-ccy{
+    grid-column:1 / -1;
+    font-size:10px;
+  }
+
+}
+
+.wealthplan-row + .wealthplan-holdings{
+  border-top:1px solid #29476c;
+}
+
 </style>
 </head>
 <body>
@@ -1485,6 +1828,43 @@ const HERO = {
     portfolios: { icon: 'layers', en: ['NEPTOON WEALTH · PORTFOLIOS', 'Choose your Wealth Plans', 'Find ready-made investment plans that match your risk preference.'], da: ['NEPTOON WEALTH · PORTEFØLJER', 'Vælg dine Wealth Plans', 'Find færdige investeringsplaner, der passer til din risikopræference.'] },
     mywealth: { icon: 'chart-no-axes-combined', en: ['NEPTOON WEALTH · MYWEALTH', 'What could your money become?', 'Compare your selected investments and see their potential future value.'], da: ['NEPTOON WEALTH · MYWEALTH', 'Hvad kan dine penge blive til?', 'Sammenlign dine valgte investeringer og se deres mulige fremtidige værdi.'] },
     history: { icon: 'history', en: ['NEPTOON WEALTH · HISTORY', 'Investment history', 'See how your selected investment has performed over time.'], da: ['NEPTOON WEALTH · HISTORIK', 'Investeringshistorik', 'Se, hvordan din valgte investering har klaret sig over tid.'] }
+};
+
+/* =====================================================
+   WEALTHPLANS · INVESTMENT PREFERENCES
+   Provisional model assignments
+===================================================== */
+
+/* =====================================================
+   WEALTHPLANS · INVESTMENT PREFERENCES
+===================================================== */
+
+const INVESTMENT_PREFERENCES = {
+
+  preservation: {
+    en: "Capital Preservation",
+    da: "Kapitalbevarelse",
+    modelNos: [2, 10]
+  },
+
+  balanced: {
+    en: "Balanced Investing",
+    da: "Balanceret investering",
+    modelNos: [1, 9, 12]
+  },
+
+  growth: {
+    en: "Long-Term Growth",
+    da: "Langsigtet vækst",
+    modelNos: [0, 8, 11]
+  },
+
+  active: {
+    en: "Active Strategies",
+    da: "Aktive strategier",
+    modelNos: [3, 4, 5, 6, 7]
+  }
+
 };
 
 /* =====================================================
@@ -2600,41 +2980,716 @@ function showSuggestions(i, q){
    11 · WEALTH PLAN BASKET
 ===================================================== */
 
-function renderPortfolios() {
-    const rows = APP.planSlots.map((slot, i) => {
-        const p = DEMO_PLANS.find(x => x.modelNo === slot.modelNo);
-        const choices = DEMO_PLANS.filter(x => RISK_GROUPS[slot.risk]?.includes(x.modelNo));
-        return `<div class="basket-row"><div class="row-icon">${icon('layers')}</div><div><div class="row-name">${esc(p?.name || tr('empty'))}</div><button class="row-open" data-expand="${i}">${tr('holdings')} ${icon(APP.expandedPlan === i ? 'chevron-up' : 'chevron-down')}</button></div><div class="row-middle"><select aria-label="Risk preference" data-plan-risk="${i}">${[1, 2, 3, 4, 5].map(r => `<option value="${r}" ${r === slot.risk ? 'selected' : ''}>${tr('riskPreference')} ${r}</option>`).join('')}</select></div><div class="row-search"><select class="searchbox" data-plan-select="${i}" aria-label="Choose Wealth Plan"><option value="">${tr('choosePlan')}</option>${choices.map(x => `<option value="${esc(x.modelNo)}" ${x.modelNo === slot.modelNo ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select></div><button class="icon-btn" data-remove-plan="${i}" aria-label="Remove">${icon('x')}</button></div>`;
-    }).join('');
-    $('portfolios-count').textContent = `${APP.planSlots.filter(s => s.modelNo).length} / 5`;
-    $('portfolios-basket').innerHTML = `${rows}<div class="basket-foot"><p>${tr('demoData')}</p><div class="btnrow"><button class="btn secondary" data-add-plan ${APP.planSlots.length >= 5 ? 'disabled' : ''}>+ Add</button><button class="btn" data-send="portfolios" ${!APP.planSlots.some(s => s.modelNo) ? 'disabled' : ''}>${tr('send')}</button></div></div>`;
-    renderPlanDetails();
-    icons();
+
+/* =====================================================
+   11 · WEALTH PLAN BASKET
+===================================================== */
+
+/* =====================================================
+   11 · WEALTH PLAN BASKET
+===================================================== */
+
+function renderPortfolios(){
+
+  const models =
+    PORTFOLIO_STATE.all || [];
+
+  const rows = APP.planSlots.map((slot, i) => {
+
+    /*
+      Initialize preference for existing slots.
+      Infer it from the selected model where possible.
+    */
+
+    if(!INVESTMENT_PREFERENCES[slot.preference]){
+
+      const existingGroup =
+        Object.entries(INVESTMENT_PREFERENCES)
+          .find(([key, group]) =>
+            group.modelNos.includes(Number(slot.modelNo))
+          );
+
+      slot.preference =
+        existingGroup?.[0] || "balanced";
+
+    }
+
+    const group =
+      INVESTMENT_PREFERENCES[slot.preference];
+
+    /*
+      Filter real portfolio models.
+    */
+
+    const choices = models.filter(
+      p => group.modelNos.includes(Number(p.modelNo))
+    );
+
+    const p = models.find(
+      x => String(x.modelNo) === String(slot.modelNo)
+    );
+
+    const holdingsOpen =
+      APP.expandedPlan === i;
+
+    const selectedMetrics =
+      APP.metricsPlan === i;
+
+    return `
+
+      <div class="basket-row wealthplan-row">
+
+        <div class="wealthplan-identity">
+
+          <div class="row-icon">
+            ${icon("layers")}
+          </div>
+
+          <div class="wealthplan-name">
+
+            <div class="row-name">
+              ${
+                APP.lang === "da"
+                  ? `Formueplan ${i + 1}`
+                  : `Wealth Plan ${i + 1}`
+              }
+            </div>
+
+            <div class="row-meta">
+              ${esc(p?.modelLabel || tr("empty"))}
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- INVESTMENT PREFERENCE -->
+
+        <div class="wealthplan-risk">
+
+          <label class="wealthplan-field-label">
+            ${
+              APP.lang === "da"
+                ? "Investeringspræference"
+                : "Investment preference"
+            }
+          </label>
+
+          <select
+            data-plan-risk="${i}"
+            aria-label="Investment preference"
+          >
+
+            ${Object.entries(INVESTMENT_PREFERENCES)
+              .map(([key, item]) => `
+
+                <option
+                  value="${key}"
+                  ${
+                    key === slot.preference
+                      ? "selected"
+                      : ""
+                  }
+                >
+                  ${esc(item[APP.lang === "da" ? "da" : "en"])}
+                </option>
+
+              `).join("")}
+
+          </select>
+
+        </div>
+
+
+        <!-- INVESTMENT MODEL -->
+
+        <div class="wealthplan-model">
+
+          <label class="wealthplan-field-label">
+            ${
+              APP.lang === "da"
+                ? "Investeringsmodel"
+                : "Investment model"
+            }
+          </label>
+
+          <select
+            class="searchbox"
+            data-plan-select="${i}"
+            aria-label="Choose Wealth Plan"
+          >
+
+            <option value="">
+              ${tr("choosePlan")}
+            </option>
+
+            ${choices.map(x => `
+
+              <option
+                value="${esc(String(x.modelNo))}"
+                ${
+                  String(x.modelNo) === String(slot.modelNo)
+                    ? "selected"
+                    : ""
+                }
+              >
+                ${esc(x.modelLabel)}
+              </option>
+
+            `).join("")}
+
+          </select>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="wealthplan-actions">
+
+          <button
+            type="button"
+            class="wealthplan-action
+              ${selectedMetrics ? "active" : ""}"
+            data-plan-metrics="${i}"
+          >
+            ${icon("chart-no-axes-column-increasing")}
+
+            <span>
+              ${
+                APP.lang === "da"
+                  ? "Se nøgletal"
+                  : "View metrics"
+              }
+            </span>
+
+          </button>
+
+          <button
+            type="button"
+            class="wealthplan-action
+              ${holdingsOpen ? "active" : ""}"
+            data-expand="${i}"
+          >
+            ${icon("layers")}
+
+            <span>
+              ${
+                APP.lang === "da"
+                  ? "Se beholdninger"
+                  : "View holdings"
+              }
+            </span>
+
+            ${icon(
+              holdingsOpen
+                ? "chevron-up"
+                : "chevron-down"
+            )}
+
+          </button>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="icon-btn wealthplan-remove"
+          data-remove-plan="${i}"
+          aria-label="Remove"
+        >
+          ${icon("x")}
+        </button>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+
+  $("portfolios-count").textContent =
+    `${APP.planSlots.filter(s => s.modelNo !== "" && s.modelNo != null).length} / 5`;
+
+
+  $("portfolios-basket").innerHTML = `
+
+    ${rows}
+
+    <div class="basket-foot">
+
+      <p>
+        ${
+          APP.lang === "da"
+            ? "Sammenlign op til fem formueplaner."
+            : "Compare up to five Wealth Plans."
+        }
+      </p>
+
+      <div class="btnrow">
+
+        <button
+          class="btn secondary"
+          data-add-plan
+          ${APP.planSlots.length >= 5 ? "disabled" : ""}
+        >
+          + Add
+        </button>
+
+        <button
+          class="btn"
+          data-send="portfolios"
+          ${!APP.planSlots.some(s => s.modelNo !== "" && s.modelNo != null) ? "disabled" : ""}
+        >
+          ${tr("send")}
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+  /*
+    Holdings renderer will be connected
+    to live models in the next step.
+  */
+
+  icons();
+
+}
+
+/* =====================================================
+   WEALTHPLANS · DROPDOWN EVENT HANDLERS
+===================================================== */
+
+function bindPortfolioSelectors(){
+
+  const basket =
+    document.getElementById("portfolios-basket");
+
+  if(!basket) return;
+
+  // Prevent duplicate event listeners.
+  if(basket.dataset.selectorsBound === "true"){
+    return;
+  }
+
+  basket.dataset.selectorsBound = "true";
+
+  basket.addEventListener("change", e => {
+
+    const target = e.target;
+
+    /*
+      ==========================================
+      1 · INVESTMENT PREFERENCE
+      ==========================================
+    */
+
+    if(target.matches("[data-plan-risk]")){
+
+      const i =
+        Number(target.dataset.planRisk);
+
+      const preference =
+        target.value;
+
+      if(
+        !APP.planSlots[i] ||
+        !INVESTMENT_PREFERENCES[preference]
+      ){
+        return;
+      }
+
+      APP.planSlots[i].preference =
+        preference;
+
+      // Clear previous investment model.
+      APP.planSlots[i].modelNo = "";
+
+      APP.expandedPlan = null;
+      APP.metricsPlan = null;
+
+      renderPortfolios();
+
+      console.log(
+        "INVESTMENT PREFERENCE CHANGED",
+        i,
+        preference
+      );
+
+      return;
+    }
+
+
+    /*
+      ==========================================
+      2 · INVESTMENT MODEL
+      ==========================================
+    */
+
+    if(target.matches("[data-plan-select]")){
+
+      const i =
+        Number(target.dataset.planSelect);
+
+      if(!APP.planSlots[i]){
+        return;
+      }
+
+      const modelNo =
+        target.value;
+
+      APP.planSlots[i].modelNo =
+        modelNo === ""
+          ? ""
+          : Number(modelNo);
+
+      APP.expandedPlan = null;
+      APP.metricsPlan = null;
+
+      renderPortfolios();
+
+      console.log(
+        "INVESTMENT MODEL CHANGED",
+        i,
+        APP.planSlots[i].modelNo
+      );
+
+      return;
+    }
+
+  });
+
 }
 
 /* =====================================================
    12 · EXPANDABLE HOLDINGS
 ===================================================== */
 
-function renderPlanDetails() {
-    const slot = APP.planSlots[APP.expandedPlan], p = DEMO_PLANS.find(x => x.modelNo === slot?.modelNo);
-    if (!p) {
-        $('plan-details').innerHTML = '';
-        return;
+
+/* =====================================================
+   12 · EXPANDABLE HOLDINGS
+===================================================== */
+
+function renderPlanDetails(){
+
+  const details =
+    document.getElementById("plan-details");
+
+  if(details){
+    details.innerHTML = "";
+  }
+
+  const index = APP.expandedPlan;
+
+  if(
+    !Number.isInteger(index) ||
+    index < 0 ||
+    index >= APP.planSlots.length
+  ){
+    return;
+  }
+
+  const slot = APP.planSlots[index];
+
+  const p = DEMO_PLANS.find(
+    x => String(x.modelNo) === String(slot?.modelNo)
+  );
+
+  if(!p) return;
+
+  const basket =
+    document.getElementById("portfolios-basket");
+
+  if(!basket) return;
+
+  const row =
+    basket.querySelectorAll(".wealthplan-row")[index];
+
+  if(!row) return;
+
+  /*
+    ==========================================
+    INSTRUMENT LOOKUP
+    ==========================================
+  */
+
+  const instruments =
+    INSTRUMENT_STATE.all || [];
+
+  const instrumentMap = new Map();
+
+  instruments.forEach(x => {
+
+    if(x.isin){
+      instrumentMap.set(
+        String(x.isin).trim().toUpperCase(),
+        x
+      );
     }
-    const colors = {
-        equity: '#315e9c', bonds: '#8aa9ce', alternatives: '#b8c7d9', singleStocks: '#d7dee7'
+
+    if(x.tickerExchange){
+      instrumentMap.set(
+        String(x.tickerExchange).trim().toUpperCase(),
+        x
+      );
+    }
+
+  });
+
+  /*
+    ==========================================
+    FORMATTERS
+    ==========================================
+  */
+
+  const lang = APP.lang === "da" ? "da" : "en";
+
+  const boolText = (value, yes, no) => {
+
+    if(value === true) return yes;
+    if(value === false) return no;
+
+    return null;
+
+  };
+
+const formatWeight = value => {
+
+  if(
+    value === null ||
+    value === undefined ||
+    value === ""
+  ){
+    return "—";
+  }
+
+  const n = Number(value);
+
+  if(!Number.isFinite(n)){
+    return "—";
+  }
+
+  return (n * 100).toFixed(1) + "%";
+
+};
+
+  /*
+    ==========================================
+    BUILD HOLDINGS
+    ==========================================
+  */
+
+  const holdings = (p.holdings || []).map(h => {
+
+    const key =
+      String(
+        h.isin ||
+        h.tickerExchange ||
+        h.ticker ||
+        ""
+      ).trim().toUpperCase();
+
+    const instrument =
+      instrumentMap.get(key) || {};
+
+    const name =
+      instrument.name ||
+      h.instrumentName ||
+      h.name ||
+      key ||
+      "—";
+
+    const assetClass =
+      instrument.classMajorTopEng ||
+      h.classMajorTopEng ||
+      h.classMajorTop ||
+      "—";
+
+    const type =
+      lang === "da"
+        ? (
+            instrument.typeLabelDk ||
+            h.typeLabelDk ||
+            instrument.typeLabelEng ||
+            h.typeLabelEng ||
+            "—"
+          )
+        : (
+            instrument.typeLabelEng ||
+            h.typeLabelEng ||
+            "—"
+          );
+
+    const isin =
+      instrument.isin ||
+      h.isin ||
+      "—";
+
+    const ccy =
+      instrument.ccy ||
+      h.ccy ||
+      "—";
+
+    const isAcc =
+      instrument.isAcc ?? h.isAcc ?? null;
+
+    const isActive =
+      instrument.isActive ?? h.isActive ?? null;
+
+    const isPositivListe =
+      instrument.isPositivListe ??
+      h.isPositivListe ??
+      null;
+
+    const meta = [];
+
+    const accumulation = boolText(
+      isAcc,
+      lang === "da" ? "Akkumulerende" : "Accumulating",
+      lang === "da" ? "Udbyttebetalende" : "Distributing"
+    );
+
+    if(accumulation){
+      meta.push(accumulation);
+    }
+
+    const management = boolText(
+      isActive,
+      lang === "da" ? "Aktivt forvaltet" : "Actively managed",
+      lang === "da" ? "Passivt forvaltet" : "Passively managed"
+    );
+
+    if(management){
+      meta.push(management);
+    }
+
+    if(lang === "da"){
+
+      const positiveList = boolText(
+        isPositivListe,
+        "På positivlisten",
+        "Ikke på positivlisten"
+      );
+
+      if(positiveList){
+        meta.push(positiveList);
+      }
+
+    }
+
+    return {
+      name,
+      assetClass,
+      type,
+      isin,
+      ccy,
+      weight: h.weight,
+      meta
     };
-    const alloc = {
-        equity: 0, bonds: 0, alternatives: 0, singleStocks: 0
-    };
-    p.holdings.forEach(h => {
-        if (h.category in alloc)
-            alloc[h.category] += h.weight;
-    });
-    $('plan-details').innerHTML = `<div class="details"><div class="detail-top"><div><div class="kicker">${tr('whatInside')}</div><h3 style="margin:5px 0;color:var(--ink)">${esc(p.name)}</h3></div><button class="icon-btn" data-collapse aria-label="Collapse">${icon('chevron-up')}</button></div><div class="detail-meta"><span>${tr('currency')}: <b>${esc(p.currency)}</b></span><span>${tr('structure')}: <b>${p.holdings.length} ${tr('holdings').toLowerCase()}</b></span><span>${tr('risk')}: ${riskDots(p.riskDot)} <b>${p.riskDot}/7</b></span></div><div class="small">${tr('allocation')}</div><div class="allocation">${Object.entries(alloc).filter(([k, v]) => v > 0).map(([k, v]) => `<span style="width:${v}%;background:${colors[k]}"></span>`).join('')}</div><div class="legend">${Object.entries(alloc).map(([k, v]) => `<span><em style="background:${colors[k]}"></em>${tr(k)} ${v}%</span>`).join('')}</div><table class="holdings"><tbody>${p.holdings.map(h => `<tr><td>${esc(h.name)}</td><td>${h.weight}%</td></tr>`).join('')}</tbody></table><div class="footnote">${tr('demoData')}</div></div>`;
-    icons();
+
+  });
+
+  /*
+    ==========================================
+    HOLDINGS HTML
+    ==========================================
+  */
+
+  const title =
+    lang === "da"
+      ? "Beholdninger"
+      : "Holdings";
+
+  const html = `
+
+    <div class="wealthplan-holdings">
+
+      <div class="wealthplan-holdings-title">
+
+        <span>
+          ${title} (${holdings.length})
+        </span>
+
+      </div>
+
+      <div class="wealthplan-holdings-header">
+
+        <span>${lang === "da" ? "Instrument" : "Instrument"}</span>
+        <span>${lang === "da" ? "Aktivklasse" : "Asset class"}</span>
+        <span>${lang === "da" ? "Type" : "Type"}</span>
+        <span>ISIN</span>
+        <span>CCY</span>
+        <span class="wealthplan-holding-weight">
+          ${lang === "da" ? "Vægt" : "Weight"}
+        </span>
+
+      </div>
+
+      ${holdings.map(h => `
+
+        <div class="wealthplan-holding-row">
+
+          <div class="wealthplan-holding-name">
+
+            ${esc(h.name)}
+
+            ${
+              h.meta.length
+                ? `
+                  <div class="wealthplan-holding-meta">
+                    ${h.meta.map(esc).join(" · ")}
+                  </div>
+                `
+                : ""
+            }
+
+          </div>
+
+          <div class="wealthplan-holding-class">
+            ${esc(h.assetClass)}
+          </div>
+
+          <div class="wealthplan-holding-type">
+            ${esc(h.type)}
+          </div>
+
+          <div class="wealthplan-holding-isin">
+            ${esc(h.isin)}
+          </div>
+
+          <div class="wealthplan-holding-ccy">
+            ${esc(h.ccy)}
+          </div>
+
+          <div class="wealthplan-holding-weight">
+            ${formatWeight(h.weight)}
+          </div>
+
+        </div>
+
+      `).join("")}
+
+    </div>
+
+  `;
+
+  /*
+    Insert immediately after selected row.
+  */
+
+  row.insertAdjacentHTML(
+    "afterend",
+    html
+  );
+
+  icons();
+
 }
+
 
 /* =====================================================
    13 · SELECTED INVESTMENT
@@ -4303,7 +5358,63 @@ async function loadPortfolioDatabase(){
 
 }
 
+/* =====================================================
+   WEALTHPLANS · MODEL SELECTION
+===================================================== */
 
+function bindPortfolioModelSelection(){
+
+  const basket =
+    document.getElementById("portfolios-basket");
+
+  if(!basket) return;
+
+  if(basket.dataset.modelSelectionBound === "true"){
+    return;
+  }
+
+  basket.dataset.modelSelectionBound = "true";
+
+  basket.addEventListener("change", e => {
+
+    const select =
+      e.target.closest("[data-plan-select]");
+
+    if(!select) return;
+
+    const i =
+      Number(select.dataset.planSelect);
+
+    const slot =
+      APP.planSlots[i];
+
+    if(!slot) return;
+
+    const modelNo =
+      select.value;
+
+    slot.modelNo =
+      modelNo === ""
+        ? ""
+        : Number(modelNo);
+
+    APP.expandedPlan = null;
+    APP.metricsPlan = null;
+
+    renderPortfolios();
+
+    console.log(
+      "SELECTED WEALTH PLAN",
+      i,
+      slot.modelNo,
+      PORTFOLIO_STATE.all.find(
+        p => Number(p.modelNo) === Number(slot.modelNo)
+      )?.modelLabel
+    );
+
+  });
+
+}
 /* =====================================================
    GET PORTFOLIO BY MODEL NUMBER
 ===================================================== */
@@ -4417,9 +5528,10 @@ openTab('welcome');
 loadMarketPulse();
 loadInstrumentDatabase();
 loadPortfolioDatabase();
-
+renderPortfolios();
+bindPortfolioSelectors();
 setInterval(loadMarketPulse, 15 * 60 * 1000);
-
+bindPortfolioModelSelection();
 
 </script>
 </body></html>
