@@ -1036,6 +1036,247 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   border-top:1px solid #29476c;
 }
 
+
+/* =====================================================
+   WEALTHPLANS · RISK INDICATOR
+===================================================== */
+
+.wealthplan-risk-indicator{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+
+.wealthplan-risk-dots{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+}
+
+.wealthplan-risk-dots .dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#d1d5db;
+  flex:0 0 auto;
+}
+
+.wealthplan-risk-dots .dot.on{
+  background:#dc2626;
+}
+
+/* =====================================================
+   WEALTHPLANS · DETAIL SECTIONS
+===================================================== */
+
+.wealthplan-overview-section:empty,
+.wealthplan-expected-section:empty{
+  display:none;
+}
+
+.wealthplan-overview-section:not(:empty){
+  margin-top:24px;
+}
+
+.wealthplan-expected-section:not(:empty){
+  margin-top:16px;
+}
+
+/* Keep both sections aligned with the basket */
+
+.wealthplan-overview-section,
+.wealthplan-expected-section{
+  width:100%;
+  min-width:0;
+}
+
+/* =====================================================
+   WEALTHPLANS · PORTFOLIO OVERVIEW
+===================================================== */
+
+.wealthplan-overview{
+  padding:20px;
+}
+
+.wealthplan-overview .detail-top h3{
+  margin:6px 0 0;
+  color:var(--ink);
+}
+
+.wealthplan-overview-metrics{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:20px;
+  margin:22px 0;
+}
+
+.wealthplan-overview-metric{
+  min-width:0;
+}
+
+.wealthplan-overview-label{
+  color:#9bb5d5;
+  font-size:11px;
+  margin-bottom:7px;
+}
+
+.wealthplan-overview-value{
+  color:#ffffff;
+  font-size:21px;
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+
+.wealthplan-allocation-heading{
+  margin-bottom:10px;
+  color:#c3d5eb;
+  font-size:11px;
+  font-weight:600;
+}
+
+.wealthplan-allocation{
+  display:flex;
+  overflow:hidden;
+  height:8px;
+  border-radius:8px;
+  background:#29476c;
+}
+
+.wealthplan-allocation-legend{
+  margin-top:10px;
+}
+
+.wealthplan-description{
+  margin-top:20px;
+  padding-top:16px;
+  border-top:1px solid #29476c;
+  color:#9bb5d5;
+  font-size:12px;
+  line-height:1.65;
+}
+
+
+/* =====================================================
+   WEALTHPLANS · EXPECTED WEALTH
+===================================================== */
+
+.wealthplan-expected-wealth{
+  padding:22px;
+}
+
+.wealthplan-expected-header h3{
+  margin:6px 0;
+  color:var(--ink);
+  font-size:17px;
+}
+
+.wealthplan-expected-subtitle{
+  color:#9bb5d5;
+  font-size:12px;
+}
+
+.wealthplan-expected-main{
+  margin:24px 0;
+}
+
+.wealthplan-expected-label{
+  color:#38d6e8;
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+
+.wealthplan-expected-number{
+  margin-top:8px;
+  color:#ffffff;
+  font-size:34px;
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+}
+
+.wealthplan-range-heading{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+  color:#9bb5d5;
+  font-size:11px;
+}
+
+.wealthplan-range-track{
+  height:7px;
+  overflow:hidden;
+  background:#29476c;
+  border-radius:8px;
+}
+
+.wealthplan-range-fill{
+  height:100%;
+  background:#38d6e8;
+  border-radius:8px;
+}
+
+.wealthplan-range-values{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-top:14px;
+}
+
+.wealthplan-range-values > div{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.wealthplan-range-values > div:nth-child(2){
+  text-align:center;
+}
+
+.wealthplan-range-values > div:last-child{
+  text-align:right;
+}
+
+.wealthplan-range-values span{
+  color:#9bb5d5;
+  font-size:11px;
+}
+
+.wealthplan-range-values strong{
+  color:#ffffff;
+  font-size:15px;
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:650px){
+
+  .wealthplan-overview-metrics{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:18px;
+  }
+
+  .wealthplan-overview-value{
+    font-size:19px;
+  }
+
+  .wealthplan-expected-number{
+    font-size:29px;
+  }
+
+  .wealthplan-range-values strong{
+    font-size:13px;
+  }
+
+}
+
+
 </style>
 </head>
 <body>
@@ -1470,42 +1711,65 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   <!-- =====================================================
        03 · PORTFOLIOS / WEALTH PLANS
   ====================================================== -->
+<!-- =====================================================
+     03 · PORTFOLIOS / WEALTH PLANS
+===================================================== -->
 
-  <section
-    id="page-portfolios"
-    class="page"
-    aria-label="Portfolios"
-  >
+<section
+  id="page-portfolios"
+  class="page"
+  aria-label="Portfolios"
+>
 
-    <div data-hero="portfolios"></div>
+  <div data-hero="portfolios"></div>
 
-    <div class="section">
+  <div class="section">
 
-      <div class="section-heading">
+    <!-- ================================================
+         WEALTH PLAN SELECTION
+    ================================================= -->
 
-        <h2 data-i18n="yourPlans">
-          Your Wealth Plans
-        </h2>
+    <div class="section-heading">
 
-        <span
-          class="hint"
-          id="portfolios-count"
-        ></span>
+      <h2 data-i18n="yourPlans">
+        Your Wealth Plans
+      </h2>
 
-      </div>
-
-      <div
-        class="basket"
-        id="portfolios-basket"
-      ></div>
-
-      <div id="plan-details"></div>
+      <span
+        class="hint"
+        id="portfolios-count"
+      ></span>
 
     </div>
 
-  </section>
+    <div
+      class="basket"
+      id="portfolios-basket"
+    ></div>
 
 
+    <!-- ================================================
+         SELECTED PORTFOLIO OVERVIEW
+    ================================================= -->
+
+    <div
+      id="plan-details"
+      class="wealthplan-overview-section"
+    ></div>
+
+
+    <!-- ================================================
+         EXPECTED WEALTH STATISTICS
+    ================================================= -->
+
+    <div
+      id="plan-expected-wealth"
+      class="wealthplan-expected-section"
+    ></div>
+
+  </div>
+
+</section>
 
   <!-- =====================================================
        04 · MYWEALTH
@@ -3256,13 +3520,666 @@ function renderPortfolios(){
     to live models in the next step.
   */
 
-  icons();
+  renderPlanMetrics();
+renderPlanExpectedWealth();
+
+icons();	
 
 }
 
 /* =====================================================
    WEALTHPLANS · DROPDOWN EVENT HANDLERS
 ===================================================== */
+
+/* =====================================================
+   WEALTHPLANS · SELECTED METRICS MODEL
+===================================================== */
+
+function getSelectedMetricsModel(){
+
+  const index = APP.metricsPlan;
+
+  if(
+    !Number.isInteger(index) ||
+    index < 0 ||
+    index >= APP.planSlots.length
+  ){
+    return null;
+  }
+
+  const modelNo =
+    APP.planSlots[index]?.modelNo;
+
+  if(
+    modelNo === null ||
+    modelNo === undefined ||
+    modelNo === ""
+  ){
+    return null;
+  }
+
+  return (PORTFOLIO_STATE.all || []).find(
+    p => Number(p.modelNo) === Number(modelNo)
+  ) || null;
+
+}
+
+/* =====================================================
+   WEALTHPLANS · PORTFOLIO OVERVIEW
+===================================================== */
+
+function renderPlanMetrics(){
+
+  const container =
+    document.getElementById("plan-details");
+
+  if(!container) return;
+
+  const p = getSelectedMetricsModel();
+
+  if(!p){
+    container.innerHTML = "";
+    return;
+  }
+
+  const m = p.objKeyFigures || {};
+
+  const da = APP.lang === "da";
+
+  /*
+    ==========================================
+    FORMATTERS
+    ==========================================
+  */
+
+  const pct = (value, digits = 2) => {
+
+    if(
+      value === null ||
+      value === undefined ||
+      value === ""
+    ){
+      return "—";
+    }
+
+    const n = Number(value);
+
+    return Number.isFinite(n)
+      ? (n * 100).toFixed(digits) + "%"
+      : "—";
+
+  };
+
+  const decimal = (value, digits = 2) => {
+
+    if(
+      value === null ||
+      value === undefined ||
+      value === ""
+    ){
+      return "—";
+    }
+
+    const n = Number(value);
+
+    return Number.isFinite(n)
+      ? n.toFixed(digits)
+      : "—";
+
+  };
+
+  /*
+    ==========================================
+    ASSET ALLOCATION
+    ==========================================
+  */
+
+  const allocation = [
+
+    {
+      key: "equity",
+      label: da ? "Aktier" : "Equity",
+      value: Number(m.equityWeight) || 0,
+      color: "#315e9c"
+    },
+
+    {
+      key: "bonds",
+      label: da ? "Obligationer" : "Bonds",
+      value: Number(m.bondsWeight) || 0,
+      color: "#8aa9ce"
+    },
+
+    {
+      key: "alternatives",
+      label: da ? "Alternativer" : "Alternatives",
+      value: Number(m.alternativesWeight) || 0,
+      color: "#b8c7d9"
+    }
+
+  ];
+
+  const allocationTotal =
+    allocation.reduce(
+      (sum, x) => sum + x.value,
+      0
+    );
+
+  /*
+    Single stocks are a subset of equity.
+    They must not be added to the allocation bar,
+    otherwise we would double-count them.
+  */
+
+  const singleStocks =
+    Number(m.singleStocksWeight) || 0;
+
+  /*
+    ==========================================
+    METRIC ITEMS
+    ==========================================
+  */
+
+  const metrics = [
+
+    {
+      label: da
+        ? "Forventet nettoafkast"
+        : "Expected net return",
+
+      value: pct(m.expRetNet)
+    },
+
+    {
+      label: da
+        ? "Risiko / volatilitet"
+        : "Risk / volatility",
+
+      value: pct(m.risk)
+    },
+
+    {
+      label: da
+        ? "Årlige omkostninger"
+        : "Annual costs",
+
+      value: pct(m.costs)
+    },
+
+    {
+      label: da
+        ? "Sharpe-ratio"
+        : "Sharpe ratio",
+
+      value: decimal(m.sharpeRatioNet)
+    }
+
+  ];
+
+  /*
+    ==========================================
+    DESCRIPTION
+    ==========================================
+  */
+
+  const description = da
+    ? (
+        p.descriptionLong ||
+        p.descriptionLong_en ||
+        ""
+      )
+    : (
+        p.descriptionLong_en ||
+        p.descriptionLong ||
+        ""
+      );
+
+  const holdingCount =
+    Array.isArray(p.arrayHoldings)
+      ? p.arrayHoldings.length
+      : 0;
+
+  /*
+    ==========================================
+    HTML
+    ==========================================
+  */
+
+  container.innerHTML = `
+
+    <div class="details wealthplan-overview">
+
+      <!-- HEADER -->
+
+      <div class="detail-top">
+
+        <div>
+
+          <div class="kicker">
+            ${
+              da
+                ? "PORTEFØLJEOVERSIGT"
+                : "PORTFOLIO OVERVIEW"
+            }
+          </div>
+
+          <h3>
+            ${esc(p.modelLabel)}
+          </h3>
+
+        </div>
+
+        <button
+          type="button"
+          class="icon-btn"
+          data-close-plan-metrics
+          aria-label="Close metrics"
+        >
+          ${icon("x")}
+        </button>
+
+      </div>
+
+
+      <!-- MODEL INFORMATION -->
+
+      <div class="detail-meta">
+
+        <span>
+          ${
+            da
+              ? "Udsteder"
+              : "Issuer"
+          }:
+          <b>${esc(p.issuerName || "—")}</b>
+        </span>
+
+        <span>
+          ${
+            da
+              ? "Beholdninger"
+              : "Holdings"
+          }:
+          <b>${holdingCount}</b>
+        </span>
+
+        <span>
+          ${
+            da
+              ? "Strategi"
+              : "Strategy"
+          }:
+          <b>${esc(p.anchorStrategyId || "—")}</b>
+        </span>
+
+      </div>
+
+
+      <!-- PRIMARY METRICS -->
+
+      <div class="wealthplan-overview-metrics">
+
+        ${metrics.map(item => `
+
+          <div class="wealthplan-overview-metric">
+
+            <div class="wealthplan-overview-label">
+              ${item.label}
+            </div>
+
+            <div class="wealthplan-overview-value">
+              ${item.value}
+            </div>
+
+          </div>
+
+        `).join("")}
+
+      </div>
+
+
+      <!-- ASSET ALLOCATION -->
+
+      <div class="wealthplan-allocation-heading">
+
+        ${
+          da
+            ? "Aktivfordeling"
+            : "Asset allocation"
+        }
+
+      </div>
+
+      <div class="allocation wealthplan-allocation">
+
+        ${allocation
+          .filter(x => x.value > 0)
+          .map(x => `
+
+            <span
+              style="
+                width:${
+                  allocationTotal > 0
+                    ? (x.value / allocationTotal) * 100
+                    : 0
+                }%;
+                background:${x.color};
+              "
+            ></span>
+
+          `).join("")}
+
+      </div>
+
+
+      <!-- ALLOCATION LEGEND -->
+
+      <div class="legend wealthplan-allocation-legend">
+
+        ${allocation.map(x => `
+
+          <span>
+
+            <em
+              style="background:${x.color}"
+            ></em>
+
+            ${x.label} ${pct(x.value, 0)}
+
+          </span>
+
+        `).join("")}
+
+        <span>
+          ${
+            da
+              ? "Enkeltaktier"
+              : "Single stocks"
+          }
+          ${pct(singleStocks, 0)}
+        </span>
+
+      </div>
+
+
+      <!-- DESCRIPTION -->
+
+      ${description ? `
+
+        <div class="wealthplan-description">
+          ${esc(description)}
+        </div>
+
+      ` : ""}
+
+    </div>
+
+  `;
+
+  icons();
+
+}
+
+/* =====================================================
+   WEALTHPLANS · EXPECTED WEALTH
+===================================================== */
+
+function renderPlanExpectedWealth(){
+
+  const container =
+    document.getElementById(
+      "plan-expected-wealth"
+    );
+
+  if(!container) return;
+
+  const p = getSelectedMetricsModel();
+
+  if(!p){
+    container.innerHTML = "";
+    return;
+  }
+
+  const m = p.objKeyFigures || {};
+
+  const expRet =
+    Number(m.expRetNet);
+
+  const risk =
+    Number(m.risk);
+
+  if(
+    !Number.isFinite(expRet) ||
+    !Number.isFinite(risk) ||
+    risk < 0
+  ){
+    container.innerHTML = "";
+    return;
+  }
+
+  /*
+    ==========================================
+    FIXED COMPARISON ASSUMPTIONS
+    ==========================================
+  */
+
+  const W0 = 100000;
+  const horizon = 10;
+
+  /*
+    ==========================================
+    EXISTING GBM ENGINE
+    ==========================================
+  */
+
+  const result = calcWealthGBM({
+
+    W0,
+    savingsMonthly: 0,
+    horizon,
+    expRet,
+    risk
+
+  });
+
+  if(!result){
+    container.innerHTML = "";
+    return;
+  }
+
+  /*
+    IMPORTANT:
+    These keys should match the result object
+    already used by the Welcome statistics.
+  */
+
+  const expected =
+    Number(result.expected);
+
+  const median =
+    Number(result.median);
+
+  const p10 =
+    Number(result.p10);
+
+  const p90 =
+    Number(result.p90);
+
+  if(
+    ![
+      expected,
+      median,
+      p10,
+      p90
+    ].every(Number.isFinite)
+  ){
+    console.warn(
+      "Unexpected GBM result structure",
+      result
+    );
+
+    container.innerHTML = "";
+    return;
+  }
+
+  const da = APP.lang === "da";
+
+  const fmtMoney = value =>
+    Math.round(value).toLocaleString(
+      da ? "da-DK" : "en-US"
+    );
+
+  /*
+    ==========================================
+    OUTCOME RANGE POSITION
+    ==========================================
+  */
+
+  const range =
+    p90 - p10;
+
+  const medianPosition =
+    range > 0
+      ? Math.max(
+          0,
+          Math.min(
+            100,
+            ((median - p10) / range) * 100
+          )
+        )
+      : 50;
+
+  /*
+    ==========================================
+    HTML
+    ==========================================
+  */
+
+  container.innerHTML = `
+
+    <div class="details wealthplan-expected-wealth">
+
+      <!-- HEADER -->
+
+      <div class="wealthplan-expected-header">
+
+        <div>
+
+          <div class="kicker">
+            ${
+              da
+                ? "FORVENTET FORMUE"
+                : "EXPECTED WEALTH"
+            }
+          </div>
+
+          <h3>
+            ${esc(p.modelLabel)}
+          </h3>
+
+          <div class="wealthplan-expected-subtitle">
+            ${fmtMoney(W0)}
+            ${
+              da
+                ? "investeret · 10 år"
+                : "invested · 10 years"
+            }
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- EXPECTED WEALTH -->
+
+      <div class="wealthplan-expected-main">
+
+        <div class="wealthplan-expected-label">
+          ${
+            da
+              ? "Forventet formue"
+              : "Expected wealth"
+          }
+        </div>
+
+        <div class="wealthplan-expected-number">
+          ${fmtMoney(expected)}
+        </div>
+
+      </div>
+
+
+      <!-- OUTCOME RANGE -->
+
+      <div class="wealthplan-range-heading">
+
+        <span>
+          ${
+            da
+              ? "10-årigt udfaldsinterval"
+              : "10-year outcome range"
+          }
+        </span>
+
+        <span>P10–P90</span>
+
+      </div>
+
+
+      <div class="wealthplan-range-track">
+
+        <div
+          class="wealthplan-range-fill"
+          style="width:${medianPosition}%"
+        ></div>
+
+      </div>
+
+
+      <!-- DISTRIBUTION STATISTICS -->
+
+      <div class="wealthplan-range-values">
+
+        <div>
+
+          <span>P10</span>
+
+          <strong>
+            ${fmtMoney(p10)}
+          </strong>
+
+        </div>
+
+        <div>
+
+          <span>
+            ${da ? "Median" : "Median"}
+          </span>
+
+          <strong>
+            ${fmtMoney(median)}
+          </strong>
+
+        </div>
+
+        <div>
+
+          <span>P90</span>
+
+          <strong>
+            ${fmtMoney(p90)}
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
 
 function bindPortfolioSelectors(){
 
@@ -4799,6 +5716,94 @@ const INSTRUMENT_STATE = {
    FETCH + FLATTEN
 ===================================================== */
 
+/* =====================================================
+   WEALTHPLANS · VIEW METRICS + EXPECTED WEALTH EVENTS
+===================================================== */
+
+function bindPortfolioMetrics(){
+
+  const basket =
+    document.getElementById("portfolios-basket");
+
+  if(!basket) return;
+
+  // Prevent duplicate listeners.
+  if(basket.dataset.metricsBound === "true"){
+    return;
+  }
+
+  basket.dataset.metricsBound = "true";
+
+  basket.addEventListener("click", e => {
+
+    const button =
+      e.target.closest("[data-plan-metrics]");
+
+    if(!button) return;
+
+    const index =
+      Number(button.dataset.planMetrics);
+
+    const slot =
+      APP.planSlots[index];
+
+    if(
+      !slot ||
+      slot.modelNo === null ||
+      slot.modelNo === undefined ||
+      slot.modelNo === ""
+    ){
+      return;
+    }
+
+    /*
+      Toggle selected portfolio.
+    */
+
+    APP.metricsPlan =
+      APP.metricsPlan === index
+        ? null
+        : index;
+
+    /*
+      Repaint basket and both sections.
+    */
+
+    renderPortfolios();
+
+    console.log(
+      "WEALTH PLAN METRICS",
+      APP.metricsPlan,
+      getSelectedMetricsModel()?.modelLabel
+    );
+
+  });
+
+
+  /*
+    ==========================================
+    CLOSE BUTTON
+    ==========================================
+  */
+
+  document.addEventListener("click", e => {
+
+    if(
+      !e.target.closest(
+        "[data-close-plan-metrics]"
+      )
+    ){
+      return;
+    }
+
+    APP.metricsPlan = null;
+
+    renderPortfolios();
+
+  });
+
+}
+
 async function loadInstrumentDatabase(){
 
   if(INSTRUMENT_STATE.loading) return;
@@ -5427,6 +6432,18 @@ function getPortfolioByModelNo(modelNo){
 
 }
 
+function dotsCountConverter(risk){
+  const r = Number(risk);
+  if(!Number.isFinite(r)) return 0;
+
+  if(r <= 0.05) return 1;
+  if(r <= 0.12) return 2;
+  if(r <= 0.15) return 3;
+  if(r <= 0.20) return 4;
+  if(r <= 0.25) return 5;
+  if(r <= 0.35) return 6;
+  return 7;
+}
 
 /* =====================================================
    29 · MARKET PULSE · FORMATTING
@@ -5532,6 +6549,7 @@ renderPortfolios();
 bindPortfolioSelectors();
 setInterval(loadMarketPulse, 15 * 60 * 1000);
 bindPortfolioModelSelection();
+bindPortfolioMetrics();
 
 </script>
 </body></html>
