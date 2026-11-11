@@ -1276,7 +1276,47 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
 }
 
+/* =====================================================
+   WEALTHPLAN DESCRIPTION · COLLAPSIBLE
+===================================================== */
 
+.wealthplan-description-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 0;
+  border:0;
+  background:transparent;
+  color:#8fbaff;
+  font:inherit;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.wealthplan-description-toggle:hover{
+  color:#ffffff;
+}
+
+.wealthplan-description-toggle .toggle-chevron{
+  display:inline-block;
+  font-size:18px;
+  line-height:1;
+  transition:transform .2s ease;
+}
+
+.wealthplan-description-toggle[aria-expanded="true"]
+.toggle-chevron{
+  transform:rotate(180deg);
+}
+
+.wealthplan-description-content{
+  margin-top:8px;
+  line-height:1.65;
+}
+
+.wealthplan-description-content[hidden]{
+  display:none;
+}
 </style>
 </head>
 <body>
@@ -3522,6 +3562,7 @@ function renderPortfolios(){
 
   renderPlanMetrics();
 renderPlanExpectedWealth();
+renderPlanExpectedWealth();
 
 icons();	
 
@@ -3921,10 +3962,36 @@ const riskDotsCount =
 
       ${description ? `
 
-        <div class="wealthplan-description">
-          ${esc(description)}
-        </div>
+<div class="wealthplan-description">
 
+  <button
+    type="button"
+    class="wealthplan-description-toggle"
+    aria-expanded="false"
+    onclick="
+      const content = this.nextElementSibling;
+      const expanded = this.getAttribute('aria-expanded') === 'true';
+
+      content.hidden = expanded;
+      this.setAttribute('aria-expanded', String(!expanded));
+
+      this.querySelector('.toggle-label').textContent =
+        expanded
+          ? '${da ? "Læs mere" : "Read more"}'
+          : '${da ? "Læs mindre" : "Read less"}';
+    "
+  >
+    <span class="toggle-chevron">⌄</span>
+    <span class="toggle-label">
+      ${da ? "Læs mere" : "Read more"}
+    </span>
+  </button>
+
+  <div class="wealthplan-description-content" hidden>
+    ${esc(description)}
+  </div>
+
+</div>
       ` : ""}
 
     </div>
@@ -6537,16 +6604,21 @@ function bindPortfolioModelSelection(){
         ? ""
         : Number(modelNo);
 
+    // Close expanded holdings
     APP.expandedPlan = null;
-    APP.metricsPlan = null;
 
+    // Automatically select this slot for metrics
+    APP.metricsPlan =
+      slot.modelNo === "" ? null : i;
+
+    // Refresh basket, overview and expected wealth
     renderPortfolios();
 
     console.log(
       "SELECTED WEALTH PLAN",
       i,
       slot.modelNo,
-      PORTFOLIO_STATE.all.find(
+      (PORTFOLIO_STATE.all || []).find(
         p => Number(p.modelNo) === Number(slot.modelNo)
       )?.modelLabel
     );
