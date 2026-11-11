@@ -19,6 +19,7 @@ TOKEN = os.environ["EODHD_TOKEN"]
 # Use exact EODHD tickerExchange identifiers.
 
 
+
 TICKERS = [
 
     # ==========================================
@@ -37,27 +38,36 @@ TICKERS = [
     "ASML.AS",
 
     # ==========================================
-    # MARKET INDICES / ETFs · 7
+    # PERMANENT INDICES · 2
     # ==========================================
 
-    # Permanent
-    "SXR8.XETRA",       # S&P 500
-    "EXW1.XETRA",       # STOXX Europe 50
+    "GSPC.INDX",       # S&P 500
+    "IXIC.INDX",       # NASDAQ Composite
 
-    # Editorial
-    "LSMC.XETRA",       # Semiconductors
+    # ==========================================
+    # EDITORIAL MARKET FOCUS · 1
+    # ==========================================
 
-    # Local
-    "XACTC25.CO",       # Denmark
-    "XACT-OMXS30.ST",   # Sweden
-    "IS3U.XETRA",       # France
-    "EXS1.XETRA",       # germany
-    "DBXZ.XETRA",       # UK
+    "LSMC.XETRA",      # Semiconductors ETF
 
-    # Fallback
-    "EUNL.XETRA"        # MSCI World
+    # ==========================================
+    # LOCAL MARKET INDICES · 5
+    # ==========================================
+
+    "OMXC25.INDX",     # Denmark · OMX Copenhagen 25
+    "GDAXI.INDX",      # Germany · DAX 40
+    "FTSE.INDX",       # United Kingdom · FTSE 100
+    "OMXS30.INDX",     # Sweden · OMX Stockholm 30
+    "FCHI.INDX",       # France · CAC 40
+
+    # ==========================================
+    # GLOBAL FALLBACK · 1
+    # ==========================================
+
+    "EUNL.XETRA"       # MSCI World ETF
 
 ]
+
 
 
 
