@@ -760,45 +760,45 @@ const icon = (name) => `<i data-lucide="${name}"></i>`;
 const MARKET_INDICES = [
 
   // 01 · PERMANENT · UNITED STATES
-  {
-    id: "US",
-    name: "S&P 500",
-    tickerExchange: "SXR8.XETRA",
-    currency: "USD",
-    type: "etf",
-    role: "permanent",
-    country: "US"
-  },
+{
+  id: "US",
+  name: "S&P 500",
+  tickerExchange: "GSPC.INDX",
+  currency: "USD",
+  type: "index",
+  role: "permanent",
+  country: "US"
+},
 
-  // 02 · PERMANENT · EUROPE
-  {
-    id: "EUROPE",
-    name: "STOXX Europe 50",
-    tickerExchange: "EXW1.XETRA",
-    currency: "EUR",
-    type: "etf",
-    role: "permanent",
-    country: "EU"
-  },
+{
+  id: "NASDAQ",
+  name: "NASDAQ Composite",
+  tickerExchange: "IXIC.INDX",
+  currency: "USD",
+  type: "index",
+  role: "permanent",
+  country: "US"
+},
 
   // 03 · EDITORIAL · MARKET FOCUS
   {
     id: "SEMICONDUCTORS",
     name: "Semiconductors",
     tickerExchange: "LSMC.XETRA",
-    currency: "USD",
+    currency: "EUR",
     type: "etf",
     role: "editorial",
     country: "US"
   },
 
+
   // 04 · LOCAL · DENMARK
   {
     id: "DENMARK",
-    name: "Denmark",
-    tickerExchange: "XACTC25.CO",
+    name: "OMX Copenhagen 25",
+    tickerExchange: "OMXC25.INDX",
     currency: "DKK",
-    type: "etf",
+    type: "index",
     role: "local",
     country: "DK"
   },
@@ -806,10 +806,10 @@ const MARKET_INDICES = [
   // 05 · LOCAL · GERMANY
   {
     id: "GERMANY",
-    name: "Germany",
-    tickerExchange: "EXS1.XETRA",
+    name: "DAX 40",
+    tickerExchange: "GDAXI.INDX",
     currency: "EUR",
-    type: "etf",
+    type: "index",
     role: "local",
     country: "DE"
   },
@@ -817,10 +817,10 @@ const MARKET_INDICES = [
   // 06 · LOCAL · UNITED KINGDOM
   {
     id: "UNITED_KINGDOM",
-    name: "United Kingdom",
-    tickerExchange: "	DBXZ.XETRA",
-    currency: "EUR",
-    type: "etf",
+    name: "FTSE 100",
+    tickerExchange: "FTSE.INDX",
+    currency: "GBP",
+    type: "index",
     role: "local",
     country: "GB"
   },
@@ -828,10 +828,10 @@ const MARKET_INDICES = [
   // 07 · LOCAL · SWEDEN
   {
     id: "SWEDEN",
-    name: "Sweden",
-    tickerExchange: "XACT-OMXS30.ST",
+    name: "OMX Stockholm 30",
+    tickerExchange: "OMXS30.INDX",
     currency: "SEK",
-    type: "etf",
+    type: "index",
     role: "local",
     country: "SE"
   },
@@ -839,13 +839,14 @@ const MARKET_INDICES = [
   // 08 · LOCAL · FRANCE
   {
     id: "FRANCE",
-    name: "France",
-    tickerExchange: "IS3U.XETRA",
-    currency: "",
-    type: "etf",
+    name: "CAC 40",
+    tickerExchange: "FCHI.INDX",
+    currency: "EUR",
+    type: "index",
     role: "local",
     country: "FR"
   },
+
 
   // 09 · FALLBACK · GLOBAL MARKET
   {
