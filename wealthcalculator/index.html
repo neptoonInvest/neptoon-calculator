@@ -107,6 +107,145 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 @media(max-width:390px){.preview{grid-template-columns:1fr}.field-grid{grid-template-columns:1fr}.nav-tab{font-size:9px}.hero-icon{display:none}.hero{grid-template-columns:1fr}.market-index-card{padding:11px}.market-price{font-size:17px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 
+/* =====================================================
+   WELCOME · GBM INVESTMENT PREVIEW
+===================================================== */
+
+.preview{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+  margin-bottom:22px;
+}
+
+.welcome-investment-card{
+  min-width:0;
+  padding:22px;
+
+  background:linear-gradient(
+    145deg,
+    #172f58 0%,
+    #0c1c3f 100%
+  );
+
+  border:1px solid rgba(123,172,226,.20);
+  border-radius:18px;
+
+  color:#fff;
+}
+
+.welcome-investment-name{
+  font-size:17px;
+  font-weight:750;
+  color:#fff;
+}
+
+.welcome-investment-sub{
+  margin-top:8px;
+  font-size:12px;
+  color:#9fb8da;
+}
+
+.welcome-investment-kicker{
+  margin-top:22px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.08em;
+  color:#57dce8;
+}
+
+.welcome-investment-value{
+  margin-top:5px;
+  font-size:clamp(27px,3vw,36px);
+  font-weight:800;
+  letter-spacing:-.035em;
+  font-variant-numeric:tabular-nums;
+  color:#fff;
+}
+
+.welcome-range-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+
+  margin-top:22px;
+  margin-bottom:12px;
+
+  font-size:12px;
+  color:#9fb8da;
+}
+
+.welcome-range-track{
+  width:100%;
+  height:7px;
+
+  background:#304a71;
+  border-radius:20px;
+
+  overflow:hidden;
+}
+
+.welcome-range-fill{
+  height:100%;
+
+  background:linear-gradient(
+    90deg,
+    #24bfd1,
+    #43e1eb
+  );
+
+  border-radius:20px;
+  transition:width .4s ease;
+}
+
+.welcome-statistics{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-top:12px;
+}
+
+.welcome-statistics > div{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  min-width:0;
+}
+
+.welcome-statistics > div:nth-child(2){
+  text-align:center;
+}
+
+.welcome-statistics > div:nth-child(3){
+  text-align:right;
+}
+
+.welcome-statistics span{
+  font-size:11px;
+  color:#9fb8da;
+}
+
+.welcome-statistics strong{
+  font-size:clamp(13px,1.6vw,17px);
+  font-weight:750;
+  font-variant-numeric:tabular-nums;
+  color:#fff;
+}
+
+@media(max-width:760px){
+
+  .preview{
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+
+  .welcome-investment-card{
+    padding:18px;
+  }
+
+}
+
+
 </style>
 </head>
 <body>
@@ -247,30 +386,25 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
          WELCOME · INVESTMENT PREVIEW
     ================================================== -->
 
-    <div class="section">
+<!-- =================================================
+     WELCOME · INVESTMENT PREVIEW
+================================================== -->
 
-      <div class="section-heading">
+<div class="section">
 
-        <h2 data-i18n="welcomePreview">
-          What could your investment become?
-        </h2>
+  <div class="section-heading">
+    <h2 data-i18n="welcomePreview">
+      What could your investment become?
+    </h2>
+  </div>
 
-      </div>
+  <div
+    class="preview"
+    id="welcome-preview"
+  ></div>
 
-      <div
-        class="preview"
-        id="welcome-preview"
-      ></div>
+</div>
 
-      <div
-        class="notice"
-        data-i18n="demoNotice"
-      >
-        Demonstration interface. Financial results will appear
-        when the existing calculator engine is connected.
-      </div>
-
-    </div>
 
 
 
@@ -752,6 +886,12 @@ const T = { en: {
    04 · DEMONSTRATION ASSETS
 ===================================================== */
 
+const WELCOME_INSTRUMENTS = [
+  "NVDA.US",
+  "EUNL.XETRA"
+];
+
+
 const DEMO_ASSETS = [
     {
         id: 'demo-nvda', name: 'NVIDIA', ticker: 'NVDA', type: 'stock', currency: 'USD', open: true
@@ -924,7 +1064,29 @@ const MARKET_INDICES = [
 ];
 
 
+function calculateWelcomeInstrument(tickerExchange){
 
+  const instrument =
+    INSTRUMENT_STATE.all.find(
+      x => x.tickerExchange === tickerExchange
+    );
+
+  if(!instrument) return null;
+
+  const result = calcWealthGBM({
+    W0: 100000,
+    savingsMonthly: 0,
+    horizon: 10,
+    expRet: Number(instrument.expRetNet),
+    risk: Number(instrument.risk)
+  });
+
+  return {
+    instrument,
+    ...result
+  };
+
+}
 
 
 function icons() {
@@ -997,6 +1159,223 @@ function getMarketIndexSelection(){
 
 }
 
+/* =====================================================
+   18 · WELCOME PREVIEW
+   LIVE INSTRUMENTS + GBM DISTRIBUTION
+===================================================== */
+
+const WELCOME_PREVIEW_CONFIG = {
+  tickers: [
+    "NVDA.US",
+    "EUNL.DE"
+  ],
+  capital: 100000,
+  horizon: 10
+};
+
+
+function renderWelcome(){
+
+  const host =
+    document.getElementById("welcome-preview");
+
+  if(!host) return;
+
+  const {
+    tickers,
+    capital,
+    horizon
+  } = WELCOME_PREVIEW_CONFIG;
+
+  const instruments =
+    INSTRUMENT_STATE.all || [];
+
+  const locale =
+    APP.lang === "da"
+      ? "da-DK"
+      : "en-US";
+
+  const fmt = value =>
+    new Intl.NumberFormat(locale, {
+      maximumFractionDigits: 0
+    }).format(value);
+
+  const labels =
+    APP.lang === "da"
+      ? {
+          invested: "investeret",
+          years: "år",
+          expected: "FORVENTET FORMUE",
+          range: "10-årigt udfaldsinterval",
+          median: "Median",
+          missing: "Data ikke tilgængelige"
+        }
+      : {
+          invested: "invested",
+          years: "years",
+          expected: "EXPECTED WEALTH",
+          range: "10-year outcome range",
+          median: "Median",
+          missing: "Data unavailable"
+        };
+
+
+  host.innerHTML = tickers.map(ticker => {
+
+    const instrument =
+      instruments.find(
+        x => x.tickerExchange === ticker
+      );
+
+    if(!instrument){
+
+      return `
+        <article class="welcome-investment-card">
+          <strong>${esc(ticker)}</strong>
+          <div class="small">${labels.missing}</div>
+        </article>
+      `;
+
+    }
+
+    const expRet =
+      Number(instrument.expRetNet);
+
+    const risk =
+      Number(instrument.risk);
+
+    if(
+      !Number.isFinite(expRet) ||
+      !Number.isFinite(risk) ||
+      risk < 0
+    ){
+
+      return `
+        <article class="welcome-investment-card">
+          <strong>${esc(instrument.name)}</strong>
+          <div class="small">${labels.missing}</div>
+        </article>
+      `;
+
+    }
+
+    const result = calcWealthGBM({
+      W0: capital,
+      savingsMonthly: 0,
+      horizon,
+      expRet,
+      risk
+    });
+
+    const {
+      expectedWealth,
+      medianWealth,
+      q10,
+      q90
+    } = result;
+
+    if(
+      ![
+        expectedWealth,
+        medianWealth,
+        q10,
+        q90
+      ].every(Number.isFinite)
+    ){
+      return `
+        <article class="welcome-investment-card">
+          <strong>${esc(instrument.name)}</strong>
+          <div class="small">${labels.missing}</div>
+        </article>
+      `;
+    }
+
+    /*
+      Position expected wealth within
+      the P10–P90 range.
+
+      Logarithmic scaling is more
+      appropriate for wealth distributions.
+    */
+
+    const log10 = Math.log(Math.max(q10, 1));
+    const log90 = Math.log(Math.max(q90, 1));
+
+    const position =
+      log90 > log10
+        ? (
+            Math.log(Math.max(expectedWealth, 1)) -
+            log10
+          ) / (log90 - log10)
+        : 0.5;
+
+    const width =
+      Math.max(
+        0,
+        Math.min(100, position * 100)
+      );
+
+    return `
+
+      <article class="welcome-investment-card">
+
+        <div class="welcome-investment-name">
+          ${esc(instrument.name)}
+        </div>
+
+        <div class="welcome-investment-sub">
+          ${fmt(capital)} ${labels.invested}
+          · ${horizon} ${labels.years}
+        </div>
+
+        <div class="welcome-investment-kicker">
+          ${labels.expected}
+        </div>
+
+        <div class="welcome-investment-value">
+          ${fmt(expectedWealth)}
+        </div>
+
+        <div class="welcome-range-head">
+
+          <span>${labels.range}</span>
+          <span>P10–P90</span>
+
+        </div>
+
+        <div class="welcome-range-track">
+          <div
+            class="welcome-range-fill"
+            style="width:${width}%"
+          ></div>
+        </div>
+
+        <div class="welcome-statistics">
+
+          <div>
+            <span>P10</span>
+            <strong>${fmt(q10)}</strong>
+          </div>
+
+          <div>
+            <span>${labels.median}</span>
+            <strong>${fmt(medianWealth)}</strong>
+          </div>
+
+          <div>
+            <span>P90</span>
+            <strong>${fmt(q90)}</strong>
+          </div>
+
+        </div>
+
+      </article>
+
+    `;
+
+  }).join("");
+
+}
 
 function renderMarketIndices(){
 
@@ -1285,14 +1664,7 @@ function paintEmptyCanvas(id) {
     ctx.textAlign = 'start';
 }
 
-/* =====================================================
-   18 · WELCOME PREVIEW
-===================================================== */
 
-function renderWelcome() {
-    const names = [DEMO_ASSETS[0].name, DEMO_ASSETS[2].name];
-    $('welcome-preview').innerHTML = names.map(name => `<article><strong>${esc(name)}</strong><div class="small">100,000 · 10 years</div><div class="placeholder">—</div><div class="small">${tr('enginePending')}</div></article>`).join('');
-}
 
 /* =====================================================
    19 · LANGUAGE RENDERING
@@ -1669,6 +2041,392 @@ const PORTFOLIO_STATE = {
   updatedAt: null
 
 };
+
+
+  
+  
+/* =========================================
+   NW-211 — GBM WEALTH DISTRIBUTION
+
+   Monthly contributions
+   Full cashflow covariance structure
+   Two-moment lognormal approximation
+========================================= */
+
+function calcWealthGBM({
+
+  W0 = 0,
+  savingsMonthly = 0,
+  horizon = 10,
+  expRet = 0.06,
+  risk = 0.12
+
+} = {}){
+
+  const t = Math.max(
+    0,
+    Number(horizon) || 0
+  );
+
+  const n = Math.round(t * 12);
+
+  const c0 = Math.max(
+    0,
+    Number(W0) || 0
+  );
+
+  const cV = Math.max(
+    0,
+    Number(savingsMonthly) || 0
+  );
+
+  const annualReturn = Math.max(
+    -0.9999,
+    Number(expRet) || 0
+  );
+
+  const annualRisk = Math.max(
+    0,
+    Number(risk) || 0
+  );
+
+
+  /*
+    =========================
+    MONTHLY RETURN PARAMETERS
+    =========================
+  */
+
+  const monthlyReturn =
+    Math.pow(
+      1 + annualReturn,
+      1 / 12
+    ) - 1;
+
+  const monthlyRisk =
+    annualRisk / Math.sqrt(12);
+
+  const meanFactor =
+    1 + monthlyReturn;
+
+  const sigmaLog = annualRisk === 0
+    ? 0
+    : Math.sqrt(
+        Math.log(
+          1 +
+          Math.pow(
+            monthlyRisk / meanFactor,
+            2
+          )
+        )
+      );
+
+  const muLog =
+    Math.log(meanFactor) -
+    0.5 * sigmaLog * sigmaLog;
+
+
+  /*
+    =========================
+    CASHFLOW ARRAY
+    =========================
+  */
+
+  const cashflows =
+    new Array(n + 1).fill(cV);
+
+  cashflows[0] = c0;
+
+
+  /*
+    =========================
+    EXPECTED TERMINAL WEALTH
+    =========================
+  */
+
+  let expectedWealth = 0;
+
+  for(let i = 0; i <= n; i++){
+
+    const remaining = n - i;
+
+    expectedWealth +=
+      cashflows[i] *
+      Math.exp(
+        remaining *
+        (
+          muLog +
+          0.5 * sigmaLog * sigmaLog
+        )
+      );
+
+  }
+
+
+  /*
+    =========================
+    FULL COVARIANCE STRUCTURE
+    =========================
+
+    Each contribution shares future
+    market returns with other cashflows.
+
+    Cov(Xi,Xj) =
+      E(Xi) E(Xj)
+      [exp(min(Ti,Tj)*sigmaLog²)-1]
+
+  */
+
+  let varianceWealth = 0;
+
+  if(sigmaLog > 0){
+
+    for(let i = 0; i <= n; i++){
+
+      const remainingI = n - i;
+
+      const expectedI =
+        cashflows[i] *
+        Math.exp(
+          remainingI *
+          (
+            muLog +
+            0.5 * sigmaLog * sigmaLog
+          )
+        );
+
+      for(let j = 0; j <= n; j++){
+
+        const remainingJ = n - j;
+
+        const expectedJ =
+          cashflows[j] *
+          Math.exp(
+            remainingJ *
+            (
+              muLog +
+              0.5 * sigmaLog * sigmaLog
+            )
+          );
+
+        const sharedMonths =
+          Math.min(
+            remainingI,
+            remainingJ
+          );
+
+        const covariance =
+          expectedI *
+          expectedJ *
+          (
+            Math.exp(
+              sharedMonths *
+              sigmaLog *
+              sigmaLog
+            ) - 1
+          );
+
+        varianceWealth += covariance;
+
+      }
+
+    }
+
+  }
+
+  varianceWealth =
+    Math.max(0, varianceWealth);
+
+  const stdWealth =
+    Math.sqrt(varianceWealth);
+
+
+  /*
+    =========================
+    DEGENERATE DISTRIBUTION
+    =========================
+
+    Zero wealth or zero volatility:
+    all percentiles equal expected wealth.
+
+  */
+
+  if(
+    expectedWealth <= 0 ||
+    sigmaLog === 0 ||
+    varianceWealth === 0
+  ){
+
+    return {
+
+      month:n,
+      year:n / 12,
+
+      expectedWealth,
+      medianWealth:expectedWealth,
+
+      varianceWealth:0,
+      stdWealth:0,
+
+      q10:expectedWealth,
+      q50:expectedWealth,
+      q90:expectedWealth,
+
+      muLogWealth:
+        expectedWealth > 0
+          ? Math.log(expectedWealth)
+          : null,
+
+      sigmaLogWealth:0,
+
+      deterministic:true
+
+    };
+
+  }
+
+
+  /*
+    =========================
+    LOGNORMAL MOMENT MATCHING
+    =========================
+  */
+
+  const sigmaLogWealth = Math.sqrt(
+    Math.log(
+      1 +
+      varianceWealth /
+      (expectedWealth * expectedWealth)
+    )
+  );
+
+  const muLogWealth =
+    Math.log(expectedWealth) -
+    0.5 *
+    sigmaLogWealth *
+    sigmaLogWealth;
+
+
+  /*
+    =========================
+    QUANTILES
+    =========================
+  */
+
+  const quantile = p =>
+    Math.exp(
+      muLogWealth +
+      sigmaLogWealth * normInv(p)
+    );
+
+  const medianWealth =
+    Math.exp(muLogWealth);
+
+  const q10 = quantile(0.10);
+  const q90 = quantile(0.90);
+
+
+  /*
+    =========================
+    RETURN
+    =========================
+  */
+
+  return {
+
+    month:n,
+    year:n / 12,
+
+    expectedWealth,
+    medianWealth,
+
+    varianceWealth,
+    stdWealth,
+
+    q10,
+    q50:medianWealth,
+    q90,
+
+    muLogWealth,
+    sigmaLogWealth,
+
+    deterministic:false,
+
+    // Underlying monthly GBM parameters
+    muMonthlyLog:muLog,
+    sigmaMonthlyLog:sigmaLog,
+    muMonthlyDiscrete:monthlyReturn,
+    sigmaMonthlyDiscrete:monthlyRisk
+
+  };
+
+}
+
+
+
+ function normInv(p) {
+  if (!(p > 0 && p < 1)) {
+    throw new Error("normInv requires 0 < p < 1");
+  }
+
+  const a = [
+    -3.969683028665376e+01,
+     2.209460984245205e+02,
+    -2.759285104469687e+02,
+     1.383577518672690e+02,
+    -3.066479806614716e+01,
+     2.506628277459239e+00
+  ];
+
+  const b = [
+    -5.447609879822406e+01,
+     1.615858368580409e+02,
+    -1.556989798598866e+02,
+     6.680131188771972e+01,
+    -1.328068155288572e+01
+  ];
+
+  const c = [
+    -7.784894002430293e-03,
+    -3.223964580411365e-01,
+    -2.400758277161838e+00,
+    -2.549732539343734e+00,
+     4.374664141464968e+00,
+     2.938163982698783e+00
+  ];
+
+  const d = [
+     7.784695709041462e-03,
+     3.224671290700398e-01,
+     2.445134137142996e+00,
+     3.754408661907416e+00
+  ];
+
+  const plow = 0.02425;
+  const phigh = 1 - plow;
+
+  let q, r;
+
+  if (p < plow) {
+    q = Math.sqrt(-2 * Math.log(p));
+    return (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
+           ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1);
+  }
+
+  if (phigh < p) {
+    q = Math.sqrt(-2 * Math.log(1 - p));
+    return -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
+             ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1);
+  }
+
+  q = p - 0.5;
+  r = q * q;
+
+  return (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q /
+         (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1);
+}
+
+
 
 
 /* =====================================================
