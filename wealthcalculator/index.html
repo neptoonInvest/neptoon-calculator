@@ -672,7 +672,26 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   }
 
 }
+/* ==========================================
+   HISTORY VIEWER · WHITE DASHBOARD PANEL
+========================================== */
 
+.asset-history-section{
+  background:#ffffff;
+  border:1px solid #dce3ee;
+  border-radius:14px;
+  padding:28px;
+  box-shadow:0 8px 28px rgba(0,0,0,.08);
+}
+
+@media(max-width:600px){
+
+  .asset-history-section{
+    padding:16px 12px;
+    border-radius:12px;
+  }
+
+}
 
 </style>
 </head>
@@ -2469,6 +2488,24 @@ function renderAssets(){
 
   icons();
 
+  /*
+    ==========================================
+    UPDATE 5-ASSET HISTORY VIEWER
+    ==========================================
+  */
+
+  if(
+    document.getElementById("page-assets")
+      ?.classList.contains("active")
+  ){
+    initAssetHistoryViewer().catch(err => {
+      console.error(
+        "ASSET HISTORY VIEWER ERROR",
+        err
+      );
+    });
+  }
+
 }
 /* =====================================================
    10 · ASSET SEARCH DROPDOWN
@@ -2631,6 +2668,612 @@ function sendToMyWealth(source) {
 /* =====================================================
    15 · MYWEALTH DISPLAY
 ===================================================== */
+
+
+/* =====================================================
+   NEPTOON · 5-ASSET HISTORY VIEWER
+===================================================== */
+
+const ASSET_HISTORY_COLORS = [
+  "#124bc4",
+  "#ff922b",
+  "#16a064",
+  "#8238cf",
+  "#38bdf8"
+];
+
+const ASSET_HISTORY_VIEW = {
+  period: "MAX",
+  highlighted: null,
+  initialized: false,
+  resizeObserver: null
+};
+
+
+/* =====================================================
+   HISTORY DATA PREPARATION
+===================================================== */
+
+function prepareAssetHistorySeries(){
+
+  const selected = APP.assets.filter(Boolean);
+
+  const periods = {
+    "1Y": 12,
+    "3Y": 36,
+    "5Y": 60,
+    "10Y": 120
+  };
+
+  const raw = selected.map((ticker, i) => {
+
+    const instrument =
+      INSTRUMENT_STATE.all.find(
+        x => x.tickerExchange === ticker
+      );
+
+    const history = getInstrumentHistory(ticker)
+      .filter(h =>
+        h &&
+        h.date &&
+        Number.isFinite(Number(h.accIndexTotal)) &&
+        Number(h.accIndexTotal) > 0
+      )
+      .map(h => ({
+        date: String(h.date).slice(0, 10),
+        value: Number(h.accIndexTotal)
+      }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    return {
+      ticker,
+      name: instrument?.name || ticker,
+      color: ASSET_HISTORY_COLORS[i % 5],
+      history
+    };
+
+  }).filter(x => x.history.length >= 2);
+
+  if(!raw.length) return [];
+
+  /*
+    Shared end date, using the latest
+    observation common to all series.
+  */
+
+  const endDate = raw.reduce(
+    (latest, x) => {
+      const last = x.history[x.history.length - 1].date;
+      return latest === null || last < latest
+        ? last
+        : latest;
+    },
+    null
+  );
+
+  /*
+    Period start relative to shared end.
+  */
+
+  const end = new Date(endDate + "T00:00:00Z");
+
+  let requestedStart = null;
+
+  if(ASSET_HISTORY_VIEW.period !== "MAX"){
+
+    const months =
+      periods[ASSET_HISTORY_VIEW.period] || 120;
+
+    const d = new Date(end);
+    d.setUTCMonth(d.getUTCMonth() - months);
+
+    requestedStart = d.toISOString().slice(0, 10);
+
+  }
+
+  /*
+    For MAX, use the latest first date
+    among the instruments.
+
+    This ensures a common comparison period.
+  */
+
+  const commonStart = raw.reduce(
+    (latest, x) => {
+      const first = x.history[0].date;
+      return latest === null || first > latest
+        ? first
+        : latest;
+    },
+    requestedStart
+  );
+
+  const startDate =
+    requestedStart && requestedStart > commonStart
+      ? requestedStart
+      : commonStart;
+
+  /*
+    Normalize each instrument to 100
+    at its first available observation
+    within the shared period.
+  */
+
+  return raw.map(item => {
+
+    const points = item.history.filter(
+      h => h.date >= startDate && h.date <= endDate
+    );
+
+    if(points.length < 2) return null;
+
+    const base = points[0].value;
+
+    const normalized = points.map(h => ({
+      date: h.date,
+      value: 100 * h.value / base
+    }));
+
+    const first = normalized[0];
+    const last = normalized[normalized.length - 1];
+
+    const years =
+      (new Date(last.date) - new Date(first.date)) /
+      (365.25 * 86400000);
+
+    const totalReturn =
+      last.value / 100 - 1;
+
+    const annualReturn =
+      years > 0
+        ? Math.pow(last.value / 100, 1 / years) - 1
+        : null;
+
+    return {
+      ...item,
+      points: normalized,
+      totalReturn,
+      annualReturn,
+      firstDate: first.date,
+      lastDate: last.date
+    };
+
+  }).filter(Boolean);
+
+}
+
+
+/* =====================================================
+   NICE Y AXIS STEP
+===================================================== */
+
+function assetHistoryNiceStep(value){
+
+  const exponent =
+    Math.floor(Math.log10(Math.max(value, 1e-10)));
+
+  const magnitude =
+    Math.pow(10, exponent);
+
+  const fraction =
+    value / magnitude;
+
+  const nice =
+    fraction <= 1 ? 1 :
+    fraction <= 2 ? 2 :
+    fraction <= 5 ? 5 : 10;
+
+  return nice * magnitude;
+
+}
+
+
+/* =====================================================
+   DRAW CHART
+===================================================== */
+
+function drawAssetHistoryChart(series){
+
+  const canvas =
+    document.getElementById("assetHistoryCanvas");
+
+  if(!canvas) return;
+
+  const container = canvas.parentElement;
+
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+
+  if(width < 50 || height < 50) return;
+
+  const dpr = window.devicePixelRatio || 1;
+
+  canvas.width = Math.round(width * dpr);
+  canvas.height = Math.round(height * dpr);
+
+  const ctx = canvas.getContext("2d");
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+
+  if(!series.length){
+
+    ctx.fillStyle = "#64748b";
+    ctx.font = "13px Arial";
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+      "Select instruments to view historical performance",
+      width / 2,
+      height / 2
+    );
+
+    return;
+
+  }
+
+  const mobile = width < 500;
+
+  const pad = {
+    top: 18,
+    right: 15,
+    bottom: 38,
+    left: mobile ? 43 : 58
+  };
+
+  const plotW = width - pad.left - pad.right;
+  const plotH = height - pad.top - pad.bottom;
+
+  const allPoints = series.flatMap(s => s.points);
+
+  const values = allPoints.map(p => p.value);
+
+  const dataMin = Math.min(100, ...values);
+  const dataMax = Math.max(100, ...values);
+
+  const range = Math.max(dataMax - dataMin, 10);
+
+  const step = assetHistoryNiceStep(range / 5);
+
+  const yMin =
+    Math.floor(Math.max(0, dataMin - range * .05) / step)
+    * step;
+
+  const yMax =
+    Math.ceil((dataMax + range * .05) / step)
+    * step;
+
+  const minDate = Math.min(
+    ...allPoints.map(p => Date.parse(p.date))
+  );
+
+  const maxDate = Math.max(
+    ...allPoints.map(p => Date.parse(p.date))
+  );
+
+  const x = date =>
+    pad.left +
+    (Date.parse(date) - minDate) /
+    Math.max(1, maxDate - minDate) * plotW;
+
+  const y = value =>
+    pad.top +
+    (yMax - value) /
+    Math.max(1, yMax - yMin) * plotH;
+
+  /*
+    GRID + Y AXIS
+  */
+
+  ctx.font = mobile ? "10px Arial" : "11px Arial";
+  ctx.textAlign = "right";
+  ctx.textBaseline = "middle";
+
+  for(let tick = yMin; tick <= yMax + step * .001; tick += step){
+
+    const yy = y(tick);
+
+    ctx.beginPath();
+    ctx.moveTo(pad.left, yy);
+    ctx.lineTo(width - pad.right, yy);
+    ctx.strokeStyle = "#dce3ee";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.fillStyle = "#475569";
+    ctx.fillText(
+      Math.round(tick).toLocaleString("en-US"),
+      pad.left - 7,
+      yy
+    );
+
+  }
+
+  /*
+    X AXIS DATE LABELS
+  */
+
+  const ticks = mobile ? 4 : 7;
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.fillStyle = "#475569";
+
+  for(let i = 0; i <= ticks; i++){
+
+    const ratio = i / ticks;
+
+    const timestamp =
+      minDate + ratio * (maxDate - minDate);
+
+    const date = new Date(timestamp);
+
+    const label =
+      ASSET_HISTORY_VIEW.period === "1Y"
+        ? date.toLocaleDateString("en-US", {
+            month: "short",
+            year: "2-digit",
+            timeZone: "UTC"
+          })
+        : String(date.getUTCFullYear());
+
+    const xx =
+      pad.left + ratio * plotW;
+
+    ctx.fillText(
+      label,
+      xx,
+      height - pad.bottom + 12
+    );
+
+  }
+
+  /*
+    HISTORICAL SERIES
+  */
+
+  series.forEach(s => {
+
+    const highlighted =
+      ASSET_HISTORY_VIEW.highlighted;
+
+    const muted =
+      highlighted && highlighted !== s.ticker;
+
+    ctx.beginPath();
+
+    s.points.forEach((p, i) => {
+
+      const xx = x(p.date);
+      const yy = y(p.value);
+
+      if(i === 0){
+        ctx.moveTo(xx, yy);
+      }else{
+        ctx.lineTo(xx, yy);
+      }
+
+    });
+
+    ctx.strokeStyle = s.color;
+    ctx.lineWidth = muted ? 1.2 : 2.3;
+    ctx.globalAlpha = muted ? .18 : 1;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+  });
+
+}
+
+
+/* =====================================================
+   RENDER PERFORMANCE RESULTS
+===================================================== */
+
+function renderAssetHistoryResults(series){
+
+  const container =
+    document.getElementById("assetHistoryResults");
+
+  if(!container) return;
+
+  if(!series.length){
+
+    container.innerHTML =
+      '<div style="padding:20px;color:#64748b;font-size:12px;">No historical data available.</div>';
+
+    return;
+
+  }
+
+  const formatReturn = value => {
+
+    if(!Number.isFinite(value)) return "—";
+
+    const pct = value * 100;
+
+    return (
+      (pct > 0 ? "+" : "") +
+      pct.toFixed(1) +
+      "%"
+    );
+
+  };
+
+  container.innerHTML = series.map(s => {
+
+    const muted =
+      ASSET_HISTORY_VIEW.highlighted &&
+      ASSET_HISTORY_VIEW.highlighted !== s.ticker;
+
+    const highlighted =
+      ASSET_HISTORY_VIEW.highlighted === s.ticker;
+
+    return `
+      <div
+        class="asset-history-result-row
+          ${muted ? "is-muted" : ""}
+          ${highlighted ? "is-highlighted" : ""}"
+        data-history-highlight="${esc(s.ticker)}"
+        style="cursor:pointer"
+      >
+
+        <div class="asset-history-result-instrument">
+
+          <span
+            class="asset-history-color"
+            style="background:${s.color}"
+          ></span>
+
+          <div class="asset-history-result-identity">
+
+            <div class="asset-history-result-ticker">
+              ${esc(s.ticker)}
+            </div>
+
+            <div class="asset-history-result-name">
+              ${esc(s.name)}
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="asset-history-result-total">
+          ${formatReturn(s.totalReturn)}
+        </div>
+
+        <div class="asset-history-result-annual">
+          ${formatReturn(s.annualReturn)}
+        </div>
+
+      </div>
+    `;
+
+  }).join("");
+
+}
+
+
+/* =====================================================
+   MAIN RENDER
+===================================================== */
+
+function renderAssetHistory(){
+
+  if(!INSTRUMENT_HISTORY_STATE.loaded){
+    return;
+  }
+
+  const series =
+    prepareAssetHistorySeries();
+
+  drawAssetHistoryChart(series);
+  renderAssetHistoryResults(series);
+
+  const label =
+    document.getElementById("assetHistoryPeriodLabel");
+
+  if(label && series.length){
+
+    const first = series.reduce(
+      (min, s) => s.firstDate < min ? s.firstDate : min,
+      series[0].firstDate
+    );
+
+    const last = series.reduce(
+      (max, s) => s.lastDate > max ? s.lastDate : max,
+      series[0].lastDate
+    );
+
+    label.textContent =
+      `${first} – ${last}  |  Base = 100`;
+
+  }
+
+}
+
+
+/* =====================================================
+   INITIALIZE VIEWER
+===================================================== */
+
+async function initAssetHistoryViewer(){
+
+  if(!ASSET_HISTORY_VIEW.initialized){
+
+    ASSET_HISTORY_VIEW.initialized = true;
+
+    document.addEventListener("click", e => {
+
+      const periodButton =
+        e.target.closest("[data-history-period]");
+
+      if(periodButton){
+
+        ASSET_HISTORY_VIEW.period =
+          periodButton.dataset.historyPeriod;
+
+        document.querySelectorAll(
+          "[data-history-period]"
+        ).forEach(btn => {
+
+          btn.classList.toggle(
+            "active",
+            btn === periodButton
+          );
+
+        });
+
+        renderAssetHistory();
+        return;
+
+      }
+
+      const row =
+        e.target.closest("[data-history-highlight]");
+
+      if(row){
+
+        const ticker =
+          row.dataset.historyHighlight;
+
+        ASSET_HISTORY_VIEW.highlighted =
+          ASSET_HISTORY_VIEW.highlighted === ticker
+            ? null
+            : ticker;
+
+        renderAssetHistory();
+        return;
+
+      }
+
+    });
+
+    const chart =
+      document.getElementById("assetHistoryChart");
+
+    if(chart && "ResizeObserver" in window){
+
+      ASSET_HISTORY_VIEW.resizeObserver =
+        new ResizeObserver(() => {
+          renderAssetHistory();
+        });
+
+      ASSET_HISTORY_VIEW.resizeObserver.observe(chart);
+
+    }
+
+  }
+
+  await loadInstrumentHistory();
+
+  renderAssetHistory();
+
+}
+
 
 function renderMyWealth() {
     const { source, ids, selectedIndex } = APP.myWealth;
