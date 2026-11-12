@@ -2372,7 +2372,12 @@ const INSTRUMENT_HISTORY_STATE = {
 
 };
 
-
+const PLAN_HISTORY_VIEW = {
+  initialized: false,
+  period: "MAX",
+  highlighted: null,
+  resizeObserver: null
+};
 
 const DEMO_ASSETS = [
     {
@@ -5558,6 +5563,14 @@ function renderAssetHistoryResults(series){
 /* =====================================================
    MAIN RENDER
 ===================================================== */
+function renderAssetHistory(){
+
+  if(!INSTRUMENT_HISTORY_STATE.loaded){
+    return;
+  }
+
+  const series =
+    prepareAssetHistorySeries();
 
 function renderAssetHistory(){
 
