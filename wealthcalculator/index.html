@@ -1451,6 +1451,495 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   color:#4E79BD;
   border:1px solid #dbe5f2;
 }
+
+
+/* =====================================================
+   MYWEALTH · SECTION 1
+   WEALTH INPUTS + WEALTH RACE
+===================================================== */
+
+#page-mywealth{
+  --mw-blue:#4E79BD;
+  --mw-navy:#173B70;
+  --mw-muted:#64748b;
+  --mw-border:#dbe5f2;
+  --mw-soft:#f3f7fc;
+}
+
+
+/* =====================================================
+   01 · COMMON CONTAINERS
+===================================================== */
+
+#page-mywealth #mywealth-inputs,
+#page-mywealth #mywealth-engine{
+  background:#ffffff;
+  color:var(--mw-navy);
+
+  border:1px solid var(--mw-border);
+  border-radius:0;
+
+  padding:22px 24px;
+  box-shadow:none;
+}
+
+#page-mywealth #mywealth-inputs{
+  margin-bottom:16px;
+}
+
+#page-mywealth .section-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:20px;
+}
+
+#page-mywealth .section-kicker{
+  color:var(--mw-blue);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+#page-mywealth .section-heading h2{
+  margin:4px 0 0;
+  color:var(--mw-navy);
+  font-size:20px;
+  font-weight:750;
+  line-height:1.2;
+}
+
+
+/* =====================================================
+   02 · STARTING WEALTH + MONTHLY SAVINGS
+===================================================== */
+
+#page-mywealth .mywealth-input-row{
+  margin-bottom:20px;
+}
+
+#page-mywealth .mywealth-input-row:last-child{
+  margin-bottom:0;
+}
+
+#page-mywealth .mywealth-input-header,
+#page-mywealth .mywealth-horizon-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+#page-mywealth .mywealth-input-header label{
+  color:var(--mw-navy);
+  font-size:13px;
+  font-weight:600;
+}
+
+#page-mywealth .mywealth-input-header strong{
+  color:var(--mw-blue);
+  font-size:18px;
+  font-weight:750;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+
+/* =====================================================
+   03 · RANGE SLIDERS
+===================================================== */
+
+#page-mywealth input[type="range"]{
+  display:block;
+  width:100%;
+  height:6px;
+
+  margin:0;
+  padding:0;
+
+  border:0;
+  border-radius:0;
+
+  background:#dce6f2;
+
+  appearance:none;
+  -webkit-appearance:none;
+
+  cursor:pointer;
+  touch-action:pan-y;
+}
+
+#page-mywealth input[type="range"]::-webkit-slider-thumb{
+  appearance:none;
+  -webkit-appearance:none;
+
+  width:19px;
+  height:19px;
+
+  background:var(--mw-blue);
+  border:3px solid #ffffff;
+  border-radius:50%;
+
+  box-shadow:0 0 0 1px var(--mw-blue);
+  cursor:grab;
+}
+
+#page-mywealth input[type="range"]::-moz-range-thumb{
+  width:14px;
+  height:14px;
+
+  background:var(--mw-blue);
+  border:3px solid #ffffff;
+  border-radius:50%;
+
+  box-shadow:0 0 0 1px var(--mw-blue);
+  cursor:grab;
+}
+
+#page-mywealth input[type="range"]:active::-webkit-slider-thumb{
+  cursor:grabbing;
+}
+
+#page-mywealth .mywealth-range-labels{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  margin-top:10px;
+
+  color:var(--mw-muted);
+  font-size:10px;
+  font-weight:500;
+}
+
+
+/* =====================================================
+   04 · MODE PILL
+===================================================== */
+
+#page-mywealth .mywealth-mode-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  flex:0 0 auto;
+
+  padding:7px 11px;
+
+  background:var(--mw-blue);
+  color:#ffffff;
+
+  border:0;
+  border-radius:0;
+
+  font-size:10px;
+  font-weight:750;
+  letter-spacing:.06em;
+  white-space:nowrap;
+}
+
+
+/* =====================================================
+   05 · HORIZON CONTROL
+===================================================== */
+
+#page-mywealth .mywealth-horizon{
+  padding:16px 18px;
+  margin-bottom:20px;
+
+  background:var(--mw-soft);
+  border:1px solid var(--mw-border);
+  border-radius:0;
+}
+
+#page-mywealth .mywealth-horizon-header{
+  margin-bottom:15px;
+}
+
+#page-mywealth .mywealth-horizon-header span{
+  color:var(--mw-navy);
+  font-size:13px;
+  font-weight:650;
+}
+
+#page-mywealth .mywealth-horizon-header strong{
+  color:var(--mw-blue);
+  font-size:23px;
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+/* Larger engagement slider */
+
+#page-mywealth #mywealth-horizon-slider{
+  height:8px;
+  background:#d5e2f1;
+}
+
+#page-mywealth #mywealth-horizon-slider::-webkit-slider-thumb{
+  width:25px;
+  height:25px;
+  background:var(--mw-blue);
+  border:4px solid #ffffff;
+}
+
+#page-mywealth #mywealth-horizon-slider::-moz-range-thumb{
+  width:17px;
+  height:17px;
+  background:var(--mw-blue);
+  border:4px solid #ffffff;
+}
+
+
+/* =====================================================
+   06 · WEALTH / COSTS TOGGLE
+===================================================== */
+
+#page-mywealth .mywealth-view-toggle{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+
+  width:100%;
+  margin-bottom:22px;
+
+  border:1px solid var(--mw-border);
+  border-radius:0;
+  overflow:hidden;
+}
+
+#page-mywealth .mywealth-view-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  min-height:42px;
+  padding:10px 12px;
+
+  background:#ffffff;
+  color:var(--mw-navy);
+
+  border:0;
+  border-radius:0;
+
+  font:inherit;
+  font-size:11px;
+  font-weight:750;
+  letter-spacing:.04em;
+
+  cursor:pointer;
+  transition:background .18s ease,color .18s ease;
+}
+
+#page-mywealth .mywealth-view-btn + .mywealth-view-btn{
+  border-left:1px solid var(--mw-border);
+}
+
+#page-mywealth .mywealth-view-btn.active{
+  background:var(--mw-blue);
+  color:#ffffff;
+}
+
+#page-mywealth .mywealth-view-btn:disabled{
+  background:#e5e7eb;
+  color:#9ca3af;
+
+  opacity:1;
+  cursor:not-allowed;
+}
+
+#page-mywealth .mywealth-view-btn:focus-visible{
+  outline:2px solid var(--mw-navy);
+  outline-offset:-3px;
+}
+
+
+/* =====================================================
+   07 · WAITING STATE
+===================================================== */
+
+#page-mywealth .mywealth-waiting{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  min-height:190px;
+  padding:34px 16px;
+
+  text-align:center;
+  color:var(--mw-navy);
+}
+
+#page-mywealth .mywealth-waiting-symbol{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  width:48px;
+  height:48px;
+  margin:0 0 18px;
+
+  border:1px dashed var(--mw-blue);
+  border-radius:0;
+
+  color:var(--mw-blue);
+  font-size:27px;
+  font-weight:300;
+}
+
+#page-mywealth .mywealth-waiting h3{
+  margin:0 0 8px;
+
+  color:var(--mw-navy);
+  font-size:17px;
+  font-weight:700;
+}
+
+#page-mywealth .mywealth-waiting p{
+  max-width:320px;
+  margin:0;
+
+  color:var(--mw-muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+
+/* =====================================================
+   08 · RECEIVED STATE / HISTOGRAM
+===================================================== */
+
+#page-mywealth .mywealth-received{
+  padding:0;
+}
+
+#page-mywealth .mywealth-race-section{
+  width:100%;
+  min-width:0;
+}
+
+#page-mywealth .mywealth-chart-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+#page-mywealth .mywealth-chart-heading h3{
+  margin:0;
+
+  color:var(--mw-navy);
+  font-size:16px;
+  font-weight:700;
+}
+
+#page-mywealth #mywealth-chart-caption{
+  color:var(--mw-muted);
+  font-size:11px;
+}
+
+#page-mywealth .mywealth-race{
+  position:relative;
+
+  width:100%;
+  height:310px;
+  min-width:0;
+
+  background:#ffffff;
+  border:1px solid var(--mw-border);
+  border-radius:0;
+
+  overflow:hidden;
+}
+
+#page-mywealth #mywealth-race-canvas{
+  display:block;
+
+  width:100%;
+  height:100%;
+
+  touch-action:pan-y;
+}
+
+
+/* =====================================================
+   09 · NATIVE HIDDEN STATE
+===================================================== */
+
+#page-mywealth #mywealth-waiting[hidden],
+#page-mywealth #mywealth-received[hidden],
+#page-mywealth #mywealth-race-section[hidden],
+#page-mywealth #mywealth-basket[hidden]{
+  display:none !important;
+}
+
+
+/* =====================================================
+   10 · MOBILE
+===================================================== */
+
+@media(max-width:600px){
+
+  #page-mywealth #mywealth-inputs,
+  #page-mywealth #mywealth-engine{
+    padding:17px 15px;
+  }
+
+  #page-mywealth .section-heading{
+    margin-bottom:17px;
+  }
+
+  #page-mywealth .section-heading h2{
+    font-size:18px;
+  }
+
+  #page-mywealth .mywealth-input-header strong{
+    font-size:17px;
+  }
+
+  #page-mywealth .mywealth-horizon{
+    padding:14px 12px;
+  }
+
+  #page-mywealth .mywealth-horizon-header strong{
+    font-size:21px;
+  }
+
+  #page-mywealth .mywealth-view-btn{
+    min-height:44px;
+    padding:10px 6px;
+    font-size:10px;
+  }
+
+  #page-mywealth .mywealth-race{
+    height:260px;
+  }
+
+  #page-mywealth .mywealth-waiting{
+    min-height:175px;
+    padding:30px 12px;
+  }
+
+}
+
+@media(prefers-reduced-motion:reduce){
+
+  #page-mywealth .mywealth-view-btn{
+    transition:none;
+  }
+
+}
+
+
+
 </style>
 </head>
 <body>
@@ -2101,6 +2590,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 </section>
 <!-- END PAGE 03 · PORTFOLIOS -->
 
+
+
 <!-- =====================================================
      04 · MYWEALTH
 ===================================================== -->
@@ -2115,19 +2606,112 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
 
   <!-- ================================================
-       MYWEALTH ENGINE
+       01 · WEALTH INPUTS
   ================================================= -->
 
-  <div class="section panel panel-pad">
+  <div
+    id="mywealth-inputs"
+    class="section panel panel-pad mywealth-inputs"
+  >
+
+    <div class="section-heading">
+      <div>
+        <div class="section-kicker">
+          YOUR INVESTMENT
+        </div>
+
+        <h2>Starting point</h2>
+      </div>
+    </div>
+
+
+    <!-- STARTING WEALTH -->
+
+    <div class="mywealth-input-row">
+
+      <div class="mywealth-input-header">
+
+        <label for="mywealth-w0">
+          Starting wealth
+        </label>
+
+        <strong id="mywealth-w0-value">
+          100,000
+        </strong>
+
+      </div>
+
+      <input
+        id="mywealth-w0"
+        type="range"
+        min="0"
+        max="500000"
+        step="10000"
+        value="100000"
+      />
+
+      <div class="mywealth-range-labels">
+        <span>0</span>
+        <span>500,000</span>
+      </div>
+
+    </div>
+
+
+    <!-- MONTHLY SAVINGS -->
+
+    <div class="mywealth-input-row">
+
+      <div class="mywealth-input-header">
+
+        <label for="mywealth-savings">
+          Monthly savings
+        </label>
+
+        <strong id="mywealth-savings-value">
+          1,000
+        </strong>
+
+      </div>
+
+      <input
+        id="mywealth-savings"
+        type="range"
+        min="0"
+        max="10000"
+        step="250"
+        value="1000"
+      />
+
+      <div class="mywealth-range-labels">
+        <span>0</span>
+        <span>10,000</span>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================================
+       02 · MYWEALTH ENGINE
+  ================================================= -->
+
+  <div
+    id="mywealth-engine"
+    class="section panel panel-pad mywealth-engine"
+  >
 
     <div class="section-heading">
 
       <div>
+
         <div class="section-kicker">
           NEPTOON · WEALTH ENGINE
         </div>
 
         <h2>MyWealth</h2>
+
       </div>
 
       <span
@@ -2140,7 +2724,76 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
 
 
-    <!-- WAITING STATE -->
+    <!-- ==============================================
+         HORIZON CONTROL
+    ============================================== -->
+
+    <div class="mywealth-horizon">
+
+      <div class="mywealth-horizon-header">
+
+        <span>Time horizon</span>
+
+        <strong id="mywealth-horizon-value">
+          10 YEARS
+        </strong>
+
+      </div>
+
+      <input
+        id="mywealth-horizon-slider"
+        type="range"
+        min="1"
+        max="30"
+        step="1"
+        value="10"
+      />
+
+      <div class="mywealth-range-labels">
+        <span>1Y</span>
+        <span>30Y</span>
+      </div>
+
+    </div>
+
+
+    <!-- ==============================================
+         WEALTH / COSTS TOGGLE
+    ============================================== -->
+
+    <div
+      id="mywealth-view-toggle"
+      class="mywealth-view-toggle"
+      role="group"
+      aria-label="Wealth comparison view"
+    >
+
+      <button
+        id="mywealth-view-wealth"
+        type="button"
+        class="mywealth-view-btn active"
+        aria-pressed="true"
+      >
+        EXPECTED WEALTH
+      </button>
+
+      <button
+        id="mywealth-view-costs"
+        type="button"
+        class="mywealth-view-btn"
+        aria-pressed="false"
+        disabled
+        title="Available for WealthPlans"
+      >
+        COST IMPACT
+      </button>
+
+    </div>
+
+
+    <!-- ==============================================
+         WAITING STATE
+    ============================================== -->
 
     <div
       id="mywealth-waiting"
@@ -2161,7 +2814,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
 
 
-    <!-- RECEIVED STATE -->
+    <!-- ==============================================
+         RECEIVED STATE · HISTOGRAM
+    ============================================== -->
 
     <div
       id="mywealth-received"
@@ -2170,40 +2825,57 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     >
 
       <div
+        id="mywealth-race-section"
+        class="mywealth-race-section"
+      >
+
+        <div class="mywealth-chart-heading">
+
+          <h3 id="mywealth-chart-title">
+            Expected wealth
+          </h3>
+
+          <span id="mywealth-chart-caption">
+            10-year projection
+          </span>
+
+        </div>
+
+        <div
+          id="mywealth-race"
+          class="mywealth-race"
+        >
+
+          <canvas
+            id="mywealth-race-canvas"
+            aria-label="Expected future wealth comparison"
+            role="img"
+          ></canvas>
+
+        </div>
+
+      </div>
+
+
+      <!-- Reserved for later investment selection -->
+
+      <div
         id="mywealth-basket"
         class="basket"
+        hidden
       ></div>
 
     </div>
 
   </div>
 
-
-  <!-- ================================================
-       WEALTH RACE · FUTURE IMPLEMENTATION
-  ================================================= -->
-
-  <div
-    id="mywealth-race-section"
-    class="section panel panel-pad"
-    hidden
-  >
-
-    <div class="section-heading">
-
-      <h2>The Wealth Race</h2>
-
-    </div>
-
-    <div id="mywealth-race"></div>
-
-  </div>
-
 </section>
 
-  <!-- ================================================
-       VIEW HISTORY
-  ================================================= -->
+
+<!-- ================================================
+     VIEW HISTORY · KEEP EXISTING BUTTON SEPARATELY
+================================================ -->
+
 
   <div class="section btnrow">
 
@@ -2360,6 +3032,16 @@ const HERO = {
 /* =====================================================
    WEALTHPLANS · INVESTMENT PREFERENCES
 ===================================================== */
+
+
+const MYWEALTH_VIEW = {
+  w0:100000,
+  monthlySavings:1000,
+  horizon:10,
+  metric:"wealth",
+  initialized:false,
+  resizeObserver:null
+};
 
 
 
@@ -2810,6 +3492,329 @@ async function loadInstrumentHistory(){
 /* =====================================================
    GET INSTRUMENT HISTORY BY TICKER
 ===================================================== */
+
+
+/* =====================================================
+   MYWEALTH · CONTROLS
+===================================================== */
+
+function initMyWealthControls(){
+
+  if(MYWEALTH_VIEW.initialized) return;
+
+  const w0 =
+    document.getElementById("mywealth-w0");
+
+  const savings =
+    document.getElementById("mywealth-savings");
+
+  const horizon =
+    document.getElementById("mywealth-horizon-slider");
+
+  const wealthBtn =
+    document.getElementById("mywealth-view-wealth");
+
+  const costsBtn =
+    document.getElementById("mywealth-view-costs");
+
+  if(
+    !w0 ||
+    !savings ||
+    !horizon ||
+    !wealthBtn ||
+    !costsBtn
+  ){
+    return;
+  }
+
+  MYWEALTH_VIEW.initialized = true;
+
+  w0.addEventListener("input", () => {
+
+    MYWEALTH_VIEW.w0 = Number(w0.value);
+
+    updateMyWealthControls();
+    drawMyWealthRace();
+
+  });
+
+  savings.addEventListener("input", () => {
+
+    MYWEALTH_VIEW.monthlySavings =
+      Number(savings.value);
+
+    updateMyWealthControls();
+    drawMyWealthRace();
+
+  });
+
+  horizon.addEventListener("input", () => {
+
+    MYWEALTH_VIEW.horizon =
+      Number(horizon.value);
+
+    updateMyWealthControls();
+    drawMyWealthRace();
+
+  });
+
+  wealthBtn.addEventListener("click", () => {
+
+    MYWEALTH_VIEW.metric = "wealth";
+
+    updateMyWealthControls();
+    drawMyWealthRace();
+
+  });
+
+  costsBtn.addEventListener("click", () => {
+
+    if(myWealthMode !== "portfolios") return;
+
+    MYWEALTH_VIEW.metric = "costs";
+
+    updateMyWealthControls();
+    drawMyWealthRace();
+
+  });
+
+  const canvas =
+    document.getElementById("mywealth-race-canvas");
+
+  if(canvas && typeof ResizeObserver !== "undefined"){
+
+    MYWEALTH_VIEW.resizeObserver =
+      new ResizeObserver(() => {
+        drawMyWealthRace();
+      });
+
+    MYWEALTH_VIEW.resizeObserver.observe(
+      canvas.parentElement
+    );
+
+  }
+
+  updateMyWealthControls();
+
+}
+
+
+/* =====================================================
+   MYWEALTH · CONTROL DISPLAY
+===================================================== */
+
+function updateMyWealthControls(){
+
+  const fmt = value =>
+    Math.round(value).toLocaleString(
+      APP.lang === "da" ? "da-DK" : "en-US"
+    );
+
+  const w0Value =
+    document.getElementById("mywealth-w0-value");
+
+  const savingsValue =
+    document.getElementById("mywealth-savings-value");
+
+  const horizonValue =
+    document.getElementById("mywealth-horizon-value");
+
+  const wealthBtn =
+    document.getElementById("mywealth-view-wealth");
+
+  const costsBtn =
+    document.getElementById("mywealth-view-costs");
+
+  if(w0Value){
+    w0Value.textContent = fmt(MYWEALTH_VIEW.w0);
+  }
+
+  if(savingsValue){
+    savingsValue.textContent =
+      fmt(MYWEALTH_VIEW.monthlySavings);
+  }
+
+  if(horizonValue){
+    horizonValue.textContent =
+      `${MYWEALTH_VIEW.horizon} YEARS`;
+  }
+
+  const costsEnabled =
+    myWealthMode === "portfolios";
+
+  if(!costsEnabled){
+    MYWEALTH_VIEW.metric = "wealth";
+  }
+
+  if(wealthBtn){
+    wealthBtn.classList.toggle(
+      "active",
+      MYWEALTH_VIEW.metric === "wealth"
+    );
+
+    wealthBtn.setAttribute(
+      "aria-pressed",
+      String(MYWEALTH_VIEW.metric === "wealth")
+    );
+  }
+
+  if(costsBtn){
+
+    costsBtn.disabled = !costsEnabled;
+
+    costsBtn.classList.toggle(
+      "active",
+      MYWEALTH_VIEW.metric === "costs"
+    );
+
+    costsBtn.setAttribute(
+      "aria-pressed",
+      String(MYWEALTH_VIEW.metric === "costs")
+    );
+
+  }
+
+  const chartTitle =
+    document.getElementById("mywealth-chart-title");
+
+  if(chartTitle){
+    chartTitle.textContent =
+      MYWEALTH_VIEW.metric === "costs"
+        ? "Cost impact"
+        : "Expected wealth";
+  }
+
+  const caption =
+    document.getElementById("mywealth-chart-caption");
+
+  if(caption){
+    caption.textContent =
+      `${MYWEALTH_VIEW.horizon}-year projection`;
+  }
+
+}
+
+
+/* =====================================================
+   MYWEALTH · LIVE INVESTMENTS
+===================================================== */
+
+function getMyWealthInvestments(){
+
+  const { source, ids } = APP.myWealth;
+
+  if(!myWealthMode || !Array.isArray(ids)){
+    return [];
+  }
+
+  if(source === "portfolios"){
+
+    return ids.map(id => {
+
+      const p = (PORTFOLIO_STATE.all || [])
+        .find(x => Number(x.modelNo) === Number(id));
+
+      if(!p) return null;
+
+      return {
+        id,
+        name:p.modelLabel,
+        expRetNet:Number(p.objKeyFigures?.expRetNet),
+        expRetGross:Number(p.objKeyFigures?.expRetGross)
+      };
+
+    }).filter(Boolean);
+
+  }
+
+  if(source === "assets"){
+
+    return ids.map(id => {
+
+      const p = (INSTRUMENT_STATE.all || [])
+        .find(x => x.tickerExchange === id);
+
+      if(!p) return null;
+
+      return {
+        id,
+        name:p.name || p.instrumentName || id,
+
+        // Confirm actual instrument return field.
+        expRetNet:Number(p.expRetNet),
+
+        expRetGross:null
+      };
+
+    }).filter(Boolean);
+
+  }
+
+  return [];
+
+}
+
+
+/* =====================================================
+   MYWEALTH · FUTURE VALUE
+===================================================== */
+
+function myWealthFV(w0, monthlySavings, annualReturn, years){
+
+  if(!Number.isFinite(annualReturn) || annualReturn <= -1){
+    return NaN;
+  }
+
+  const months = Math.round(years * 12);
+
+  const monthlyReturn =
+    Math.pow(1 + annualReturn, 1 / 12) - 1;
+
+  const growth =
+    Math.pow(1 + monthlyReturn, months);
+
+  const savingsFV =
+    Math.abs(monthlyReturn) < 1e-12
+      ? monthlySavings * months
+      : monthlySavings *
+        (growth - 1) /
+        monthlyReturn;
+
+  return w0 * growth + savingsFV;
+
+}
+
+function calculateMyWealthRace(){
+
+  return getMyWealthInvestments().map(p => {
+
+    const net = myWealthFV(
+      MYWEALTH_VIEW.w0,
+      MYWEALTH_VIEW.monthlySavings,
+      p.expRetNet,
+      MYWEALTH_VIEW.horizon
+    );
+
+    const gross = myWealthFV(
+      MYWEALTH_VIEW.w0,
+      MYWEALTH_VIEW.monthlySavings,
+      p.expRetGross,
+      MYWEALTH_VIEW.horizon
+    );
+
+    return {
+      ...p,
+      net,
+      gross,
+      costImpact:Number.isFinite(gross) && Number.isFinite(net)
+        ? Math.max(0, gross - net)
+        : NaN
+    };
+
+  });
+
+}
+
 
 function getInstrumentHistory(tickerExchange){
 
@@ -3572,7 +4577,19 @@ function sendToMyWealth(source){
   APP.myWealth.ids = ids.slice(0, 5);
   APP.myWealth.selectedIndex = 0;
 
-  openTab("mywealth");
+
+MYWEALTH_VIEW.horizon = 10;
+MYWEALTH_VIEW.metric = "wealth";
+
+updateMyWealthControls();
+
+openTab("mywealth");
+
+requestAnimationFrame(() => {
+  drawMyWealthRace();
+});
+
+
 }
 
 function renderPortfolios(){
