@@ -4834,6 +4834,8 @@ function drawMyWealthRace(){
    11 · WEALTH PLAN BASKET
 ===================================================== */
 
+
+
 function sendToMyWealth(source){
 
   if(!["assets", "portfolios"].includes(source)){
@@ -4847,7 +4849,9 @@ function sendToMyWealth(source){
           .map(s => s.modelNo)
           .filter(id => id !== "" && id != null);
 
-  if(!ids.length) return;
+  if(!ids.length){
+    return;
+  }
 
   myWealthMode =
     source === "assets"
@@ -4858,20 +4862,18 @@ function sendToMyWealth(source){
   APP.myWealth.ids = ids.slice(0, 5);
   APP.myWealth.selectedIndex = 0;
 
+  // Reset MyWealth to initial state
+  MYWEALTH_VIEW.horizon = 0;
+  MYWEALTH_VIEW.metric = "wealth";
 
-MYWEALTH_VIEW.horizon = 0;
-MYWEALTH_VIEW.metric = "wealth";
+  // Navigate to MyWealth
+  openTab("mywealth");
 
-updateMyWealthControls();
-
-openTab("mywealth");
-
-requestAnimationFrame(() => {
-  drawMyWealthRace();
-});
-
+  // Synchronize controls, received state and chart
+  renderMyWealth();
 
 }
+
 
 function renderPortfolios(){
 
@@ -6415,15 +6417,6 @@ function currentSelection(){
    14 · SEND TO MYWEALTH
 ===================================================== */
 
-function sendToMyWealth(source) {
-    const ids = source === 'assets' ? [...APP.assets] : APP.planSlots.map(s => s.modelNo).filter(Boolean);
-    if (!ids.length)
-        return;
-    APP.myWealth.source = source;
-    APP.myWealth.ids = ids;
-    APP.myWealth.selectedIndex = 0;
-    openTab('mywealth');
-}
 
 /* =====================================================
    15 · MYWEALTH DISPLAY
