@@ -2645,7 +2645,50 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   }
 
 }
+#page-mywealth .mywealth-history-nav-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:5px;
+}
 
+#page-mywealth .mywealth-history-nav-card{
+  min-width:0;
+  padding:9px 5px;
+  text-align:center;
+  border:1px solid #dce5ef;
+  border-radius:0;
+  background:#fff;
+}
+
+#page-mywealth .mywealth-history-nav-card span{
+  display:block;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.025em;
+  color:#718096;
+  white-space:nowrap;
+}
+
+#page-mywealth .mywealth-history-nav-card strong{
+  display:block;
+  margin-top:5px;
+  font-size:clamp(11px,1.8vw,18px);
+  font-weight:800;
+  color:#081735;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+@media(max-width:500px){
+  #page-mywealth .mywealth-history-nav-card{
+    padding:8px 2px;
+  }
+
+  #page-mywealth .mywealth-history-nav-card span{
+    font-size:8px;
+    letter-spacing:0;
+  }
+}
 </style>
 </head>
 <body>
@@ -3683,40 +3726,34 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
        NAV INDICATORS
   ============================================================ -->
 
-  <div class="mywealth-history-nav-grid">
+<div class="mywealth-history-nav-grid">
 
-    <div class="mywealth-history-nav-card">
-
-      <div class="mywealth-history-nav-label">
-        <span class="mywealth-history-dot investment"></span>
-
-        <span id="mywealth-history-investment-label">
-          Selected investment
-        </span>
-      </div>
-
-      <strong id="mywealth-history-investment-nav">
-        NAV 100
-      </strong>
-
-    </div>
-
-
-    <div class="mywealth-history-nav-card">
-
-      <div class="mywealth-history-nav-label">
-        <span class="mywealth-history-dot benchmark"></span>
-
-        MSCI World ETF
-      </div>
-
-      <strong id="mywealth-history-benchmark-nav">
-        NAV 100
-      </strong>
-
-    </div>
-
+  <div class="mywealth-history-nav-card">
+    <span>NAV · A</span>
+    <strong id="mywealth-history-investment-nav">100</strong>
   </div>
+
+  <div class="mywealth-history-nav-card">
+    <span>NAV · B</span>
+    <strong id="mywealth-history-benchmark-nav">100</strong>
+  </div>
+
+  <div class="mywealth-history-nav-card">
+    <span>ACC. RET · A</span>
+    <strong id="mywealth-history-return-a">0%</strong>
+  </div>
+
+  <div class="mywealth-history-nav-card">
+    <span>ACC. RET · B</span>
+    <strong id="mywealth-history-return-b">0%</strong>
+  </div>
+
+  <div class="mywealth-history-nav-card">
+    <span>RELATIVE</span>
+    <strong id="mywealth-history-relative">0 pp</strong>
+  </div>
+
+</div>
 
 
   <!-- ============================================================
@@ -4590,34 +4627,99 @@ function drawMyWealthCinemaFrame(progress){
     return;
   }
 
+
   /* ============================================
-     FIXED LOGARITHMIC Y AXIS
+     FIXED LINEAR Y AXIS
+     SUPPORTS NAV BELOW AND ABOVE 100
   ============================================ */
 
   const dataMin = Math.min(100,...values);
   const dataMax = Math.max(100,...values);
 
-  const logMin = Math.floor(
-    Math.log10(dataMin)
+  /*
+    Include a small margin around the
+    observed NAV range.
+
+    Axis remains fixed throughout cinema.
+  */
+
+  const dataRange = Math.max(
+    dataMax - dataMin,
+    10
   );
 
-  let logMax = Math.ceil(
-    Math.log10(dataMax)
+  const margin = dataRange * 0.06;
+
+  const rawMin = Math.max(
+    0,
+    dataMin - margin
   );
 
-  if(logMax <= logMin){
-    logMax = logMin+1;
-  }
+  const rawMax =
+    dataMax + margin;
+
+
+  /* ============================================
+     NICE TICK INTERVALS
+  ============================================ */
+
+  const targetIntervals =
+    compact ? 4 : 5;
+
+  const rawStep =
+    (rawMax - rawMin) / targetIntervals;
+
+  const magnitude = Math.pow(
+    10,
+    Math.floor(Math.log10(rawStep))
+  );
+
+  const normalized =
+    rawStep / magnitude;
+
+  const niceMultiplier =
+    normalized <= 1 ? 1 :
+    normalized <= 2 ? 2 :
+    normalized <= 2.5 ? 2.5 :
+    normalized <= 5 ? 5 : 10;
+
+  const tickStep =
+    niceMultiplier * magnitude;
+
+
+  /* ============================================
+     AXIS BOUNDARIES
+  ============================================ */
+
+  const axisMin =
+    Math.max(
+      0,
+      Math.floor(rawMin / tickStep) * tickStep
+    );
+
+  const axisMax =
+    Math.ceil(rawMax / tickStep) * tickStep;
+
+  const axisRange =
+    Math.max(axisMax - axisMin,tickStep);
+
+
+  /* ============================================
+     COORDINATE FUNCTIONS
+  ============================================ */
 
   const X = index =>
     pad.left +
-    index/(series.length-1)*plotW;
+    index / (series.length - 1) * plotW;
 
   const Y = nav =>
     pad.top +
-    (
-      logMax-Math.log10(nav)
-    )/(logMax-logMin)*plotH;
+    (axisMax - nav) / axisRange * plotH;
+
+
+  /* ============================================
+     NUMBER FORMATTING
+  ============================================ */
 
   const locale =
     APP.lang === "da" ? "da-DK" : "en-US";
@@ -4625,33 +4727,82 @@ function drawMyWealthCinemaFrame(progress){
   const formatNAV = value =>
     Math.round(value).toLocaleString(locale);
 
+
   /* ============================================
-     GRID AND Y AXIS
+     LINEAR GRID AND Y AXIS
   ============================================ */
 
   ctx.font = "11px Arial";
   ctx.textBaseline = "middle";
 
-  for(let power=logMin;power<=logMax;power++){
+  const tickCount = Math.round(
+    (axisMax - axisMin) / tickStep
+  );
 
-    const value = Math.pow(10,power);
+  for(let i = 0; i <= tickCount; i++){
+
+    const value =
+      axisMin + i * tickStep;
+
     const y = Y(value);
+
+    /* Horizontal gridline */
 
     ctx.beginPath();
     ctx.moveTo(pad.left,y);
     ctx.lineTo(W-pad.right,y);
 
-    ctx.strokeStyle = "#e2eaf4";
+    ctx.strokeStyle = "#E5ECF4";
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    ctx.fillStyle = "#64748b";
+
+    /* Y-axis label */
+
+    ctx.fillStyle = "#64748B";
     ctx.textAlign = "right";
 
     ctx.fillText(
       formatNAV(value),
-      pad.left-8,
+      pad.left - 8,
       y
+    );
+
+  }
+
+
+  /* ============================================
+     NAV 100 REFERENCE LINE
+  ============================================ */
+
+  if(
+    100 >= axisMin &&
+    100 <= axisMax
+  ){
+
+    const baseY = Y(100);
+
+    ctx.beginPath();
+    ctx.moveTo(pad.left,baseY);
+    ctx.lineTo(W-pad.right,baseY);
+
+    ctx.strokeStyle = "#4E79BD";
+    ctx.lineWidth = 1.5;
+
+    ctx.setLineDash([4,4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    /* Reference label */
+
+    ctx.fillStyle = "#4E79BD";
+    ctx.font = "bold 11px Arial";
+    ctx.textAlign = "right";
+
+    ctx.fillText(
+      "100",
+      pad.left - 8,
+      baseY
     );
 
   }
@@ -4659,6 +4810,7 @@ function drawMyWealthCinemaFrame(progress){
   /* ============================================
      TIME AXIS
   ============================================ */
+
 
   const firstDate = series[0].date;
   const lastDate = series.at(-1).date;
@@ -4810,29 +4962,65 @@ function drawMyWealthCinemaFrame(progress){
   /* ============================================
      UPDATE LIVE NAV CARDS
   ============================================ */
+const format = value =>
+  Math.round(value).toLocaleString(
+    APP.lang === "da" ? "da-DK" : "en-US"
+  );
 
-  const investmentEl =
-    document.getElementById(
-      "mywealth-history-investment-nav"
-    );
+const accA = investmentNAV - 100;
+const accB = benchmarkNAV - 100;
+const relative = accA - accB;
 
-  const benchmarkEl =
-    document.getElementById(
-      "mywealth-history-benchmark-nav"
-    );
+const signed = (value,unit) =>
+  `${value > 0 ? "+" : ""}${format(value)}${unit}`;
 
-  if(investmentEl){
-    investmentEl.textContent =
-      "NAV " + formatNAV(investmentNAV);
-  }
+const setMetric = (id,value) => {
+  const el = document.getElementById(id);
+  if(el) el.textContent = value;
+};
 
-  if(benchmarkEl){
-    benchmarkEl.textContent =
-      "NAV " + formatNAV(benchmarkNAV);
-  }
+setMetric(
+  "mywealth-history-investment-nav",
+  format(investmentNAV)
+);
+
+setMetric(
+  "mywealth-history-benchmark-nav",
+  format(benchmarkNAV)
+);
+
+setMetric(
+  "mywealth-history-return-a",
+  signed(accA,"%")
+);
+
+setMetric(
+  "mywealth-history-return-b",
+  signed(accB,"%")
+);
+
+setMetric(
+  "mywealth-history-relative",
+  signed(relative," pp")
+);
+
+/* RELATIVE PERFORMANCE COLOR */
+
+const relativeEl =
+  document.getElementById(
+    "mywealth-history-relative"
+  );
+
+if(relativeEl){
+
+  relativeEl.style.color =
+    relative > 0
+      ? "#4E79BD"   // Outperformance
+      : relative < 0
+        ? "#DC2626" // Underperformance
+        : "#081735"; // Neutral
 
 }
-
 
 /* =====================================================
    FINAL VERDICT
