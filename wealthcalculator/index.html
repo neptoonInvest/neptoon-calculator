@@ -4582,8 +4582,8 @@ function drawMyWealthRace(){
 
   if(!ctx) return;
 
-  const investments =
-    calculateMyWealthRace().slice(0,5);
+const investments =
+  getMyWealthBarScale().slice(0,5);
 
   if(!investments.length) return;
 
@@ -4748,8 +4748,10 @@ function drawMyWealthRace(){
     const safeValue =
       valid ? Math.max(0,value) : 0;
 
-    const barH =
-      safeValue / axisMax * plotH;
+const barH =
+  isCosts
+    ? safeValue / axisMax * plotH
+    : p.progress * plotH;
 
     const x =
       pad.left +
@@ -8814,6 +8816,90 @@ function calcWealthGBM({
 }
 
 
+/* =====================================================
+   MYWEALTH · 30Y TERMINAL EXPECTED WEALTH
+   Fixed horizon: 360 months
+===================================================== */
+
+function myWealthTerminal30Y(
+  W0,
+  savingsMonthly,
+  expRetNet
+){
+
+  return myWealthFV(
+    W0,
+    savingsMonthly,
+    expRetNet,
+    30
+  );
+
+}
+
+
+/* =====================================================
+   MYWEALTH · DYNAMIC BAR SCALE
+   Min = W0
+   Max = E(W360)
+===================================================== */
+
+function getMyWealthBarScale(){
+
+  const W0 = MYWEALTH_VIEW.w0;
+  const savings = MYWEALTH_VIEW.monthlySavings;
+
+  return calculateMyWealthRace().map(p => {
+
+    const terminal30Y = myWealthTerminal30Y(
+      W0,
+      savings,
+      p.expRetNet
+    );
+
+    const current = p.net;
+
+    const denominator = terminal30Y - W0;
+
+    const progress =
+      Number.isFinite(current) &&
+      Number.isFinite(terminal30Y) &&
+      denominator > 0
+        ? Math.max(
+            0,
+            Math.min(
+              1,
+              (current - W0) / denominator
+            )
+          )
+        : 0;
+
+    return {
+      ...p,
+      barMin:W0,
+      barMax:terminal30Y,
+      barValue:current,
+      progress
+    };
+
+  });
+
+}
+
+function getMyWealthTerminal30Y(){
+
+  return getMyWealthInvestments().map(p => ({
+
+    id:p.id,
+
+    terminal30Y:myWealthTerminal30Y(
+      MYWEALTH_VIEW.w0,
+      MYWEALTH_VIEW.monthlySavings,
+      p.expRetNet
+    )
+
+  }));
+
+}
 
 
 /* =====================================================
