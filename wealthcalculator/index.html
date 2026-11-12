@@ -7719,16 +7719,25 @@ function initPlanHistoryViewer(){
    MYWEALTH · WAITING / RECEIVED
 ===================================================== */
 
+
+/* =====================================================
+   MYWEALTH · MAIN RENDER
+===================================================== */
+
 function renderMyWealth(){
 
-  const { source, ids } = APP.myWealth;
-
-  const mode = myWealthMode;
+  const source = APP.myWealth.source;
+  const ids = APP.myWealth.ids || [];
 
   const waiting =
-    !mode ||
-    !Array.isArray(ids) ||
+    !["assets","portfolios"].includes(source) ||
     ids.length === 0;
+
+  myWealthMode = waiting
+    ? null
+    : source === "assets"
+      ? "stocks"
+      : "portfolios";
 
   const pill =
     document.getElementById("mywealth-mode-pill");
@@ -7739,23 +7748,13 @@ function renderMyWealth(){
   const receivedBox =
     document.getElementById("mywealth-received");
 
-  const basket =
-    document.getElementById("mywealth-basket");
-
-  const race =
+  const raceSection =
     document.getElementById("mywealth-race-section");
 
-
-  /* ==============================
-     WAITING / RECEIVED STATE
-  ============================== */
-
   if(pill){
-
     pill.textContent = waiting
       ? "WAITING"
-      : `${mode.toUpperCase()} · ${ids.length}`;
-
+      : `${myWealthMode.toUpperCase()} · ${ids.length}`;
   }
 
   if(waitingBox){
@@ -7766,84 +7765,19 @@ function renderMyWealth(){
     receivedBox.hidden = waiting;
   }
 
-  if(race){
-    race.hidden = waiting;
+  if(raceSection){
+    raceSection.hidden = waiting;
   }
 
-  if(!basket || waiting){
-    if(basket) basket.innerHTML = "";
-    return;
+  updateMyWealthControls();
+
+  if(!waiting){
+
+    requestAnimationFrame(() => {
+      drawMyWealthRace();
+    });
+
   }
-
-updateMyWealthControls();
-
-if(!waiting){
-  requestAnimationFrame(drawMyWealthRace);
-}
-
-
-  /* ==============================
-     RESOLVE LIVE INVESTMENTS
-  ============================== */
-
-  const isStocks =
-    source === "assets";
-
-  const records =
-    isStocks
-      ? (INSTRUMENT_STATE.all || [])
-      : (PORTFOLIO_STATE.all || []);
-
-
-  /* ==============================
-     RENDER RECEIVED BASKET
-  ============================== */
-
-  basket.innerHTML = ids.map((id, i) => {
-
-    const p = isStocks
-      ? records.find(
-          x => x.tickerExchange === id
-        )
-      : records.find(
-          x => Number(x.modelNo) === Number(id)
-        );
-
-    const name = isStocks
-      ? (p?.name || p?.instrumentName || id)
-      : (p?.modelLabel || `Model ${id}`);
-
-    const meta = isStocks
-      ? id
-      : (p?.issuerName || "");
-
-    return `
-      <div class="basket-row">
-
-        <div class="row-icon">
-          ${icon(
-            isStocks
-              ? "chart-no-axes-column-increasing"
-              : "layers"
-          )}
-        </div>
-
-        <div>
-          <div class="row-name">
-            ${esc(name)}
-          </div>
-
-          <div class="row-meta">
-            ${esc(meta)}
-          </div>
-        </div>
-
-      </div>
-    `;
-
-  }).join("");
-
-  icons();
 
 }
 
