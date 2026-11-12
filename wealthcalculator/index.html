@@ -1748,9 +1748,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
 
 
-  <!-- =====================================================
-       03 · PORTFOLIOS / WEALTH PLANS
-  ====================================================== -->
+
 <!-- =====================================================
      03 · PORTFOLIOS / WEALTH PLANS
 ===================================================== -->
@@ -1809,366 +1807,373 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
   </div>
 
-</section>
 
-  <!-- =====================================================
-       04 · MYWEALTH
-  ====================================================== -->
+  <!-- ================================================
+       WEALTHPLANS · HISTORICAL PERFORMANCE
+  ================================================= -->
 
-  <section
-    id="page-mywealth"
-    class="page"
-    aria-label="MyWealth"
+  <div
+    class="section asset-history-section"
+    id="planHistorySection"
   >
 
-    <div data-hero="mywealth"></div>
+    <div class="asset-history-header">
 
+      <div>
 
-    <!-- Investment assumptions -->
+        <div class="asset-history-kicker">
+          NEPTOON · WEALTH PLANS
+        </div>
 
-    <div class="section panel panel-pad">
-
-      <div class="section-heading">
-
-        <h2 data-i18n="yourAssumptions">
-          Your investment and savings
+        <h2>
+          Historical performance
         </h2>
 
-      </div>
-
-      <div class="field-grid">
-
-
-        <!-- Starting investment -->
-
-        <div class="field">
-
-          <label
-            for="startingInvestment"
-            data-i18n="startingInvestment"
-          >
-            Starting investment
-          </label>
-
-          <input
-            id="startingInvestment"
-            type="number"
-            min="0"
-            step="1000"
-            value="100000"
-            inputmode="decimal"
-          />
-
-        </div>
-
-
-        <!-- Monthly savings -->
-
-        <div class="field">
-
-          <label
-            for="monthlySavings"
-            data-i18n="monthlySavings"
-          >
-            Monthly savings
-          </label>
-
-          <input
-            id="monthlySavings"
-            type="number"
-            min="0"
-            step="100"
-            value="1000"
-            inputmode="decimal"
-          />
-
-        </div>
+        <p class="asset-history-subtitle">
+          Compare up to 5 Wealth Plans.
+          Total return index (rebased to 100).
+        </p>
 
       </div>
 
     </div>
 
 
+    <!-- ==============================================
+         PERIOD SELECTOR
+    =============================================== -->
 
-    <!-- Selected investments -->
+    <div class="asset-history-toolbar">
 
-    <div class="section">
+      <div
+        class="asset-history-periods"
+        id="planHistoryPeriods"
+      >
 
-      <div class="section-heading">
+        <button
+          type="button"
+          data-history-period="1Y"
+        >1Y</button>
 
-        <h2 data-i18n="selectedInvestments">
-          Selected investments
-        </h2>
+        <button
+          type="button"
+          data-history-period="3Y"
+        >3Y</button>
 
-        <span
-          id="mywealth-source"
-          class="hint"
-        ></span>
+        <button
+          type="button"
+          data-history-period="5Y"
+        >5Y</button>
+
+        <button
+          type="button"
+          data-history-period="10Y"
+        >10Y</button>
+
+        <button
+          type="button"
+          class="active"
+          data-history-period="MAX"
+        >MAX</button>
 
       </div>
 
       <div
-        class="basket"
-        id="mywealth-basket"
-      ></div>
+        class="asset-history-period-label"
+        id="planHistoryPeriodLabel"
+      >
+        Historical index · Base = 100
+      </div>
 
     </div>
 
 
+    <!-- ==============================================
+         CHART + PERFORMANCE TABLE
+    =============================================== -->
 
-    <!-- Forward projection -->
+    <div class="asset-history-layout">
 
-    <div class="section">
+      <!-- CHART -->
 
-      <div class="section-heading">
-
-        <h2 data-i18n="forwardOutlook">
-          Your forward outlook
-        </h2>
-
-        <span
-          class="hint"
-          id="active-caption"
-        ></span>
-
-      </div>
-
-
-      <div class="results-grid">
-
-
-        <!-- Forward metrics -->
+      <div class="asset-history-chart-panel">
 
         <div
-          class="metrics"
-          id="forward-metrics"
-        ></div>
-
-
-        <!-- Wealth canvas -->
-
-        <div class="canvas-box">
-
-          <div class="section-heading">
-
-            <h2 data-i18n="wealthOverTime">
-              Wealth over time
-            </h2>
-
-            <span
-              class="hint"
-              data-i18n="projection"
-            >
-              Projection
-            </span>
-
-          </div>
+          class="asset-history-chart"
+          id="planHistoryChart"
+        >
 
           <canvas
-            id="wealth-canvas"
-            aria-label="Forward wealth projection"
+            id="planHistoryCanvas"
           ></canvas>
 
-          <div
-            class="footnote"
-            data-i18n="enginePending"
-          >
-            Awaiting connection to the existing Neptoon calculator
-            engine. No financial forecast is shown.
-          </div>
+        </div>
 
+        <div
+          class="asset-history-chart-tooltip"
+          id="planHistoryTooltip"
+          hidden
+        ></div>
+
+      </div>
+
+
+      <!-- PERFORMANCE TABLE -->
+
+      <div class="asset-history-results">
+
+        <div class="asset-history-results-head">
+
+          <span>Wealth Plan</span>
+
+          <span>Total return</span>
+
+          <span>Ann. return</span>
+
+        </div>
+
+        <div
+          class="asset-history-results-body"
+          id="planHistoryResults"
+        ></div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==============================================
+         METHODOLOGY NOTE
+    =============================================== -->
+
+    <div class="asset-history-note">
+
+      <span class="asset-history-note-icon">
+        ⓘ
+      </span>
+
+      <span>
+        Historical total return index,
+        including reinvested distributions
+        where reflected in the source series.
+        Historical data may include
+        benchmark-substituted periods.
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+<!-- END PAGE 03 · PORTFOLIOS -->
+
+
+<!-- =====================================================
+     04 · MYWEALTH
+===================================================== -->
+
+<section
+  id="page-mywealth"
+  class="page"
+  aria-label="MyWealth"
+>
+
+  <div data-hero="mywealth"></div>
+
+
+  <!-- ================================================
+       INVESTMENT ASSUMPTIONS
+  ================================================= -->
+
+  <div class="section panel panel-pad">
+
+    <div class="section-heading">
+
+      <h2 data-i18n="yourAssumptions">
+        Your investment and savings
+      </h2>
+
+    </div>
+
+    <div class="field-grid">
+
+
+      <!-- Starting investment -->
+
+      <div class="field">
+
+        <label
+          for="startingInvestment"
+          data-i18n="startingInvestment"
+        >
+          Starting investment
+        </label>
+
+        <input
+          id="startingInvestment"
+          type="number"
+          min="0"
+          step="1000"
+          value="100000"
+          inputmode="decimal"
+        />
+
+      </div>
+
+
+      <!-- Monthly savings -->
+
+      <div class="field">
+
+        <label
+          for="monthlySavings"
+          data-i18n="monthlySavings"
+        >
+          Monthly savings
+        </label>
+
+        <input
+          id="monthlySavings"
+          type="number"
+          min="0"
+          step="100"
+          value="1000"
+          inputmode="decimal"
+        />
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================================
+       SELECTED INVESTMENTS
+  ================================================= -->
+
+  <div class="section">
+
+    <div class="section-heading">
+
+      <h2 data-i18n="selectedInvestments">
+        Selected investments
+      </h2>
+
+      <span
+        id="mywealth-source"
+        class="hint"
+      ></span>
+
+    </div>
+
+    <div
+      class="basket"
+      id="mywealth-basket"
+    ></div>
+
+  </div>
+
+
+  <!-- ================================================
+       FORWARD PROJECTION
+  ================================================= -->
+
+  <div class="section">
+
+    <div class="section-heading">
+
+      <h2 data-i18n="forwardOutlook">
+        Your forward outlook
+      </h2>
+
+      <span
+        class="hint"
+        id="active-caption"
+      ></span>
+
+    </div>
+
+
+    <div class="results-grid">
+
+
+      <!-- Forward metrics -->
+
+      <div
+        class="metrics"
+        id="forward-metrics"
+      ></div>
+
+
+      <!-- Wealth canvas -->
+
+      <div class="canvas-box">
+
+        <div class="section-heading">
+
+          <h2 data-i18n="wealthOverTime">
+            Wealth over time
+          </h2>
+
+          <span
+            class="hint"
+            data-i18n="projection"
+          >
+            Projection
+          </span>
+
+        </div>
+
+        <canvas
+          id="wealth-canvas"
+          aria-label="Forward wealth projection"
+        ></canvas>
+
+        <div
+          class="footnote"
+          data-i18n="enginePending"
+        >
+          Awaiting connection to the existing Neptoon calculator
+          engine. No financial forecast is shown.
         </div>
 
       </div>
 
     </div>
 
+  </div>
 
 
-    <!-- View History -->
+  <!-- ================================================
+       VIEW HISTORY
+  ================================================= -->
 
-    <div class="section btnrow">
+  <div class="section btnrow">
 
-      <button
-        class="btn"
-        id="view-history"
-        data-i18n="viewHistory"
-      >
-        View History →
-      </button>
+    <button
+      class="btn"
+      id="view-history"
+      data-i18n="viewHistory"
+    >
+      View History →
+    </button>
 
-    </div>
+  </div>
 
-  </section>
+</section>
+<!-- END PAGE 04 · MYWEALTH -->
 
 
-<!-- ================================================
-     WEALTHPLANS · HISTORICAL PERFORMANCE
-================================================= -->
+<!-- =====================================================
+     05 · HISTORY
+===================================================== -->
 
-<div
-  class="section asset-history-section"
-  id="planHistorySection"
+<section
+  id="page-history"
+  class="page"
+  aria-label="History"
 >
-
-  <div class="asset-history-header">
-
-    <div>
-
-      <div class="asset-history-kicker">
-        NEPTOON · WEALTH PLANS
-      </div>
-
-      <h2>
-        Historical performance
-      </h2>
-
-      <p class="asset-history-subtitle">
-        Compare up to 5 Wealth Plans.
-        Total return index (rebased to 100).
-      </p>
-
-    </div>
-
-  </div>
-
-
-  <!-- ==============================================
-       PERIOD SELECTOR
-  =============================================== -->
-
-  <div class="asset-history-toolbar">
-
-    <div
-      class="asset-history-periods"
-      id="planHistoryPeriods"
-    >
-
-      <button
-        type="button"
-        data-history-period="1Y"
-      >1Y</button>
-
-      <button
-        type="button"
-        data-history-period="3Y"
-      >3Y</button>
-
-      <button
-        type="button"
-        data-history-period="5Y"
-      >5Y</button>
-
-      <button
-        type="button"
-        data-history-period="10Y"
-      >10Y</button>
-
-      <button
-        type="button"
-        class="active"
-        data-history-period="MAX"
-      >MAX</button>
-
-    </div>
-
-    <div
-      class="asset-history-period-label"
-      id="planHistoryPeriodLabel"
-    >
-      Historical index · Base = 100
-    </div>
-
-  </div>
-
-
-  <!-- ==============================================
-       CHART + PERFORMANCE TABLE
-  =============================================== -->
-
-  <div class="asset-history-layout">
-
-    <!-- CHART -->
-
-    <div class="asset-history-chart-panel">
-
-      <div
-        class="asset-history-chart"
-        id="planHistoryChart"
-      >
-
-        <canvas
-          id="planHistoryCanvas"
-        ></canvas>
-
-      </div>
-
-      <div
-        class="asset-history-chart-tooltip"
-        id="planHistoryTooltip"
-        hidden
-      ></div>
-
-    </div>
-
-
-    <!-- PERFORMANCE TABLE -->
-
-    <div class="asset-history-results">
-
-      <div class="asset-history-results-head">
-
-        <span>Wealth Plan</span>
-
-        <span>Total return</span>
-
-        <span>Ann. return</span>
-
-      </div>
-
-      <div
-        class="asset-history-results-body"
-        id="planHistoryResults"
-      ></div>
-
-    </div>
-
-  </div>
-
-
-  <!-- ==============================================
-       METHODOLOGY NOTE
-  =============================================== -->
-
-  <div class="asset-history-note">
-
-    <span class="asset-history-note-icon">
-      ⓘ
-    </span>
-
-    <span>
-      Historical total return index,
-      including reinvested distributions
-      where reflected in the source series.
-      Historical data may include
-      benchmark-substituted periods.
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  <!-- =====================================================
-       05 · HISTORY
-  ====================================================== -->
-
-  <section
-    id="page-history"
-    class="page"
-    aria-label="History"
-  >
 
     <div data-hero="history"></div>
 
