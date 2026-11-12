@@ -5416,6 +5416,109 @@ async function loadMyWealthMarketRace(investment){
 
 
 
+function buildMyWealthHistorySeries(
+  investmentHistory,
+  benchmarkHistory
+){
+
+  if(
+    !Array.isArray(investmentHistory) ||
+    !Array.isArray(benchmarkHistory)
+  ){
+    return [];
+  }
+
+  const benchmarkMap = new Map();
+
+  benchmarkHistory.forEach(p => {
+
+    const date = String(p.date || "").slice(0,10);
+    const nav = Number(p.accIndexTotal);
+
+    if(
+      date &&
+      Number.isFinite(nav) &&
+      nav > 0
+    ){
+      benchmarkMap.set(date,nav);
+    }
+
+  });
+
+  const common = investmentHistory
+    .map(p => {
+
+      const date = String(p.date || "").slice(0,10);
+      const investment = Number(p.accIndexTotal);
+      const benchmark = benchmarkMap.get(date);
+
+      if(
+        !Number.isFinite(investment) ||
+        investment <= 0 ||
+        !Number.isFinite(benchmark) ||
+        benchmark <= 0
+      ){
+        return null;
+      }
+
+      return {
+        date,
+        investment,
+        benchmark
+      };
+
+    })
+    .filter(Boolean)
+    .sort((a,b) => a.date.localeCompare(b.date));
+
+  if(common.length < 2){
+    return [];
+  }
+
+  /* Maximum 15-year common history */
+
+  const lastDate = new Date(
+    common[common.length-1].date + "T00:00:00Z"
+  );
+
+  const cutoffDate = new Date(lastDate);
+
+  cutoffDate.setUTCFullYear(
+    cutoffDate.getUTCFullYear()-15
+  );
+
+  const cutoff =
+    cutoffDate.toISOString().slice(0,10);
+
+  const window = common.filter(
+    p => p.date >= cutoff
+  );
+
+  if(window.length < 2){
+    return [];
+  }
+
+  /* Rebase both NAV series to 100 */
+
+  const investment0 = window[0].investment;
+  const benchmark0 = window[0].benchmark;
+
+  return window.map((p,i) => ({
+
+    index:i,
+    date:p.date,
+
+    investmentNAV:
+      100*p.investment/investment0,
+
+    benchmarkNAV:
+      100*p.benchmark/benchmark0
+
+  }));
+
+}
+
+
 function selectMyWealthHistoryInvestment(investment){
 
   if(!investment) return;
@@ -5724,7 +5827,7 @@ function selectMyWealthHistoryInvestment(investment){
   ============================================ */
 
 
-
+}
 
 
 /* =====================================================
