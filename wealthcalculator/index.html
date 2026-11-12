@@ -2002,6 +2002,163 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   </section>
 
 
+<!-- ================================================
+     WEALTHPLANS · HISTORICAL PERFORMANCE
+================================================= -->
+
+<div
+  class="section asset-history-section"
+  id="planHistorySection"
+>
+
+  <div class="asset-history-header">
+
+    <div>
+
+      <div class="asset-history-kicker">
+        NEPTOON · WEALTH PLANS
+      </div>
+
+      <h2>
+        Historical performance
+      </h2>
+
+      <p class="asset-history-subtitle">
+        Compare up to 5 Wealth Plans.
+        Total return index (rebased to 100).
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==============================================
+       PERIOD SELECTOR
+  =============================================== -->
+
+  <div class="asset-history-toolbar">
+
+    <div
+      class="asset-history-periods"
+      id="planHistoryPeriods"
+    >
+
+      <button
+        type="button"
+        data-history-period="1Y"
+      >1Y</button>
+
+      <button
+        type="button"
+        data-history-period="3Y"
+      >3Y</button>
+
+      <button
+        type="button"
+        data-history-period="5Y"
+      >5Y</button>
+
+      <button
+        type="button"
+        data-history-period="10Y"
+      >10Y</button>
+
+      <button
+        type="button"
+        class="active"
+        data-history-period="MAX"
+      >MAX</button>
+
+    </div>
+
+    <div
+      class="asset-history-period-label"
+      id="planHistoryPeriodLabel"
+    >
+      Historical index · Base = 100
+    </div>
+
+  </div>
+
+
+  <!-- ==============================================
+       CHART + PERFORMANCE TABLE
+  =============================================== -->
+
+  <div class="asset-history-layout">
+
+    <!-- CHART -->
+
+    <div class="asset-history-chart-panel">
+
+      <div
+        class="asset-history-chart"
+        id="planHistoryChart"
+      >
+
+        <canvas
+          id="planHistoryCanvas"
+        ></canvas>
+
+      </div>
+
+      <div
+        class="asset-history-chart-tooltip"
+        id="planHistoryTooltip"
+        hidden
+      ></div>
+
+    </div>
+
+
+    <!-- PERFORMANCE TABLE -->
+
+    <div class="asset-history-results">
+
+      <div class="asset-history-results-head">
+
+        <span>Wealth Plan</span>
+
+        <span>Total return</span>
+
+        <span>Ann. return</span>
+
+      </div>
+
+      <div
+        class="asset-history-results-body"
+        id="planHistoryResults"
+      ></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==============================================
+       METHODOLOGY NOTE
+  =============================================== -->
+
+  <div class="asset-history-note">
+
+    <span class="asset-history-note-icon">
+      ⓘ
+    </span>
+
+    <span>
+      Historical total return index,
+      including reinvested distributions
+      where reflected in the source series.
+      Historical data may include
+      benchmark-substituted periods.
+    </span>
+
+  </div>
+
+</div>
+
+
 
   <!-- =====================================================
        05 · HISTORY
@@ -2265,11 +2422,38 @@ const DEMO_PLANS = [
 ===================================================== */
 
 const RISK_GROUPS = Object.fromEntries([1, 2, 3, 4, 5].map(n => [n, DEMO_PLANS.filter(p => p.riskGroup === n).map(p => p.modelNo)]));
+
 const APP = {
-    lang: 'en', activeTab: 'welcome', assets: DEMO_ASSETS.slice(0, 5).map(a => a.id), planSlots: Array.from({ length: 5 }, (_, i) => ({ risk: i + 1, modelNo: DEMO_PLANS[i].modelNo })), expandedPlan: 0, myWealth: {
-        source: 'assets', ids: [], selectedIndex: 0, startingInvestment: 100000, monthlySavings: 1000
-    }, searchOpen: -1
+  lang: 'en',
+  activeTab: 'welcome',
+
+  assets: DEMO_ASSETS.slice(0, 5).map(a => a.id),
+
+  planSlots: Array.from(
+    { length: 5 },
+    (_, i) => ({
+      risk: i + 1,
+      preference: 'balanced',
+      modelNo: ''
+    })
+  ),
+
+  expandedPlan: null,
+  metricsPlan: null,
+
+  myWealth: {
+    source: 'assets',
+    ids: [],
+    selectedIndex: 0,
+    startingInvestment: 100000,
+    monthlySavings: 1000
+  },
+
+  searchOpen: -1
 };
+
+
+
 const $ = id => document.getElementById(id), tr = key => T[APP.lang][key] || key, esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
 }[c]));
@@ -3560,12 +3744,24 @@ function renderPortfolios(){
     to live models in the next step.
   */
 
-  renderPlanMetrics();
-renderPlanExpectedWealth();
+/* =====================================================
+   RENDER WEALTH PLAN COMPONENTS
+===================================================== */
+
+// Selected portfolio holdings
+renderPlanDetails();
+
+// Portfolio metrics
+renderPlanMetrics();
+
+// Expected wealth simulation
 renderPlanExpectedWealth();
 
-icons();	
+// Historical performance · up to 5 portfolios
+renderPlanHistory();
 
+// Refresh icons
+icons();
 }
 
 /* =====================================================
@@ -4862,9 +5058,12 @@ const ASSET_HISTORY_VIEW = {
    HISTORY DATA PREPARATION
 ===================================================== */
 
-function prepareAssetHistorySeries(){
 
-  const selected = APP.assets.filter(Boolean);
+/* =====================================================
+   WEALTHPLANS · PREPARE HISTORY SERIES
+===================================================== */
+
+function preparePlanHistorySeries(){
 
   const periods = {
     "1Y": 12,
@@ -4873,85 +5072,112 @@ function prepareAssetHistorySeries(){
     "10Y": 120
   };
 
-  const raw = selected.map((ticker, i) => {
+  /*
+    Selected Wealth Plans.
+    ModelNo = 0 is valid.
+  */
 
-    const instrument =
-      INSTRUMENT_STATE.all.find(
-        x => x.tickerExchange === ticker
+  const selected = (APP.planSlots || [])
+    .filter(slot =>
+      slot &&
+      slot.modelNo !== "" &&
+      slot.modelNo !== null &&
+      slot.modelNo !== undefined
+    );
+
+  const raw = selected.map((slot, i) => {
+
+    const portfolio =
+      PORTFOLIO_STATE.all.find(
+        p => Number(p.modelNo) === Number(slot.modelNo)
       );
 
-    const history = getInstrumentHistory(ticker)
-      .filter(h =>
-        h &&
-        h.date &&
-        Number.isFinite(Number(h.accIndexTotal)) &&
-        Number(h.accIndexTotal) > 0
-      )
-      .map(h => ({
-        date: String(h.date).slice(0, 10),
-        value: Number(h.accIndexTotal)
-      }))
-      .sort((a, b) => a.date.localeCompare(b.date));
+    if(!portfolio) return null;
+
+    const history =
+      (portfolio.arrayHistory || [])
+        .filter(h =>
+          h &&
+          h.date &&
+          Number.isFinite(Number(h.accPortIndex)) &&
+          Number(h.accPortIndex) > 0
+        )
+        .map(h => ({
+          date: String(h.date).slice(0, 10),
+          value: Number(h.accPortIndex)
+        }))
+        .sort((a, b) =>
+          a.date.localeCompare(b.date)
+        );
 
     return {
-      ticker,
-      name: instrument?.name || ticker,
+      ticker: String(portfolio.modelNo),
+      name: portfolio.modelLabel ||
+            `Wealth Plan ${portfolio.modelNo}`,
       color: ASSET_HISTORY_COLORS[i % 5],
       history
     };
 
-  }).filter(x => x.history.length >= 2);
+  }).filter(x => x && x.history.length >= 2);
 
   if(!raw.length) return [];
 
   /*
-    Shared end date, using the latest
-    observation common to all series.
+    Shared end date.
   */
 
   const endDate = raw.reduce(
     (latest, x) => {
-      const last = x.history[x.history.length - 1].date;
+
+      const last =
+        x.history[x.history.length - 1].date;
+
       return latest === null || last < latest
         ? last
         : latest;
+
     },
     null
   );
 
   /*
-    Period start relative to shared end.
+    Requested period.
   */
 
-  const end = new Date(endDate + "T00:00:00Z");
+  const end =
+    new Date(endDate + "T00:00:00Z");
 
   let requestedStart = null;
 
-  if(ASSET_HISTORY_VIEW.period !== "MAX"){
+  if(PLAN_HISTORY_VIEW.period !== "MAX"){
 
     const months =
-      periods[ASSET_HISTORY_VIEW.period] || 120;
+      periods[PLAN_HISTORY_VIEW.period] || 120;
 
     const d = new Date(end);
-    d.setUTCMonth(d.getUTCMonth() - months);
 
-    requestedStart = d.toISOString().slice(0, 10);
+    d.setUTCMonth(
+      d.getUTCMonth() - months
+    );
+
+    requestedStart =
+      d.toISOString().slice(0, 10);
 
   }
 
   /*
-    For MAX, use the latest first date
-    among the instruments.
-
-    This ensures a common comparison period.
+    Common starting date.
   */
 
   const commonStart = raw.reduce(
     (latest, x) => {
+
       const first = x.history[0].date;
+
       return latest === null || first > latest
         ? first
         : latest;
+
     },
     requestedStart
   );
@@ -4962,15 +5188,15 @@ function prepareAssetHistorySeries(){
       : commonStart;
 
   /*
-    Normalize each instrument to 100
-    at its first available observation
-    within the shared period.
+    Normalize all portfolios to 100.
   */
 
   return raw.map(item => {
 
     const points = item.history.filter(
-      h => h.date >= startDate && h.date <= endDate
+      h =>
+        h.date >= startDate &&
+        h.date <= endDate
     );
 
     if(points.length < 2) return null;
@@ -4983,7 +5209,8 @@ function prepareAssetHistorySeries(){
     }));
 
     const first = normalized[0];
-    const last = normalized[normalized.length - 1];
+    const last =
+      normalized[normalized.length - 1];
 
     const years =
       (new Date(last.date) - new Date(first.date)) /
@@ -4994,7 +5221,10 @@ function prepareAssetHistorySeries(){
 
     const annualReturn =
       years > 0
-        ? Math.pow(last.value / 100, 1 / years) - 1
+        ? Math.pow(
+            last.value / 100,
+            1 / years
+          ) - 1
         : null;
 
     return {
@@ -5365,8 +5595,232 @@ function renderAssetHistory(){
 
 
 /* =====================================================
+   WEALTHPLANS · DRAW HISTORY CHART
+===================================================== */
+
+function drawPlanHistoryChart(series){
+
+  const canvas =
+    document.getElementById("planHistoryCanvas");
+
+  if(!canvas) return;
+
+  const container = canvas.parentElement;
+
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+
+  if(width < 50 || height < 50) return;
+
+  const dpr = window.devicePixelRatio || 1;
+
+  canvas.width = Math.round(width * dpr);
+  canvas.height = Math.round(height * dpr);
+
+  const ctx = canvas.getContext("2d");
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+
+  if(!series.length){
+
+    ctx.fillStyle = "#64748b";
+    ctx.font = "13px Arial";
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+      "Select Wealth Plans to view historical performance",
+      width / 2,
+      height / 2
+    );
+
+    return;
+
+  }
+
+  const mobile = width < 500;
+
+  const pad = {
+    top: 18,
+    right: 15,
+    bottom: 38,
+    left: mobile ? 43 : 58
+  };
+
+  const plotW = width - pad.left - pad.right;
+  const plotH = height - pad.top - pad.bottom;
+
+  const allPoints =
+    series.flatMap(s => s.points);
+
+  const values =
+    allPoints.map(p => p.value);
+
+  const dataMin =
+    Math.min(100, ...values);
+
+  const dataMax =
+    Math.max(100, ...values);
+
+  const range =
+    Math.max(dataMax - dataMin, 10);
+
+  const step =
+    assetHistoryNiceStep(range / 5);
+
+  const yMin =
+    Math.floor(
+      Math.max(0, dataMin - range * .05) / step
+    ) * step;
+
+  const yMax =
+    Math.ceil(
+      (dataMax + range * .05) / step
+    ) * step;
+
+  const minDate =
+    Math.min(
+      ...allPoints.map(p => Date.parse(p.date))
+    );
+
+  const maxDate =
+    Math.max(
+      ...allPoints.map(p => Date.parse(p.date))
+    );
+
+  const x = date =>
+    pad.left +
+    (Date.parse(date) - minDate) /
+    Math.max(1, maxDate - minDate) * plotW;
+
+  const y = value =>
+    pad.top +
+    (yMax - value) /
+    Math.max(1, yMax - yMin) * plotH;
+
+
+  /* ================================================
+     GRID + Y AXIS
+  ================================================ */
+
+  ctx.font =
+    mobile ? "10px Arial" : "11px Arial";
+
+  ctx.textAlign = "right";
+  ctx.textBaseline = "middle";
+
+  for(
+    let tick = yMin;
+    tick <= yMax + step * .001;
+    tick += step
+  ){
+
+    const yy = y(tick);
+
+    ctx.beginPath();
+    ctx.moveTo(pad.left, yy);
+    ctx.lineTo(width - pad.right, yy);
+
+    ctx.strokeStyle = "#dce3ee";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.fillStyle = "#475569";
+
+    ctx.fillText(
+      Math.round(tick).toLocaleString("en-US"),
+      pad.left - 7,
+      yy
+    );
+
+  }
+
+
+  /* ================================================
+     X AXIS DATE LABELS
+  ================================================ */
+
+  const ticks = mobile ? 4 : 7;
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.fillStyle = "#475569";
+
+  for(let i = 0; i <= ticks; i++){
+
+    const ratio = i / ticks;
+
+    const timestamp =
+      minDate + ratio * (maxDate - minDate);
+
+    const date = new Date(timestamp);
+
+    const label =
+      PLAN_HISTORY_VIEW.period === "1Y"
+        ? date.toLocaleDateString("en-US", {
+            month: "short",
+            year: "2-digit",
+            timeZone: "UTC"
+          })
+        : String(date.getUTCFullYear());
+
+    const xx =
+      pad.left + ratio * plotW;
+
+    ctx.fillText(
+      label,
+      xx,
+      height - pad.bottom + 12
+    );
+
+  }
+
+
+  /* ================================================
+     HISTORICAL SERIES
+  ================================================ */
+
+  series.forEach(s => {
+
+    const highlighted =
+      PLAN_HISTORY_VIEW.highlighted;
+
+    const muted =
+      highlighted &&
+      highlighted !== s.ticker;
+
+    ctx.beginPath();
+
+    s.points.forEach((p, i) => {
+
+      const xx = x(p.date);
+      const yy = y(p.value);
+
+      if(i === 0){
+        ctx.moveTo(xx, yy);
+      }else{
+        ctx.lineTo(xx, yy);
+      }
+
+    });
+
+    ctx.strokeStyle = s.color;
+    ctx.lineWidth = muted ? 1.2 : 2.3;
+    ctx.globalAlpha = muted ? .18 : 1;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+  });
+
+}
+
+
+/* =====================================================
    INITIALIZE VIEWER
 ===================================================== */
+
 
 async function initAssetHistoryViewer(){
 
@@ -5376,8 +5830,14 @@ async function initAssetHistoryViewer(){
 
     document.addEventListener("click", e => {
 
+      /* ============================================
+         PERIOD SELECTOR · ASSETS ONLY
+      ============================================ */
+
       const periodButton =
-        e.target.closest("[data-history-period]");
+        e.target.closest(
+          "#assetHistorySection [data-history-period]"
+        );
 
       if(periodButton){
 
@@ -5385,7 +5845,7 @@ async function initAssetHistoryViewer(){
           periodButton.dataset.historyPeriod;
 
         document.querySelectorAll(
-          "[data-history-period]"
+          "#assetHistorySection [data-history-period]"
         ).forEach(btn => {
 
           btn.classList.toggle(
@@ -5400,8 +5860,15 @@ async function initAssetHistoryViewer(){
 
       }
 
+
+      /* ============================================
+         RESULT ROW HIGHLIGHT · ASSETS ONLY
+      ============================================ */
+
       const row =
-        e.target.closest("[data-history-highlight]");
+        e.target.closest(
+          "#assetHistorySection [data-history-highlight]"
+        );
 
       if(row){
 
@@ -5420,6 +5887,11 @@ async function initAssetHistoryViewer(){
 
     });
 
+
+    /* ============================================
+       CHART RESIZE OBSERVER
+    ============================================ */
+
     const chart =
       document.getElementById("assetHistoryChart");
 
@@ -5427,7 +5899,9 @@ async function initAssetHistoryViewer(){
 
       ASSET_HISTORY_VIEW.resizeObserver =
         new ResizeObserver(() => {
+
           renderAssetHistory();
+
         });
 
       ASSET_HISTORY_VIEW.resizeObserver.observe(chart);
@@ -5436,12 +5910,225 @@ async function initAssetHistoryViewer(){
 
   }
 
+
+  /* ================================================
+     LOAD HISTORY + INITIAL RENDER
+  ================================================ */
+
   await loadInstrumentHistory();
 
   renderAssetHistory();
 
 }
 
+
+/* =====================================================
+   WEALTHPLANS · PERFORMANCE RESULTS
+===================================================== */
+
+function renderPlanHistoryResults(series){
+
+  const container =
+    document.getElementById("planHistoryResults");
+
+  if(!container) return;
+
+  if(!series.length){
+
+    container.innerHTML =
+      '<div style="padding:20px;color:#64748b;font-size:12px;">No historical data available.</div>';
+
+    return;
+
+  }
+
+  const formatReturn = value => {
+
+    if(!Number.isFinite(value)) return "—";
+
+    const pct = value * 100;
+
+    return (
+      (pct > 0 ? "+" : "") +
+      pct.toFixed(1) +
+      "%"
+    );
+
+  };
+
+  container.innerHTML = series.map(s => {
+
+    const muted =
+      PLAN_HISTORY_VIEW.highlighted &&
+      PLAN_HISTORY_VIEW.highlighted !== s.ticker;
+
+    const highlighted =
+      PLAN_HISTORY_VIEW.highlighted === s.ticker;
+
+    return `
+      <div
+        class="asset-history-result-row
+          ${muted ? "is-muted" : ""}
+          ${highlighted ? "is-highlighted" : ""}"
+        data-plan-history-highlight="${esc(s.ticker)}"
+        style="cursor:pointer"
+      >
+
+        <div class="asset-history-result-instrument">
+
+          <span
+            class="asset-history-color"
+            style="background:${s.color}"
+          ></span>
+
+          <div class="asset-history-result-identity">
+
+            <div class="asset-history-result-ticker">
+              ${esc(s.ticker)}
+            </div>
+
+            <div class="asset-history-result-name">
+              ${esc(s.name)}
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="asset-history-result-total">
+          ${formatReturn(s.totalReturn)}
+        </div>
+
+        <div class="asset-history-result-annual">
+          ${formatReturn(s.annualReturn)}
+        </div>
+
+      </div>
+    `;
+
+  }).join("");
+
+}
+
+
+/* =====================================================
+   WEALTHPLANS · MAIN RENDER
+===================================================== */
+
+function renderPlanHistory(){
+
+  const series =
+    preparePlanHistorySeries();
+
+  drawPlanHistoryChart(series);
+  renderPlanHistoryResults(series);
+
+  const label =
+    document.getElementById("planHistoryPeriodLabel");
+
+  if(label && series.length){
+
+    const first = series.reduce(
+      (min, s) => s.firstDate < min ? s.firstDate : min,
+      series[0].firstDate
+    );
+
+    const last = series.reduce(
+      (max, s) => s.lastDate > max ? s.lastDate : max,
+      series[0].lastDate
+    );
+
+    label.textContent =
+      `${first} – ${last}  |  Base = 100`;
+
+  } else if(label){
+
+    label.textContent =
+      "Historical index · Base = 100";
+
+  }
+
+}
+
+
+/* =====================================================
+   WEALTHPLANS · INITIALIZE VIEWER
+===================================================== */
+
+function initPlanHistoryViewer(){
+
+  if(PLAN_HISTORY_VIEW.initialized){
+    return;
+  }
+
+  PLAN_HISTORY_VIEW.initialized = true;
+
+  document.addEventListener("click", e => {
+
+    const periodButton =
+      e.target.closest(
+        "#planHistorySection [data-history-period]"
+      );
+
+    if(periodButton){
+
+      PLAN_HISTORY_VIEW.period =
+        periodButton.dataset.historyPeriod;
+
+      document.querySelectorAll(
+        "#planHistorySection [data-history-period]"
+      ).forEach(btn => {
+
+        btn.classList.toggle(
+          "active",
+          btn === periodButton
+        );
+
+      });
+
+      renderPlanHistory();
+      return;
+
+    }
+
+    const row =
+      e.target.closest(
+        "#planHistorySection [data-plan-history-highlight]"
+      );
+
+    if(row){
+
+      const ticker =
+        row.dataset.planHistoryHighlight;
+
+      PLAN_HISTORY_VIEW.highlighted =
+        PLAN_HISTORY_VIEW.highlighted === ticker
+          ? null
+          : ticker;
+
+      renderPlanHistory();
+
+    }
+
+  });
+
+  const chart =
+    document.getElementById("planHistoryChart");
+
+  if(chart && "ResizeObserver" in window){
+
+    PLAN_HISTORY_VIEW.resizeObserver =
+      new ResizeObserver(() => {
+        renderPlanHistory();
+      });
+
+    PLAN_HISTORY_VIEW.resizeObserver.observe(chart);
+
+  }
+
+  renderPlanHistory();
+
+}
 
 function renderMyWealth() {
     const { source, ids, selectedIndex } = APP.myWealth;
@@ -6613,6 +7300,8 @@ function bindPortfolioModelSelection(){
 
     // Refresh basket, overview and expected wealth
     renderPortfolios();
+// Refresh historical performance
+renderPlanHistory();
 
     console.log(
       "SELECTED WEALTH PLAN",
@@ -6775,6 +7464,7 @@ async function initializeApp(){
 }
 
 initializeApp();
+initPlanHistoryViewer();
 
 </script>
 </body></html>
