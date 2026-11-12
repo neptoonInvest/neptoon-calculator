@@ -2223,6 +2223,429 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 }
 
 
+/* =========================================================
+   NEPTOON · MYWEALTH SECTION 2
+   THE MARKET RACE
+========================================================= */
+
+#page-mywealth .mywealth-history-section{
+  display:block;
+  background:#ffffff;
+  color:#173B70;
+  border:1px solid #dbe5f2;
+  border-radius:0;
+  padding:24px;
+  margin-top:20px;
+  box-shadow:0 4px 18px rgba(10,35,75,.06);
+}
+
+#page-mywealth .mywealth-history-section[hidden]{
+  display:none !important;
+}
+
+/* HEADER */
+
+#page-mywealth .mywealth-history-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  margin-bottom:22px;
+}
+
+#page-mywealth .mywealth-history-kicker{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.2px;
+  color:#4E79BD;
+  margin-bottom:8px;
+}
+
+#page-mywealth .mywealth-history-heading h3{
+  font-size:23px;
+  line-height:1.25;
+  font-weight:700;
+  color:#173B70;
+  margin:0 0 7px;
+}
+
+#page-mywealth .mywealth-history-heading p{
+  margin:0;
+  font-size:12px;
+  color:#64748b;
+  line-height:1.5;
+}
+
+#page-mywealth .mywealth-history-period{
+  padding:8px 11px;
+  border:1px solid #dbe5f2;
+  background:#f8fbff;
+  font-size:10px;
+  font-weight:800;
+  color:#173B70;
+  letter-spacing:.5px;
+  white-space:nowrap;
+}
+
+/* =========================================================
+   CONTROL BAR
+========================================================= */
+
+#page-mywealth .mywealth-history-controls{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  align-items:center;
+  gap:16px;
+  padding:15px 0;
+  margin-bottom:20px;
+  border-top:1px solid #e1e9f3;
+  border-bottom:1px solid #e1e9f3;
+}
+
+#page-mywealth .mywealth-history-control-label{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+#page-mywealth .mywealth-history-control-label strong{
+  font-size:12px;
+  font-weight:700;
+  color:#173B70;
+}
+
+#page-mywealth .mywealth-history-control-label span{
+  font-size:11px;
+  color:#64748b;
+}
+
+/* CENTER · MARKET / JENSEN */
+
+#page-mywealth .mywealth-history-method{
+  display:flex;
+  justify-self:center;
+  align-items:stretch;
+}
+
+#page-mywealth .mywealth-history-method-btn{
+  appearance:none;
+  border:1px solid #cbd8ea;
+  border-radius:0;
+  background:#ffffff;
+  color:#173B70;
+  padding:12px 15px;
+  min-height:42px;
+  font-family:inherit;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.2px;
+  white-space:nowrap;
+  cursor:pointer;
+  transition:background .15s ease;
+}
+
+#page-mywealth .mywealth-history-method-btn +
+.mywealth-history-method-btn{
+  border-left:0;
+}
+
+#page-mywealth .mywealth-history-method-btn.active{
+  background:#4E79BD;
+  border-color:#4E79BD;
+  color:#ffffff;
+}
+
+#page-mywealth .mywealth-history-method-btn:not(.active):hover{
+  background:#edf3fb;
+}
+
+/* RIGHT · PLAY HISTORY */
+
+#page-mywealth .mywealth-history-play{
+  appearance:none;
+  justify-self:end;
+  min-height:42px;
+  padding:12px 20px;
+  border:1px solid #4E79BD;
+  border-radius:0;
+  background:#4E79BD;
+  color:#ffffff;
+  font-family:inherit;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.3px;
+  white-space:nowrap;
+  cursor:pointer;
+  transition:background .15s ease;
+}
+
+#page-mywealth .mywealth-history-play:hover{
+  background:#365f9f;
+  border-color:#365f9f;
+}
+
+#page-mywealth .mywealth-history-play:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+/* =========================================================
+   NAV CARDS
+========================================================= */
+
+#page-mywealth .mywealth-history-nav-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+#page-mywealth .mywealth-history-nav-card{
+  min-width:0;
+  padding:18px 20px;
+  background:#ffffff;
+  border:1px solid #dbe5f2;
+  border-radius:0;
+}
+
+#page-mywealth .mywealth-history-nav-label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:10px;
+  color:#64748b;
+  font-size:12px;
+}
+
+#page-mywealth .mywealth-history-dot{
+  display:inline-block;
+  width:9px;
+  height:9px;
+  flex:0 0 9px;
+  background:#4E79BD;
+}
+
+#page-mywealth .mywealth-history-dot.benchmark{
+  background:#8A929E;
+}
+
+#page-mywealth .mywealth-history-nav-card strong{
+  display:block;
+  color:#173B70;
+  font-size:29px;
+  line-height:1.2;
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+}
+
+/* =========================================================
+   CINEMATIC CANVAS
+========================================================= */
+
+#page-mywealth .mywealth-history-chart{
+  position:relative;
+  width:100%;
+  height:300px;
+  background:#f8fbff;
+  border:1px solid #dbe5f2;
+  border-radius:0;
+  overflow:hidden;
+  margin-bottom:20px;
+}
+
+#page-mywealth #mywealth-history-canvas{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+/* =========================================================
+   THE VERDICT
+========================================================= */
+
+#page-mywealth .mywealth-history-verdict{
+  background:#f8fbff;
+  border:1px solid #dbe5f2;
+  border-radius:0;
+  padding:20px;
+}
+
+#page-mywealth .mywealth-history-verdict-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:16px;
+}
+
+#page-mywealth .mywealth-history-verdict-header h3{
+  margin:0;
+  color:#173B70;
+  font-size:16px;
+  font-weight:800;
+  letter-spacing:.3px;
+}
+
+#page-mywealth .mywealth-history-status{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 12px;
+  background:#ffffff;
+  border:1px solid #cbd8ea;
+  color:#173B70;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.5px;
+  white-space:nowrap;
+}
+
+#page-mywealth .mywealth-history-verdict-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+#page-mywealth .mywealth-history-verdict-card{
+  min-width:0;
+  padding:18px;
+  background:#ffffff;
+  border:1px solid #dbe5f2;
+  border-radius:0;
+}
+
+#page-mywealth .mywealth-history-verdict-card strong{
+  display:block;
+  color:#4E79BD;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.3px;
+}
+
+#page-mywealth .mywealth-history-verdict-card h4{
+  margin:14px 0 10px;
+  color:#173B70;
+  font-size:18px;
+  font-weight:700;
+}
+
+#page-mywealth .mywealth-history-verdict-card p{
+  margin:0;
+  color:#64748b;
+  font-size:12px;
+  line-height:1.65;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media(max-width:850px){
+
+  #page-mywealth .mywealth-history-controls{
+    grid-template-columns:1fr auto;
+  }
+
+  #page-mywealth .mywealth-history-control-label{
+    grid-column:1 / -1;
+  }
+
+  #page-mywealth .mywealth-history-method{
+    justify-self:start;
+  }
+
+  #page-mywealth .mywealth-history-play{
+    justify-self:end;
+  }
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+  #page-mywealth .mywealth-history-section{
+    padding:16px;
+    margin-top:14px;
+  }
+
+  #page-mywealth .mywealth-history-header{
+    gap:10px;
+    margin-bottom:16px;
+  }
+
+  #page-mywealth .mywealth-history-heading h3{
+    font-size:19px;
+  }
+
+  #page-mywealth .mywealth-history-period{
+    font-size:9px;
+    padding:7px;
+  }
+
+  #page-mywealth .mywealth-history-controls{
+    grid-template-columns:1fr;
+    gap:12px;
+    padding:13px 0;
+  }
+
+  #page-mywealth .mywealth-history-control-label{
+    grid-column:auto;
+  }
+
+  #page-mywealth .mywealth-history-method{
+    justify-self:stretch;
+    width:100%;
+  }
+
+  #page-mywealth .mywealth-history-method-btn{
+    flex:1;
+    padding:11px 8px;
+    font-size:10px;
+  }
+
+  #page-mywealth .mywealth-history-play{
+    justify-self:stretch;
+    width:100%;
+  }
+
+  #page-mywealth .mywealth-history-nav-grid{
+    gap:8px;
+  }
+
+  #page-mywealth .mywealth-history-nav-card{
+    padding:12px;
+  }
+
+  #page-mywealth .mywealth-history-nav-label{
+    font-size:10px;
+  }
+
+  #page-mywealth .mywealth-history-nav-card strong{
+    font-size:22px;
+  }
+
+  #page-mywealth .mywealth-history-chart{
+    height:230px;
+  }
+
+  #page-mywealth .mywealth-history-verdict{
+    padding:12px;
+  }
+
+  #page-mywealth .mywealth-history-verdict-grid{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+
+  #page-mywealth .mywealth-history-verdict-card{
+    padding:14px;
+  }
+
+}
+
 </style>
 </head>
 <body>
