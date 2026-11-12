@@ -1334,7 +1334,76 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 }
 
 
+/* ================================================
+   MYWEALTH · MODE PILL
+================================================ */
 
+.mywealth-mode-pill{
+  display:inline-flex;
+  align-items:center;
+  padding:7px 12px;
+
+  background:#4E79BD;
+  color:#fff;
+
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+
+  border-radius:0;
+  white-space:nowrap;
+}
+
+
+/* ================================================
+   MYWEALTH · WAITING STATE
+================================================ */
+
+.mywealth-waiting{
+  text-align:center;
+  padding:64px 16px;
+}
+
+.mywealth-waiting-symbol{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  width:64px;
+  height:64px;
+
+  margin:0 auto 22px;
+
+  border:1px dashed #4E79BD;
+  color:#4E79BD;
+
+  font-size:32px;
+  font-weight:300;
+}
+
+.mywealth-waiting h3{
+  margin:0 0 10px;
+  font-size:20px;
+}
+
+.mywealth-waiting p{
+  margin:0;
+  color:#64748b;
+  font-size:14px;
+  line-height:1.6;
+}
+
+.mywealth-received{
+  padding-top:12px;
+}
+
+/* Respect native hidden state */
+
+#mywealth-waiting[hidden],
+#mywealth-received[hidden],
+#mywealth-race-section[hidden]{
+  display:none !important;
+}
 
 
 </style>
@@ -1987,7 +2056,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 </section>
 <!-- END PAGE 03 · PORTFOLIOS -->
 
-
 <!-- =====================================================
      04 · MYWEALTH
 ===================================================== -->
@@ -2002,168 +2070,91 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
 
   <!-- ================================================
-       INVESTMENT ASSUMPTIONS
+       MYWEALTH ENGINE
   ================================================= -->
 
   <div class="section panel panel-pad">
 
     <div class="section-heading">
 
-      <h2 data-i18n="yourAssumptions">
-        Your investment and savings
-      </h2>
+      <div>
+        <div class="section-kicker">
+          NEPTOON · WEALTH ENGINE
+        </div>
 
-    </div>
-
-    <div class="field-grid">
-
-
-      <!-- Starting investment -->
-
-      <div class="field">
-
-        <label
-          for="startingInvestment"
-          data-i18n="startingInvestment"
-        >
-          Starting investment
-        </label>
-
-        <input
-          id="startingInvestment"
-          type="number"
-          min="0"
-          step="1000"
-          value="100000"
-          inputmode="decimal"
-        />
-
+        <h2>MyWealth</h2>
       </div>
-
-
-      <!-- Monthly savings -->
-
-      <div class="field">
-
-        <label
-          for="monthlySavings"
-          data-i18n="monthlySavings"
-        >
-          Monthly savings
-        </label>
-
-        <input
-          id="monthlySavings"
-          type="number"
-          min="0"
-          step="100"
-          value="1000"
-          inputmode="decimal"
-        />
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- ================================================
-       SELECTED INVESTMENTS
-  ================================================= -->
-
-  <div class="section">
-
-    <div class="section-heading">
-
-      <h2 data-i18n="selectedInvestments">
-        Selected investments
-      </h2>
 
       <span
-        id="mywealth-source"
-        class="hint"
-      ></span>
+        id="mywealth-mode-pill"
+        class="mywealth-mode-pill"
+      >
+        WAITING
+      </span>
 
     </div>
+
+
+    <!-- WAITING STATE -->
 
     <div
-      class="basket"
-      id="mywealth-basket"
-    ></div>
+      id="mywealth-waiting"
+      class="mywealth-waiting"
+    >
+
+      <div class="mywealth-waiting-symbol">
+        +
+      </div>
+
+      <h3>Waiting for investments</h3>
+
+      <p>
+        Send up to five investments from
+        Assets or WealthPlans.
+      </p>
+
+    </div>
+
+
+    <!-- RECEIVED STATE -->
+
+    <div
+      id="mywealth-received"
+      class="mywealth-received"
+      hidden
+    >
+
+      <div
+        id="mywealth-basket"
+        class="basket"
+      ></div>
+
+    </div>
 
   </div>
 
 
   <!-- ================================================
-       FORWARD PROJECTION
+       WEALTH RACE · FUTURE IMPLEMENTATION
   ================================================= -->
 
-  <div class="section">
+  <div
+    id="mywealth-race-section"
+    class="section panel panel-pad"
+    hidden
+  >
 
     <div class="section-heading">
 
-      <h2 data-i18n="forwardOutlook">
-        Your forward outlook
-      </h2>
-
-      <span
-        class="hint"
-        id="active-caption"
-      ></span>
+      <h2>The Wealth Race</h2>
 
     </div>
 
-
-    <div class="results-grid">
-
-
-      <!-- Forward metrics -->
-
-      <div
-        class="metrics"
-        id="forward-metrics"
-      ></div>
-
-
-      <!-- Wealth canvas -->
-
-      <div class="canvas-box">
-
-        <div class="section-heading">
-
-          <h2 data-i18n="wealthOverTime">
-            Wealth over time
-          </h2>
-
-          <span
-            class="hint"
-            data-i18n="projection"
-          >
-            Projection
-          </span>
-
-        </div>
-
-        <canvas
-          id="wealth-canvas"
-          aria-label="Forward wealth projection"
-        ></canvas>
-
-        <div
-          class="footnote"
-          data-i18n="enginePending"
-        >
-          Awaiting connection to the existing Neptoon calculator
-          engine. No financial forecast is shown.
-        </div>
-
-      </div>
-
-    </div>
+    <div id="mywealth-race"></div>
 
   </div>
 
+</section>
 
   <!-- ================================================
        VIEW HISTORY
@@ -2325,6 +2316,8 @@ const HERO = {
    WEALTHPLANS · INVESTMENT PREFERENCES
 ===================================================== */
 
+
+
 const INVESTMENT_PREFERENCES = {
 
   preservation: {
@@ -2373,6 +2366,7 @@ const WELCOME_INSTRUMENTS = [
   "EUNL.XETRA"
 ];
 
+let myWealthMode = null; // "stocks" | "portfolios"
 
 /* =====================================================
    NEPTOON · INSTRUMENT HISTORY STATE
@@ -3508,6 +3502,27 @@ function showSuggestions(i, q){
 /* =====================================================
    11 · WEALTH PLAN BASKET
 ===================================================== */
+
+function sendToMyWealth(mode, ids){
+
+  if(
+    !["stocks", "portfolios"].includes(mode) ||
+    !Array.isArray(ids) ||
+    ids.length === 0
+  ){
+    return;
+  }
+
+  myWealthMode = mode;
+
+  APP.myWealth.source = mode;
+  APP.myWealth.ids = ids.slice(0, 5);
+  APP.myWealth.selectedIndex = 0;
+
+  renderMyWealth();
+
+  openTab("mywealth");
+}
 
 function renderPortfolios(){
 
