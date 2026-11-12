@@ -1317,6 +1317,26 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .wealthplan-description-content[hidden]{
   display:none;
 }
+
+
+
+
+/* =====================================================
+   ASSETS + WEALTHPLANS · HISTORY CANVAS
+===================================================== */
+
+#assetHistoryCanvas,
+#planHistoryCanvas{
+  display:block;
+  width:100%;
+  height:100%;
+  touch-action:pan-y;
+}
+
+
+
+
+
 </style>
 </head>
 <body>
@@ -2425,7 +2445,7 @@ const DEMO_PLANS = [
 /* =====================================================
    06 · STATE AND UTILITIES
 ===================================================== */
-
+const DEFAULT_PLAN_MODEL_NOS = [0, 1, 2, 3, 4];
 const RISK_GROUPS = Object.fromEntries([1, 2, 3, 4, 5].map(n => [n, DEMO_PLANS.filter(p => p.riskGroup === n).map(p => p.modelNo)]));
 
 const APP = {
@@ -2434,14 +2454,14 @@ const APP = {
 
   assets: DEMO_ASSETS.slice(0, 5).map(a => a.id),
 
-  planSlots: Array.from(
-    { length: 5 },
-    (_, i) => ({
-      risk: i + 1,
-      preference: 'balanced',
-      modelNo: ''
-    })
-  ),
+planSlots: Array.from(
+  { length: 5 },
+  (_, i) => ({
+    risk: i + 1,
+    preference: "",
+    modelNo: DEFAULT_PLAN_MODEL_NOS[i] ?? ""
+  })
+),
 
   expandedPlan: null,
   metricsPlan: null,
@@ -7596,6 +7616,7 @@ $('market-next').addEventListener('click', () => {
 
 window.addEventListener('resize', renderMarketPulse);
 
+
 /* =====================================================
    32 · APPLICATION STARTUP
 ===================================================== */
@@ -7605,21 +7626,53 @@ async function initializeApp(){
   renderLanguage();
   openTab("welcome");
 
+  /* ================================================
+     MARKET DATA
+  ================================================ */
+
   loadMarketPulse();
 
   // Start loading instruments independently.
   loadInstrumentDatabase();
 
-  // Wait for live portfolio models.
+
+  /* ================================================
+     LOAD LIVE WEALTH PLANS
+  ================================================ */
+
+  // Wait for all 38 portfolio models and histories.
   await loadPortfolioDatabase();
 
-  // Render basket with live data.
+
+  /* ================================================
+     INITIALIZE WEALTHPLANS HISTORY
+  ================================================ */
+
+  // Install history listeners and resize observer.
+  initPlanHistoryViewer();
+
+
+  /* ================================================
+     RENDER LIVE PORTFOLIOS
+  ================================================ */
+
+  // Includes portfolio basket, metrics,
+  // expected wealth and historical chart.
   renderPortfolios();
 
-  // Install event listeners once.
+
+  /* ================================================
+     PORTFOLIO EVENT LISTENERS
+  ================================================ */
+
   bindPortfolioSelectors();
   bindPortfolioModelSelection();
   bindPortfolioMetrics();
+
+
+  /* ================================================
+     MARKET PULSE REFRESH
+  ================================================ */
 
   setInterval(
     loadMarketPulse,
@@ -7629,7 +7682,6 @@ async function initializeApp(){
 }
 
 initializeApp();
-initPlanHistoryViewer();
 
 </script>
 </body></html>
