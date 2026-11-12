@@ -2747,7 +2747,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         <span>Time horizon</span>
 
         <strong id="mywealth-horizon-value">
-          10 YEARS
+          0 YEARS
         </strong>
 
       </div>
@@ -2755,14 +2755,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <input
         id="mywealth-horizon-slider"
         type="range"
-        min="1"
+        min="0"
         max="30"
         step="1"
-        value="10"
+        value="0"
       />
 
       <div class="mywealth-range-labels">
-        <span>1Y</span>
+        <span>0Y</span>
         <span>30Y</span>
       </div>
 
@@ -3049,7 +3049,7 @@ const HERO = {
 const MYWEALTH_VIEW = {
   w0:100000,
   monthlySavings:1000,
-  horizon:10,
+  horizon:0,
   metric:"wealth",
   initialized:false,
   resizeObserver:null
@@ -3550,34 +3550,36 @@ function initMyWealthControls(){
 
   });
 
-  savings.addEventListener("input", () => {
+savings.addEventListener("input", () => {
 
-    MYWEALTH_VIEW.monthlySavings =
-      Number(savings.value);
+  MYWEALTH_VIEW.monthlySavings =
+    Number(savings.value);
 
-    updateMyWealthControls();
-    drawMyWealthRace();
+  updateMyWealthControls();
+  drawMyWealthRace();
 
-  });
+});
 
-  horizon.addEventListener("input", () => {
 
-    MYWEALTH_VIEW.horizon =
-      Number(horizon.value);
+horizon.addEventListener("input", () => {
 
-    updateMyWealthControls();
-    drawMyWealthRace();
+  MYWEALTH_VIEW.horizon =
+    Math.max(0, Math.min(30, Number(horizon.value)));
 
-  });
+  updateMyWealthControls();
+  drawMyWealthRace();
 
-  wealthBtn.addEventListener("click", () => {
+});
 
-    MYWEALTH_VIEW.metric = "wealth";
 
-    updateMyWealthControls();
-    drawMyWealthRace();
+wealthBtn.addEventListener("click", () => {
 
-  });
+  MYWEALTH_VIEW.metric = "wealth";
+
+  updateMyWealthControls();
+  drawMyWealthRace();
+
+});
 
   costsBtn.addEventListener("click", () => {
 
@@ -3621,6 +3623,13 @@ function updateMyWealthControls(){
     Math.round(value).toLocaleString(
       APP.lang === "da" ? "da-DK" : "en-US"
     );
+
+const horizonSlider =
+  document.getElementById("mywealth-horizon-slider");
+
+if(horizonSlider){
+  horizonSlider.value = MYWEALTH_VIEW.horizon;
+}
 
   const w0Value =
     document.getElementById("mywealth-w0-value");
@@ -4850,7 +4859,7 @@ function sendToMyWealth(source){
   APP.myWealth.selectedIndex = 0;
 
 
-MYWEALTH_VIEW.horizon = 10;
+MYWEALTH_VIEW.horizon = 0;
 MYWEALTH_VIEW.metric = "wealth";
 
 updateMyWealthControls();
