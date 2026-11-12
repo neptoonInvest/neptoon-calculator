@@ -4662,6 +4662,67 @@ async function loadInstrumentHistory(){
    GET INSTRUMENT HISTORY BY TICKER
 ===================================================== */
 
+
+/* =====================================================
+   MYWEALTH · LOAD HISTORICAL MARKET RACE
+===================================================== */
+
+async function loadMyWealthMarketRace(investment){
+
+  if(!investment) return [];
+
+  try{
+
+    // Reuse existing history loader
+    await loadInstrumentHistory();
+
+    const ticker =
+      String(investment.id ?? "")
+        .trim()
+        .toUpperCase();
+
+    const selectedHistory =
+      INSTRUMENT_HISTORY_STATE.byTicker.get(ticker) || [];
+
+    const benchmarkHistory =
+      INSTRUMENT_HISTORY_STATE.byTicker.get(
+        "EUNL.XETRA"
+      ) || [];
+
+    const series =
+      buildMyWealthHistorySeries(
+        selectedHistory,
+        benchmarkHistory
+      );
+
+    console.log(
+      "MYWEALTH MARKET RACE READY",
+      {
+        ticker,
+        selectedHistory: selectedHistory.length,
+        benchmarkHistory: benchmarkHistory.length,
+        observations: series.length,
+        first: series[0],
+        last: series.at(-1)
+      }
+    );
+
+    return series;
+
+  }catch(err){
+
+    console.error(
+      "MYWEALTH MARKET RACE ERROR",
+      err
+    );
+
+    return [];
+
+  }
+
+}
+
+
 function selectMyWealthHistoryInvestment(investment){
 
   if(!investment) return;
@@ -4722,11 +4783,6 @@ function selectMyWealthHistoryInvestment(investment){
      BUILD HISTORICAL NAV SERIES
   ============================================ */
 
-  const historySeries =
-    buildMyWealthHistorySeries(
-      selectedInstrument?.arrayHistory,
-      benchmark?.arrayHistory
-    );
 
 
   /* ============================================
@@ -4739,8 +4795,7 @@ function selectMyWealthHistoryInvestment(investment){
 
   MYWEALTH_HISTORY.benchmark =
     benchmark || null;
-
-  MYWEALTH_HISTORY.series = historySeries;
+MYWEALTH_HISTORY.series = [];
 
   MYWEALTH_HISTORY.status = "pending";
 
@@ -4795,6 +4850,33 @@ function selectMyWealthHistoryInvestment(investment){
   if(section){
     section.hidden = false;
   }
+
+/* ============================================
+   LOAD HISTORICAL SERIES
+============================================ */
+
+const selectedId = investment.id;
+
+loadMyWealthMarketRace(investment).then(series => {
+
+  // Ignore stale results if user selected
+  // another investment during loading.
+
+  if(
+    MYWEALTH_HISTORY.selectedId !== selectedId
+  ){
+    return;
+  }
+
+  MYWEALTH_HISTORY.series = series;
+
+  console.log(
+    "SECTION 2 HISTORY CONNECTED",
+    investment.name,
+    series.length
+  );
+
+});
 
 
   /* ============================================
