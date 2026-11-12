@@ -5231,8 +5231,10 @@ function drawMyWealthCinemaFrame(progress){
   const returnB =
     benchmarkNAV-100;
 
-  const relative =
-    returnA-returnB;
+/* Geometric relative performance */
+
+const relative =
+  (investmentNAV / benchmarkNAV - 1) * 100;
 
   const setMetric = (id,value) => {
 
@@ -5265,11 +5267,10 @@ function drawMyWealthCinemaFrame(progress){
     formatReturn(returnB)
   );
 
-  setMetric(
-    "mywealth-history-relative",
-    formatRelative(relative)
-  );
-
+setMetric(
+  "mywealth-history-relative",
+  formatReturn(relative)
+);
   const relativeEl =
     document.getElementById(
       "mywealth-history-relative"
