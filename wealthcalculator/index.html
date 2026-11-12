@@ -3699,32 +3699,17 @@ function updateMyWealthControls(){
    MYWEALTH · LIVE INVESTMENTS
 ===================================================== */
 
+
+/* =====================================================
+   MYWEALTH · LIVE INVESTMENT RESOLVER
+===================================================== */
+
 function getMyWealthInvestments(){
 
-  const { source, ids } = APP.myWealth;
+  const {source, ids} = APP.myWealth;
 
-  if(!myWealthMode || !Array.isArray(ids)){
+  if(!Array.isArray(ids) || !ids.length){
     return [];
-  }
-
-  if(source === "portfolios"){
-
-    return ids.map(id => {
-
-      const p = (PORTFOLIO_STATE.all || [])
-        .find(x => Number(x.modelNo) === Number(id));
-
-      if(!p) return null;
-
-      return {
-        id,
-        name:p.modelLabel,
-        expRetNet:Number(p.objKeyFigures?.expRetNet),
-        expRetGross:Number(p.objKeyFigures?.expRetGross)
-      };
-
-    }).filter(Boolean);
-
   }
 
   if(source === "assets"){
@@ -3732,18 +3717,46 @@ function getMyWealthInvestments(){
     return ids.map(id => {
 
       const p = (INSTRUMENT_STATE.all || [])
-        .find(x => x.tickerExchange === id);
+        .find(x =>
+          String(x.tickerExchange).trim().toUpperCase() ===
+          String(id).trim().toUpperCase()
+        );
 
       if(!p) return null;
 
       return {
         id,
-        name:p.name || p.instrumentName || id,
-
-        // Confirm actual instrument return field.
+        name:p.name || id,
         expRetNet:Number(p.expRetNet),
+        expRetGross:Number(p.expRetGross),
+        costs:Number(p.costs || 0),
+        risk:Number(p.risk)
+      };
 
-        expRetGross:null
+    }).filter(Boolean);
+
+  }
+
+  if(source === "portfolios"){
+
+    return ids.map(id => {
+
+      const p = (PORTFOLIO_STATE.all || [])
+        .find(x =>
+          String(x.modelNo) === String(id)
+        );
+
+      if(!p) return null;
+
+      const m = p.objKeyFigures || {};
+
+      return {
+        id,
+        name:p.modelLabel || `Model ${id}`,
+        expRetNet:Number(m.expRetNet),
+        expRetGross:Number(m.expRetGross),
+        costs:Number(m.costs || 0),
+        risk:Number(m.risk)
       };
 
     }).filter(Boolean);
@@ -3753,6 +3766,7 @@ function getMyWealthInvestments(){
   return [];
 
 }
+
 
 
 /* =====================================================
