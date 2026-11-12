@@ -4032,6 +4032,23 @@ const WELCOME_INSTRUMENTS = [
 
 let myWealthMode = null; // "stocks" | "portfolios"
 
+
+/* =====================================================
+   NEPTOON · MYWEALTH MARKET RACE CINEMA
+   5 seconds · Historical accumulated NAV
+===================================================== */
+
+const MYWEALTH_CINEMA = {
+  duration: 5000,
+  frame: null,
+  running: false,
+  completed: false,
+  progress: 0,
+  series: null,
+  selectionId: null
+};
+
+
 /* =====================================================
    NEPTOON · INSTRUMENT HISTORY STATE
 ===================================================== */
@@ -4416,6 +4433,611 @@ selectMyWealthHistoryInvestment(selected);
 
 }
 
+/* =====================================================
+   STOP / RESET
+===================================================== */
+
+function resetMyWealthCinema(){
+
+  if(MYWEALTH_CINEMA.frame !== null){
+    cancelAnimationFrame(MYWEALTH_CINEMA.frame);
+  }
+
+  MYWEALTH_CINEMA.frame = null;
+  MYWEALTH_CINEMA.running = false;
+  MYWEALTH_CINEMA.completed = false;
+  MYWEALTH_CINEMA.progress = 0;
+  MYWEALTH_CINEMA.series = null;
+  MYWEALTH_CINEMA.selectionId = null;
+
+  const canvas =
+    document.getElementById("mywealth-history-canvas");
+
+  if(canvas){
+
+    const ctx = canvas.getContext("2d");
+
+    if(ctx){
+      ctx.clearRect(
+        0,0,canvas.width,canvas.height
+      );
+    }
+
+  }
+
+  const investmentNAV =
+    document.getElementById(
+      "mywealth-history-investment-nav"
+    );
+
+  const benchmarkNAV =
+    document.getElementById(
+      "mywealth-history-benchmark-nav"
+    );
+
+  if(investmentNAV){
+    investmentNAV.textContent = "NAV 100";
+  }
+
+  if(benchmarkNAV){
+    benchmarkNAV.textContent = "NAV 100";
+  }
+
+  const status =
+    document.getElementById(
+      "mywealth-history-status"
+    );
+
+  const verdictMarket =
+    document.getElementById(
+      "mywealth-history-verdict-market"
+    );
+
+  const verdictDecision =
+    document.getElementById(
+      "mywealth-history-verdict-decision"
+    );
+
+  if(status){
+    status.textContent = "PENDING";
+  }
+
+  if(verdictMarket){
+    verdictMarket.textContent = "Awaiting race";
+  }
+
+  if(verdictDecision){
+    verdictDecision.textContent = "Evidence pending";
+  }
+
+  MYWEALTH_HISTORY.status = "pending";
+
+}
+
+
+/* =====================================================
+   DRAW ONE CINEMA FRAME
+===================================================== */
+
+function drawMyWealthCinemaFrame(progress){
+
+  const canvas =
+    document.getElementById(
+      "mywealth-history-canvas"
+    );
+
+  const series = MYWEALTH_CINEMA.series;
+
+  if(
+    !canvas ||
+    !Array.isArray(series) ||
+    series.length < 2
+  ){
+    return;
+  }
+
+  const rect = canvas.getBoundingClientRect();
+
+  const W = rect.width;
+  const H = rect.height;
+
+  if(W <= 0 || H <= 0) return;
+
+  const dpr = Math.min(
+    window.devicePixelRatio || 1,2
+  );
+
+  const pixelW = Math.round(W*dpr);
+  const pixelH = Math.round(H*dpr);
+
+  if(
+    canvas.width !== pixelW ||
+    canvas.height !== pixelH
+  ){
+    canvas.width = pixelW;
+    canvas.height = pixelH;
+  }
+
+  const ctx = canvas.getContext("2d");
+
+  if(!ctx) return;
+
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H);
+
+  const compact = W < 500;
+
+  const pad = {
+    left:compact ? 48 : 64,
+    right:compact ? 15 : 30,
+    top:25,
+    bottom:42
+  };
+
+  const plotW = W-pad.left-pad.right;
+  const plotH = H-pad.top-pad.bottom;
+
+  if(plotW <= 0 || plotH <= 0) return;
+
+  const values = series.flatMap(p => [
+    p.investmentNAV,
+    p.benchmarkNAV
+  ]);
+
+  if(values.some(v =>
+    !Number.isFinite(v) || v <= 0
+  )){
+    return;
+  }
+
+  /* ============================================
+     FIXED LOGARITHMIC Y AXIS
+  ============================================ */
+
+  const dataMin = Math.min(100,...values);
+  const dataMax = Math.max(100,...values);
+
+  const logMin = Math.floor(
+    Math.log10(dataMin)
+  );
+
+  let logMax = Math.ceil(
+    Math.log10(dataMax)
+  );
+
+  if(logMax <= logMin){
+    logMax = logMin+1;
+  }
+
+  const X = index =>
+    pad.left +
+    index/(series.length-1)*plotW;
+
+  const Y = nav =>
+    pad.top +
+    (
+      logMax-Math.log10(nav)
+    )/(logMax-logMin)*plotH;
+
+  const locale =
+    APP.lang === "da" ? "da-DK" : "en-US";
+
+  const formatNAV = value =>
+    Math.round(value).toLocaleString(locale);
+
+  /* ============================================
+     GRID AND Y AXIS
+  ============================================ */
+
+  ctx.font = "11px Arial";
+  ctx.textBaseline = "middle";
+
+  for(let power=logMin;power<=logMax;power++){
+
+    const value = Math.pow(10,power);
+    const y = Y(value);
+
+    ctx.beginPath();
+    ctx.moveTo(pad.left,y);
+    ctx.lineTo(W-pad.right,y);
+
+    ctx.strokeStyle = "#e2eaf4";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.fillStyle = "#64748b";
+    ctx.textAlign = "right";
+
+    ctx.fillText(
+      formatNAV(value),
+      pad.left-8,
+      y
+    );
+
+  }
+
+  /* ============================================
+     TIME AXIS
+  ============================================ */
+
+  const firstDate = series[0].date;
+  const lastDate = series.at(-1).date;
+
+  ctx.fillStyle = "#64748b";
+  ctx.font = "11px Arial";
+
+  ctx.textAlign = "left";
+  ctx.fillText(
+    firstDate.slice(0,4),
+    pad.left,
+    H-16
+  );
+
+  ctx.textAlign = "right";
+  ctx.fillText(
+    lastDate.slice(0,4),
+    W-pad.right,
+    H-16
+  );
+
+  /* ============================================
+     CURRENT OBSERVATION
+  ============================================ */
+
+  const clamped =
+    Math.max(0,Math.min(1,progress));
+
+  const exactIndex =
+    clamped*(series.length-1);
+
+  const index =
+    Math.min(
+      series.length-1,
+      Math.floor(exactIndex)
+    );
+
+  const nextIndex =
+    Math.min(index+1,series.length-1);
+
+  const fraction = exactIndex-index;
+
+  const current = series[index];
+  const next = series[nextIndex];
+
+  const interpolateNAV = key => {
+
+    const a = current[key];
+    const b = next[key];
+
+    // Smooth interpolation on a logarithmic scale.
+    return Math.exp(
+      Math.log(a) +
+      fraction*(Math.log(b)-Math.log(a))
+    );
+
+  };
+
+  const investmentNAV =
+    interpolateNAV("investmentNAV");
+
+  const benchmarkNAV =
+    interpolateNAV("benchmarkNAV");
+
+  /* ============================================
+     DRAW HISTORICAL CURVES
+  ============================================ */
+
+  function drawCurve(key,color){
+
+    ctx.beginPath();
+
+    for(let i=0;i<=index;i++){
+
+      const p = series[i];
+
+      const x = X(i);
+      const y = Y(p[key]);
+
+      if(i===0){
+        ctx.moveTo(x,y);
+      }else{
+        ctx.lineTo(x,y);
+      }
+
+    }
+
+    const endpointNAV =
+      interpolateNAV(key);
+
+    const endpointX = X(exactIndex);
+    const endpointY = Y(endpointNAV);
+
+    ctx.lineTo(endpointX,endpointY);
+
+    ctx.strokeStyle = color;
+    ctx.lineWidth = compact ? 2 : 2.8;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    ctx.stroke();
+
+    /* Moving endpoint */
+
+    ctx.beginPath();
+
+    ctx.arc(
+      endpointX,
+      endpointY,
+      4.5,
+      0,
+      Math.PI*2
+    );
+
+    ctx.fillStyle = color;
+    ctx.fill();
+
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+  }
+
+  drawCurve(
+    "benchmarkNAV",
+    "#8A929E"
+  );
+
+  drawCurve(
+    "investmentNAV",
+    "#4E79BD"
+  );
+
+  /* ============================================
+     MOVING TIME CURSOR
+  ============================================ */
+
+  const cursorX = X(exactIndex);
+
+  ctx.beginPath();
+  ctx.moveTo(cursorX,pad.top);
+  ctx.lineTo(cursorX,pad.top+plotH);
+
+  ctx.strokeStyle = "rgba(78,121,189,.22)";
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4,4]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  /* ============================================
+     UPDATE LIVE NAV CARDS
+  ============================================ */
+
+  const investmentEl =
+    document.getElementById(
+      "mywealth-history-investment-nav"
+    );
+
+  const benchmarkEl =
+    document.getElementById(
+      "mywealth-history-benchmark-nav"
+    );
+
+  if(investmentEl){
+    investmentEl.textContent =
+      "NAV " + formatNAV(investmentNAV);
+  }
+
+  if(benchmarkEl){
+    benchmarkEl.textContent =
+      "NAV " + formatNAV(benchmarkNAV);
+  }
+
+}
+
+
+/* =====================================================
+   FINAL VERDICT
+===================================================== */
+
+function completeMyWealthCinema(){
+
+  const series = MYWEALTH_CINEMA.series;
+
+  if(!series?.length) return;
+
+  MYWEALTH_CINEMA.running = false;
+  MYWEALTH_CINEMA.completed = true;
+  MYWEALTH_CINEMA.frame = null;
+  MYWEALTH_CINEMA.progress = 1;
+
+  MYWEALTH_HISTORY.status = "completed";
+
+  const last = series.at(-1);
+
+  const investmentNAV = last.investmentNAV;
+  const benchmarkNAV = last.benchmarkNAV;
+
+  const excessReturn =
+    (investmentNAV/benchmarkNAV-1)*100;
+
+  const status =
+    document.getElementById(
+      "mywealth-history-status"
+    );
+
+  const verdictMarket =
+    document.getElementById(
+      "mywealth-history-verdict-market"
+    );
+
+  const verdictDecision =
+    document.getElementById(
+      "mywealth-history-verdict-decision"
+    );
+
+  if(status){
+    status.textContent = "COMPLETED";
+  }
+
+  if(verdictMarket){
+
+    verdictMarket.textContent =
+      investmentNAV > benchmarkNAV
+        ? "YES · OUTPERFORMED"
+        : investmentNAV < benchmarkNAV
+          ? "NO · UNDERPERFORMED"
+          : "MATCHED THE MARKET";
+
+  }
+
+  /*
+    Historical outperformance is not
+    an independent buy/sell signal.
+  */
+
+  if(verdictDecision){
+
+    verdictDecision.textContent =
+      "No buy/sell conclusion from historical returns alone";
+
+  }
+
+  console.log(
+    "MYWEALTH CINEMA COMPLETED",
+    {
+      investmentNAV,
+      benchmarkNAV,
+      relativeWealthDifferencePct:excessReturn,
+      observations:series.length
+    }
+  );
+
+}
+
+
+/* =====================================================
+   PLAY 5-SECOND CINEMA
+===================================================== */
+
+function playMyWealthCinema(){
+
+  const series = MYWEALTH_HISTORY.series;
+
+  if(
+    !Array.isArray(series) ||
+    series.length < 2
+  ){
+    console.warn(
+      "Market Race history not ready"
+    );
+    return;
+  }
+
+  resetMyWealthCinema();
+
+  MYWEALTH_CINEMA.series = series;
+  MYWEALTH_CINEMA.selectionId =
+    MYWEALTH_HISTORY.selectedId;
+
+  MYWEALTH_CINEMA.running = true;
+
+  MYWEALTH_HISTORY.status = "playing";
+
+  const status =
+    document.getElementById(
+      "mywealth-history-status"
+    );
+
+  if(status){
+    status.textContent = "PLAYING";
+  }
+
+  const startTime = performance.now();
+
+  function animate(now){
+
+    if(!MYWEALTH_CINEMA.running){
+      return;
+    }
+
+    if(
+      MYWEALTH_CINEMA.selectionId !==
+      MYWEALTH_HISTORY.selectedId
+    ){
+      resetMyWealthCinema();
+      return;
+    }
+
+    const elapsed = now-startTime;
+
+    const progress = Math.min(
+      1,
+      elapsed/MYWEALTH_CINEMA.duration
+    );
+
+    MYWEALTH_CINEMA.progress = progress;
+
+    drawMyWealthCinemaFrame(progress);
+
+    if(progress < 1){
+
+      MYWEALTH_CINEMA.frame =
+        requestAnimationFrame(animate);
+
+    }else{
+
+      completeMyWealthCinema();
+
+    }
+
+  }
+
+  drawMyWealthCinemaFrame(0);
+
+  MYWEALTH_CINEMA.frame =
+    requestAnimationFrame(animate);
+
+}
+
+
+/* =====================================================
+   BIND PLAY BUTTON
+===================================================== */
+
+function initMyWealthCinema(){
+
+  const playBtn =
+    document.querySelector(
+      "#page-mywealth .mywealth-history-play"
+    );
+
+  if(!playBtn){
+    console.warn(
+      "PLAY HISTORY button not found"
+    );
+    return;
+  }
+
+  // Safe if initialization is called twice.
+  if(playBtn.dataset.cinemaBound === "1"){
+    return;
+  }
+
+  playBtn.dataset.cinemaBound = "1";
+
+  playBtn.addEventListener(
+    "click",
+    playMyWealthCinema
+  );
+
+  console.log(
+    "MYWEALTH CINEMA INITIALIZED"
+  );
+
+}
+
+
+
+2. Connect initializat
 
 /* =====================================================
    NEPTOON · LOAD INSTRUMENT HISTORY
@@ -4725,6 +5347,8 @@ async function loadMyWealthMarketRace(investment){
 function selectMyWealthHistoryInvestment(investment){
 
   if(!investment) return;
+
+resetMyWealthCinema();
 
   const section =
     document.getElementById("mywealth-history-section");
@@ -10805,6 +11429,7 @@ async function initializeApp(){
   bindPortfolioMetrics();
 initMyWealthControls();
 initMyWealthRaceInteraction();
+initMyWealthCinema();
 
 
   /* ================================================
