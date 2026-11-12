@@ -4560,17 +4560,20 @@ function showSuggestions(i, q){
    Stocks + Portfolios
 ===================================================== */
 
+/* =====================================================
+   MYWEALTH · HORIZONTAL WEALTH RACE
+===================================================== */
+
 function drawMyWealthRace(){
 
   const canvas =
     document.getElementById("mywealth-race-canvas");
 
-  if(!canvas) return;
-
   const received =
     document.getElementById("mywealth-received");
 
   if(
+    !canvas ||
     !received ||
     received.hidden ||
     !received.getClientRects().length
@@ -4579,11 +4582,10 @@ function drawMyWealthRace(){
   }
 
   const ctx = canvas.getContext("2d");
-
   if(!ctx) return;
 
-const investments =
-  getMyWealthBarScale().slice(0,5);
+  const investments =
+    getMyWealthBarScale().slice(0,5);
 
   if(!investments.length) return;
 
@@ -4591,78 +4593,57 @@ const investments =
     myWealthMode === "portfolios" &&
     MYWEALTH_VIEW.metric === "costs";
 
-  const values = investments.map(p =>
-    isCosts ? p.costImpact : p.net
-  );
+  const rect = canvas.getBoundingClientRect();
 
-  const width =
-    canvas.getBoundingClientRect().width;
+  const width = rect.width;
 
-  const height =
-    canvas.getBoundingClientRect().height;
-
-  if(width <= 0 || height <= 0) return;
-
-  const dpr =
-    Math.min(window.devicePixelRatio || 1, 2);
-
-  canvas.width = Math.round(width * dpr);
-  canvas.height = Math.round(height * dpr);
-
-  ctx.setTransform(dpr,0,0,dpr,0,0);
+  if(width <= 0) return;
 
   const compact = width < 500;
 
-  const pad = {
-    top:46,
-    right:compact ? 12 : 24,
-    bottom:compact ? 66 : 76,
-    left:compact ? 12 : 24
-  };
+  const rowH = compact ? 66 : 70;
+  const topPad = 16;
+  const bottomPad = 18;
 
-  const plotW =
-    width - pad.left - pad.right;
+  const height =
+    topPad +
+    investments.length * rowH +
+    bottomPad;
 
-  const plotH =
-    height - pad.top - pad.bottom;
+  const dpr =
+    Math.min(window.devicePixelRatio || 1,2);
 
-  if(plotW <= 0 || plotH <= 0) return;
+  canvas.style.height = `${height}px`;
 
-  const maxValue =
-    Math.max(
-      1,
-      ...values.filter(Number.isFinite)
-    );
+  canvas.width = Math.round(width*dpr);
+  canvas.height = Math.round(height*dpr);
 
-  const axisMax = maxValue * 1.15;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,width,height);
 
   const colors = [
     "#4E79BD",
+    "#8B62C9",
     "#16A6C7",
     "#218C70",
-    "#8B62C9",
     "#D39A43"
   ];
 
   const locale =
     APP.lang === "da" ? "da-DK" : "en-US";
 
-  function formatMoney(value){
+  const money = value =>
+    Number.isFinite(value)
+      ? Math.round(value).toLocaleString(locale)
+      : "—";
 
-    if(!Number.isFinite(value)) return "—";
-
-    return Math.round(value)
-      .toLocaleString(locale);
-
-  }
-
-  function formatCompact(value){
+  const compactMoney = value => {
 
     if(!Number.isFinite(value)) return "—";
 
     if(Math.abs(value) >= 1000000){
       return (
-        (value / 1000000).toLocaleString(
+        (value/1000000).toLocaleString(
           locale,
           {maximumFractionDigits:2}
         ) + "M"
@@ -4671,192 +4652,147 @@ const investments =
 
     if(Math.abs(value) >= 1000){
       return (
-        (value / 1000).toLocaleString(
+        (value/1000).toLocaleString(
           locale,
           {maximumFractionDigits:0}
         ) + "K"
       );
     }
 
-    return formatMoney(value);
+    return money(value);
+  };
 
-  }
+  const left = compact ? 38 : 52;
+  const right = compact ? 12 : 20;
 
-  function shortName(name){
+  const barX = left;
+  const barW = width-left-right;
+  const barH = compact ? 9 : 11;
 
-    const text = String(name || "");
-
-    if(text.length <= (compact ? 11 : 17)){
-      return text;
-    }
-
-    return text.slice(
-      0,
-      compact ? 9 : 15
-    ) + "…";
-
-  }
-
-  /* ================================================
-     GRID
-  ================================================ */
-
-  ctx.clearRect(0,0,width,height);
-
-  ctx.font = "10px Arial";
-  ctx.textAlign = "left";
-  ctx.textBaseline = "middle";
-
-  const gridLines = 4;
-
-  for(let i=0;i<=gridLines;i++){
-
-    const y =
-      pad.top +
-      plotH * i / gridLines;
-
-    ctx.beginPath();
-    ctx.moveTo(pad.left,y);
-    ctx.lineTo(width-pad.right,y);
-
-    ctx.strokeStyle = "#e5edf5";
-    ctx.lineWidth = 1;
-    ctx.stroke();
-
-  }
-
-  /* ================================================
-     BARS
-  ================================================ */
-
-  const slotW =
-    plotW / investments.length;
-
-  const barW =
-    Math.min(
-      compact ? 38 : 68,
-      slotW * 0.58
-    );
+  const maxCosts = Math.max(
+    1,
+    ...investments
+      .map(p => p.costImpact)
+      .filter(Number.isFinite)
+  );
 
   investments.forEach((p,i) => {
 
-    const value = values[i];
+    const y = topPad + i*rowH;
 
-    const valid =
-      Number.isFinite(value);
+    /* Ranking */
 
-    const safeValue =
-      valid ? Math.max(0,value) : 0;
+    ctx.fillStyle = "#64748b";
+    ctx.font = "11px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
 
-const barH =
-  isCosts
-    ? safeValue / axisMax * plotH
-    : p.progress * plotH;
+    ctx.fillText(
+      String(i+1),
+      left/2,
+      y+12
+    );
 
-    const x =
-      pad.left +
-      slotW * i +
-      (slotW-barW)/2;
+    /* Investment name */
 
-    const y =
-      pad.top +
-      plotH -
-      barH;
+    ctx.fillStyle = "#173B70";
+    ctx.font = "bold 12px Arial";
+    ctx.textAlign = "left";
 
-    /* Bar */
+    const name =
+      myWealthMode === "stocks"
+        ? p.name
+        : p.name;
 
-    ctx.fillStyle = colors[i];
+    const maxNameWidth =
+      compact ? width*0.48 : width*0.60;
+
+    let displayName = String(name || p.id);
+
+    while(
+      displayName.length > 3 &&
+      ctx.measureText(displayName).width > maxNameWidth
+    ){
+      displayName = displayName.slice(0,-1);
+    }
+
+    if(displayName !== name){
+      displayName =
+        displayName.slice(0,-1) + "…";
+    }
+
+    ctx.fillText(
+      displayName,
+      barX,
+      y+12
+    );
+
+    /* Right side: expected wealth + return */
+
+    ctx.textAlign = "right";
+
+    ctx.fillStyle = "#173B70";
+    ctx.font = "bold 12px Arial";
+
+    const value =
+      isCosts ? p.costImpact : p.barValue;
+
+    ctx.fillText(
+      compactMoney(value),
+      width-right,
+      y+9
+    );
+
+    ctx.fillStyle = "#64748b";
+    ctx.font = "10px Arial";
+
+    ctx.fillText(
+      isCosts
+        ? "Cost impact"
+        : (p.expRetNet*100).toFixed(2)+"%",
+      width-right,
+      y+24
+    );
+
+    /* Background track */
+
+    const trackY = y+37;
+
+    ctx.fillStyle = "#eef0f3";
 
     ctx.fillRect(
-      x,
-      y,
+      barX,
+      trackY,
       barW,
       barH
     );
 
-    /* Value above bar */
+    /* Progress */
 
-    ctx.fillStyle = "#173B70";
-    ctx.font =
-      compact
-        ? "bold 10px Arial"
-        : "bold 12px Arial";
+    const progress =
+      isCosts
+        ? Math.max(
+            0,
+            Math.min(
+              1,
+              p.costImpact/maxCosts
+            )
+          )
+        : p.progress;
 
-    ctx.textAlign = "center";
-    ctx.textBaseline = "bottom";
+    ctx.fillStyle = colors[i];
 
-    ctx.fillText(
-      formatCompact(value),
-      x+barW/2,
-      Math.max(15,y-7)
+    ctx.fillRect(
+      barX,
+      trackY,
+      barW*progress,
+      barH
     );
-
-    /* Name below bar */
-
-    const labelY =
-      pad.top +
-      plotH +
-      18;
-
-    ctx.fillStyle = "#173B70";
-    ctx.font =
-      compact
-        ? "10px Arial"
-        : "11px Arial";
-
-    ctx.textBaseline = "middle";
-
-    const label =
-      myWealthMode === "stocks"
-        ? String(p.id)
-        : shortName(p.name);
-
-    ctx.fillText(
-      label,
-      x+barW/2,
-      labelY
-    );
-
-    /* Return below label */
-
-    if(!isCosts){
-
-      ctx.fillStyle = "#64748b";
-      ctx.font = "10px Arial";
-
-      const ret =
-        Number.isFinite(p.expRetNet)
-          ? (p.expRetNet*100).toFixed(2)+"%"
-          : "—";
-
-      ctx.fillText(
-        ret,
-        x+barW/2,
-        labelY+17
-      );
-
-    }
 
   });
 
-  /* ================================================
-     FOOTNOTE
-  ================================================ */
-
-  ctx.fillStyle = "#94a3b8";
-  ctx.font = "10px Arial";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "bottom";
-
-  ctx.fillText(
-    isCosts
-      ? "Terminal wealth impact of costs"
-      : "Expected future wealth · Net of costs",
-    width/2,
-    height-8
-  );
-
 }
+
 
 
 /* =====================================================
