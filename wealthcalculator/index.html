@@ -4554,6 +4554,309 @@ function showSuggestions(i, q){
 
 }
 
+
+/* =====================================================
+   MYWEALTH · WEALTH RACE CANVAS
+   Stocks + Portfolios
+===================================================== */
+
+function drawMyWealthRace(){
+
+  const canvas =
+    document.getElementById("mywealth-race-canvas");
+
+  if(!canvas) return;
+
+  const received =
+    document.getElementById("mywealth-received");
+
+  if(
+    !received ||
+    received.hidden ||
+    !received.getClientRects().length
+  ){
+    return;
+  }
+
+  const ctx = canvas.getContext("2d");
+
+  if(!ctx) return;
+
+  const investments =
+    calculateMyWealthRace().slice(0,5);
+
+  if(!investments.length) return;
+
+  const isCosts =
+    myWealthMode === "portfolios" &&
+    MYWEALTH_VIEW.metric === "costs";
+
+  const values = investments.map(p =>
+    isCosts ? p.costImpact : p.net
+  );
+
+  const width =
+    canvas.getBoundingClientRect().width;
+
+  const height =
+    canvas.getBoundingClientRect().height;
+
+  if(width <= 0 || height <= 0) return;
+
+  const dpr =
+    Math.min(window.devicePixelRatio || 1, 2);
+
+  canvas.width = Math.round(width * dpr);
+  canvas.height = Math.round(height * dpr);
+
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  const compact = width < 500;
+
+  const pad = {
+    top:46,
+    right:compact ? 12 : 24,
+    bottom:compact ? 66 : 76,
+    left:compact ? 12 : 24
+  };
+
+  const plotW =
+    width - pad.left - pad.right;
+
+  const plotH =
+    height - pad.top - pad.bottom;
+
+  if(plotW <= 0 || plotH <= 0) return;
+
+  const maxValue =
+    Math.max(
+      1,
+      ...values.filter(Number.isFinite)
+    );
+
+  const axisMax = maxValue * 1.15;
+
+  const colors = [
+    "#4E79BD",
+    "#16A6C7",
+    "#218C70",
+    "#8B62C9",
+    "#D39A43"
+  ];
+
+  const locale =
+    APP.lang === "da" ? "da-DK" : "en-US";
+
+  function formatMoney(value){
+
+    if(!Number.isFinite(value)) return "—";
+
+    return Math.round(value)
+      .toLocaleString(locale);
+
+  }
+
+  function formatCompact(value){
+
+    if(!Number.isFinite(value)) return "—";
+
+    if(Math.abs(value) >= 1000000){
+      return (
+        (value / 1000000).toLocaleString(
+          locale,
+          {maximumFractionDigits:2}
+        ) + "M"
+      );
+    }
+
+    if(Math.abs(value) >= 1000){
+      return (
+        (value / 1000).toLocaleString(
+          locale,
+          {maximumFractionDigits:0}
+        ) + "K"
+      );
+    }
+
+    return formatMoney(value);
+
+  }
+
+  function shortName(name){
+
+    const text = String(name || "");
+
+    if(text.length <= (compact ? 11 : 17)){
+      return text;
+    }
+
+    return text.slice(
+      0,
+      compact ? 9 : 15
+    ) + "…";
+
+  }
+
+  /* ================================================
+     GRID
+  ================================================ */
+
+  ctx.clearRect(0,0,width,height);
+
+  ctx.font = "10px Arial";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+
+  const gridLines = 4;
+
+  for(let i=0;i<=gridLines;i++){
+
+    const y =
+      pad.top +
+      plotH * i / gridLines;
+
+    ctx.beginPath();
+    ctx.moveTo(pad.left,y);
+    ctx.lineTo(width-pad.right,y);
+
+    ctx.strokeStyle = "#e5edf5";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+  }
+
+  /* ================================================
+     BARS
+  ================================================ */
+
+  const slotW =
+    plotW / investments.length;
+
+  const barW =
+    Math.min(
+      compact ? 38 : 68,
+      slotW * 0.58
+    );
+
+  investments.forEach((p,i) => {
+
+    const value = values[i];
+
+    const valid =
+      Number.isFinite(value);
+
+    const safeValue =
+      valid ? Math.max(0,value) : 0;
+
+    const barH =
+      safeValue / axisMax * plotH;
+
+    const x =
+      pad.left +
+      slotW * i +
+      (slotW-barW)/2;
+
+    const y =
+      pad.top +
+      plotH -
+      barH;
+
+    /* Bar */
+
+    ctx.fillStyle = colors[i];
+
+    ctx.fillRect(
+      x,
+      y,
+      barW,
+      barH
+    );
+
+    /* Value above bar */
+
+    ctx.fillStyle = "#173B70";
+    ctx.font =
+      compact
+        ? "bold 10px Arial"
+        : "bold 12px Arial";
+
+    ctx.textAlign = "center";
+    ctx.textBaseline = "bottom";
+
+    ctx.fillText(
+      formatCompact(value),
+      x+barW/2,
+      Math.max(15,y-7)
+    );
+
+    /* Name below bar */
+
+    const labelY =
+      pad.top +
+      plotH +
+      18;
+
+    ctx.fillStyle = "#173B70";
+    ctx.font =
+      compact
+        ? "10px Arial"
+        : "11px Arial";
+
+    ctx.textBaseline = "middle";
+
+    const label =
+      myWealthMode === "stocks"
+        ? String(p.id)
+        : shortName(p.name);
+
+    ctx.fillText(
+      label,
+      x+barW/2,
+      labelY
+    );
+
+    /* Return below label */
+
+    if(!isCosts){
+
+      ctx.fillStyle = "#64748b";
+      ctx.font = "10px Arial";
+
+      const ret =
+        Number.isFinite(p.expRetNet)
+          ? (p.expRetNet*100).toFixed(2)+"%"
+          : "—";
+
+      ctx.fillText(
+        ret,
+        x+barW/2,
+        labelY+17
+      );
+
+    }
+
+  });
+
+  /* ================================================
+     FOOTNOTE
+  ================================================ */
+
+  ctx.fillStyle = "#94a3b8";
+  ctx.font = "10px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "bottom";
+
+  ctx.fillText(
+    isCosts
+      ? "Terminal wealth impact of costs"
+      : "Expected future wealth · Net of costs",
+    width/2,
+    height-8
+  );
+
+}
+
+
 /* =====================================================
    11 · WEALTH PLAN BASKET
 ===================================================== */
