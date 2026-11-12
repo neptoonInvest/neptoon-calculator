@@ -8843,47 +8843,53 @@ function myWealthTerminal30Y(
    Max = E(W360)
 ===================================================== */
 
+
 function getMyWealthBarScale(){
 
   const W0 = MYWEALTH_VIEW.w0;
   const savings = MYWEALTH_VIEW.monthlySavings;
 
-  return calculateMyWealthRace().map(p => {
+  return calculateMyWealthRace()
 
-    const terminal30Y = myWealthTerminal30Y(
-      W0,
-      savings,
-      p.expRetNet
-    );
+    .sort((a,b) => b.expRetNet - a.expRetNet)
 
-    const current = p.net;
+    .map(p => {
 
-    const denominator = terminal30Y - W0;
+      const terminal30Y = myWealthTerminal30Y(
+        W0,
+        savings,
+        p.expRetNet
+      );
 
-    const progress =
-      Number.isFinite(current) &&
-      Number.isFinite(terminal30Y) &&
-      denominator > 0
-        ? Math.max(
-            0,
-            Math.min(
-              1,
-              (current - W0) / denominator
+      const current = p.net;
+
+      const denominator = terminal30Y - W0;
+
+      const progress =
+        Number.isFinite(current) &&
+        Number.isFinite(terminal30Y) &&
+        denominator > 0
+          ? Math.max(
+              0,
+              Math.min(
+                1,
+                (current - W0) / denominator
+              )
             )
-          )
-        : 0;
+          : 0;
 
-    return {
-      ...p,
-      barMin:W0,
-      barMax:terminal30Y,
-      barValue:current,
-      progress
-    };
+      return {
+        ...p,
+        barMin:W0,
+        barMax:terminal30Y,
+        barValue:current,
+        progress
+      };
 
-  });
+    });
 
 }
+
 
 function getMyWealthTerminal30Y(){
 
