@@ -4855,28 +4855,59 @@ MYWEALTH_HISTORY.series = [];
    LOAD HISTORICAL SERIES
 ============================================ */
 
+
+/* ============================================
+   LOAD HISTORICAL SERIES BY MODE
+============================================ */
+
 const selectedId = investment.id;
 
-loadMyWealthMarketRace(investment).then(series => {
+if(myWealthMode === "stocks"){
 
-  // Ignore stale results if user selected
-  // another investment during loading.
+  loadMyWealthMarketRace(investment).then(series => {
 
-  if(
-    MYWEALTH_HISTORY.selectedId !== selectedId
-  ){
+    if(MYWEALTH_HISTORY.selectedId !== selectedId){
+      return;
+    }
+
+    MYWEALTH_HISTORY.series = series;
+
+  });
+
+}else if(myWealthMode === "portfolios"){
+
+  const model =
+    PORTFOLIO_STATE.all.find(p =>
+      Number(p.modelNo) === Number(investment.id)
+    );
+
+  const weights =
+    getMyWealthBenchmarkWeights(model);
+
+  if(!weights){
+    console.warn(
+      "Portfolio benchmark weights missing",
+      investment.id
+    );
     return;
   }
 
-  MYWEALTH_HISTORY.series = series;
+  /*
+    NEXT: Connect the existing portfolio
+    historical NAV array.
+  */
 
   console.log(
-    "SECTION 2 HISTORY CONNECTED",
-    investment.name,
-    series.length
+    "PORTFOLIO BENCHMARK READY",
+    {
+      modelNo:model?.modelNo,
+      equityWeight:weights.equityWeight,
+      bondWeight:weights.bondWeight
+    }
   );
 
-});
+}
+
 
 
   /* ============================================
@@ -10437,6 +10468,102 @@ renderPlanHistory();
   });
 
 }
+
+
+/* =====================================================
+   MYWEALTH · GET MODEL BENCHMARK WEIGHTS
+===================================================== */
+
+
+
+/* =====================================================
+   MYWEALTH · GET MODEL BENCHMARK WEIGHTS
+===================================================== */
+
+function getMyWealthBenchmarkWeights(model){
+
+  const holdings =
+    model?.arrayBenchHoldings || [];
+
+  const equity =
+    holdings.find(p =>
+      p.tickerExchange === "EUNL.XETRA"
+    );
+
+  const bonds =
+    holdings.find(p =>
+      p.tickerExchange === "LYQ2.XETRA"
+    );
+
+  if(!equity || !bonds){
+    console.warn(
+      "Missing benchmark holdings",
+      model?.modelNo
+    );
+    return null;
+  }
+
+  const equityWeight = Number(equity.weight);
+  const bondWeight = Number(bonds.weight);
+
+  if(
+    !Number.isFinite(equityWeight) ||
+    !Number.isFinite(bondWeight)
+  ){
+    return null;
+  }
+
+  return {
+    equityWeight,
+    bondWeight
+  };
+
+}
+
+/* =====================================================
+   MYWEALTH · GET MODEL BENCHMARK WEIGHTS
+===================================================== */
+
+function getMyWealthBenchmarkWeights(model){
+
+  const holdings =
+    model?.arrayBenchHoldings || [];
+
+  const equity =
+    holdings.find(p =>
+      p.tickerExchange === "EUNL.XETRA"
+    );
+
+  const bonds =
+    holdings.find(p =>
+      p.tickerExchange === "LYQ2.XETRA"
+    );
+
+  if(!equity || !bonds){
+    console.warn(
+      "Missing benchmark holdings",
+      model?.modelNo
+    );
+    return null;
+  }
+
+  const equityWeight = Number(equity.weight);
+  const bondWeight = Number(bonds.weight);
+
+  if(
+    !Number.isFinite(equityWeight) ||
+    !Number.isFinite(bondWeight)
+  ){
+    return null;
+  }
+
+  return {
+    equityWeight,
+    bondWeight
+  };
+
+}
+
 
 function getMyWealthCostBarScale(){
 
