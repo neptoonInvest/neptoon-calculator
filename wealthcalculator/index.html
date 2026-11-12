@@ -7775,6 +7775,12 @@ function renderMyWealth(){
     return;
   }
 
+updateMyWealthControls();
+
+if(!waiting){
+  requestAnimationFrame(drawMyWealthRace);
+}
+
 
   /* ==============================
      RESOLVE LIVE INVESTMENTS
@@ -9181,6 +9187,7 @@ async function initializeApp(){
   bindPortfolioSelectors();
   bindPortfolioModelSelection();
   bindPortfolioMetrics();
+initMyWealthControls();
 
 
   /* ================================================
