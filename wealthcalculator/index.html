@@ -4590,6 +4590,7 @@ function showSuggestions(i, q){
    MYWEALTH · HORIZONTAL WEALTH RACE
 ===================================================== */
 
+
 function drawMyWealthRace(){
 
   const canvas =
@@ -4610,17 +4611,28 @@ function drawMyWealthRace(){
   const ctx = canvas.getContext("2d");
   if(!ctx) return;
 
-  const investments =
-    getMyWealthBarScale().slice(0,5);
-
-  if(!investments.length) return;
-
   const isCosts =
     myWealthMode === "portfolios" &&
     MYWEALTH_VIEW.metric === "costs";
 
-  const rect = canvas.getBoundingClientRect();
+  /*
+    Wealth:
+      Individual 30Y wealth scale.
 
+    Costs:
+      Individual 30Y cost impact scale.
+  */
+
+  const investments =
+    (
+      isCosts
+        ? getMyWealthCostBarScale()
+        : getMyWealthBarScale()
+    ).slice(0,5);
+
+  if(!investments.length) return;
+
+  const rect = canvas.getBoundingClientRect();
   const width = rect.width;
 
   if(width <= 0) return;
@@ -4695,13 +4707,6 @@ function drawMyWealthRace(){
   const barW = width-left-right;
   const barH = compact ? 9 : 11;
 
-  const maxCosts = Math.max(
-    1,
-    ...investments
-      .map(p => p.costImpact)
-      .filter(Number.isFinite)
-  );
-
   investments.forEach((p,i) => {
 
     const y = topPad + i*rowH;
@@ -4725,10 +4730,7 @@ function drawMyWealthRace(){
     ctx.font = "bold 12px Arial";
     ctx.textAlign = "left";
 
-    const name =
-      myWealthMode === "stocks"
-        ? p.name
-        : p.name;
+    const name = p.name;
 
     const maxNameWidth =
       compact ? width*0.48 : width*0.60;
@@ -4753,7 +4755,7 @@ function drawMyWealthRace(){
       y+12
     );
 
-    /* Right side: expected wealth + return */
+    /* Right side: monetary value */
 
     ctx.textAlign = "right";
 
@@ -4761,7 +4763,9 @@ function drawMyWealthRace(){
     ctx.font = "bold 12px Arial";
 
     const value =
-      isCosts ? p.costImpact : p.barValue;
+      isCosts
+        ? p.costBarValue
+        : p.barValue;
 
     ctx.fillText(
       compactMoney(value),
@@ -4793,17 +4797,11 @@ function drawMyWealthRace(){
       barH
     );
 
-    /* Progress */
+    /* Individual 30Y progress */
 
     const progress =
       isCosts
-        ? Math.max(
-            0,
-            Math.min(
-              1,
-              p.costImpact/maxCosts
-            )
-          )
+        ? p.costProgress
         : p.progress;
 
     ctx.fillStyle = colors[i];
@@ -4818,6 +4816,7 @@ function drawMyWealthRace(){
   });
 
 }
+
 
 
 
@@ -9000,6 +8999,58 @@ renderPlanHistory();
   });
 
 }
+
+function getMyWealthCostBarScale(){
+
+  const W0 = MYWEALTH_VIEW.w0;
+  const savings = MYWEALTH_VIEW.monthlySavings;
+  const horizon = MYWEALTH_VIEW.horizon;
+
+  return calculateMyWealthRace().map(p => {
+
+    const gross30 = myWealthFV(
+      W0,
+      savings,
+      p.expRetGross,
+      30
+    );
+
+    const net30 = myWealthFV(
+      W0,
+      savings,
+      p.expRetNet,
+      30
+    );
+
+    const cost30 = Math.max(
+      0,
+      gross30 - net30
+    );
+
+    const currentCost = Math.max(
+      0,
+      p.costImpact
+    );
+
+    const progress =
+      cost30 > 0
+        ? Math.max(
+            0,
+            Math.min(1, currentCost / cost30)
+          )
+        : 0;
+
+    return {
+      ...p,
+      costBarMax: cost30,
+      costBarValue: currentCost,
+      costProgress: progress
+    };
+
+  });
+
+}
+
 /* =====================================================
    GET PORTFOLIO BY MODEL NUMBER
 ===================================================== */
