@@ -4859,26 +4859,57 @@ MYWEALTH_HISTORY.series = [];
    LOAD HISTORICAL SERIES BY MODE
 ============================================ */
 
+/* ============================================
+   LOAD HISTORICAL SERIES BY MODE
+============================================ */
+
 const selectedId = investment.id;
 
 if(myWealthMode === "stocks"){
 
+  /* ============================================
+     STOCKS · MSCI WORLD BENCHMARK
+  ============================================ */
+
   loadMyWealthMarketRace(investment).then(series => {
 
+    // Ignore outdated selection
     if(MYWEALTH_HISTORY.selectedId !== selectedId){
       return;
     }
 
     MYWEALTH_HISTORY.series = series;
 
+    console.log(
+      "MYWEALTH STOCK HISTORY CONNECTED",
+      {
+        ticker: selectedId,
+        observations: series.length,
+        first: series[0],
+        last: series.at(-1)
+      }
+    );
+
   });
 
 }else if(myWealthMode === "portfolios"){
+
+  /* ============================================
+     PORTFOLIOS · WEIGHTED BENCHMARK
+  ============================================ */
 
   const model =
     PORTFOLIO_STATE.all.find(p =>
       Number(p.modelNo) === Number(investment.id)
     );
+
+  if(!model){
+    console.warn(
+      "Portfolio model not found",
+      investment.id
+    );
+    return;
+  }
 
   const weights =
     getMyWealthBenchmarkWeights(model);
@@ -4892,16 +4923,21 @@ if(myWealthMode === "stocks"){
   }
 
   /*
-    NEXT: Connect the existing portfolio
-    historical NAV array.
+    Portfolio historical NAV connection
+    will be added here.
+
+    Benchmark:
+    EUNL.XETRA × equityWeight
+    LYQ2.XETRA × bondWeight
   */
 
   console.log(
-    "PORTFOLIO BENCHMARK READY",
+    "MYWEALTH PORTFOLIO BENCHMARK READY",
     {
-      modelNo:model?.modelNo,
-      equityWeight:weights.equityWeight,
-      bondWeight:weights.bondWeight
+      modelNo: model.modelNo,
+      equityWeight: weights.equityWeight,
+      bondWeight: weights.bondWeight,
+      holdings: model.arrayBenchHoldings
     }
   );
 
@@ -4909,27 +4945,11 @@ if(myWealthMode === "stocks"){
 
 
 
+
   /* ============================================
      DIAGNOSTICS
   ============================================ */
 
-  console.log(
-    "MYWEALTH HISTORY READY",
-    {
-      selectedTicker: selectedInstrument?.tickerExchange,
-      selectedHistory:
-        selectedInstrument?.arrayHistory?.length ?? 0,
-
-      benchmarkTicker: benchmark?.tickerExchange,
-      benchmarkHistory:
-        benchmark?.arrayHistory?.length ?? 0,
-
-      commonObservations: historySeries.length,
-
-      first: historySeries[0],
-      last: historySeries.at(-1)
-    }
-  );
 
 }
 
