@@ -2372,12 +2372,7 @@ const INSTRUMENT_HISTORY_STATE = {
 
 };
 
-const PLAN_HISTORY_VIEW = {
-  initialized: false,
-  period: "MAX",
-  highlighted: null,
-  resizeObserver: null
-};
+
 
 const DEMO_ASSETS = [
     {
@@ -2577,6 +2572,13 @@ const MARKET_INDICES = [
 
 ];
 
+
+const PLAN_HISTORY_VIEW = {
+  initialized: false,
+  period: "MAX",
+  highlighted: null,
+  resizeObserver: null
+};
 
 function calculateWelcomeInstrument(tickerExchange){
 
@@ -5559,18 +5561,163 @@ function renderAssetHistoryResults(series){
 
 }
 
+/* =====================================================
+   HISTORY DATA PREPARATION
+===================================================== */
+
+function prepareAssetHistorySeries(){
+
+  const selected = APP.assets.filter(Boolean);
+
+  const periods = {
+    "1Y": 12,
+    "3Y": 36,
+    "5Y": 60,
+    "10Y": 120
+  };
+
+  const raw = selected.map((ticker, i) => {
+
+    const instrument =
+      INSTRUMENT_STATE.all.find(
+        x => x.tickerExchange === ticker
+      );
+
+    const history = getInstrumentHistory(ticker)
+      .filter(h =>
+        h &&
+        h.date &&
+        Number.isFinite(Number(h.accIndexTotal)) &&
+        Number(h.accIndexTotal) > 0
+      )
+      .map(h => ({
+        date: String(h.date).slice(0, 10),
+        value: Number(h.accIndexTotal)
+      }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    return {
+      ticker,
+      name: instrument?.name || ticker,
+      color: ASSET_HISTORY_COLORS[i % 5],
+      history
+    };
+
+  }).filter(x => x.history.length >= 2);
+
+  if(!raw.length) return [];
+
+  /*
+    Shared end date, using the latest
+    observation common to all series.
+  */
+
+  const endDate = raw.reduce(
+    (latest, x) => {
+      const last = x.history[x.history.length - 1].date;
+      return latest === null || last < latest
+        ? last
+        : latest;
+    },
+    null
+  );
+
+  /*
+    Period start relative to shared end.
+  */
+
+  const end = new Date(endDate + "T00:00:00Z");
+
+  let requestedStart = null;
+
+  if(ASSET_HISTORY_VIEW.period !== "MAX"){
+
+    const months =
+      periods[ASSET_HISTORY_VIEW.period] || 120;
+
+    const d = new Date(end);
+    d.setUTCMonth(d.getUTCMonth() - months);
+
+    requestedStart = d.toISOString().slice(0, 10);
+
+  }
+
+  /*
+    For MAX, use the latest first date
+    among the instruments.
+
+    This ensures a common comparison period.
+  */
+
+  const commonStart = raw.reduce(
+    (latest, x) => {
+      const first = x.history[0].date;
+      return latest === null || first > latest
+        ? first
+        : latest;
+    },
+    requestedStart
+  );
+
+  const startDate =
+    requestedStart && requestedStart > commonStart
+      ? requestedStart
+      : commonStart;
+
+  /*
+    Normalize each instrument to 100
+    at its first available observation
+    within the shared period.
+  */
+
+  return raw.map(item => {
+
+    const points = item.history.filter(
+      h => h.date >= startDate && h.date <= endDate
+    );
+
+    if(points.length < 2) return null;
+
+    const base = points[0].value;
+
+    const normalized = points.map(h => ({
+      date: h.date,
+      value: 100 * h.value / base
+    }));
+
+    const first = normalized[0];
+    const last = normalized[normalized.length - 1];
+
+    const years =
+      (new Date(last.date) - new Date(first.date)) /
+      (365.25 * 86400000);
+
+    const totalReturn =
+      last.value / 100 - 1;
+
+    const annualReturn =
+      years > 0
+        ? Math.pow(last.value / 100, 1 / years) - 1
+        : null;
+
+    return {
+      ...item,
+      points: normalized,
+      totalReturn,
+      annualReturn,
+      firstDate: first.date,
+      lastDate: last.date
+    };
+
+  }).filter(Boolean);
+
+}
+
+
 
 /* =====================================================
    MAIN RENDER
 ===================================================== */
-function renderAssetHistory(){
-
-  if(!INSTRUMENT_HISTORY_STATE.loaded){
-    return;
-  }
-
-  const series =
-    prepareAssetHistorySeries();
 
 function renderAssetHistory(){
 
