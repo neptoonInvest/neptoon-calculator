@@ -1,40 +1,40 @@
 {
-  "updatedAt": "2026-11-12T18:29:55.083170+00:00",
+  "updatedAt": "2026-11-12T23:49:58.040734+00:00",
   "quotes": {
     "AAPL.US": {
-      "realtimePrice": 355.5415,
-      "return": -0.000249,
-      "timestamp": 1794507240
+      "realtimePrice": 354.88,
+      "return": -0.002109,
+      "timestamp": 1794518940
     },
     "MSFT.US": {
-      "realtimePrice": 528.12,
-      "return": 0.013423000000000001,
-      "timestamp": 1794507240
+      "realtimePrice": 523.0,
+      "return": 0.003598,
+      "timestamp": 1794518940
     },
     "NVDA.US": {
-      "realtimePrice": 165.5569,
-      "return": -0.047045000000000003,
-      "timestamp": 1794507240
+      "realtimePrice": 166.19,
+      "return": -0.043400999999999995,
+      "timestamp": 1794518940
     },
     "GOOGL.US": {
-      "realtimePrice": 301.21,
-      "return": 0.026444000000000002,
-      "timestamp": 1794507240
+      "realtimePrice": 298.7,
+      "return": 0.017891,
+      "timestamp": 1794518940
     },
     "AMZN.US": {
-      "realtimePrice": 269.06,
-      "return": 0.010858000000000001,
-      "timestamp": 1794507240
+      "realtimePrice": 267.44,
+      "return": 0.004771,
+      "timestamp": 1794518940
     },
     "META.US": {
-      "realtimePrice": 625.09,
-      "return": -0.0058530000000000006,
-      "timestamp": 1794507240
+      "realtimePrice": 623.61,
+      "return": -0.008206,
+      "timestamp": 1794518940
     },
     "TSLA.US": {
-      "realtimePrice": 391.435,
-      "return": 0.001522,
-      "timestamp": 1794507240
+      "realtimePrice": 397.45,
+      "return": 0.016912,
+      "timestamp": 1794518940
     },
     "RHM.XETRA": {
       "realtimePrice": 772.6,
@@ -52,14 +52,14 @@
       "timestamp": 1794501540
     },
     "GSPC.INDX": {
-      "realtimePrice": 7625.6201,
-      "return": 0.000819,
-      "timestamp": 1794507240
+      "realtimePrice": 7592.3999,
+      "return": -0.0035410000000000003,
+      "timestamp": 1794520680
     },
     "IXIC.INDX": {
-      "realtimePrice": 25461.6055,
-      "return": -0.00017999999999999998,
-      "timestamp": 1794507240
+      "realtimePrice": 25366.0938,
+      "return": -0.0039310000000000005,
+      "timestamp": 1794521760
     },
     "LSMC.XETRA": {
       "realtimePrice": 99.32,
