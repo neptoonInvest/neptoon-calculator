@@ -3503,23 +3503,29 @@ function showSuggestions(i, q){
    11 · WEALTH PLAN BASKET
 ===================================================== */
 
-function sendToMyWealth(mode, ids){
+function sendToMyWealth(source){
 
-  if(
-    !["stocks", "portfolios"].includes(mode) ||
-    !Array.isArray(ids) ||
-    ids.length === 0
-  ){
+  if(!["assets", "portfolios"].includes(source)){
     return;
   }
 
-  myWealthMode = mode;
+  const ids =
+    source === "assets"
+      ? [...APP.assets]
+      : APP.planSlots
+          .map(s => s.modelNo)
+          .filter(id => id !== "" && id != null);
 
-  APP.myWealth.source = mode;
+  if(!ids.length) return;
+
+  myWealthMode =
+    source === "assets"
+      ? "stocks"
+      : "portfolios";
+
+  APP.myWealth.source = source;
   APP.myWealth.ids = ids.slice(0, 5);
   APP.myWealth.selectedIndex = 0;
-
-  renderMyWealth();
 
   openTab("mywealth");
 }
@@ -6330,17 +6336,130 @@ function initPlanHistoryViewer(){
 
 }
 
-function renderMyWealth() {
-    const { source, ids, selectedIndex } = APP.myWealth;
-    $('mywealth-source').textContent = `${tr(source)} · ${ids.length}/5`;
-    $('mywealth-basket').innerHTML = ids.length ? ids.map((id, i) => {
-        const p = source === 'assets' ? DEMO_ASSETS.find(x => x.id === id) : DEMO_PLANS.find(x => x.modelNo === id);
-        return `<div class="basket-row ${i === selectedIndex ? 'selected' : ''}" style="grid-template-columns:30px minmax(0,1fr) 115px 85px"><div class="row-icon">${icon(source === 'assets' ? 'chart-no-axes-column-increasing' : 'layers')}</div><button type="button" data-select-mywealth="${i}" style="background:transparent;border:0;text-align:left;padding:0"><div class="row-name">${esc(p?.name || tr('empty'))}</div><div class="row-meta">${esc(p?.ticker || p?.currency || '')}</div></button><div class="row-middle">${tr('annualReturn')}: —</div><div>${source === 'portfolios' ? riskDots(p?.riskDot || 0) : '<span class="small">—</span>'}</div></div>`;
-    }).join('') : `<div class="panel-pad small">${tr('noSelection')}</div>`;
-    const p = currentSelection();
-    $('active-caption').textContent = p?.name || '';
-    $('forward-metrics').innerHTML = ['futureWealth', 'contributions', 'marketReturn', 'annualReturn'].map(key => `<div class="metric"><div class="small">${tr(key)}</div><div class="value">—</div></div>`).join('');
-    icons();
+/* =====================================================
+   MYWEALTH · WAITING / RECEIVED
+===================================================== */
+
+function renderMyWealth(){
+
+  const { source, ids } = APP.myWealth;
+
+  const mode = myWealthMode;
+
+  const waiting =
+    !mode ||
+    !Array.isArray(ids) ||
+    ids.length === 0;
+
+  const pill =
+    document.getElementById("mywealth-mode-pill");
+
+  const waitingBox =
+    document.getElementById("mywealth-waiting");
+
+  const receivedBox =
+    document.getElementById("mywealth-received");
+
+  const basket =
+    document.getElementById("mywealth-basket");
+
+  const race =
+    document.getElementById("mywealth-race-section");
+
+
+  /* ==============================
+     WAITING / RECEIVED STATE
+  ============================== */
+
+  if(pill){
+
+    pill.textContent = waiting
+      ? "WAITING"
+      : `${mode.toUpperCase()} · ${ids.length}`;
+
+  }
+
+  if(waitingBox){
+    waitingBox.hidden = !waiting;
+  }
+
+  if(receivedBox){
+    receivedBox.hidden = waiting;
+  }
+
+  if(race){
+    race.hidden = waiting;
+  }
+
+  if(!basket || waiting){
+    if(basket) basket.innerHTML = "";
+    return;
+  }
+
+
+  /* ==============================
+     RESOLVE LIVE INVESTMENTS
+  ============================== */
+
+  const isStocks =
+    source === "assets";
+
+  const records =
+    isStocks
+      ? (INSTRUMENT_STATE.all || [])
+      : (PORTFOLIO_STATE.all || []);
+
+
+  /* ==============================
+     RENDER RECEIVED BASKET
+  ============================== */
+
+  basket.innerHTML = ids.map((id, i) => {
+
+    const p = isStocks
+      ? records.find(
+          x => x.tickerExchange === id
+        )
+      : records.find(
+          x => Number(x.modelNo) === Number(id)
+        );
+
+    const name = isStocks
+      ? (p?.name || p?.instrumentName || id)
+      : (p?.modelLabel || `Model ${id}`);
+
+    const meta = isStocks
+      ? id
+      : (p?.issuerName || "");
+
+    return `
+      <div class="basket-row">
+
+        <div class="row-icon">
+          ${icon(
+            isStocks
+              ? "chart-no-axes-column-increasing"
+              : "layers"
+          )}
+        </div>
+
+        <div>
+          <div class="row-name">
+            ${esc(name)}
+          </div>
+
+          <div class="row-meta">
+            ${esc(meta)}
+          </div>
+        </div>
+
+      </div>
+    `;
+
+  }).join("");
+
+  icons();
+
 }
 
 /* =====================================================
