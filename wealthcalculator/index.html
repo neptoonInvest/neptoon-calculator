@@ -3669,15 +3669,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
   <div class="mywealth-history-controls">
 
-    <div class="mywealth-history-control-label">
+<div class="mywealth-history-control-label">
 
-      <strong>Comparison method</strong>
+  <strong>Comparison method</strong>
 
-      <span>
-        Investment versus MSCI World ETF
-      </span>
+  <span id="mywealth-history-benchmark-label">
+    100% iShares MSCI World (EUNL.DE) EUR
+  </span>
 
-    </div>
+</div>
 
 
     <!-- CENTER: MARKET / JENSEN -->
@@ -5476,13 +5476,115 @@ async function loadInstrumentHistory(){
    MYWEALTH · LOAD HISTORICAL MARKET RACE
 ===================================================== */
 
+
 async function loadMyWealthMarketRace(investment){
 
   if(!investment) return [];
 
   try{
 
-    // Reuse existing history loader
+    /* ============================================
+       WEALTH PLANS
+       Canonical portfolio + benchmark history
+    ============================================ */
+
+    if(myWealthMode === "portfolios"){
+
+      const model =
+        PORTFOLIO_STATE.all.find(
+          p =>
+            Number(p.modelNo) ===
+            Number(investment.id)
+        );
+
+      if(!model){
+
+        console.warn(
+          "MYWEALTH PORTFOLIO NOT FOUND",
+          investment.id
+        );
+
+        return [];
+
+      }
+
+      const history =
+        Array.isArray(model.arrayHistory)
+          ? model.arrayHistory
+          : [];
+
+      const valid = history
+        .filter(p =>
+          p.date &&
+          Number.isFinite(Number(p.accPortIndex)) &&
+          Number.isFinite(Number(p.accBenchIndex)) &&
+          Number(p.accPortIndex) > 0 &&
+          Number(p.accBenchIndex) > 0
+        )
+        .sort((a,b) =>
+          a.date.localeCompare(b.date)
+        );
+
+      if(valid.length < 2){
+
+        console.warn(
+          "MYWEALTH PORTFOLIO HISTORY EMPTY",
+          model.modelNo
+        );
+
+        return [];
+
+      }
+
+      /* Common NAV base = 100 */
+
+      const baseA =
+        Number(valid[0].accPortIndex);
+
+      const baseB =
+        Number(valid[0].accBenchIndex);
+
+      const series = valid.map(
+        (p,index) => ({
+
+          index,
+
+          date:p.date,
+
+          investmentNAV:
+            100 *
+            Number(p.accPortIndex) /
+            baseA,
+
+          benchmarkNAV:
+            100 *
+            Number(p.accBenchIndex) /
+            baseB
+
+        })
+      );
+
+      console.log(
+        "MYWEALTH PORTFOLIO RACE READY",
+        {
+          modelNo:model.modelNo,
+          modelLabel:model.modelLabel,
+          observations:series.length,
+          first:series[0],
+          last:series.at(-1)
+        }
+      );
+
+      return series;
+
+    }
+
+
+    /* ============================================
+       ASSETS
+       Instrument versus MSCI World ETF
+    ============================================ */
+
     await loadInstrumentHistory();
 
     const ticker =
@@ -5491,7 +5593,9 @@ async function loadMyWealthMarketRace(investment){
         .toUpperCase();
 
     const selectedHistory =
-      INSTRUMENT_HISTORY_STATE.byTicker.get(ticker) || [];
+      INSTRUMENT_HISTORY_STATE.byTicker.get(
+        ticker
+      ) || [];
 
     const benchmarkHistory =
       INSTRUMENT_HISTORY_STATE.byTicker.get(
@@ -5505,14 +5609,14 @@ async function loadMyWealthMarketRace(investment){
       );
 
     console.log(
-      "MYWEALTH MARKET RACE READY",
+      "MYWEALTH ASSET RACE READY",
       {
         ticker,
-        selectedHistory: selectedHistory.length,
-        benchmarkHistory: benchmarkHistory.length,
-        observations: series.length,
-        first: series[0],
-        last: series.at(-1)
+        selectedHistory:selectedHistory.length,
+        benchmarkHistory:benchmarkHistory.length,
+        observations:series.length,
+        first:series[0],
+        last:series.at(-1)
       }
     );
 
@@ -5536,83 +5640,78 @@ function selectMyWealthHistoryInvestment(investment){
 
   if(!investment) return;
 
-resetMyWealthCinema();
+  /* ============================================
+     STOP PREVIOUS CINEMA
+  ============================================ */
 
-  const section =
-    document.getElementById("mywealth-history-section");
-
-  const name =
-    document.getElementById("mywealth-history-name");
-
-  const investmentLabel =
-    document.getElementById("mywealth-history-investment-label");
-
-  const investmentNAV =
-    document.getElementById("mywealth-history-investment-nav");
-
-  const benchmarkNAV =
-    document.getElementById("mywealth-history-benchmark-nav");
-
-  const status =
-    document.getElementById("mywealth-history-status");
-
-  const verdictMarket =
-    document.getElementById("mywealth-history-verdict-market");
-
-  const verdictDecision =
-    document.getElementById("mywealth-history-verdict-decision");
+  resetMyWealthCinema();
 
 
   /* ============================================
-     FIND SELECTED INSTRUMENT
+     DOM REFERENCES
   ============================================ */
 
-  const selectedInstrument =
-    INSTRUMENT_STATE.all.find(p =>
-      String(p.tickerExchange || "")
-        .trim()
-        .toUpperCase() ===
-      String(investment.id ?? "")
-        .trim()
-        .toUpperCase()
+  const section =
+    document.getElementById(
+      "mywealth-history-section"
+    );
+
+  const name =
+    document.getElementById(
+      "mywealth-history-name"
+    );
+
+  const investmentLabel =
+    document.getElementById(
+      "mywealth-history-investment-label"
     );
 
 
+
   /* ============================================
-     FIND MSCI WORLD BENCHMARK
+     CAPTURE SELECTION
+  ============================================ */
+
+  const selectedId = investment.id;
+
+  const selectedMode = myWealthMode;
+
+
+  /* ============================================
+     FIND BENCHMARK METADATA
+     ASSETS ONLY
   ============================================ */
 
   const benchmark =
-    INSTRUMENT_STATE.all.find(p =>
-      String(p.tickerExchange || "")
-        .trim()
-        .toUpperCase() === "EUNL.XETRA"
-    );
-
-
-  /* ============================================
-     BUILD HISTORICAL NAV SERIES
-  ============================================ */
-
+    selectedMode === "stocks"
+      ? INSTRUMENT_STATE.all.find(p =>
+          String(p.tickerExchange || "")
+            .trim()
+            .toUpperCase() === "EUNL.XETRA"
+        )
+      : null;
 
 
   /* ============================================
      UPDATE HISTORY STATE
   ============================================ */
 
-  MYWEALTH_HISTORY.selectedId = investment.id;
+  MYWEALTH_HISTORY.selectedId =
+    selectedId;
 
-  MYWEALTH_HISTORY.selected = investment;
+  MYWEALTH_HISTORY.selected =
+    investment;
 
   MYWEALTH_HISTORY.benchmark =
     benchmark || null;
-MYWEALTH_HISTORY.series = [];
+
+  MYWEALTH_HISTORY.series = [];
 
   MYWEALTH_HISTORY.status = "pending";
 
 
   /* ============================================
-     UPDATE SECTION 2 HEADER
+     UPDATE HEADER
   ============================================ */
 
   if(name){
@@ -5620,143 +5719,117 @@ MYWEALTH_HISTORY.series = [];
   }
 
   if(investmentLabel){
-    investmentLabel.textContent = investment.name;
+    investmentLabel.textContent =
+      investment.name;
   }
 
 
   /* ============================================
-     RESET NAV INDICATORS
+     BENCHMARK LABEL BY MODE
   ============================================ */
 
-  if(investmentNAV){
-    investmentNAV.textContent = "NAV 100";
+/* ============================================
+   BENCHMARK DESCRIPTION
+============================================ */
+
+const benchmarkLabel =
+  document.getElementById(
+    "mywealth-history-benchmark-label"
+  );
+
+if(benchmarkLabel){
+
+  if(myWealthMode === "stocks"){
+
+    benchmarkLabel.textContent =
+      "100% iShares MSCI World (EUNL.DE) EUR";
+
+  }else if(myWealthMode === "portfolios"){
+
+    const model =
+      PORTFOLIO_STATE.all.find(
+        p => Number(p.modelNo) === Number(investment.id)
+      );
+
+    const weights =
+      model
+        ? getMyWealthBenchmarkWeights(model)
+        : null;
+
+    if(weights){
+
+      const equity =
+        (weights.equityWeight * 100).toFixed(0);
+
+      const bonds =
+        (weights.bondWeight * 100).toFixed(0);
+
+      benchmarkLabel.textContent =
+        `${equity}% iShares MSCI World (EUNL.DE) EUR` +
+        ` · ${bonds}% Euro Government Bonds (LYQ2.DE) EUR`;
+
+    }else{
+
+      benchmarkLabel.textContent =
+        "Model benchmark";
+
+    }
+
   }
 
-  if(benchmarkNAV){
-    benchmarkNAV.textContent = "NAV 100";
-  }
+}
 
 
   /* ============================================
-     RESET VERDICT
-  ============================================ */
-
-  if(status){
-    status.textContent = "PENDING";
-  }
-
-  if(verdictMarket){
-    verdictMarket.textContent = "Awaiting race";
-  }
-
-  if(verdictDecision){
-    verdictDecision.textContent = "Evidence pending";
-  }
-
-
-  /* ============================================
-     ACTIVATE SECTION 2
+     ACTIVATE HISTORY SECTION
   ============================================ */
 
   if(section){
     section.hidden = false;
   }
 
-/* ============================================
-   LOAD HISTORICAL SERIES
-============================================ */
-
-
-/* ============================================
-   LOAD HISTORICAL SERIES BY MODE
-============================================ */
-
-/* ============================================
-   LOAD HISTORICAL SERIES BY MODE
-============================================ */
-
-const selectedId = investment.id;
-
-if(myWealthMode === "stocks"){
 
   /* ============================================
-     STOCKS · MSCI WORLD BENCHMARK
+     LOAD HISTORICAL SERIES
+     UNIFIED ASSETS + PORTFOLIOS
   ============================================ */
 
-  loadMyWealthMarketRace(investment).then(series => {
+  loadMyWealthMarketRace(investment)
+    .then(series => {
 
-    // Ignore outdated selection
-    if(MYWEALTH_HISTORY.selectedId !== selectedId){
-      return;
-    }
+      /* Ignore outdated selection */
 
-    MYWEALTH_HISTORY.series = series;
-
-    console.log(
-      "MYWEALTH STOCK HISTORY CONNECTED",
-      {
-        ticker: selectedId,
-        observations: series.length,
-        first: series[0],
-        last: series.at(-1)
+      if(
+        MYWEALTH_HISTORY.selectedId !== selectedId ||
+        myWealthMode !== selectedMode
+      ){
+        return;
       }
-    );
 
-  });
+      MYWEALTH_HISTORY.series = series;
 
-}else if(myWealthMode === "portfolios"){
+      console.log(
+        "MYWEALTH HISTORY CONNECTED",
+        {
+          mode:selectedMode,
+          investmentId:selectedId,
+          observations:series.length,
+          first:series[0],
+          last:series.at(-1)
+        }
+      );
 
-  /* ============================================
-     PORTFOLIOS · WEIGHTED BENCHMARK
-  ============================================ */
+    })
+    .catch(err => {
 
-  const model =
-    PORTFOLIO_STATE.all.find(p =>
-      Number(p.modelNo) === Number(investment.id)
-    );
+      console.error(
+        "MYWEALTH HISTORY CONNECTION ERROR",
+        err
+      );
 
-  if(!model){
-    console.warn(
-      "Portfolio model not found",
-      investment.id
-    );
-    return;
-  }
-
-  const weights =
-    getMyWealthBenchmarkWeights(model);
-
-  if(!weights){
-    console.warn(
-      "Portfolio benchmark weights missing",
-      investment.id
-    );
-    return;
-  }
-
-  /*
-    Portfolio historical NAV connection
-    will be added here.
-
-    Benchmark:
-    EUNL.XETRA × equityWeight
-    LYQ2.XETRA × bondWeight
-  */
-
-  console.log(
-    "MYWEALTH PORTFOLIO BENCHMARK READY",
-    {
-      modelNo: model.modelNo,
-      equityWeight: weights.equityWeight,
-      bondWeight: weights.bondWeight,
-      holdings: model.arrayBenchHoldings
-    }
-  );
+    });
 
 }
-
-
-
 
   /* ============================================
      DIAGNOSTICS
