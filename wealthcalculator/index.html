@@ -4327,6 +4327,12 @@ const icon = (name) => `<i data-lucide="${name}"></i>`;
    07 · LUCIDE ICONS AND RISK DOTS
 ===================================================== */
 
+const INIT={
+
+lang:"da"
+
+};
+
 
 /* =====================================================
    MARKET PULSE · INDEX / ETF INSTRUMENTS
@@ -5307,13 +5313,37 @@ function completeMyWealthCinema(){
 
   MYWEALTH_HISTORY.status = "completed";
 
+  /*
+    =========================
+    LANGUAGE + METHOD
+    =========================
+  */
+
+  const da = INIT.lang === "da";
+
+  const isJensen =
+    myWealthMode === "stocks" &&
+    comparisonMethod === "jensen";
+
+  /*
+    =========================
+    FINAL RESULTS
+    =========================
+  */
+
   const last = series.at(-1);
 
   const investmentNAV = last.investmentNAV;
   const benchmarkNAV = last.benchmarkNAV;
 
   const excessReturn =
-    (investmentNAV/benchmarkNAV-1)*100;
+    (investmentNAV / benchmarkNAV - 1) * 100;
+
+  /*
+    =========================
+    DOM ELEMENTS
+    =========================
+  */
 
   const status =
     document.getElementById(
@@ -5331,39 +5361,98 @@ function completeMyWealthCinema(){
     );
 
   if(status){
-    status.textContent = "COMPLETED";
-  }
 
-  if(verdictMarket){
-
-    verdictMarket.textContent =
-      investmentNAV > benchmarkNAV
-        ? "YES · OUTPERFORMED"
-        : investmentNAV < benchmarkNAV
-          ? "NO · UNDERPERFORMED"
-          : "MATCHED THE MARKET";
+    status.textContent =
+      da ? "AFSLUTTET" : "COMPLETED";
 
   }
 
   /*
+    =========================
+    VERDICT A
+    =========================
+  */
+
+  if(verdictMarket){
+
+    if(investmentNAV > benchmarkNAV){
+
+      verdictMarket.textContent = isJensen
+        ? (
+            da
+              ? "JA · BEDRE END BETAJUSTERET BENCHMARK"
+              : "YES · OUTPERFORMED BETA-ADJUSTED BENCHMARK"
+          )
+        : (
+            da
+              ? "JA · BEDRE END MARKEDET"
+              : "YES · OUTPERFORMED THE MARKET"
+          );
+
+    }else if(investmentNAV < benchmarkNAV){
+
+      verdictMarket.textContent = isJensen
+        ? (
+            da
+              ? "NEJ · DÅRLIGERE END BETAJUSTERET BENCHMARK"
+              : "NO · UNDERPERFORMED BETA-ADJUSTED BENCHMARK"
+          )
+        : (
+            da
+              ? "NEJ · DÅRLIGERE END MARKEDET"
+              : "NO · UNDERPERFORMED THE MARKET"
+          );
+
+    }else{
+
+      verdictMarket.textContent = isJensen
+        ? (
+            da
+              ? "SAMME AFKAST SOM BETAJUSTERET BENCHMARK"
+              : "MATCHED BETA-ADJUSTED BENCHMARK"
+          )
+        : (
+            da
+              ? "SAMME AFKAST SOM MARKEDET"
+              : "MATCHED THE MARKET"
+          );
+
+    }
+
+  }
+
+  /*
+    =========================
+    VERDICT B
+    =========================
+
     Historical outperformance is not
     an independent buy/sell signal.
   */
 
   if(verdictDecision){
 
-    verdictDecision.textContent =
-      "No buy/sell conclusion from historical returns alone";
+    verdictDecision.textContent = da
+      ? "Historiske afkast alene giver ikke grundlag for en købs- eller salgsbeslutning"
+      : "Historical returns alone do not justify a buy or sell decision";
 
   }
+
+  /*
+    =========================
+    DEBUG
+    =========================
+  */
 
   console.log(
     "MYWEALTH CINEMA COMPLETED",
     {
+      language: INIT.lang,
+      method: isJensen ? "jensen" : "market",
       investmentNAV,
       benchmarkNAV,
-      relativeWealthDifferencePct:excessReturn,
-      observations:series.length
+      relativeWealthDifferencePct: excessReturn,
+      observations: series.length
     }
   );
 
@@ -5376,11 +5465,15 @@ function completeMyWealthCinema(){
 
 function playMyWealthCinema(){
 
-  const series = MYWEALTH_HISTORY.series;
+  const investment =
+    MYWEALTH_HISTORY.selected;
+
+  const sourceSeries =
+    MYWEALTH_HISTORY.series;
 
   if(
-    !Array.isArray(series) ||
-    series.length < 2
+    !Array.isArray(sourceSeries) ||
+    sourceSeries.length < 2
   ){
     console.warn(
       "Market Race history not ready"
@@ -5388,9 +5481,37 @@ function playMyWealthCinema(){
     return;
   }
 
+  /*
+    =========================
+    COMPARISON METHOD
+    =========================
+  */
+
+  const beta =
+    Number(investment?.beta);
+
+  const useJensen =
+    comparisonMethod === "jensen" &&
+    myWealthMode === "stocks" &&
+    Number.isFinite(beta);
+
+  const series = useJensen
+    ? applyStaticBeta(
+        sourceSeries,
+        beta
+      )
+    : sourceSeries;
+
+  /*
+    =========================
+    START CINEMA
+    =========================
+  */
+
   resetMyWealthCinema();
 
   MYWEALTH_CINEMA.series = series;
+
   MYWEALTH_CINEMA.selectionId =
     MYWEALTH_HISTORY.selectedId;
 
@@ -7078,24 +7199,98 @@ function renderNav() {
     $('bottom-nav').innerHTML = NAV.map(([id, ico]) => `<button type="button" class="nav-tab ${APP.activeTab === id ? 'active' : ''}" data-tab="${id}" aria-current="${APP.activeTab === id ? 'page' : 'false'}">${icon(ico)}<span>${tr(id)}</span></button>`).join('');
 }
 function openTab(tab) {
+
     if (!NAV.some(x => x[0] === tab))
         return;
+
     APP.activeTab = tab;
-    document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === `page-${tab}`));
+
+    document.querySelectorAll('.page').forEach(p =>
+        p.classList.toggle(
+            'active',
+            p.id === `page-${tab}`
+        )
+    );
+
     renderNav();
-    if (tab === 'mywealth')
+
+    if (tab === 'mywealth') {
+
         renderMyWealth();
+
+        syncMyWealthComparisonMode();
+
+    }
+
     if (tab === 'history')
         renderHistory();
+
     icons();
-    window.scrollTo({ top: 0, behavior: 'instant' });
+
+    window.scrollTo({
+        top: 0,
+        behavior: 'instant'
+    });
+
     requestAnimationFrame(() => {
+
         if (tab === 'mywealth')
             paintEmptyCanvas('wealth-canvas');
+
         if (tab === 'history')
             paintEmptyCanvas('history-canvas');
+
     });
+
 }
+
+
+function bindMyWealthComparisonToggle(){
+
+  const marketBtn =
+    document.getElementById(
+      "mywealth-history-method-market"
+    );
+
+  const jensenBtn =
+    document.getElementById(
+      "mywealth-history-method-jensen"
+    );
+
+  function changeMethod(method){
+
+    if(
+      method === "jensen" &&
+      myWealthMode !== "stocks"
+    ){
+      return;
+    }
+
+    comparisonMethod = method;
+
+    syncMyWealthComparisonMode();
+
+    if(
+      Array.isArray(MYWEALTH_HISTORY.series) &&
+      MYWEALTH_HISTORY.series.length > 1
+    ){
+      playMyWealthCinema();
+    }
+
+  }
+
+  marketBtn?.addEventListener(
+    "click",
+    () => changeMethod("market")
+  );
+
+  jensenBtn?.addEventListener(
+    "click",
+    () => changeMethod("jensen")
+  );
+
+}
+
 
 /* =====================================================
    09 · ASSETS BASKET
@@ -11187,7 +11382,35 @@ const PORTFOLIO_STATE = {
 
 };
 
+function applyStaticBeta(series, beta){
 
+  let nav = 100;
+
+  return series.map((point, i) => {
+
+    if(i === 0){
+      return {
+        ...point,
+        benchmarkNAV: 100
+      };
+    }
+
+    const previous = series[i - 1];
+
+    const monthlyReturn =
+      point.benchmarkNAV /
+      previous.benchmarkNAV - 1;
+
+    nav *= 1 + beta * monthlyReturn;
+
+    return {
+      ...point,
+      benchmarkNAV: nav
+    };
+
+  });
+
+}
   
   
 /* =========================================
@@ -11852,6 +12075,58 @@ function getMyWealthBenchmarkWeights(model){
   };
 
 }
+function syncMyWealthComparisonMode(){
+
+  const isStocks =
+    myWealthMode === "stocks";
+
+  const marketBtn =
+    document.getElementById(
+      "mywealth-history-method-market"
+    );
+
+  const jensenBtn =
+    document.getElementById(
+      "mywealth-history-method-jensen"
+    );
+
+  if(!isStocks){
+
+    comparisonMethod = "market";
+
+  }
+
+  if(jensenBtn){
+
+    jensenBtn.disabled = !isStocks;
+
+    jensenBtn.classList.toggle(
+      "is-disabled",
+      !isStocks
+    );
+
+  }
+
+  if(marketBtn){
+
+    marketBtn.classList.toggle(
+      "active",
+      comparisonMethod === "market"
+    );
+
+  }
+
+  if(jensenBtn){
+
+    jensenBtn.classList.toggle(
+      "active",
+      comparisonMethod === "jensen" &&
+      isStocks
+    );
+
+  }
+
+}
 
 /* =====================================================
    MYWEALTH · GET MODEL BENCHMARK WEIGHTS
@@ -12120,6 +12395,7 @@ async function initializeApp(){
 initMyWealthControls();
 initMyWealthRaceInteraction();
 initMyWealthCinema();
+bindMyWealthComparisonToggle();
 
 
   /* ================================================
