@@ -9189,8 +9189,11 @@ if(name !== "history"){
 
     }
 
-    if (tab === 'history')
-        renderHistory();
+if (tab === 'history') {
+    initTimeMachine();
+} else {
+    tmPause();
+}
 
     icons();
 
@@ -12763,7 +12766,12 @@ function renderLanguage() {
     renderAssets();
     renderPortfolios();
     renderMyWealth();
-    renderHistory();
+ 
+// Time Machine replaces the old History renderer.
+if(TIME_MACHINE.data){
+  tmRender();
+}
+
     const periodStatus = document.getElementById('history-period-status');
     if (periodStatus) periodStatus.textContent = `${HISTORY_VIEW.period} · ${APP.lang === 'da' ? 'Afventer historiske data' : 'Awaiting historical series'}`;
     renderMarketPulse();
