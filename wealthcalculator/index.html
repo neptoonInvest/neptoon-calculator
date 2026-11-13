@@ -3508,6 +3508,326 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
 
 
+/* =========================================
+   TIME MACHINE · HISTORICAL STATISTICS
+========================================= */
+
+#page-history .tm-statistics{
+  width:100%;
+  max-width:none;
+  box-sizing:border-box;
+  border-radius:0;
+}
+
+#page-history .tm-statistics-head{
+  margin-bottom:20px;
+}
+
+#page-history .tm-statistics-kicker{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1.2px;
+  color:#75d7ec;
+  margin-bottom:8px;
+}
+
+#page-history .tm-statistics-title{
+  margin:0 0 5px;
+  font-size:22px;
+  font-weight:750;
+  color:#fff;
+}
+
+#page-history .tm-statistics-subtitle{
+  margin:0;
+  font-size:12px;
+  color:#a9bdd5;
+}
+
+#page-history .tm-statistics-scroll{
+  width:100%;
+  overflow-x:auto;
+}
+
+#page-history .tm-statistics-table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+
+#page-history .tm-statistics-table th{
+  padding:12px 8px;
+  border-bottom:1px solid #355174;
+  text-align:left;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.35px;
+  color:#a9bdd5;
+}
+
+#page-history .tm-statistics-table td{
+  padding:12px 8px;
+  border-bottom:1px solid #294461;
+  font-size:12px;
+  color:#fff;
+  vertical-align:middle;
+}
+
+#page-history .tm-statistics-table th:nth-child(1){
+  width:21%;
+}
+
+#page-history .tm-statistics-table th:nth-child(2){
+  width:35%;
+}
+
+#page-history .tm-statistics-table th:nth-child(3),
+#page-history .tm-statistics-table th:nth-child(4){
+  width:22%;
+}
+
+#page-history .tm-statistics-table .tm-stats-number{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+#page-history .tm-statistics-table .tm-stats-era{
+  color:#a9bdd5;
+  font-size:11px;
+}
+
+#page-history .tm-statistics-table .positive{
+  color:#69c9a4;
+}
+
+#page-history .tm-statistics-table .negative{
+  color:#f07882;
+}
+
+#page-history .tm-statistics-table tbody tr{
+  cursor:pointer;
+}
+
+#page-history .tm-statistics-table tbody tr:hover{
+  background:rgba(78,121,189,.13);
+}
+
+#page-history .tm-statistics-table tbody tr.active{
+  background:rgba(78,121,189,.22);
+}
+
+#page-history .tm-statistics-total td{
+  padding-top:17px;
+  padding-bottom:17px;
+  font-weight:750;
+  background:#173354;
+  border-top:2px solid #4e79bd;
+  border-bottom:0;
+}
+
+#page-history .tm-statistics-note{
+  margin:15px 0 0;
+  font-size:11px;
+  line-height:1.6;
+  color:#a9bdd5;
+}
+
+/* Mobile adjustments */
+
+@media(max-width:480px){
+
+  #page-history .tm-statistics-table th,
+  #page-history .tm-statistics-table td{
+    padding:11px 5px;
+  }
+
+  #page-history .tm-statistics-table th{
+    font-size:9px;
+  }
+
+  #page-history .tm-statistics-table td{
+    font-size:11px;
+  }
+
+  #page-history .tm-statistics-table .tm-stats-era{
+    font-size:10px;
+  }
+
+}
+
+
+/* =========================================
+   MYWEALTH · WEALTH PLAN EMAIL
+========================================= */
+
+#mw-wealth-plan{
+  width:100%;
+  max-width:none;
+  box-sizing:border-box;
+  margin:14px 0;
+  padding:0;
+}
+
+#mw-wealth-plan[hidden],
+#mw-plan-status[hidden]{
+  display:none !important;
+}
+
+.mw-plan-content{
+  background:#fff;
+  border:1px solid #d5e0ee;
+  border-radius:0;
+  padding:16px;
+}
+
+.mw-plan-heading{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.mw-plan-icon{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#eaf1fb;
+  color:#4e79bd;
+}
+
+.mw-plan-icon svg{
+  width:19px;
+  height:19px;
+}
+
+.mw-plan-heading-text{
+  min-width:0;
+}
+
+.mw-plan-heading-text h3{
+  margin:0 0 4px;
+  font-size:15px;
+  font-weight:750;
+  color:#102747;
+}
+
+.mw-plan-heading-text p{
+  margin:0;
+  font-size:12px;
+  line-height:1.5;
+  color:#64748b;
+}
+
+.mw-plan-form{
+  display:flex;
+  gap:8px;
+}
+
+#mw-plan-email{
+  flex:1;
+  min-width:0;
+  height:40px;
+  padding:0 12px;
+  border:1px solid #cbd8e8;
+  border-radius:0;
+  background:#fff;
+  color:#102747;
+  font:inherit;
+  font-size:13px;
+}
+
+#mw-plan-email:focus{
+  outline:2px solid #4e79bd;
+  outline-offset:1px;
+}
+
+.mw-plan-send{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  height:40px;
+  padding:0 17px;
+  border:1px solid #4e79bd;
+  border-radius:0;
+  background:#4e79bd;
+  color:#fff;
+  font:inherit;
+  font-size:12px;
+  font-weight:700;
+  white-space:nowrap;
+  cursor:pointer;
+}
+
+.mw-plan-send svg,
+.mw-plan-download svg{
+  width:15px;
+  height:15px;
+}
+
+.mw-plan-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:11px;
+}
+
+.mw-plan-footer > span{
+  font-size:11px;
+  line-height:1.4;
+  color:#64748b;
+}
+
+.mw-plan-download{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:#4e79bd;
+  font:inherit;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+  cursor:pointer;
+}
+
+.mw-plan-status{
+  margin-top:12px;
+  font-size:12px;
+  color:#102747;
+}
+
+@media(max-width:480px){
+
+  .mw-plan-content{
+    padding:13px;
+  }
+
+  .mw-plan-heading{
+    align-items:flex-start;
+  }
+
+  .mw-plan-form{
+    flex-direction:column;
+  }
+
+  #mw-plan-email,
+  .mw-plan-send{
+    width:100%;
+  }
+
+  .mw-plan-footer{
+    align-items:flex-start;
+  }
+
+}
 
 
 </style>
@@ -5077,6 +5397,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   </div>
 
 
+
   <!-- =========================================
        EDUCATIONAL MESSAGE
   ========================================= -->
@@ -5088,10 +5409,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
 
     <p data-i18n="tmMessage">
-
       A 10% expected return is a number.
       A 40% loss is an experience.
-
     </p>
 
   </div>
@@ -5104,126 +5423,242 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   <div class="section tm-footnote">
 
     <p data-i18n="tmSource">
-
       Historical S&P 500 total returns including
       dividends. Nominal and inflation-adjusted
       wealth. Source: Shiller historical data.
-
     </p>
 
   </div>
-
-
-
-</section>
 
 
 <!-- =========================================
-     TIME MACHINE · HISTORICAL STATISTICS
+     MYWEALTH · SEND WEALTH PLAN
 ========================================= -->
 
-<section class="section panel panel-pad tm-statistics"
-         id="tm-statistics">
+<section
+  id="mw-wealth-plan"
+  class="section mw-wealth-plan"
+  hidden>
 
-  <div class="tm-statistics-head">
+  <div class="mw-plan-content">
 
-    <div class="tm-statistics-kicker">
-      NEPTOON WEALTH · TIME MACHINE
+    <div class="mw-plan-heading">
+
+      <div class="mw-plan-icon">
+        <i data-lucide="file-text"></i>
+      </div>
+
+      <div class="mw-plan-heading-text">
+
+        <h3 data-i18n="mwPlanTitle">
+          My Wealth Plan
+        </h3>
+
+        <p data-i18n="mwPlanDescription">
+          Receive your selected Wealth Plans,
+          expected returns, risk metrics and
+          portfolio holdings in one PDF.
+        </p>
+
+      </div>
+
     </div>
 
-    <h2 class="tm-statistics-title"
-        data-i18n="tmStatisticsTitle">
-      Historical Returns
-    </h2>
+    <form id="mw-plan-form" class="mw-plan-form">
 
-    <p class="tm-statistics-subtitle"
-       data-i18n="tmStatisticsSubtitle">
-      S&P 500 · Dividends reinvested
-    </p>
+      <input
+        type="email"
+        id="mw-plan-email"
+        name="email"
+        autocomplete="email"
+        placeholder="Your email address"
+        aria-label="Your email address"
+        required
+      >
 
-  </div>
+      <button
+        type="submit"
+        id="mw-plan-send"
+        class="mw-plan-send">
 
-  <div class="tm-statistics-scroll">
+        <i data-lucide="send"></i>
 
-    <table class="tm-statistics-table">
+        <span data-i18n="mwPlanSend">
+          Send PDF
+        </span>
 
-      <thead>
-        <tr>
+      </button>
 
-          <th data-i18n="tmStatsPeriod">
-            PERIOD
-          </th>
+    </form>
 
-          <th data-i18n="tmStatsEra">
-            HISTORICAL ERA
-          </th>
+    <div class="mw-plan-footer">
 
-          <th class="tm-stats-number"
-              data-i18n="tmStatsAccumulated">
-            ACCUMULATED
-          </th>
+      <span data-i18n="mwPlanPrivacy">
+        Your email is used only to deliver
+        your Wealth Plan.
+      </span>
 
-          <th class="tm-stats-number"
-              data-i18n="tmStatsAnnualized">
-            ANNUALIZED
-          </th>
+      <button
+        type="button"
+        id="mw-plan-download"
+        class="mw-plan-download">
 
-        </tr>
-      </thead>
+        <i data-lucide="download"></i>
 
-      <tbody id="tm-statistics-body">
-        <!-- 13 decades rendered by JavaScript -->
-      </tbody>
+        <span data-i18n="mwPlanDownload">
+          Download PDF
+        </span>
 
-      <tfoot>
-        <tr class="tm-statistics-total">
+      </button>
 
-          <td id="tm-stats-total-period">
-            TOTAL
-          </td>
+    </div>
 
-          <td id="tm-stats-total-label">
-            1900–present
-          </td>
-
-          <td class="tm-stats-number"
-              id="tm-stats-total-return">
-            —
-          </td>
-
-          <td class="tm-stats-number"
-              id="tm-stats-total-annualized">
-            —
-          </td>
-
-        </tr>
-      </tfoot>
-
-    </table>
+    <div
+      id="mw-plan-status"
+      class="mw-plan-status"
+      role="status"
+      aria-live="polite"
+      hidden>
+    </div>
 
   </div>
-
-  <p class="tm-statistics-note"
-     data-i18n="tmStatisticsNote">
-    Historical total returns including dividends.
-    Annualized returns are geometrically compounded.
-    Past performance does not predict future returns.
-  </p>
 
 </section>
 
 
 
+  <!-- =========================================
+       TIME MACHINE · HISTORICAL STATISTICS
+  ========================================= -->
+
+  <section
+    class="section panel panel-pad tm-statistics"
+    id="tm-statistics"
+  >
+
+    <div class="tm-statistics-head">
+
+      <div class="tm-statistics-kicker">
+        NEPTOON WEALTH · TIME MACHINE
+      </div>
+
+      <h2
+        class="tm-statistics-title"
+        data-i18n="tmStatisticsTitle"
+      >
+        Historical Returns
+      </h2>
+
+      <p
+        class="tm-statistics-subtitle"
+        data-i18n="tmStatisticsSubtitle"
+      >
+        S&P 500 · Dividends reinvested
+      </p>
+
+    </div>
 
 
+    <div class="tm-statistics-scroll">
+
+      <table class="tm-statistics-table">
+
+        <thead>
+          <tr>
+
+            <th data-i18n="tmStatsPeriod">
+              PERIOD
+            </th>
+
+            <th data-i18n="tmStatsEra">
+              HISTORICAL ERA
+            </th>
+
+            <th
+              class="tm-stats-number"
+              data-i18n="tmStatsAccumulated"
+            >
+              ACCUMULATED
+            </th>
+
+            <th
+              class="tm-stats-number"
+              data-i18n="tmStatsAnnualized"
+            >
+              ANNUALIZED
+            </th>
+
+          </tr>
+        </thead>
+
+
+        <tbody id="tm-statistics-body">
+          <!-- 13 decades rendered by JavaScript -->
+        </tbody>
+
+
+        <tfoot>
+          <tr class="tm-statistics-total">
+
+            <td id="tm-stats-total-period">
+              TOTAL
+            </td>
+
+            <td id="tm-stats-total-label">
+              1900–present
+            </td>
+
+            <td
+              class="tm-stats-number"
+              id="tm-stats-total-return"
+            >
+              —
+            </td>
+
+            <td
+              class="tm-stats-number"
+              id="tm-stats-total-annualized"
+            >
+              —
+            </td>
+
+          </tr>
+        </tfoot>
+
+      </table>
+
+    </div>
+
+
+    <p
+      class="tm-statistics-note"
+      data-i18n="tmStatisticsNote"
+    >
+      Historical total returns including dividends.
+      Annualized returns are geometrically compounded.
+      Past performance does not predict future returns.
+    </p>
+
+  </section>
+  <!-- END · HISTORICAL STATISTICS -->
+
+
+</section>
+<!-- END · PAGE HISTORY -->
 
 
 </main>
+<!-- END · MAIN -->
 
 
-<nav class="bottom-nav" aria-label="Primary navigation"><div class="nav-inner" id="bottom-nav"></div></nav>
+<nav class="bottom-nav" aria-label="Primary navigation">
+  <div class="nav-inner" id="bottom-nav"></div>
+</nav>
+
+
 <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 
 
 <script>
@@ -7419,6 +7854,617 @@ function tmCalculateMetrics(){
 
 
 /* =====================================================
+   NEPTOON WEALTH · WEALTH PLAN PDF GENERATOR
+===================================================== */
+
+function nwPdfPlans(){
+
+  const slots = Array.isArray(APP.planSlots)
+    ? APP.planSlots
+    : [];
+
+  const models = PORTFOLIO_STATE.all || [];
+
+  return slots
+    .filter(slot =>
+      slot?.modelNo !== null &&
+      slot?.modelNo !== undefined &&
+      slot?.modelNo !== ""
+    )
+    .map(slot => models.find(
+      p => Number(p.modelNo) === Number(slot.modelNo)
+    ))
+    .filter(Boolean);
+
+}
+
+
+/* =====================================================
+   PDF GENERATOR
+===================================================== */
+
+function generateWealthPlanPDF(){
+
+  const jsPDF = window.jspdf?.jsPDF;
+
+  if(!jsPDF){
+    console.error("jsPDF library not loaded");
+    return;
+  }
+
+  const plans = nwPdfPlans();
+
+  if(!plans.length){
+    console.warn("No Wealth Plans selected");
+    return;
+  }
+
+  const da = APP.lang === "da";
+
+  const T = (en,dk) => da ? dk : en;
+
+  const pdf = new jsPDF({
+    orientation:"portrait",
+    unit:"mm",
+    format:"a4"
+  });
+
+  const PAGE_W = 210;
+  const PAGE_H = 297;
+  const LEFT = 16;
+  const RIGHT = 194;
+  const CONTENT_W = RIGHT - LEFT;
+  const BOTTOM = 273;
+
+  const BLUE = [78,121,189];
+  const NAVY = [16,39,71];
+  const MUTED = [100,116,139];
+  const BORDER = [213,224,238];
+
+  const timestamp = new Date();
+
+  const dateText = new Intl.DateTimeFormat(
+    da ? "da-DK" : "en-GB",
+    {
+      dateStyle:"medium",
+      timeStyle:"short"
+    }
+  ).format(timestamp);
+
+  const pct = (value, digits=2) => {
+
+    if(
+      value === null ||
+      value === undefined ||
+      value === "" ||
+      !Number.isFinite(Number(value))
+    ){
+      return "—";
+    }
+
+    return (
+      Number(value) * 100
+    ).toLocaleString(
+      da ? "da-DK" : "en-US",
+      {
+        minimumFractionDigits:digits,
+        maximumFractionDigits:digits
+      }
+    ) + "%";
+
+  };
+
+  const clean = value => String(value ?? "—")
+    .replace(/[–—]/g,"-")
+    .replace(/\u00a0/g," ");
+
+  let y = 39;
+
+
+  /* =====================================
+     HEADER · EVERY PAGE
+  ===================================== */
+
+  function drawHeader(){
+
+    pdf.setFillColor(...NAVY);
+    pdf.rect(0,0,PAGE_W,26,"F");
+
+    pdf.setFont("helvetica","bold");
+    pdf.setFontSize(15);
+    pdf.setTextColor(255,255,255);
+
+    pdf.text(
+      "NEPTOON WEALTH",
+      LEFT,
+      12
+    );
+
+    pdf.setFont("helvetica","normal");
+    pdf.setFontSize(8);
+    pdf.setTextColor(205,222,245);
+
+    pdf.text(
+      T("WEALTH PLAN","FORMUEPLAN"),
+      LEFT,
+      19
+    );
+
+    pdf.setFontSize(8);
+
+    pdf.text(
+      clean(dateText),
+      RIGHT,
+      13,
+      {align:"right"}
+    );
+
+    pdf.setDrawColor(...BLUE);
+    pdf.setLineWidth(.7);
+    pdf.line(0,26,PAGE_W,26);
+
+  }
+
+
+  /* =====================================
+     FOOTER · EVERY PAGE
+  ===================================== */
+
+  function drawFooter(){
+
+    pdf.setDrawColor(...BORDER);
+    pdf.setLineWidth(.25);
+    pdf.line(LEFT,281,RIGHT,281);
+
+    pdf.setFont("helvetica","normal");
+    pdf.setFontSize(7);
+    pdf.setTextColor(...MUTED);
+
+    pdf.text(
+      T(
+        "Educational financial modelling. Returns are not guaranteed.",
+        "Finansiel modellering til undervisningsbrug. Afkast er ikke garanteret."
+      ),
+      LEFT,
+      286
+    );
+
+    pdf.text(
+      String(pdf.internal.getCurrentPageInfo().pageNumber),
+      RIGHT,
+      286,
+      {align:"right"}
+    );
+
+  }
+
+
+  /* =====================================
+     PAGE MANAGEMENT
+  ===================================== */
+
+  function newPage(){
+
+    pdf.addPage();
+    drawHeader();
+
+    y = 39;
+
+  }
+
+  function ensureSpace(height){
+
+    if(y + height > BOTTOM){
+      newPage();
+    }
+
+  }
+
+
+  /* =====================================
+     TEXT HELPERS
+  ===================================== */
+
+  function heading(text){
+
+    ensureSpace(17);
+
+    pdf.setFont("helvetica","bold");
+    pdf.setFontSize(13);
+    pdf.setTextColor(...NAVY);
+
+    pdf.text(clean(text),LEFT,y);
+
+    y += 9;
+
+  }
+
+  function smallText(text){
+
+    pdf.setFont("helvetica","normal");
+    pdf.setFontSize(8);
+    pdf.setTextColor(...MUTED);
+
+    const lines = pdf.splitTextToSize(
+      clean(text),
+      CONTENT_W
+    );
+
+    for(const line of lines){
+
+      ensureSpace(4.5);
+
+      pdf.text(line,LEFT,y);
+      y += 4.5;
+
+    }
+
+  }
+
+  function divider(){
+
+    ensureSpace(7);
+
+    pdf.setDrawColor(...BORDER);
+    pdf.setLineWidth(.25);
+    pdf.line(LEFT,y,RIGHT,y);
+
+    y += 7;
+
+  }
+
+
+  /* =====================================
+     DOCUMENT START
+  ===================================== */
+
+  drawHeader();
+
+  heading(
+    T("Your Wealth Plans","Dine formueplaner")
+  );
+
+  smallText(
+    T(
+      `${plans.length} selected portfolio models`,
+      `${plans.length} valgte porteføljemodeller`
+    )
+  );
+
+  y += 7;
+
+
+  /* =====================================
+     SUMMARY TABLE
+  ===================================== */
+
+  pdf.setFillColor(235,242,251);
+  pdf.rect(LEFT,y,CONTENT_W,10,"F");
+
+  pdf.setFont("helvetica","bold");
+  pdf.setFontSize(8);
+  pdf.setTextColor(...NAVY);
+
+  pdf.text(T("Portfolio","Portefølje"),LEFT+3,y+6);
+  pdf.text(T("Net return","Nettoafkast"),125,y+6,{align:"right"});
+  pdf.text(T("Risk","Risiko"),156,y+6,{align:"right"});
+  pdf.text(T("Costs","Omkostn."),RIGHT-3,y+6,{align:"right"});
+
+  y += 12;
+
+  plans.forEach(p => {
+
+    ensureSpace(12);
+
+    const k = p.objKeyFigures || {};
+
+    pdf.setFont("helvetica","normal");
+    pdf.setFontSize(8);
+    pdf.setTextColor(...NAVY);
+
+    const name = pdf.splitTextToSize(
+      clean(p.modelLabel),
+      68
+    )[0] || "";
+
+    pdf.text(name,LEFT+3,y+5);
+    pdf.text(pct(k.expRetNet),125,y+5,{align:"right"});
+    pdf.text(pct(k.risk),156,y+5,{align:"right"});
+    pdf.text(pct(k.costs),RIGHT-3,y+5,{align:"right"});
+
+    pdf.setDrawColor(...BORDER);
+    pdf.line(LEFT,y+9,RIGHT,y+9);
+
+    y += 12;
+
+  });
+
+  y += 7;
+
+  smallText(
+    T(
+      "Expected returns and risk are forward-looking model assumptions. Costs are annual estimates.",
+      "Forventet afkast og risiko er fremadrettede modelforudsætninger. Omkostninger er årlige estimater."
+    )
+  );
+
+
+  /* =====================================
+     INDIVIDUAL MODEL PAGES
+  ===================================== */
+
+  plans.forEach((p,index) => {
+
+    newPage();
+
+    const k = p.objKeyFigures || {};
+
+    pdf.setFont("helvetica","bold");
+    pdf.setFontSize(9);
+    pdf.setTextColor(...BLUE);
+
+    pdf.text(
+      T("WEALTH PLAN","FORMUEPLAN") +
+      ` ${index+1} / ${plans.length}`,
+      LEFT,y
+    );
+
+    y += 9;
+
+    heading(p.modelLabel || "Portfolio");
+
+    smallText(
+      `${p.issuerName || "—"}  |  Model No. ${p.modelNo}`
+    );
+
+    y += 7;
+
+
+    /* =====================================
+       KEY METRICS
+    ===================================== */
+
+    const metrics = [
+
+      [
+        T("Expected net return p.a.","Forventet nettoafkast p.a."),
+        pct(k.expRetNet)
+      ],
+
+      [
+        T("Expected volatility p.a.","Forventet volatilitet p.a."),
+        pct(k.risk)
+      ],
+
+      [
+        T("Annual costs","Årlige omkostninger"),
+        pct(k.costs)
+      ],
+
+      [
+        T("Equity allocation","Aktieandel"),
+        pct(k.equityWeight,1)
+      ],
+
+      [
+        T("Bond allocation","Obligationsandel"),
+        pct(k.bondsWeight,1)
+      ]
+
+    ];
+
+    metrics.forEach(([label,value]) => {
+
+      ensureSpace(9);
+
+      pdf.setFont("helvetica","normal");
+      pdf.setFontSize(9);
+      pdf.setTextColor(...MUTED);
+
+      pdf.text(clean(label),LEFT,y);
+
+      pdf.setFont("helvetica","bold");
+      pdf.setTextColor(...NAVY);
+
+      pdf.text(clean(value),RIGHT,y,{align:"right"});
+
+      y += 9;
+
+    });
+
+    y += 4;
+    divider();
+
+
+    /* =====================================
+       HOLDINGS
+    ===================================== */
+
+    heading(
+      T("Portfolio Holdings","Porteføljens beholdninger")
+    );
+
+    const holdings =
+      Array.isArray(p.arrayHoldings)
+        ? p.arrayHoldings
+        : [];
+
+    function holdingsHeader(){
+
+      pdf.setFillColor(235,242,251);
+      pdf.rect(LEFT,y,CONTENT_W,9,"F");
+
+      pdf.setFont("helvetica","bold");
+      pdf.setFontSize(7.5);
+      pdf.setTextColor(...NAVY);
+
+      pdf.text(T("Instrument","Instrument"),LEFT+2,y+6);
+      pdf.text("ISIN",114,y+6);
+      pdf.text("CCY",165,y+6);
+      pdf.text(T("Weight","Vægt"),RIGHT-2,y+6,{align:"right"});
+
+      y += 11;
+
+    }
+
+    holdingsHeader();
+
+    holdings.forEach(h => {
+
+      if(y+14 > BOTTOM){
+        newPage();
+        holdingsHeader();
+      }
+
+      const name =
+        h.instrumentName ||
+        h.name ||
+        h.tickerExchange ||
+        "—";
+
+      const assetClass = da
+        ? h.classMajorTop || "—"
+        : h.class_major_top_eng || "—";
+
+      pdf.setFont("helvetica","normal");
+      pdf.setFontSize(7.5);
+      pdf.setTextColor(...NAVY);
+
+      const displayName =
+        pdf.splitTextToSize(clean(name),84)[0] || "";
+
+      pdf.text(displayName,LEFT+2,y+4);
+
+      pdf.setFontSize(6.8);
+      pdf.setTextColor(...MUTED);
+
+      pdf.text(
+        clean(assetClass),
+        LEFT+2,
+        y+9
+      );
+
+      pdf.setFontSize(7.2);
+      pdf.setTextColor(...NAVY);
+
+      pdf.text(clean(h.isin || "—"),114,y+5);
+      pdf.text(clean(h.ccy || "—"),165,y+5);
+
+      pdf.text(
+        pct(h.weight,1),
+        RIGHT-2,
+        y+5,
+        {align:"right"}
+      );
+
+      pdf.setDrawColor(...BORDER);
+      pdf.line(LEFT,y+12,RIGHT,y+12);
+
+      y += 14;
+
+    });
+
+
+    /* =====================================
+       TOTAL ALLOCATION
+    ===================================== */
+
+    ensureSpace(13);
+
+    const totalWeight = holdings.reduce(
+      (sum,h) => sum + (Number(h.weight) || 0),
+      0
+    );
+
+    pdf.setFont("helvetica","bold");
+    pdf.setFontSize(9);
+    pdf.setTextColor(...NAVY);
+
+    pdf.text(
+      T("TOTAL ALLOCATION","SAMLET ALLOKERING"),
+      LEFT,
+      y+4
+    );
+
+    pdf.text(
+      pct(totalWeight,1),
+      RIGHT,
+      y+4,
+      {align:"right"}
+    );
+
+    y += 16;
+
+
+    /* =====================================
+       SHORT MODEL DESCRIPTION
+    ===================================== */
+
+    const description = da
+      ? p.descriptionLong_da
+      : p.descriptionLong_en;
+
+    if(description){
+
+      heading(
+        T("Portfolio Strategy","Porteføljestrategi")
+      );
+
+      /*
+        Keep the report concise:
+        use the introductory paragraph only.
+      */
+
+      const intro = String(description)
+        .split(/\n\s*\n/)[0]
+        .trim();
+
+      smallText(intro);
+
+    }
+
+  });
+
+
+  /* =====================================
+     ADD FOOTERS AFTER ALL PAGES EXIST
+  ===================================== */
+
+  const pageCount =
+    pdf.internal.getNumberOfPages();
+
+  for(let i=1;i<=pageCount;i++){
+
+    pdf.setPage(i);
+    drawFooter();
+
+  }
+
+
+  /* =====================================
+     DOWNLOAD
+  ===================================== */
+
+  const dateFile =
+    timestamp.toISOString().slice(0,10);
+
+  pdf.save(
+    `Neptoon_Wealth_Plan_${dateFile}.pdf`
+  );
+
+  console.log(
+    "WEALTH PLAN PDF GENERATED",
+    {
+      models:plans.length,
+      pages:pageCount
+    }
+  );
+
+}
+
+
+
+/* =====================================================
    RENDER CHAPTER HEADER
 ===================================================== */
 
@@ -7965,6 +9011,218 @@ function tmRender(){
 
 
 /* =====================================================
+   TIME MACHINE · HISTORICAL STATISTICS
+===================================================== */
+
+function tmCalculatePeriodReturn(series, key){
+
+  if(!Array.isArray(series) || series.length < 2){
+    return null;
+  }
+
+  const first = Number(series[0][key]);
+  const last = Number(series[series.length - 1][key]);
+
+  const months = series.length - 1;
+
+  if(
+    !Number.isFinite(first) ||
+    !Number.isFinite(last) ||
+    first <= 0 ||
+    last <= 0 ||
+    months <= 0
+  ){
+    return null;
+  }
+
+  return {
+
+    accumulated:
+      (last / first - 1) * 100,
+
+    annualized:
+      (Math.pow(last / first, 12 / months) - 1) * 100
+
+  };
+
+}
+
+
+/* =====================================================
+   RENDER ALL DECADES + TOTAL
+===================================================== */
+
+function tmRenderStatistics(){
+
+  if(!TIME_MACHINE.data) return;
+
+  const tbody = tmEl("tm-statistics-body");
+
+  if(!tbody) return;
+
+  const key = tmNAVKey();
+  const lang = tmLang();
+
+  const chapters = TIME_MACHINE.chapters;
+
+  const formatReturn = value => {
+
+    if(!Number.isFinite(value)){
+      return "—";
+    }
+
+    return tmFormatPercent(value);
+
+  };
+
+  const returnClass = value => {
+
+    if(!Number.isFinite(value)){
+      return "";
+    }
+
+    if(value > 0) return "positive";
+    if(value < 0) return "negative";
+
+    return "";
+
+  };
+
+  tbody.innerHTML = chapters.map((chapter,index) => {
+
+    const result = tmCalculatePeriodReturn(
+      chapter.series,
+      key
+    );
+
+    const accumulated = result?.accumulated;
+    const annualized = result?.annualized;
+
+    const era =
+      chapter.title?.[lang] ||
+      chapter.title?.en ||
+      "";
+
+    const active =
+      index === TIME_MACHINE.chapterIndex;
+
+    return `
+      <tr
+        class="${active ? "active" : ""}"
+        data-tm-chapter="${index}"
+        tabindex="0"
+        role="button"
+        aria-label="${chapter.period}"
+      >
+
+        <td>
+          ${chapter.period}
+        </td>
+
+        <td class="tm-stats-era">
+          ${era}
+        </td>
+
+        <td class="tm-stats-number ${returnClass(accumulated)}">
+          ${formatReturn(accumulated)}
+        </td>
+
+        <td class="tm-stats-number ${returnClass(annualized)}">
+          ${formatReturn(annualized)}
+        </td>
+
+      </tr>
+    `;
+
+  }).join("");
+
+
+  /* =====================================
+     TOTAL · CONTINUOUS HISTORICAL NAV
+  ===================================== */
+
+  const total = tmCalculatePeriodReturn(
+    TIME_MACHINE.data.nav,
+    key
+  );
+
+  const totalPeriod =
+    tmEl("tm-stats-total-period");
+
+  const totalLabel =
+    tmEl("tm-stats-total-label");
+
+  const totalReturn =
+    tmEl("tm-stats-total-return");
+
+  const totalAnnualized =
+    tmEl("tm-stats-total-annualized");
+
+  if(totalPeriod){
+
+    totalPeriod.textContent =
+      tmText("TOTAL","TOTAL");
+
+  }
+
+  if(totalLabel){
+
+    const nav = TIME_MACHINE.data.nav;
+
+    const firstYear =
+      nav[0]?.date?.slice(0,4) || "1900";
+
+    const lastYear =
+      nav[nav.length - 1]?.date?.slice(0,4) || "";
+
+    totalLabel.textContent =
+      `${firstYear}–${lastYear}`;
+
+  }
+
+  if(totalReturn){
+
+    totalReturn.textContent =
+      total
+        ? formatReturn(total.accumulated)
+        : "—";
+
+    totalReturn.classList.remove(
+      "positive","negative"
+    );
+
+    if(total){
+      totalReturn.classList.add(
+        returnClass(total.accumulated)
+      );
+    }
+
+  }
+
+  if(totalAnnualized){
+
+    totalAnnualized.textContent =
+      total
+        ? formatReturn(total.annualized)
+        : "—";
+
+    totalAnnualized.classList.remove(
+      "positive","negative"
+    );
+
+    if(total){
+      totalAnnualized.classList.add(
+        returnClass(total.annualized)
+      );
+    }
+
+  }
+
+}
+
+
+
+/* =====================================================
    BIND CONTROLS
 ===================================================== */
 
@@ -8248,180 +9506,6 @@ function tmCalculatePeriodReturn(series, key){
   };
 
 }
-
-
-/* =====================================================
-   RENDER ALL DECADES + TOTAL
-===================================================== */
-
-function tmRenderStatistics(){
-
-  if(!TIME_MACHINE.data) return;
-
-  const tbody = tmEl("tm-statistics-body");
-
-  if(!tbody) return;
-
-  const key = tmNAVKey();
-  const lang = tmLang();
-
-  const chapters = TIME_MACHINE.chapters;
-
-  const formatReturn = value => {
-
-    if(!Number.isFinite(value)){
-      return "—";
-    }
-
-    return tmFormatPercent(value);
-
-  };
-
-  const returnClass = value => {
-
-    if(!Number.isFinite(value)){
-      return "";
-    }
-
-    if(value > 0) return "positive";
-    if(value < 0) return "negative";
-
-    return "";
-
-  };
-
-  tbody.innerHTML = chapters.map((chapter,index) => {
-
-    const result = tmCalculatePeriodReturn(
-      chapter.series,
-      key
-    );
-
-    const accumulated = result?.accumulated;
-    const annualized = result?.annualized;
-
-    const era =
-      chapter.title?.[lang] ||
-      chapter.title?.en ||
-      "";
-
-    const active =
-      index === TIME_MACHINE.chapterIndex;
-
-    return `
-      <tr
-        class="${active ? "active" : ""}"
-        data-tm-chapter="${index}"
-        tabindex="0"
-        role="button"
-        aria-label="${chapter.period}"
-      >
-
-        <td>
-          ${chapter.period}
-        </td>
-
-        <td class="tm-stats-era">
-          ${era}
-        </td>
-
-        <td class="tm-stats-number ${returnClass(accumulated)}">
-          ${formatReturn(accumulated)}
-        </td>
-
-        <td class="tm-stats-number ${returnClass(annualized)}">
-          ${formatReturn(annualized)}
-        </td>
-
-      </tr>
-    `;
-
-  }).join("");
-
-
-  /* =====================================
-     TOTAL · CONTINUOUS HISTORICAL NAV
-  ===================================== */
-
-  const total = tmCalculatePeriodReturn(
-    TIME_MACHINE.data.nav,
-    key
-  );
-
-  const totalPeriod =
-    tmEl("tm-stats-total-period");
-
-  const totalLabel =
-    tmEl("tm-stats-total-label");
-
-  const totalReturn =
-    tmEl("tm-stats-total-return");
-
-  const totalAnnualized =
-    tmEl("tm-stats-total-annualized");
-
-  if(totalPeriod){
-
-    totalPeriod.textContent =
-      tmText("TOTAL","TOTAL");
-
-  }
-
-  if(totalLabel){
-
-    const nav = TIME_MACHINE.data.nav;
-
-    const firstYear =
-      nav[0]?.date?.slice(0,4) || "1900";
-
-    const lastYear =
-      nav[nav.length - 1]?.date?.slice(0,4) || "";
-
-    totalLabel.textContent =
-      `${firstYear}–${lastYear}`;
-
-  }
-
-  if(totalReturn){
-
-    totalReturn.textContent =
-      total
-        ? formatReturn(total.accumulated)
-        : "—";
-
-    totalReturn.classList.remove(
-      "positive","negative"
-    );
-
-    if(total){
-      totalReturn.classList.add(
-        returnClass(total.accumulated)
-      );
-    }
-
-  }
-
-  if(totalAnnualized){
-
-    totalAnnualized.textContent =
-      total
-        ? formatReturn(total.annualized)
-        : "—";
-
-    totalAnnualized.classList.remove(
-      "positive","negative"
-    );
-
-    if(total){
-      totalAnnualized.classList.add(
-        returnClass(total.annualized)
-      );
-    }
-
-  }
-
-}
-
 
 
 
@@ -9712,6 +10796,17 @@ function renderMarketIndices(){
 
 }
 
+function renderWealthPlanEmail(){
+
+  const section =
+    document.getElementById("mw-wealth-plan");
+
+  if(!section) return;
+
+  section.hidden =
+    APP.myWealth.source !== "portfolios";
+
+}
 
 function renderHeroes() {
     document.querySelectorAll('[data-hero]').forEach(el => {
@@ -13220,7 +14315,7 @@ function renderMyWealth(){
 
   const source = APP.myWealth.source;
   const ids = APP.myWealth.ids || [];
-
+renderWealthPlanEmail();
   const waiting =
     !["assets","portfolios"].includes(source) ||
     ids.length === 0;
@@ -13319,6 +14414,138 @@ function paintEmptyCanvas(id) {
 }
 
 
+
+/* =====================================================
+   WEALTH PLAN · REUSABLE MODEL DATA
+===================================================== */
+
+function getWealthPlanData(modelNo, lang = APP.lang){
+
+  const p =
+    (PORTFOLIO_STATE.all || []).find(
+      x =>
+        Number(x.modelNo) === Number(modelNo)
+    );
+
+  if(!p) return null;
+
+  const da = lang === "da";
+
+  const boolText = (value, yes, no) => {
+    if(value === true) return yes;
+    if(value === false) return no;
+    return null;
+  };
+
+  const holdings =
+    (Array.isArray(p.arrayHoldings)
+      ? p.arrayHoldings
+      : []
+    ).map(h => {
+
+      const meta = [];
+
+      const accumulation = boolText(
+        h.isAcc,
+        da ? "Akkumulerende" : "Accumulating",
+        da ? "Udbyttebetalende" : "Distributing"
+      );
+
+      if(accumulation){
+        meta.push(accumulation);
+      }
+
+      const management = boolText(
+        h.isActive,
+        da ? "Aktivt forvaltet" : "Actively managed",
+        da ? "Passivt forvaltet" : "Passively managed"
+      );
+
+      if(management){
+        meta.push(management);
+      }
+
+      if(da){
+
+        const positiveList = boolText(
+          h.isPositivListe,
+          "På positivlisten",
+          "Ikke på positivlisten"
+        );
+
+        if(positiveList){
+          meta.push(positiveList);
+        }
+
+      }
+
+      return {
+
+        name:
+          h.instrumentName ||
+          h.name ||
+          h.tickerExchange ||
+          "—",
+
+        assetClass:
+          (da
+            ? h.classMajorTop || h.class_major_top_eng
+            : h.class_major_top_eng || h.classMajorTop
+          ) || "—",
+
+        type:
+          (da
+            ? h.type_label_dk || h.type_label_eng
+            : h.type_label_eng || h.type_label_dk
+          ) || "—",
+
+        isin:h.isin || "—",
+
+        ccy:h.ccy || "—",
+
+        weight:h.weight,
+
+        meta
+
+      };
+
+    });
+
+const k = p.objKeyFigures || {};
+
+return {
+
+  modelNo: p.modelNo,
+  name: p.modelLabel || "—",
+  issuer: p.issuerName || "—",
+
+  description:
+    lang === "da"
+      ? p.descriptionLong_da
+      : p.descriptionLong_en,
+
+  metrics: {
+    expRetGross: k.expRetGross,
+    expRetNet: k.expRetNet,
+    risk: k.risk,
+    costs: k.costs,
+    sharpeRatioNet: k.sharpeRatioNet,
+    equityWeight: k.equityWeight,
+    bondWeight: k.bondWeight
+  },
+
+  holdings,
+
+  holdingsCount: holdings.length,
+
+  totalWeight: holdings.reduce(
+    (sum, h) => sum + (Number(h.weight) || 0),
+    0
+  )
+
+};
+
+}
 
 /* =====================================================
    19 · LANGUAGE RENDERING
@@ -14940,6 +16167,10 @@ initMyWealthControls();
 initMyWealthRaceInteraction();
 initMyWealthCinema();
 bindMyWealthComparisonToggle();
+
+document
+  .getElementById("mw-plan-download")
+  ?.addEventListener("click", generateWealthPlanPDF);
 
 
   /* ================================================
