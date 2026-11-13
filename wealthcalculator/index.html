@@ -3328,8 +3328,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   width:100%;
   height:100%;
 }
-  
-  /* =========================================
+
+
+
+/* =========================================
    TIME MACHINE · MATCH APP PAGE WIDTH
 ========================================= */
 
@@ -3350,6 +3352,164 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   width: 100%;
   max-width: none;
 }
+
+
+
+
+
+
+/* =========================================
+   TIME MACHINE · HISTORICAL STATISTICS
+========================================= */
+
+#page-history .tm-statistics{
+  width:100%;
+  max-width:none;
+  box-sizing:border-box;
+  border-radius:0;
+}
+
+#page-history .tm-statistics-head{
+  margin-bottom:20px;
+}
+
+#page-history .tm-statistics-kicker{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1.2px;
+  color:#75d7ec;
+  margin-bottom:8px;
+}
+
+#page-history .tm-statistics-title{
+  margin:0 0 5px;
+  font-size:22px;
+  font-weight:750;
+  color:#fff;
+}
+
+#page-history .tm-statistics-subtitle{
+  margin:0;
+  font-size:12px;
+  color:#a9bdd5;
+}
+
+#page-history .tm-statistics-scroll{
+  width:100%;
+  overflow-x:auto;
+}
+
+#page-history .tm-statistics-table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+
+#page-history .tm-statistics-table th{
+  padding:12px 8px;
+  border-bottom:1px solid #355174;
+  text-align:left;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.35px;
+  color:#a9bdd5;
+}
+
+#page-history .tm-statistics-table td{
+  padding:12px 8px;
+  border-bottom:1px solid #294461;
+  font-size:12px;
+  color:#fff;
+  vertical-align:middle;
+}
+
+#page-history .tm-statistics-table th:nth-child(1){
+  width:21%;
+}
+
+#page-history .tm-statistics-table th:nth-child(2){
+  width:35%;
+}
+
+#page-history .tm-statistics-table th:nth-child(3),
+#page-history .tm-statistics-table th:nth-child(4){
+  width:22%;
+}
+
+#page-history .tm-statistics-table .tm-stats-number{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+#page-history .tm-statistics-table .tm-stats-era{
+  color:#a9bdd5;
+  font-size:11px;
+}
+
+#page-history .tm-statistics-table .positive{
+  color:#69c9a4;
+}
+
+#page-history .tm-statistics-table .negative{
+  color:#f07882;
+}
+
+#page-history .tm-statistics-table tbody tr{
+  cursor:pointer;
+}
+
+#page-history .tm-statistics-table tbody tr:hover{
+  background:rgba(78,121,189,.13);
+}
+
+#page-history .tm-statistics-table tbody tr.active{
+  background:rgba(78,121,189,.22);
+}
+
+#page-history .tm-statistics-total td{
+  padding-top:17px;
+  padding-bottom:17px;
+  font-weight:750;
+  background:#173354;
+  border-top:2px solid #4e79bd;
+  border-bottom:0;
+}
+
+#page-history .tm-statistics-note{
+  margin:15px 0 0;
+  font-size:11px;
+  line-height:1.6;
+  color:#a9bdd5;
+}
+
+/* Mobile adjustments */
+
+@media(max-width:480px){
+
+  #page-history .tm-statistics-table th,
+  #page-history .tm-statistics-table td{
+    padding:11px 5px;
+  }
+
+  #page-history .tm-statistics-table th{
+    font-size:9px;
+  }
+
+  #page-history .tm-statistics-table td{
+    font-size:11px;
+  }
+
+  #page-history .tm-statistics-table .tm-stats-era{
+    font-size:10px;
+  }
+
+}
+
+
+
+
+
 </style>
 </head>
 <body>
@@ -4953,7 +5113,110 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
   </div>
 
+
+
 </section>
+
+
+<!-- =========================================
+     TIME MACHINE · HISTORICAL STATISTICS
+========================================= -->
+
+<section class="section panel panel-pad tm-statistics"
+         id="tm-statistics">
+
+  <div class="tm-statistics-head">
+
+    <div class="tm-statistics-kicker">
+      NEPTOON WEALTH · TIME MACHINE
+    </div>
+
+    <h2 class="tm-statistics-title"
+        data-i18n="tmStatisticsTitle">
+      Historical Returns
+    </h2>
+
+    <p class="tm-statistics-subtitle"
+       data-i18n="tmStatisticsSubtitle">
+      S&P 500 · Dividends reinvested
+    </p>
+
+  </div>
+
+  <div class="tm-statistics-scroll">
+
+    <table class="tm-statistics-table">
+
+      <thead>
+        <tr>
+
+          <th data-i18n="tmStatsPeriod">
+            PERIOD
+          </th>
+
+          <th data-i18n="tmStatsEra">
+            HISTORICAL ERA
+          </th>
+
+          <th class="tm-stats-number"
+              data-i18n="tmStatsAccumulated">
+            ACCUMULATED
+          </th>
+
+          <th class="tm-stats-number"
+              data-i18n="tmStatsAnnualized">
+            ANNUALIZED
+          </th>
+
+        </tr>
+      </thead>
+
+      <tbody id="tm-statistics-body">
+        <!-- 13 decades rendered by JavaScript -->
+      </tbody>
+
+      <tfoot>
+        <tr class="tm-statistics-total">
+
+          <td id="tm-stats-total-period">
+            TOTAL
+          </td>
+
+          <td id="tm-stats-total-label">
+            1900–present
+          </td>
+
+          <td class="tm-stats-number"
+              id="tm-stats-total-return">
+            —
+          </td>
+
+          <td class="tm-stats-number"
+              id="tm-stats-total-annualized">
+            —
+          </td>
+
+        </tr>
+      </tfoot>
+
+    </table>
+
+  </div>
+
+  <p class="tm-statistics-note"
+     data-i18n="tmStatisticsNote">
+    Historical total returns including dividends.
+    Annualized returns are geometrically compounded.
+    Past performance does not predict future returns.
+  </p>
+
+</section>
+
+
+
+
+
+
 
 </main>
 
@@ -6970,8 +7233,8 @@ function tmFrame(timestamp){
     1x = one historical month per second.
   */
 
-  const interval =
-    1000 / TIME_MACHINE.speed;
+const interval =
+  1000 / (TIME_MACHINE.speed * 2);
 
   let changed = false;
 
@@ -7696,6 +7959,8 @@ function tmRender(){
   tmRenderControls();
   tmDrawChart();
 
+  tmRenderStatistics();
+
 }
 
 
@@ -7724,6 +7989,67 @@ function tmBindControls(){
     "click",
     tmReplay
   );
+
+/* =====================================
+   STATISTICS · CHAPTER SELECTION
+===================================== */
+
+tmEl("tm-statistics-body")?.addEventListener(
+  "click",
+  event => {
+
+    const row = event.target.closest(
+      "[data-tm-chapter]"
+    );
+
+    if(!row) return;
+
+    const index =
+      Number(row.dataset.tmChapter);
+
+    tmSelectChapter(index);
+
+    tmEl("tm-chapter-period")?.scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+
+  }
+);
+
+tmEl("tm-statistics-body")?.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key !== "Enter" &&
+      event.key !== " "
+    ){
+      return;
+    }
+
+    const row = event.target.closest(
+      "[data-tm-chapter]"
+    );
+
+    if(!row) return;
+
+    event.preventDefault();
+
+    const index =
+      Number(row.dataset.tmChapter);
+
+    tmSelectChapter(index);
+
+    tmEl("tm-chapter-period")?.scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+
+  }
+);
+
+
 
   tmEl("tm-progress")?.addEventListener(
     "input",
@@ -7882,6 +8208,227 @@ async function loadMyWealthMarketRace(investment){
   }
 
 }
+
+
+
+
+/* =====================================================
+   TIME MACHINE · HISTORICAL STATISTICS
+===================================================== */
+
+function tmCalculatePeriodReturn(series, key){
+
+  if(!Array.isArray(series) || series.length < 2){
+    return null;
+  }
+
+  const first = Number(series[0][key]);
+  const last = Number(series[series.length - 1][key]);
+
+  const months = series.length - 1;
+
+  if(
+    !Number.isFinite(first) ||
+    !Number.isFinite(last) ||
+    first <= 0 ||
+    last <= 0 ||
+    months <= 0
+  ){
+    return null;
+  }
+
+  return {
+
+    accumulated:
+      (last / first - 1) * 100,
+
+    annualized:
+      (Math.pow(last / first, 12 / months) - 1) * 100
+
+  };
+
+}
+
+
+/* =====================================================
+   RENDER ALL DECADES + TOTAL
+===================================================== */
+
+function tmRenderStatistics(){
+
+  if(!TIME_MACHINE.data) return;
+
+  const tbody = tmEl("tm-statistics-body");
+
+  if(!tbody) return;
+
+  const key = tmNAVKey();
+  const lang = tmLang();
+
+  const chapters = TIME_MACHINE.chapters;
+
+  const formatReturn = value => {
+
+    if(!Number.isFinite(value)){
+      return "—";
+    }
+
+    return tmFormatPercent(value);
+
+  };
+
+  const returnClass = value => {
+
+    if(!Number.isFinite(value)){
+      return "";
+    }
+
+    if(value > 0) return "positive";
+    if(value < 0) return "negative";
+
+    return "";
+
+  };
+
+  tbody.innerHTML = chapters.map((chapter,index) => {
+
+    const result = tmCalculatePeriodReturn(
+      chapter.series,
+      key
+    );
+
+    const accumulated = result?.accumulated;
+    const annualized = result?.annualized;
+
+    const era =
+      chapter.title?.[lang] ||
+      chapter.title?.en ||
+      "";
+
+    const active =
+      index === TIME_MACHINE.chapterIndex;
+
+    return `
+      <tr
+        class="${active ? "active" : ""}"
+        data-tm-chapter="${index}"
+        tabindex="0"
+        role="button"
+        aria-label="${chapter.period}"
+      >
+
+        <td>
+          ${chapter.period}
+        </td>
+
+        <td class="tm-stats-era">
+          ${era}
+        </td>
+
+        <td class="tm-stats-number ${returnClass(accumulated)}">
+          ${formatReturn(accumulated)}
+        </td>
+
+        <td class="tm-stats-number ${returnClass(annualized)}">
+          ${formatReturn(annualized)}
+        </td>
+
+      </tr>
+    `;
+
+  }).join("");
+
+
+  /* =====================================
+     TOTAL · CONTINUOUS HISTORICAL NAV
+  ===================================== */
+
+  const total = tmCalculatePeriodReturn(
+    TIME_MACHINE.data.nav,
+    key
+  );
+
+  const totalPeriod =
+    tmEl("tm-stats-total-period");
+
+  const totalLabel =
+    tmEl("tm-stats-total-label");
+
+  const totalReturn =
+    tmEl("tm-stats-total-return");
+
+  const totalAnnualized =
+    tmEl("tm-stats-total-annualized");
+
+  if(totalPeriod){
+
+    totalPeriod.textContent =
+      tmText("TOTAL","TOTAL");
+
+  }
+
+  if(totalLabel){
+
+    const nav = TIME_MACHINE.data.nav;
+
+    const firstYear =
+      nav[0]?.date?.slice(0,4) || "1900";
+
+    const lastYear =
+      nav[nav.length - 1]?.date?.slice(0,4) || "";
+
+    totalLabel.textContent =
+      `${firstYear}–${lastYear}`;
+
+  }
+
+  if(totalReturn){
+
+    totalReturn.textContent =
+      total
+        ? formatReturn(total.accumulated)
+        : "—";
+
+    totalReturn.classList.remove(
+      "positive","negative"
+    );
+
+    if(total){
+      totalReturn.classList.add(
+        returnClass(total.accumulated)
+      );
+    }
+
+  }
+
+  if(totalAnnualized){
+
+    totalAnnualized.textContent =
+      total
+        ? formatReturn(total.annualized)
+        : "—";
+
+    totalAnnualized.classList.remove(
+      "positive","negative"
+    );
+
+    if(total){
+      totalAnnualized.classList.add(
+        returnClass(total.annualized)
+      );
+    }
+
+  }
+
+}
+
+
+
+
+
+
+
+
 
 
 /* ============================================
