@@ -9096,7 +9096,19 @@ function bindWealthPlanEmail(){
         }
       );
 
-      const result = await response.json();
+//      const result = await response.json();
+
+const raw = await response.text();
+
+console.log("SUPABASE EMAIL RESPONSE", {
+  status: response.status,
+  ok: response.ok,
+  body: raw
+});
+
+const result = JSON.parse(raw);
+
+
 
       if(!response.ok || !result.success){
         throw new Error(
