@@ -3918,11 +3918,507 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
 
 
+/* =========================================
+   WELCOME · NEW ACTION CARDS
+========================================= */
+
+#page-welcome .welcome-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+
+#page-welcome .welcome-choice{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:24px;
+  min-width:0;
+  padding:28px 20px 20px;
+  border-radius:0;
+}
+
+#page-welcome .welcome-choice-content{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  min-width:0;
+}
+
+#page-welcome .welcome-choice-icon{
+  flex:0 0 64px;
+  width:64px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid currentColor;
+  border-radius:0;
+}
+
+#page-welcome .welcome-choice-icon svg{
+  width:30px;
+  height:30px;
+}
+
+#page-welcome .welcome-choice-info{
+  flex:1;
+  min-width:0;
+}
+
+#page-welcome .welcome-choice-info h2{
+  margin:0 0 8px;
+  font-size:23px;
+  line-height:1.2;
+}
+
+#page-welcome .welcome-choice-info p{
+  margin:0;
+  font-size:13px;
+  line-height:1.5;
+}
+
+#page-welcome .welcome-choice-pill{
+  position:absolute;
+  top:12px;
+  right:12px;
+  padding:5px 10px;
+  background:#D62828;
+  color:#FFFFFF;
+  border-radius:999px;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.04em;
+  white-space:nowrap;
+}
+
+#page-welcome .welcome-choice-btn{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  padding:13px 16px;
+  border-radius:0;
+}
+
+#page-welcome .welcome-choice-btn svg{
+  width:18px;
+  height:18px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width:600px){
+
+  #page-welcome .welcome-grid{
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+
+  #page-welcome .welcome-choice{
+    padding:46px 16px 16px;
+    gap:18px;
+  }
+
+  #page-welcome .welcome-choice-content{
+    gap:14px;
+    align-items:center;
+  }
+
+  #page-welcome .welcome-choice-icon{
+    flex-basis:52px;
+    width:52px;
+    height:52px;
+  }
+
+  #page-welcome .welcome-choice-icon svg{
+    width:26px;
+    height:26px;
+  }
+
+  #page-welcome .welcome-choice-info h2{
+    font-size:21px;
+    margin-bottom:6px;
+  }
+
+  #page-welcome .welcome-choice-info p{
+    font-size:12px;
+    line-height:1.45;
+  }
+
+  #page-welcome .welcome-choice-btn{
+    padding:12px 14px;
+    font-size:13px;
+  }
+
+}
 
 
 
+/* =========================================
+   TIME MACHINE · INTRODUCTION
+========================================= */
+
+.tm-intro{
+  position:relative;
+  padding:26px 18px 22px;
+  margin:20px 0 16px;
+}
+
+.tm-intro-pill{
+  position:absolute;
+  top:0;
+  right:0;
+
+  padding:5px 11px;
+
+  background:#D62828;
+  color:#FFFFFF;
+
+  border-radius:999px;
+
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.04em;
+  white-space:nowrap;
+}
+
+.tm-intro-kicker{
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.12em;
+  color:#65D8EA;
+  margin-bottom:10px;
+}
+
+.tm-intro h2{
+  font-size:23px;
+  line-height:1.2;
+  font-weight:800;
+  margin:0 0 12px;
+}
+
+.tm-intro p{
+  font-size:13px;
+  line-height:1.6;
+  margin:0 0 18px;
+  max-width:560px;
+}
+
+.tm-intro-action{
+  display:flex;
+  align-items:center;
+  gap:9px;
+
+  font-size:12px;
+  font-weight:700;
+}
+
+.tm-intro-action svg{
+  width:19px;
+  height:19px;
+  flex:0 0 auto;
+}
+
+@media(max-width:600px){
+
+  .tm-intro{
+    padding:32px 8px 14px;
+    margin:12px 0;
+  }
+
+  .tm-intro h2{
+    font-size:21px;
+  }
+
+  .tm-intro p{
+    font-size:12px;
+    line-height:1.55;
+  }
+
+}
 
 
+.tm-intro .tm-title,
+.tm-intro .tm-subtitle{
+  text-align:left;
+}
+
+.tm-intro .tm-subtitle{
+  max-width:560px;
+}
+
+/* TIME MACHINE · COMPACT VALUE MODE */
+
+.tm-value-mode{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  margin:10px 0 16px;
+}
+
+.tm-value-mode button{
+  flex:0 0 auto;
+  width:auto;
+  min-width:76px;
+  padding:7px 12px;
+  font-size:10px;
+  font-weight:700;
+  border-radius:0;
+}
+
+
+.tm-statistics-head{
+  position:relative;
+  padding-top:22px;
+}
+
+.tm-statistics-pill{
+  position:absolute;
+  top:0;
+  right:0;
+
+  background:#D62828;
+  color:#FFFFFF;
+
+  padding:5px 10px;
+  border-radius:999px;
+
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.05em;
+  line-height:1.2;
+}
+
+
+/* MYWEALTH · VERDICT PILLS */
+
+.mywealth-history-verdict-card{
+  position:relative;
+  padding-top:38px;
+}
+
+.mywealth-verdict-pill{
+  position:absolute;
+  top:10px;
+  right:10px;
+
+  background:#D62828;
+  color:#FFFFFF;
+
+  padding:5px 10px;
+  border-radius:999px;
+
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.05em;
+  line-height:1.2;
+  white-space:nowrap;
+}
+
+/* MYWEALTH · MAIL PILL */
+
+.mywealth-plan-card{
+  position:relative;
+}
+
+.mywealth-mail-pill{
+  position:absolute;
+  top:10px;
+  right:10px;
+
+  background:#D62828;
+  color:#FFFFFF;
+
+  padding:5px 10px;
+  border-radius:999px;
+
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.05em;
+  line-height:1.2;
+}
+
+
+/* =========================================
+   NEPTOON · WELCOME MOBILE REFINEMENT
+========================================= */
+
+@media (max-width:600px){
+
+  /* HERO */
+
+  #page-welcome .hero{
+    min-height:0;
+    height:auto;
+    padding:18px;
+    gap:10px;
+  }
+
+  #page-welcome .hero h1{
+    font-size:24px;
+    line-height:1.12;
+    margin:8px 0;
+  }
+
+  #page-welcome .hero p{
+    font-size:12px;
+    line-height:1.5;
+    margin:0;
+  }
+
+  /* MARKET GRID */
+
+  #page-welcome .market-index-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px;
+  }
+
+  #page-welcome .market-index-card{
+    min-height:0;
+    height:auto;
+    padding:8px 9px;
+    gap:7px;
+  }
+
+  #page-welcome .market-index-top{
+    margin:0;
+  }
+
+  #page-welcome .market-name{
+    font-size:10px;
+    line-height:1.25;
+  }
+
+  #page-welcome .market-index-card .market-symbol,
+  #page-welcome .market-index-top > svg{
+    display:none;
+  }
+
+  #page-welcome .market-quote{
+    display:flex;
+    flex-direction:row;
+    align-items:baseline;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:4px;
+    margin:0;
+  }
+
+  #page-welcome .market-price{
+    font-size:12px;
+    line-height:1.2;
+  }
+
+  #page-welcome .market-change{
+    font-size:12px;
+    line-height:1.2;
+    font-weight:700;
+  }
+
+}
+
+
+/* =========================================
+   MARKET PULSE · FIVE-ROW STOCK LIST
+========================================= */
+
+@media (max-width:760px){
+
+  #page-welcome .market-stock-track{
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    width:100%;
+    overflow:visible;
+  }
+
+  #page-welcome .market-stock-card{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto 58px;
+    align-items:center;
+    column-gap:8px;
+
+    width:100%;
+    min-width:0;
+    min-height:0;
+    height:auto;
+
+    padding:9px 2px;
+    margin:0;
+
+    border:none;
+    border-bottom:1px solid;
+    border-color:inherit;
+    border-radius:0;
+    box-shadow:none;
+    background:transparent;
+  }
+
+  #page-welcome .market-stock-card:last-child{
+    border-bottom:none;
+  }
+
+  /* STOCK NAME */
+
+  #page-welcome .market-stock-card .market-name{
+    font-size:11px;
+    line-height:1.25;
+    min-width:0;
+    margin:0;
+  }
+
+  /* HIDE TICKER */
+
+  #page-welcome .market-stock-card .market-symbol{
+    display:none;
+  }
+
+  /* PRICE */
+
+  #page-welcome .market-stock-card .market-price{
+    font-size:11px;
+    line-height:1.2;
+    margin:0;
+    white-space:nowrap;
+    text-align:right;
+  }
+
+  /* DAILY RETURN */
+
+  #page-welcome .market-stock-card .market-change{
+    font-size:11px;
+    font-weight:700;
+    line-height:1.2;
+    margin:0;
+    text-align:right;
+    white-space:nowrap;
+  }
+
+  /* COMPACT PAGINATION */
+
+  #page-welcome .market-pagination{
+    margin-top:8px;
+    gap:12px;
+  }
+
+  #page-welcome .market-page-btn{
+    width:28px;
+    height:28px;
+    min-width:28px;
+    min-height:28px;
+  }
+
+  #page-welcome .market-stock-head{
+    margin-bottom:6px;
+  }
+
+}
 
 
 </style>
@@ -4113,59 +4609,96 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
        WELCOME · NAVIGATION CHOICES
   ================================================== -->
 
-  <div class="section welcome-grid">
 
 
-    <!-- Assets -->
+<div class="section welcome-grid">
 
-    <article class="welcome-choice">
+  <!-- ASSETS -->
 
-      <i data-lucide="search"></i>
+  <article class="welcome-choice">
 
-      <h2 data-lang="assets">
-        Assets
-      </h2>
+    <span
+      class="welcome-choice-pill"
+      data-lang="welcomeAssetsPill"
+    >
+      PICK YOUR OWN
+    </span>
 
-      <p data-lang="welcomeAssetsText">
-        Choose up to five stocks, ETFs or funds you are curious about.
-      </p>
+    <div class="welcome-choice-content">
 
-      <button
-        class="btn"
-        data-go="assets"
-        data-lang="viewAssets"
-      >
-        View Assets
-      </button>
+      <div class="welcome-choice-icon">
+        <i data-lucide="search"></i>
+      </div>
 
-    </article>
+      <div class="welcome-choice-info">
+
+        <h2 data-lang="assets">
+          Assets
+        </h2>
+
+        <p data-lang="welcomeAssetsText">
+          Choose up to five stocks, ETFs or funds you are curious about.
+        </p>
+
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="btn welcome-choice-btn"
+      data-go="assets"
+    >
+      <span data-lang="viewAssets">View Assets</span>
+      <i data-lucide="arrow-right"></i>
+    </button>
+
+  </article>
 
 
-    <!-- Wealth Plans -->
+  <!-- WEALTH PLANS -->
 
-    <article class="welcome-choice">
+  <article class="welcome-choice">
 
-      <i data-lucide="layers"></i>
+    <span
+      class="welcome-choice-pill"
+      data-lang="welcomePlansPill"
+    >
+      READY-MADE
+    </span>
 
-      <h2 data-lang="portfolios">
-        Portfolios
-      </h2>
+    <div class="welcome-choice-content">
 
-      <p data-lang="welcomePlansText">
-        Find ready-made Wealth Plans by your risk preference.
-      </p>
+      <div class="welcome-choice-icon">
+        <i data-lucide="layers"></i>
+      </div>
 
-      <button
-        class="btn"
-        data-go="portfolios"
-        data-lang="viewPlans"
-      >
-        View Wealth Plans
-      </button>
+      <div class="welcome-choice-info">
 
-    </article>
+        <h2 data-lang="portfolios">
+          Wealth Plans
+        </h2>
 
-  </div>
+        <p data-lang="welcomePlansText">
+          Find ready-made Wealth Plans by your risk preference.
+        </p>
+
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="btn welcome-choice-btn"
+      data-go="portfolios"
+    >
+      <span data-lang="viewPlans">View Wealth Plans</span>
+      <i data-lucide="arrow-right"></i>
+    </button>
+
+  </article>
+
+</div>
 
 </section>
 
@@ -5133,51 +5666,66 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       </div>
 
 
-      <div class="mywealth-history-verdict-grid">
+<div class="mywealth-history-verdict-grid">
 
-        <div class="mywealth-history-verdict-card">
+  <div class="mywealth-history-verdict-card">
 
-          <strong data-lang="mwVerdictMarketQuestion">
-            A · HAS IT BEATEN THE MARKET?
-          </strong>
+    <span
+      class="mywealth-verdict-pill"
+      data-lang="mwVerdictPillA"
+    >
+      PERFORMANCE
+    </span>
 
-          <h4
-            id="mywealth-history-verdict-market"
-            data-lang="mwAwaitingRace"
-          >
-            Awaiting race
-          </h4>
+    <strong data-lang="mwVerdictMarketQuestion">
+      A · HAS IT BEATEN THE MARKET?
+    </strong>
 
-          <p data-lang="mwVerdictMarketDescription">
-            Historical performance relative to the
-            selected market benchmark.
-          </p>
+    <h4
+      id="mywealth-history-verdict-market"
+      data-lang="mwAwaitingRace"
+    >
+      Awaiting race
+    </h4>
 
-        </div>
+    <p data-lang="mwVerdictMarketDescription">
+      Historical performance relative to the
+      selected market benchmark.
+    </p>
+
+  </div>
 
 
-        <div class="mywealth-history-verdict-card">
+  <div class="mywealth-history-verdict-card">
 
-          <strong data-lang="mwVerdictDecisionQuestion">
-            B · SHOULD I BUY OR SELL?
-          </strong>
+    <span
+      class="mywealth-verdict-pill"
+      data-lang="mwVerdictPillB"
+    >
+      DECISION
+    </span>
 
-          <h4
-            id="mywealth-history-verdict-decision"
-            data-lang="mwEvidencePending"
-          >
-            Evidence pending
-          </h4>
+    <strong data-lang="mwVerdictDecisionQuestion">
+      B · SHOULD I BUY OR SELL?
+    </strong>
 
-          <p data-lang="mwVerdictDecisionDescription">
-            Historical risk-adjusted performance
-            informs investment assessment but
-            does not establish a buy or sell recommendation.
-          </p>
+    <h4
+      id="mywealth-history-verdict-decision"
+      data-lang="mwEvidencePending"
+    >
+      Evidence pending
+    </h4>
 
-        </div>
+    <p data-lang="mwVerdictDecisionDescription">
+      Historical risk-adjusted performance
+      informs investment assessment but
+      does not establish a buy or sell recommendation.
+    </p>
 
-      </div>
+  </div>
+
+</div>
+
 
     </div>
 
@@ -5199,6 +5747,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
           <div class="mw-plan-icon">
             <i data-lucide="file-text"></i>
           </div>
+
+<span class="mywealth-mail-pill">PDF</span>
 
           <div class="mw-plan-heading-text">
 
@@ -5327,23 +5877,50 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
   <!-- INTRODUCTION -->
 
-  <div class="section tm-intro">
 
-    <h2
-      class="tm-title"
-      data-lang="timeMachineTitle"
-    >
-      Time Machine
-    </h2>
+<div class="section tm-intro">
 
-    <p
-      class="tm-subtitle"
-      data-lang="timeMachineSubtitle"
-    >
-      What does it feel like to invest through history?
-    </p>
+  <span
+    class="tm-intro-pill"
+    data-lang="tmIntroPill"
+  >
+    MARKET HISTORY & PREFERENCES
+  </span>
+
+  <div
+    class="tm-intro-kicker"
+    data-lang="tmIntroKicker"
+  >
+    UNDERSTANDING INVESTMENT RISK
+  </div>
+
+  <h2
+    class="tm-title"
+    data-lang="tmIntroTitle"
+  >
+    Could you stay invested through history?
+  </h2>
+
+  <p
+    class="tm-subtitle"
+    data-lang="tmIntroText"
+  >
+    Travel through more than a century of market ups and downs.
+    See how your wealth changes through booms, crashes and
+    recoveries — and discover what level of risk feels right for you.
+  </p>
+
+  <div class="tm-intro-action">
+
+    <i data-lucide="play-circle"></i>
+
+    <span data-lang="tmIntroAction">
+      Press Play to experience the journey.
+    </span>
 
   </div>
+
+</div>
 
 
   <!-- MAIN CINEMA PANEL -->
@@ -5502,6 +6079,41 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
     </div>
 
+  <!-- NOMINAL / REAL SELECTOR -->
+
+  <div class="section tm-return-mode">
+
+    <div
+      class="tm-mode-controls"
+      role="group"
+      aria-label="Wealth measurement"
+    >
+
+      <button
+        type="button"
+        id="tm-mode-nominal"
+        class="tm-mode-btn active"
+        aria-pressed="true"
+        data-lang="tmNominal"
+      >
+        NOMINAL
+      </button>
+
+      <button
+        type="button"
+        id="tm-mode-real"
+        class="tm-mode-btn"
+        aria-pressed="false"
+        data-lang="tmReal"
+      >
+        REAL
+      </button>
+
+    </div>
+
+  </div>
+
+
 
     <!-- PLAYBACK PROGRESS -->
 
@@ -5624,39 +6236,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   </div>
 
 
-  <!-- NOMINAL / REAL SELECTOR -->
-
-  <div class="section tm-return-mode">
-
-    <div
-      class="tm-mode-controls"
-      role="group"
-      aria-label="Wealth measurement"
-    >
-
-      <button
-        type="button"
-        id="tm-mode-nominal"
-        class="tm-mode-btn active"
-        aria-pressed="true"
-        data-lang="tmNominal"
-      >
-        NOMINAL
-      </button>
-
-      <button
-        type="button"
-        id="tm-mode-real"
-        class="tm-mode-btn"
-        aria-pressed="false"
-        data-lang="tmReal"
-      >
-        REAL
-      </button>
-
-    </div>
-
-  </div>
 
 
   <!-- EDUCATIONAL MESSAGE -->
@@ -5695,30 +6274,38 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     id="tm-statistics"
   >
 
-    <div class="tm-statistics-head">
 
-      <div
-        class="tm-statistics-kicker"
-        data-lang="tmStatisticsKicker"
-      >
-        NEPTOON WEALTH · TIME MACHINE
-      </div>
+<div class="tm-statistics-head">
 
-      <h2
-        class="tm-statistics-title"
-        data-lang="tmStatisticsTitle"
-      >
-        Historical Returns
-      </h2>
+  <span
+    class="tm-statistics-pill"
+    id="tm-statistics-mode-pill"
+  >
+    NOMINAL
+  </span>
 
-      <p
-        class="tm-statistics-subtitle"
-        data-lang="tmStatisticsSubtitle"
-      >
-        S&amp;P 500 · Dividends reinvested
-      </p>
+  <div
+    class="tm-statistics-kicker"
+    data-lang="tmStatisticsKicker"
+  >
+    NEPTOON WEALTH · TIME MACHINE
+  </div>
 
-    </div>
+  <h2
+    class="tm-statistics-title"
+    data-lang="tmStatisticsTitle"
+  >
+    Historical Returns
+  </h2>
+
+  <p
+    class="tm-statistics-subtitle"
+    data-lang="tmStatisticsSubtitle"
+  >
+    S&amp;P 500 · Dividends reinvested
+  </p>
+
+</div>
 
 
     <div class="tm-statistics-scroll">
@@ -5875,33 +6462,43 @@ const MYWEALTH_INTERACTION = {
   selectedId: null
 };
 
+
+
 const INVESTMENT_PREFERENCES = {
 
   preservation: {
     en: "Capital Preservation",
     da: "Kapitalbevarelse",
-    modelNos: [2, 10]
+    modelNos: []
+  },
+
+  defensive: {
+    en: "Defensive",
+    da: "Defensiv",
+    modelNos: []
   },
 
   balanced: {
-    en: "Balanced Investing",
-    da: "Balanceret investering",
-    modelNos: [1, 9, 12]
+    en: "Balanced",
+    da: "Balanceret",
+    modelNos: []
   },
 
-  growth: {
-    en: "Long-Term Growth",
-    da: "Langsigtet vækst",
-    modelNos: [0, 8, 11]
+  aggressive: {
+    en: "Aggressive",
+    da: "Aggressiv",
+    modelNos: []
   },
 
-  active: {
-    en: "Active Strategies",
-    da: "Aktive strategier",
-    modelNos: [3, 4, 5, 6, 7]
+  veryHighRisk: {
+    en: "Very High Risk",
+    da: "Meget høj risiko",
+    modelNos: []
   }
 
 };
+
+
 
 /* =====================================================
    03 · TRANSLATIONS (EN / DA)
@@ -6021,7 +6618,7 @@ const DEMO_PLANS = [
 /* =====================================================
    06 · STATE AND UTILITIES
 ===================================================== */
-const DEFAULT_PLAN_MODEL_NOS = [0, 1, 2, 3, 4];
+const DEFAULT_PLAN_MODEL_NOS = [9];
 const RISK_GROUPS = Object.fromEntries([1, 2, 3, 4, 5].map(n => [n, DEMO_PLANS.filter(p => p.riskGroup === n).map(p => p.modelNo)]));
 
 const APP = {
@@ -6030,14 +6627,13 @@ const APP = {
 
   assets: DEMO_ASSETS.slice(0, 5).map(a => a.id),
 
-planSlots: Array.from(
-  { length: 5 },
-  (_, i) => ({
-    risk: i + 1,
-    preference: "",
-    modelNo: DEFAULT_PLAN_MODEL_NOS[i] ?? ""
-  })
-),
+  planSlots: [
+    {
+      risk: 1,
+      preference: "",
+      modelNo: DEFAULT_PLAN_MODEL_NOS[0] ?? ""
+    }
+  ],
 
   expandedPlan: null,
   metricsPlan: null,
@@ -6328,6 +6924,8 @@ wealthPlan: "Wealth Plan",
     period5Y: "5Y",
     period10Y: "10Y",
     periodMAX: "MAX",
+  welcomeAssetsPill: "PICK YOUR OWN",
+  welcomePlansPill: "READY-MADE",
 
     assetsHistoryPeriodLabel:
       "Historical index · Base = 100",
@@ -6375,7 +6973,15 @@ wealthPlan: "Wealth Plan",
   portfolios: "Wealth Plans",
   mywealth: "MyWealth",
   history: "Time Machine",
-mwEmailPlaceholder : "Your email address"
+mwEmailPlaceholder : "Your email address",
+  tmIntroPill: "MARKET HISTORY & PREFERENCES",
+  tmIntroKicker: "UNDERSTANDING INVESTMENT RISK",
+  tmIntroTitle: "Could you stay invested through history?",
+  tmIntroText:
+    "Travel through more than a century of market ups and downs. See how your wealth changes through booms, crashes and recoveries — and discover what level of risk feels right for you.",
+  mwVerdictPillA: "PERFORMANCE",
+  mwVerdictPillB: "DECISION",
+  tmIntroAction: "Press Play to experience the journey.",
 
 
 
@@ -6399,6 +7005,8 @@ mwEmailPlaceholder : "Your email address"
 
     welcomePreview:
       "Hvad kan din investering blive til?",
+  welcomeAssetsPill: "VÆLG SELV",
+  welcomePlansPill: "FÆRDIGE PLANER",
 
     assets: "Værdipapirer",
     welcomeAssetsText:
@@ -6552,6 +7160,12 @@ mwEmailPlaceholder : "Din e-mailadresse",
 
   previousStocks: "Forrige aktier",
   nextStocks: "Næste aktier",
+  tmIntroPill: "MARKEDSHISTORIK & PRÆFERENCER",
+  tmIntroKicker: "FORSTÅ INVESTERINGSRISIKO",
+  tmIntroTitle: "Kunne du holde fast i dine investeringer gennem historien?",
+  tmIntroText:
+    "Rejs gennem mere end 100 års op- og nedture på finansmarkederne. Se, hvordan din formue udvikler sig gennem opsving, kriser og genopretninger — og find ud af, hvilket risikoniveau du føler dig tryg ved.",
+  tmIntroAction: "Tryk på Play, og oplev historien.",
 
   marketFoot:
     "Kurser kan være forsinkede. Dagens ændring er beregnet i forhold til seneste lukkekurs.",
@@ -6571,7 +7185,9 @@ mwEmailPlaceholder : "Din e-mailadresse",
   welcomePlansText:
     "Find færdige formueplaner ud fra din risikopræference.",
 
-  viewPlans: "Se formueplaner"
+  viewPlans: "Se formueplaner",
+  mwVerdictPillA: "AFKAST",
+  mwVerdictPillB: "BESLUTNING",
 
 
 
@@ -8249,7 +8865,8 @@ function tmFrame(timestamp){
   */
 
 const interval =
-  1000 / (TIME_MACHINE.speed * 2);
+  1000 / (TIME_MACHINE.speed * 4);
+
 
   let changed = false;
 
@@ -9738,6 +10355,26 @@ function tmRenderStatistics(){
 
   if(!TIME_MACHINE.data) return;
 
+
+
+const modePill =
+  document.getElementById("tm-statistics-mode-pill");
+
+if(modePill){
+
+  const isReal =
+    TIME_MACHINE.mode === "real";
+
+  modePill.textContent =
+    APP.lang === "da"
+      ? (isReal ? "REALE AFKAST" : "NOMINELLE AFKAST")
+      : (isReal ? "REAL RETURNS" : "NOMINAL RETURNS");
+
+}
+
+
+
+
   const tbody = tmEl("tm-statistics-body");
 
   if(!tbody) return;
@@ -10030,6 +10667,61 @@ tmEl("tm-statistics-body")?.addEventListener(
   );
 
 }
+
+
+function populateInvestmentPreferences(){
+
+  const models = PORTFOLIO_STATE.all || [];
+
+  const groups = INVESTMENT_PREFERENCES;
+
+  Object.values(groups).forEach(group => {
+    group.modelNos = [];
+  });
+
+  models.forEach(p => {
+
+    const modelNo = Number(p.modelNo);
+    const anchor = p.anchorStrategyId;
+
+    if(!Number.isFinite(modelNo)) return;
+
+    let group = null;
+
+    // Fixed model assignments take priority
+
+    if([3,4].includes(modelNo)){
+      group = "preservation";
+    }
+    else if([6,7].includes(modelNo)){
+      group = "veryHighRisk";
+    }
+    else if(modelNo === 5){
+      group = "balanced";
+    }
+    else if(anchor === "niDefensiv"){
+      group = "defensive";
+    }
+    else if(anchor === "niBalanceret"){
+      group = "balanced";
+    }
+    else if(anchor === "niAggressiv"){
+      group = "aggressive";
+    }
+
+    if(group){
+      groups[group].modelNos.push(modelNo);
+    }
+
+  });
+
+  console.log(
+    "INVESTMENT PREFERENCES POPULATED",
+    groups
+  );
+
+}
+
 
 
 /* =====================================================
@@ -11168,11 +11860,7 @@ const MARKET_INDEX_CONFIG = {
 };
 
 const INITIAL_ASSET_TICKERS = [
-  "NVDA.US",
-  "MSFT.US",
-  "EUNL.XETRA",
-  "AAPL.US",
-  "NOVO-B.CO"
+   "MSFT.US"
 ];
 
 // Initial country selection.
@@ -12394,9 +13082,17 @@ function renderPortfolios(){
       Filter real portfolio models.
     */
 
-    const choices = models.filter(
-      p => group.modelNos.includes(Number(p.modelNo))
-    );
+const choices = models
+  .filter(
+    p => group.modelNos.includes(Number(p.modelNo))
+  )
+  .sort((a, b) =>
+    String(a.modelLabel || "").localeCompare(
+      String(b.modelLabel || ""),
+      APP.lang === "da" ? "da" : "en",
+      { sensitivity: "base" }
+    )
+  );
 
     const p = models.find(
       x => String(x.modelNo) === String(slot.modelNo)
@@ -16645,6 +17341,8 @@ async function loadPortfolioDatabase(){
 
     PORTFOLIO_STATE.all = data.portfolios;
 
+populateInvestmentPreferences();
+
     PORTFOLIO_STATE.byModelNo = new Map(
       data.portfolios.map(
         portfolio => [
@@ -16999,8 +17697,19 @@ function renderMarketPulse() {
   const track = $('market-stock-track');
   if (!track) return;
 
-  const instruments = MARKET_STATE.instruments;
-  const perPage = window.innerWidth <= 760 ? 2 : 5;
+const instruments = [...(MARKET_STATE.instruments || [])]
+  .sort((a, b) => {
+    const ra = Number.isFinite(a.return) ? a.return : -Infinity;
+    const rb = Number.isFinite(b.return) ? b.return : -Infinity;
+
+    return rb - ra;
+  });
+
+const perPage = 5;
+
+
+
+
   const totalPages = Math.max(1, Math.ceil(instruments.length / perPage));
   MARKET_STATE.page = Math.max(0, Math.min(MARKET_STATE.page, totalPages - 1));
 
