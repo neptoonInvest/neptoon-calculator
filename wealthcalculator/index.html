@@ -3828,8 +3828,30 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   }
 
 }
-
-
+.nav-inner{
+  height:100%;
+  width:100%;
+  max-width:none;
+  margin:0;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+}
+.bottom-nav{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:var(--navh);
+  background:rgba(7,22,49,.94);
+  border-bottom:1px solid rgba(110,198,237,.25);
+  z-index:100;
+  box-shadow:0 12px 45px rgba(0,8,30,.4);
+  backdrop-filter:blur(22px);
+}
+  body{
+  padding-top:var(--navh);
+  padding-bottom:36px;
+}
 </style>
 </head>
 <body>
@@ -5660,7 +5682,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
 <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 
 <script>
