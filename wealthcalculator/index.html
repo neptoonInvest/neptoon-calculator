@@ -3852,6 +3852,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   padding-top:var(--navh);
   padding-bottom:36px;
 }
+
+.mywealth-history-method-btn.active{
+  background:#4E79BD;
+  color:#FFFFFF;
+  border-color:#4E79BD;
+}
 </style>
 </head>
 <body>
@@ -3874,211 +3880,236 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 <main class="shell">
 
 
-  <!-- =====================================================
-       01 · WELCOME
-  ====================================================== -->
+
+<!-- =====================================================
+     01 · WELCOME
+====================================================== -->
+
+<section
+  id="page-welcome"
+  class="page active"
+  aria-label="Welcome"
+  data-lang-aria-label="welcome"
+>
+
+  <div data-hero="welcome"></div>
+
+
+  <!-- =================================================
+       MARKET PULSE
+  ================================================== -->
 
   <section
-    id="page-welcome"
-    class="page active"
-    aria-label="Welcome"
+    class="market-pulse"
+    id="market-pulse"
+    aria-label="Market overview"
+    data-lang-aria-label="marketOverview"
   >
 
-    <div data-hero="welcome"></div>
+    <div class="market-head">
 
+      <div>
 
-    <!-- =================================================
-         MARKET PULSE
-    ================================================== -->
-
-    <section
-      class="market-pulse"
-      id="market-pulse"
-      aria-label="Market overview"
-    >
-
-      <div class="market-head">
-
-        <div>
-          <div class="kicker" id="market-kicker">
-            MARKET OVERVIEW
-          </div>
-
-          <h2 id="market-title">
-            Markets Today
-          </h2>
+        <div
+          class="kicker"
+          id="market-kicker"
+          data-lang="marketOverview"
+        >
+          MARKET OVERVIEW
         </div>
 
-        <div class="market-stamp" id="market-timestamp">
-          Latest available quotes
-        </div>
-
-      </div>
-
-
-      <!-- Four market indices -->
-
-      <div
-        class="market-index-grid"
-        id="market-index-grid"
-      ></div>
-
-
-      <div class="market-divider"></div>
-
-
-      <!-- Stocks carousel -->
-
-      <div class="market-stock-head">
-
-        <h3 id="market-stock-title">
-          Stocks in focus
-        </h3>
-
-        <span class="hint" id="market-stock-count">
-          1–5 / 10
-        </span>
-
-      </div>
-
-
-      <div
-        class="market-stock-track"
-        id="market-stock-track"
-      ></div>
-
-
-      <!-- Stock pagination -->
-
-      <div class="market-pagination">
-
-        <button
-          type="button"
-          class="market-page-btn"
-          id="market-prev"
-          aria-label="Previous stocks"
+        <h2
+          id="market-title"
+          data-lang="marketsToday"
         >
-          <i data-lucide="chevron-left"></i>
-        </button>
-
-        <span
-          class="market-page-indicator"
-          id="market-page-label"
-        >
-          1 / 2
-        </span>
-
-        <button
-          type="button"
-          class="market-page-btn"
-          id="market-next"
-          aria-label="Next stocks"
-        >
-          <i data-lucide="chevron-right"></i>
-        </button>
-
-      </div>
-
-
-      <div class="market-foot" id="market-foot">
-        Prices may be delayed. Daily change versus previous close.
-      </div>
-
-    </section>
-
-
-
-    <!-- =================================================
-         WELCOME · INVESTMENT PREVIEW
-    ================================================== -->
-
-<!-- =================================================
-     WELCOME · INVESTMENT PREVIEW
-================================================== -->
-
-<div class="section">
-
-  <div class="section-heading">
-    <h2 data-i18n="welcomePreview">
-      What could your investment become?
-    </h2>
-  </div>
-
-  <div
-    class="preview"
-    id="welcome-preview"
-  ></div>
-
-</div>
-
-
-
-
-    <!-- =================================================
-         WELCOME · NAVIGATION CHOICES
-    ================================================== -->
-
-    <div class="section welcome-grid">
-
-
-      <!-- Assets -->
-
-      <article class="welcome-choice">
-
-        <i data-lucide="search"></i>
-
-        <h2 data-i18n="assets">
-          Assets
+          Markets Today
         </h2>
 
-        <p data-i18n="welcomeAssetsText">
-          Choose up to five stocks, ETFs or funds you are curious about.
-        </p>
+      </div>
 
-        <button
-          class="btn"
-          data-go="assets"
-          data-i18n="viewAssets"
-        >
-          View Assets
-        </button>
-
-      </article>
-
-
-      <!-- Wealth Plans -->
-
-      <article class="welcome-choice">
-
-        <i data-lucide="layers"></i>
-
-        <h2 data-i18n="portfolios">
-          Portfolios
-        </h2>
-
-        <p data-i18n="welcomePlansText">
-          Find ready-made Wealth Plans by your risk preference.
-        </p>
-
-        <button
-          class="btn"
-          data-go="portfolios"
-          data-i18n="viewPlans"
-        >
-          View Wealth Plans
-        </button>
-
-      </article>
+      <div
+        class="market-stamp"
+        id="market-timestamp"
+      >
+        Latest available quotes
+      </div>
 
     </div>
 
+
+    <!-- Four market indices -->
+
+    <div
+      class="market-index-grid"
+      id="market-index-grid"
+    ></div>
+
+
+    <div class="market-divider"></div>
+
+
+    <!-- Stocks carousel -->
+
+    <div class="market-stock-head">
+
+      <h3
+        id="market-stock-title"
+        data-lang="stocksInFocus"
+      >
+        Stocks in focus
+      </h3>
+
+      <span
+        class="hint"
+        id="market-stock-count"
+      >
+        1–5 / 10
+      </span>
+
+    </div>
+
+
+    <div
+      class="market-stock-track"
+      id="market-stock-track"
+    ></div>
+
+
+    <!-- Stock pagination -->
+
+    <div class="market-pagination">
+
+      <button
+        type="button"
+        class="market-page-btn"
+        id="market-prev"
+        aria-label="Previous stocks"
+        data-lang-aria-label="previousStocks"
+      >
+        <i data-lucide="chevron-left"></i>
+      </button>
+
+      <span
+        class="market-page-indicator"
+        id="market-page-label"
+      >
+        1 / 2
+      </span>
+
+      <button
+        type="button"
+        class="market-page-btn"
+        id="market-next"
+        aria-label="Next stocks"
+        data-lang-aria-label="nextStocks"
+      >
+        <i data-lucide="chevron-right"></i>
+      </button>
+
+    </div>
+
+
+    <div
+      class="market-foot"
+      id="market-foot"
+      data-lang="marketFoot"
+    >
+      Prices may be delayed. Daily change versus previous close.
+    </div>
+
   </section>
+
+
+  <!-- =================================================
+       WELCOME · INVESTMENT PREVIEW
+  ================================================== -->
+
+  <div class="section">
+
+    <div class="section-heading">
+
+      <h2 data-lang="welcomePreview">
+        What could your investment become?
+      </h2>
+
+    </div>
+
+    <div
+      class="preview"
+      id="welcome-preview"
+    ></div>
+
+  </div>
+
+
+  <!-- =================================================
+       WELCOME · NAVIGATION CHOICES
+  ================================================== -->
+
+  <div class="section welcome-grid">
+
+
+    <!-- Assets -->
+
+    <article class="welcome-choice">
+
+      <i data-lucide="search"></i>
+
+      <h2 data-lang="assets">
+        Assets
+      </h2>
+
+      <p data-lang="welcomeAssetsText">
+        Choose up to five stocks, ETFs or funds you are curious about.
+      </p>
+
+      <button
+        class="btn"
+        data-go="assets"
+        data-lang="viewAssets"
+      >
+        View Assets
+      </button>
+
+    </article>
+
+
+    <!-- Wealth Plans -->
+
+    <article class="welcome-choice">
+
+      <i data-lucide="layers"></i>
+
+      <h2 data-lang="portfolios">
+        Portfolios
+      </h2>
+
+      <p data-lang="welcomePlansText">
+        Find ready-made Wealth Plans by your risk preference.
+      </p>
+
+      <button
+        class="btn"
+        data-go="portfolios"
+        data-lang="viewPlans"
+      >
+        View Wealth Plans
+      </button>
+
+    </article>
+
+  </div>
+
+</section>
+
+
 
 
 
   <!-- =====================================================
        02 · ASSETS
   ====================================================== -->
+
 
 
 <!-- =====================================================
@@ -4101,7 +4132,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
     <div class="section-heading">
 
-      <h2 data-i18n="yourInvestments">
+      <h2 data-lang="yourInvestments">
         Your investments
       </h2>
 
@@ -4133,15 +4164,21 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
       <div>
 
-        <div class="asset-history-kicker">
+        <div
+          class="asset-history-kicker"
+          data-lang="assetsHistoryKicker"
+        >
           NEPTOON · ASSETS
         </div>
 
-        <h2>
+        <h2 data-lang="assetsHistoryTitle">
           Historical performance
         </h2>
 
-        <p class="asset-history-subtitle">
+        <p
+          class="asset-history-subtitle"
+          data-lang="assetsHistorySubtitle"
+        >
           Compare up to 5 instruments.
           Total return index (rebased to 100).
         </p>
@@ -4165,27 +4202,32 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         <button
           type="button"
           data-history-period="1Y"
+          data-lang="period1Y"
         >1Y</button>
 
         <button
           type="button"
           data-history-period="3Y"
+          data-lang="period3Y"
         >3Y</button>
 
         <button
           type="button"
           data-history-period="5Y"
+          data-lang="period5Y"
         >5Y</button>
 
         <button
           type="button"
           data-history-period="10Y"
+          data-lang="period10Y"
         >10Y</button>
 
         <button
           type="button"
           class="active"
           data-history-period="MAX"
+          data-lang="periodMAX"
         >MAX</button>
 
       </div>
@@ -4193,6 +4235,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <div
         class="asset-history-period-label"
         id="assetHistoryPeriodLabel"
+        data-lang="assetsHistoryPeriodLabel"
       >
         Historical index · Base = 100
       </div>
@@ -4236,11 +4279,17 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
         <div class="asset-history-results-head">
 
-          <span>Instrument</span>
+          <span data-lang="instrument">
+            Instrument
+          </span>
 
-          <span>Total return</span>
+          <span data-lang="totalReturn">
+            Total return
+          </span>
 
-          <span>Ann. return</span>
+          <span data-lang="annualReturn">
+            Ann. return
+          </span>
 
         </div>
 
@@ -4264,7 +4313,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         ⓘ
       </span>
 
-      <span>
+      <span data-lang="assetsHistoryNote">
         Historical total return index,
         including reinvested distributions
         where reflected in the source series.
@@ -4277,10 +4326,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   </div>
 
 </section>
-
-
-
-
 
 
 
@@ -4304,7 +4349,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
     <div class="section-heading">
 
-      <h2 data-i18n="yourPlans">
+      <h2 data-lang="yourPlans">
         Your Wealth Plans
       </h2>
 
@@ -4356,15 +4401,21 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
       <div>
 
-        <div class="asset-history-kicker">
+        <div
+          class="asset-history-kicker"
+          data-lang="plansHistoryKicker"
+        >
           NEPTOON · WEALTH PLANS
         </div>
 
-        <h2>
+        <h2 data-lang="assetsHistoryTitle">
           Historical performance
         </h2>
 
-        <p class="asset-history-subtitle">
+        <p
+          class="asset-history-subtitle"
+          data-lang="plansHistorySubtitle"
+        >
           Compare up to 5 Wealth Plans.
           Total return index (rebased to 100).
         </p>
@@ -4388,27 +4439,32 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         <button
           type="button"
           data-history-period="1Y"
+          data-lang="period1Y"
         >1Y</button>
 
         <button
           type="button"
           data-history-period="3Y"
+          data-lang="period3Y"
         >3Y</button>
 
         <button
           type="button"
           data-history-period="5Y"
+          data-lang="period5Y"
         >5Y</button>
 
         <button
           type="button"
           data-history-period="10Y"
+          data-lang="period10Y"
         >10Y</button>
 
         <button
           type="button"
           class="active"
           data-history-period="MAX"
+          data-lang="periodMAX"
         >MAX</button>
 
       </div>
@@ -4416,6 +4472,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <div
         class="asset-history-period-label"
         id="planHistoryPeriodLabel"
+        data-lang="assetsHistoryPeriodLabel"
       >
         Historical index · Base = 100
       </div>
@@ -4459,11 +4516,17 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
         <div class="asset-history-results-head">
 
-          <span>Wealth Plan</span>
+          <span data-lang="wealthPlan">
+            Wealth Plan
+          </span>
 
-          <span>Total return</span>
+          <span data-lang="totalReturn">
+            Total return
+          </span>
 
-          <span>Ann. return</span>
+          <span data-lang="annualReturn">
+            Ann. return
+          </span>
 
         </div>
 
@@ -4487,7 +4550,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         ⓘ
       </span>
 
-      <span>
+      <span data-lang="assetsHistoryNote">
         Historical total return index,
         including reinvested distributions
         where reflected in the source series.
@@ -4500,8 +4563,13 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   </div>
 
 </section>
+
 <!-- END PAGE 03 · PORTFOLIOS -->
 
+
+<!-- =====================================================
+     04 · MYWEALTH
+===================================================== -->
 
 
 <!-- =====================================================
@@ -4528,11 +4596,16 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
     <div class="section-heading">
       <div>
-        <div class="section-kicker">
+        <div
+          class="section-kicker"
+          data-lang="mwInvestmentKicker"
+        >
           YOUR INVESTMENT
         </div>
 
-        <h2>Starting point</h2>
+        <h2 data-lang="mwStartingPoint">
+          Starting point
+        </h2>
       </div>
     </div>
 
@@ -4543,7 +4616,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
       <div class="mywealth-input-header">
 
-        <label for="mywealth-w0">
+        <label
+          for="mywealth-w0"
+          data-lang="mwStartingWealth"
+        >
           Starting wealth
         </label>
 
@@ -4576,7 +4652,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
       <div class="mywealth-input-header">
 
-        <label for="mywealth-savings">
+        <label
+          for="mywealth-savings"
+          data-lang="mwMonthlySavings"
+        >
           Monthly savings
         </label>
 
@@ -4618,7 +4697,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
       <div>
 
-        <div class="section-kicker">
+        <div
+          class="section-kicker"
+          data-lang="mwEngineKicker"
+        >
           NEPTOON · WEALTH ENGINE
         </div>
 
@@ -4629,6 +4711,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <span
         id="mywealth-mode-pill"
         class="mywealth-mode-pill"
+        data-lang="mwWaitingStatus"
       >
         WAITING
       </span>
@@ -4636,15 +4719,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
 
 
-    <!-- ==============================================
-         HORIZON CONTROL
-    ============================================== -->
+    <!-- HORIZON CONTROL -->
 
     <div class="mywealth-horizon">
 
       <div class="mywealth-horizon-header">
 
-        <span>Time horizon</span>
+        <span data-lang="mwTimeHorizon">
+          Time horizon
+        </span>
 
         <strong id="mywealth-horizon-value">
           0 YEARS
@@ -4669,9 +4752,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
 
 
-    <!-- ==============================================
-         WEALTH / COSTS TOGGLE
-    ============================================== -->
+    <!-- WEALTH / COSTS TOGGLE -->
 
     <div
       id="mywealth-view-toggle"
@@ -4685,6 +4766,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         type="button"
         class="mywealth-view-btn active"
         aria-pressed="true"
+        data-lang="mwExpectedWealth"
       >
         EXPECTED WEALTH
       </button>
@@ -4696,6 +4778,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         aria-pressed="false"
         disabled
         title="Available for WealthPlans"
+        data-lang="mwCostImpact"
       >
         COST IMPACT
       </button>
@@ -4703,9 +4786,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
 
 
-    <!-- ==============================================
-         WAITING STATE
-    ============================================== -->
+    <!-- WAITING STATE -->
 
     <div
       id="mywealth-waiting"
@@ -4716,9 +4797,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         +
       </div>
 
-      <h3>Waiting for investments</h3>
+      <h3 data-lang="mwWaitingTitle">
+        Waiting for investments
+      </h3>
 
-      <p>
+      <p data-lang="mwWaitingDescription">
         Send up to five investments from
         Assets or WealthPlans.
       </p>
@@ -4726,9 +4809,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
 
 
-    <!-- ==============================================
-         RECEIVED STATE · HISTOGRAM
-    ============================================== -->
+    <!-- RECEIVED STATE · HISTOGRAM -->
 
     <div
       id="mywealth-received"
@@ -4743,11 +4824,17 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
         <div class="mywealth-chart-heading">
 
-          <h3 id="mywealth-chart-title">
+          <h3
+            id="mywealth-chart-title"
+            data-lang="mwChartTitle"
+          >
             Expected wealth
           </h3>
 
-          <span id="mywealth-chart-caption">
+          <span
+            id="mywealth-chart-caption"
+            data-lang="mwChartCaption"
+          >
             10-year projection
           </span>
 
@@ -4781,345 +4868,357 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
   </div>
 
-<!-- ===============================================================
-     SECTION 2: RELATIVE PERFORMANCE SELECTED INSTRUMENT
-=================================================================== -->
 
+  <!-- ================================================
+       SECTION 2 · HISTORICAL MARKET RACE
+  ================================================= -->
 
-<!-- ===============================================================
-     SECTION 2 · HISTORICAL MARKET RACE
-=================================================================== -->
-
-<section
-  id="mywealth-history-section"
-  class="section panel panel-pad mywealth-history-section"
-  hidden
->
-
-  <!-- HEADER -->
-
-  <div class="mywealth-history-header">
-
-    <div class="mywealth-history-heading">
-
-      <div class="mywealth-history-kicker">
-        THE MARKET RACE
-      </div>
-
-      <h3 id="mywealth-history-name">
-        Select an investment
-      </h3>
-
-      <p>
-        Historical accumulated NAV · Common start at 100
-      </p>
-
-    </div>
-
-    <span
-      class="mywealth-history-period"
-      id="mywealth-history-period"
-    >
-      UP TO 15 YEARS
-    </span>
-
-  </div>
-
-
-  <!-- ============================================================
-       COMPARISON CONTROLS
-  ============================================================ -->
-
-
-<div class="mywealth-history-controls">
-
-  <div class="mywealth-history-control-label">
-
-    <strong>Comparison method</strong>
-
-    <span id="mywealth-history-benchmark-label">
-      100% iShares MSCI World (EUNL.DE) EUR
-    </span>
-
-  </div>
-
-
-    <!-- CENTER: MARKET / JENSEN -->
-
-    <div
-      class="mywealth-history-method"
-      role="group"
-      aria-label="Historical comparison method"
-    >
-
-      <button
-        type="button"
-        id="mywealth-history-market"
-        class="mywealth-history-method-btn active"
-        aria-pressed="true"
-      >
-        MARKET
-      </button>
-
-      <button
-        type="button"
-        id="mywealth-history-jensen"
-        class="mywealth-history-method-btn"
-        aria-pressed="false"
-      >
-        JENSEN 1-FACTOR
-      </button>
-
-    </div>
-
-
-    <!-- RIGHT: PLAY -->
-
-    <button
-      type="button"
-      id="mywealth-history-play"
-      class="mywealth-history-play"
-    >
-      &#9654; PLAY HISTORY
-    </button>
-
-  </div>
-
-
-  <!-- ============================================================
-       NAV INDICATORS
-  ============================================================ -->
-
-
-<!-- ================================================
-     MARKET RACE · LIVE PERFORMANCE METRICS
-================================================ -->
-
-<div class="mywealth-history-nav-grid">
-
-  <!-- NAV A -->
-  <div class="mywealth-history-nav-card">
-    <span>NAV · A</span>
-    <strong id="mywealth-history-investment-nav">
-      100
-    </strong>
-  </div>
-
-  <!-- NAV B -->
-  <div class="mywealth-history-nav-card">
-    <span>NAV · B</span>
-    <strong id="mywealth-history-benchmark-nav">
-      100
-    </strong>
-  </div>
-
-  <!-- ACCUMULATED RETURN A -->
-  <div class="mywealth-history-nav-card">
-    <span>ACC. RET · A</span>
-    <strong id="mywealth-history-return-a">
-      0%
-    </strong>
-  </div>
-
-  <!-- ACCUMULATED RETURN B -->
-  <div class="mywealth-history-nav-card">
-    <span>ACC. RET · B</span>
-    <strong id="mywealth-history-return-b">
-      0%
-    </strong>
-  </div>
-
-  <!-- RELATIVE PERFORMANCE -->
-  <div class="mywealth-history-nav-card">
-    <span>RELATIVE</span>
-    <strong id="mywealth-history-relative">
-      0 pp
-    </strong>
-  </div>
-
-</div>
-
-
-  <!-- ============================================================
-       HISTORICAL CANVAS · EMPTY
-  ============================================================ -->
-
-  <div
-    id="mywealth-history-chart"
-    class="mywealth-history-chart"
+  <section
+    id="mywealth-history-section"
+    class="section panel panel-pad mywealth-history-section"
+    hidden
   >
 
-    <canvas
-      id="mywealth-history-canvas"
-      aria-label="Historical NAV comparison"
-      role="img"
-    ></canvas>
+    <!-- HEADER -->
 
-  </div>
+    <div class="mywealth-history-header">
 
+      <div class="mywealth-history-heading">
 
-  <!-- ============================================================
-       VERDICT · LOCKED UNTIL RACE COMPLETED
-  ============================================================ -->
+        <div
+          class="mywealth-history-kicker"
+          data-lang="mwMarketRace"
+        >
+          THE MARKET RACE
+        </div>
 
-  <div
-    id="mywealth-history-verdict"
-    class="mywealth-history-verdict"
-  >
-
-    <div class="mywealth-history-verdict-header">
-
-      <h3>THE VERDICT</h3>
-
-      <span
-        id="mywealth-history-status"
-        class="mywealth-history-status"
-      >
-        PENDING
-      </span>
-
-    </div>
-
-
-    <div class="mywealth-history-verdict-grid">
-
-      <div class="mywealth-history-verdict-card">
-
-        <strong>
-          A · HAS IT BEATEN THE MARKET?
-        </strong>
-
-        <h4 id="mywealth-history-verdict-market">
-          Awaiting race
-        </h4>
-
-        <p>
-          Historical performance relative to the
-          selected market benchmark.
-        </p>
-
-      </div>
-
-
-      <div class="mywealth-history-verdict-card">
-
-        <strong>
-          B · SHOULD I BUY OR SELL?
-        </strong>
-
-        <h4 id="mywealth-history-verdict-decision">
-          Evidence pending
-        </h4>
-
-        <p>
-          Historical risk-adjusted performance
-          informs investment assessment but
-          does not establish a buy or sell recommendation.
-        </p>
-
-      </div>
-
-    </div>
-
-  </div>
-
-<!-- =========================================
-     MYWEALTH · SEND WEALTH PLAN
-========================================= -->
-
-<section
-  id="mw-wealth-plan"
-  class="section mw-wealth-plan"
-  hidden>
-
-  <div class="mw-plan-content">
-
-    <div class="mw-plan-heading">
-
-      <div class="mw-plan-icon">
-        <i data-lucide="file-text"></i>
-      </div>
-
-      <div class="mw-plan-heading-text">
-
-        <h3 data-i18n="mwPlanTitle">
-          My Wealth Plan
+        <h3
+          id="mywealth-history-name"
+          data-lang="mwSelectInvestment"
+        >
+          Select an investment
         </h3>
 
-        <p data-i18n="mwPlanDescription">
-          Receive your selected Wealth Plans,
-          expected returns, risk metrics and
-          portfolio holdings in one PDF.
+        <p data-lang="mwHistoryDescription">
+          Historical accumulated NAV · Common start at 100
         </p>
+
+      </div>
+
+      <span
+        class="mywealth-history-period"
+        id="mywealth-history-period"
+        data-lang="mwHistoryPeriod"
+      >
+        UP TO 15 YEARS
+      </span>
+
+    </div>
+
+
+    <!-- COMPARISON CONTROLS -->
+
+    <div class="mywealth-history-controls">
+
+      <div class="mywealth-history-control-label">
+
+        <strong data-lang="mwComparisonMethod">
+          Comparison method
+        </strong>
+
+        <span id="mywealth-history-benchmark-label">
+          100% iShares MSCI World (EUNL.DE) EUR
+        </span>
+
+      </div>
+
+
+      <!-- MARKET / JENSEN -->
+
+      <div
+        class="mywealth-history-method"
+        role="group"
+        aria-label="Historical comparison method"
+      >
+
+        <button
+          type="button"
+          id="mywealth-history-market"
+          class="mywealth-history-method-btn active"
+          aria-pressed="true"
+          data-lang="mwMarket"
+        >
+          MARKET
+        </button>
+
+        <button
+          type="button"
+          id="mywealth-history-jensen"
+          class="mywealth-history-method-btn"
+          aria-pressed="false"
+          data-lang="mwJensen"
+        >
+          JENSEN 1-FACTOR
+        </button>
+
+      </div>
+
+
+      <!-- PLAY -->
+
+      <button
+        type="button"
+        id="mywealth-history-play"
+        class="mywealth-history-play"
+      >
+        <span aria-hidden="true">&#9654;</span>
+        <span data-lang="mwPlayHistory">PLAY HISTORY</span>
+      </button>
+
+    </div>
+
+
+    <!-- LIVE PERFORMANCE METRICS -->
+
+    <div class="mywealth-history-nav-grid">
+
+      <div class="mywealth-history-nav-card">
+        <span data-lang="mwNavA">NAV · A</span>
+        <strong id="mywealth-history-investment-nav">
+          100
+        </strong>
+      </div>
+
+      <div class="mywealth-history-nav-card">
+        <span data-lang="mwNavB">NAV · B</span>
+        <strong id="mywealth-history-benchmark-nav">
+          100
+        </strong>
+      </div>
+
+      <div class="mywealth-history-nav-card">
+        <span data-lang="mwAccumReturnA">
+          ACC. RET · A
+        </span>
+        <strong id="mywealth-history-return-a">
+          0%
+        </strong>
+      </div>
+
+      <div class="mywealth-history-nav-card">
+        <span data-lang="mwAccumReturnB">
+          ACC. RET · B
+        </span>
+        <strong id="mywealth-history-return-b">
+          0%
+        </strong>
+      </div>
+
+      <div class="mywealth-history-nav-card">
+        <span data-lang="mwRelative">
+          RELATIVE
+        </span>
+        <strong id="mywealth-history-relative">
+          0 pp
+        </strong>
+      </div>
+
+    </div>
+
+
+    <!-- HISTORICAL CANVAS -->
+
+    <div
+      id="mywealth-history-chart"
+      class="mywealth-history-chart"
+    >
+
+      <canvas
+        id="mywealth-history-canvas"
+        aria-label="Historical NAV comparison"
+        role="img"
+      ></canvas>
+
+    </div>
+
+
+    <!-- VERDICT -->
+
+    <div
+      id="mywealth-history-verdict"
+      class="mywealth-history-verdict"
+    >
+
+      <div class="mywealth-history-verdict-header">
+
+        <h3 data-lang="mwVerdict">
+          THE VERDICT
+        </h3>
+
+        <span
+          id="mywealth-history-status"
+          class="mywealth-history-status"
+          data-lang="mwPending"
+        >
+          PENDING
+        </span>
+
+      </div>
+
+
+      <div class="mywealth-history-verdict-grid">
+
+        <div class="mywealth-history-verdict-card">
+
+          <strong data-lang="mwVerdictMarketQuestion">
+            A · HAS IT BEATEN THE MARKET?
+          </strong>
+
+          <h4
+            id="mywealth-history-verdict-market"
+            data-lang="mwAwaitingRace"
+          >
+            Awaiting race
+          </h4>
+
+          <p data-lang="mwVerdictMarketDescription">
+            Historical performance relative to the
+            selected market benchmark.
+          </p>
+
+        </div>
+
+
+        <div class="mywealth-history-verdict-card">
+
+          <strong data-lang="mwVerdictDecisionQuestion">
+            B · SHOULD I BUY OR SELL?
+          </strong>
+
+          <h4
+            id="mywealth-history-verdict-decision"
+            data-lang="mwEvidencePending"
+          >
+            Evidence pending
+          </h4>
+
+          <p data-lang="mwVerdictDecisionDescription">
+            Historical risk-adjusted performance
+            informs investment assessment but
+            does not establish a buy or sell recommendation.
+          </p>
+
+        </div>
 
       </div>
 
     </div>
 
-    <form id="mw-plan-form" class="mw-plan-form">
 
-      <input
-        type="email"
-        id="mw-plan-email"
-        name="email"
-        autocomplete="email"
-        placeholder="Your email address"
-        aria-label="Your email address"
-        required
-      >
+    <!-- ================================================
+         MYWEALTH · SEND WEALTH PLAN
+    ================================================= -->
 
-      <button
-        type="submit"
-        id="mw-plan-send"
-        class="mw-plan-send">
+    <section
+      id="mw-wealth-plan"
+      class="section mw-wealth-plan"
+      hidden
+    >
 
-        <i data-lucide="send"></i>
+      <div class="mw-plan-content">
 
-        <span data-i18n="mwPlanSend">
-          Send PDF
-        </span>
+        <div class="mw-plan-heading">
 
-      </button>
+          <div class="mw-plan-icon">
+            <i data-lucide="file-text"></i>
+          </div>
 
-    </form>
+          <div class="mw-plan-heading-text">
 
-    <div class="mw-plan-footer">
+            <h3 data-lang="mwPlanTitle">
+              My Wealth Plan
+            </h3>
 
-      <span data-i18n="mwPlanPrivacy">
-        Your email is used only to deliver
-        your Wealth Plan.
-      </span>
+            <p data-lang="mwPlanDescription">
+              Receive your selected Wealth Plans,
+              expected returns, risk metrics and
+              portfolio holdings in one PDF.
+            </p>
 
-      <button
-        type="button"
-        id="mw-plan-download"
-        class="mw-plan-download">
+          </div>
 
-        <i data-lucide="download"></i>
-
-        <span data-i18n="mwPlanDownload">
-          Download PDF
-        </span>
-
-      </button>
-
-    </div>
-
-    <div
-      id="mw-plan-status"
-      class="mw-plan-status"
-      role="status"
-      aria-live="polite"
-      hidden>
-    </div>
-
-  </div>
-
-</section>
+        </div>
 
 
+        <form
+          id="mw-plan-form"
+          class="mw-plan-form"
+        >
+
+          <input
+            type="email"
+            id="mw-plan-email"
+            name="email"
+            autocomplete="email"
+            placeholder="Your email address"
+            aria-label="Your email address"
+            required
+          />
+
+          <button
+            type="submit"
+            id="mw-plan-send"
+            class="mw-plan-send"
+          >
+
+            <i data-lucide="send"></i>
+
+            <span data-lang="mwPlanSend">
+              Send PDF
+            </span>
+
+          </button>
+
+        </form>
 
 
+        <div class="mw-plan-footer">
+
+          <span data-lang="mwPlanPrivacy">
+            Your email is used only to deliver
+            your Wealth Plan.
+          </span>
+
+          <button
+            type="button"
+            id="mw-plan-download"
+            class="mw-plan-download"
+          >
+
+            <i data-lucide="download"></i>
+
+            <span data-lang="mwPlanDownload">
+              Download PDF
+            </span>
+
+          </button>
+
+        </div>
+
+
+        <div
+          id="mw-plan-status"
+          class="mw-plan-status"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></div>
+
+      </div>
+
+    </section>
+
+  </section>
 
 </section>
 
@@ -5129,21 +5228,18 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 ================================================ -->
 
 
-  <div class="section btnrow">
+<!-- ================================================
+     VIEW HISTORY · KEEP EXISTING BUTTON SEPARATELY
+================================================ -->
 
-    <button
-      class="btn"
-      id="view-history"
-      data-i18n="viewHistory"
-    >
-      View History →
-    </button>
 
-  </div>
+<!-- ================================================
+     MYWEALTH · VIEW HISTORY
+================================================ -->
+
 
 </section>
 <!-- END PAGE 04 · MYWEALTH -->
-
 
 
 <!-- =====================================================
@@ -5157,29 +5253,23 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   aria-label="Time Machine"
 >
 
-  <!-- =========================================
-       EXISTING HERO
-  ========================================= -->
-
   <div data-hero="history"></div>
 
 
-  <!-- =========================================
-       INTRODUCTION
-  ========================================= -->
+  <!-- INTRODUCTION -->
 
   <div class="section tm-intro">
 
     <h2
       class="tm-title"
-      data-i18n="timeMachineTitle"
+      data-lang="timeMachineTitle"
     >
       Time Machine
     </h2>
 
     <p
       class="tm-subtitle"
-      data-i18n="timeMachineSubtitle"
+      data-lang="timeMachineSubtitle"
     >
       What does it feel like to invest through history?
     </p>
@@ -5187,16 +5277,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   </div>
 
 
-  <!-- =========================================
-       MAIN CINEMA PANEL
-  ========================================= -->
+  <!-- MAIN CINEMA PANEL -->
 
   <div class="section panel panel-pad tm-cinema">
 
 
-    <!-- =====================================
-         CHAPTER PAGINATION
-    ===================================== -->
+    <!-- CHAPTER PAGINATION -->
 
     <div class="tm-chapter-nav">
 
@@ -5226,8 +5312,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
           1900–1909
         </h2>
 
-        <!-- Bilingual historical chapter label -->
-
         <div
           class="tm-chapter-label"
           id="tm-chapter-label"
@@ -5250,9 +5334,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
 
 
-    <!-- =====================================
-         LIVE FINANCIAL METRICS
-    ===================================== -->
+    <!-- LIVE FINANCIAL METRICS -->
 
     <div
       class="tm-metrics"
@@ -5263,7 +5345,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
         <div
           class="tm-metric-label"
-          data-i18n="tmWealth"
+          data-lang="tmWealth"
         >
           WEALTH
         </div>
@@ -5282,7 +5364,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
         <div
           class="tm-metric-label"
-          data-i18n="tmReturn"
+          data-lang="tmReturn"
         >
           RETURN
         </div>
@@ -5301,7 +5383,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
         <div
           class="tm-metric-label"
-          data-i18n="tmDrawdown"
+          data-lang="tmDrawdown"
         >
           DRAWDOWN
         </div>
@@ -5318,15 +5400,13 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
 
 
-    <!-- =====================================
-         HISTORICAL MONTH INDICATOR
-    ===================================== -->
+    <!-- HISTORICAL MONTH INDICATOR -->
 
     <div class="tm-date-row">
 
       <span
         class="tm-date-label"
-        data-i18n="tmHistoricalDate"
+        data-lang="tmHistoricalDate"
       >
         HISTORICAL DATE
       </span>
@@ -5341,9 +5421,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
 
 
-    <!-- =====================================
-         HISTORICAL CANVAS
-    ===================================== -->
+    <!-- HISTORICAL CANVAS -->
 
     <div class="tm-chart-wrap">
 
@@ -5356,9 +5434,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
 
 
-    <!-- =====================================
-         PLAYBACK PROGRESS
-    ===================================== -->
+    <!-- PLAYBACK PROGRESS -->
 
     <div class="tm-progress-wrap">
 
@@ -5371,7 +5447,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         step="1"
         value="0"
         aria-label="Historical month"
-      >
+      />
 
       <div class="tm-progress-labels">
 
@@ -5390,12 +5466,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   </div>
 
 
-  <!-- =========================================
-       CINEMA CONTROLS
-  ========================================= -->
+  <!-- CINEMA CONTROLS -->
 
   <div class="section tm-controls">
-
 
     <div class="tm-playback-row">
 
@@ -5419,16 +5492,18 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         class="tm-play-btn"
         aria-label="Play historical cinema"
       >
+
         <span id="tm-play-icon">
           &#9654;
         </span>
 
         <span
           id="tm-play-label"
-          data-i18n="tmPlay"
+          data-lang="tmPlay"
         >
           PLAY
         </span>
+
       </button>
 
 
@@ -5480,9 +5555,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   </div>
 
 
-  <!-- =========================================
-       NOMINAL / REAL SELECTOR
-  ========================================= -->
+  <!-- NOMINAL / REAL SELECTOR -->
 
   <div class="section tm-return-mode">
 
@@ -5497,7 +5570,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         id="tm-mode-nominal"
         class="tm-mode-btn active"
         aria-pressed="true"
-        data-i18n="tmNominal"
+        data-lang="tmNominal"
       >
         NOMINAL
       </button>
@@ -5507,7 +5580,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         id="tm-mode-real"
         class="tm-mode-btn"
         aria-pressed="false"
-        data-i18n="tmReal"
+        data-lang="tmReal"
       >
         REAL
       </button>
@@ -5517,10 +5590,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   </div>
 
 
-
-  <!-- =========================================
-       EDUCATIONAL MESSAGE
-  ========================================= -->
+  <!-- EDUCATIONAL MESSAGE -->
 
   <div class="section panel panel-pad tm-message">
 
@@ -5528,7 +5598,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       i
     </div>
 
-    <p data-i18n="tmMessage">
+    <p data-lang="tmMessage">
       A 10% expected return is a number.
       A 40% loss is an experience.
     </p>
@@ -5536,14 +5606,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   </div>
 
 
-  <!-- =========================================
-       DATA SOURCE / DISCLAIMER
-  ========================================= -->
+  <!-- DATA SOURCE / DISCLAIMER -->
 
   <div class="section tm-footnote">
 
-    <p data-i18n="tmSource">
-      Historical S&P 500 total returns including
+    <p data-lang="tmSource">
+      Historical S&amp;P 500 total returns including
       dividends. Nominal and inflation-adjusted
       wealth. Source: Shiller historical data.
     </p>
@@ -5551,9 +5619,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   </div>
 
 
-  <!-- =========================================
-       TIME MACHINE · HISTORICAL STATISTICS
-  ========================================= -->
+  <!-- TIME MACHINE · HISTORICAL STATISTICS -->
 
   <section
     class="section panel panel-pad tm-statistics"
@@ -5562,22 +5628,25 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
     <div class="tm-statistics-head">
 
-      <div class="tm-statistics-kicker">
+      <div
+        class="tm-statistics-kicker"
+        data-lang="tmStatisticsKicker"
+      >
         NEPTOON WEALTH · TIME MACHINE
       </div>
 
       <h2
         class="tm-statistics-title"
-        data-i18n="tmStatisticsTitle"
+        data-lang="tmStatisticsTitle"
       >
         Historical Returns
       </h2>
 
       <p
         class="tm-statistics-subtitle"
-        data-i18n="tmStatisticsSubtitle"
+        data-lang="tmStatisticsSubtitle"
       >
-        S&P 500 · Dividends reinvested
+        S&amp;P 500 · Dividends reinvested
       </p>
 
     </div>
@@ -5590,24 +5659,24 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         <thead>
           <tr>
 
-            <th data-i18n="tmStatsPeriod">
+            <th data-lang="tmStatsPeriod">
               PERIOD
             </th>
 
-            <th data-i18n="tmStatsEra">
+            <th data-lang="tmStatsEra">
               HISTORICAL ERA
             </th>
 
             <th
               class="tm-stats-number"
-              data-i18n="tmStatsAccumulated"
+              data-lang="tmStatsAccumulated"
             >
               ACCUMULATED
             </th>
 
             <th
               class="tm-stats-number"
-              data-i18n="tmStatsAnnualized"
+              data-lang="tmStatsAnnualized"
             >
               ANNUALIZED
             </th>
@@ -5624,7 +5693,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         <tfoot>
           <tr class="tm-statistics-total">
 
-            <td id="tm-stats-total-period">
+            <td
+              id="tm-stats-total-period"
+              data-lang="tmStatsTotal"
+            >
               TOTAL
             </td>
 
@@ -5656,7 +5728,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
     <p
       class="tm-statistics-note"
-      data-i18n="tmStatisticsNote"
+      data-lang="tmStatisticsNote"
     >
       Historical total returns including dividends.
       Annualized returns are geometrically compounded.
@@ -6045,6 +6117,389 @@ const PLAN_HISTORY_VIEW = {
   highlighted: null,
   resizeObserver: null
 };
+
+const TXT = {
+
+  en: {
+
+    welcome: "Welcome",
+
+    marketOverview: "MARKET OVERVIEW",
+    marketsToday: "Markets Today",
+    latestQuotes: "Latest available quotes",
+    stocksInFocus: "Stocks in focus",
+    previousStocks: "Previous stocks",
+    nextStocks: "Next stocks",
+    marketFoot:
+      "Prices may be delayed. Daily change versus previous close.",
+
+    welcomePreview:
+      "What could your investment become?",
+
+    assets: "Assets",
+    welcomeAssetsText:
+      "Choose up to five stocks, ETFs or funds you are curious about.",
+    viewAssets: "View Assets",
+
+    portfolios: "Portfolios",
+    welcomePlansText:
+      "Find ready-made Wealth Plans by your risk preference.",
+    viewPlans: "View Wealth Plans",
+
+    viewHistory: "View History →",
+
+    timeMachineTitle: "Time Machine",
+    timeMachineSubtitle:
+      "What does it feel like to invest through history?",
+
+    tmWealth: "WEALTH",
+    tmReturn: "RETURN",
+    tmDrawdown: "DRAWDOWN",
+    tmHistoricalDate: "HISTORICAL DATE",
+
+    tmPlay: "PLAY",
+    tmNominal: "NOMINAL",
+    tmReal: "REAL",
+
+    tmMessage:
+      "A 10% expected return is a number. A 40% loss is an experience.",
+
+    tmSource:
+      "Historical S&P 500 total returns including dividends. Nominal and inflation-adjusted wealth. Source: Shiller historical data.",
+
+    tmStatisticsKicker:
+      "NEPTOON WEALTH · TIME MACHINE",
+    tmStatisticsTitle: "Historical Returns",
+    tmStatisticsSubtitle:
+      "S&P 500 · Dividends reinvested",
+
+    tmStatsPeriod: "PERIOD",
+    tmStatsEra: "HISTORICAL ERA",
+    tmStatsAccumulated: "ACCUMULATED",
+    tmStatsAnnualized: "ANNUALIZED",
+    tmStatsTotal: "TOTAL",
+
+    tmStatisticsNote:
+      "Historical total returns including dividends. Annualized returns are geometrically compounded. Past performance does not predict future returns.",
+
+   mwInvestmentKicker: "YOUR INVESTMENT",
+    mwStartingPoint: "Starting point",
+    mwStartingWealth: "Starting wealth",
+    mwMonthlySavings: "Monthly savings",
+
+    mwEngineKicker: "NEPTOON · WEALTH ENGINE",
+    mwWaitingStatus: "WAITING",
+    mwTimeHorizon: "Time horizon",
+    mwExpectedWealth: "EXPECTED WEALTH",
+    mwCostImpact: "COST IMPACT",
+
+    mwWaitingTitle: "Waiting for investments",
+    mwWaitingDescription:
+      "Send up to five investments from Assets or WealthPlans.",
+
+    mwChartTitle: "Expected wealth",
+    mwChartCaption: "10-year projection",
+
+    mwMarketRace: "THE MARKET RACE",
+    mwSelectInvestment: "Select an investment",
+    mwHistoryDescription:
+      "Historical accumulated NAV · Common start at 100",
+    mwHistoryPeriod: "UP TO 15 YEARS",
+
+    mwComparisonMethod: "Comparison method",
+    mwMarket: "MARKET",
+    mwJensen: "JENSEN 1-FACTOR",
+    mwPlayHistory: "PLAY HISTORY",
+
+    mwNavA: "NAV · A",
+    mwNavB: "NAV · B",
+    mwAccumReturnA: "ACC. RET · A",
+    mwAccumReturnB: "ACC. RET · B",
+    mwRelative: "RELATIVE",
+
+    mwVerdict: "THE VERDICT",
+    mwPending: "PENDING",
+    mwVerdictMarketQuestion:
+      "A · HAS IT BEATEN THE MARKET?",
+    mwAwaitingRace: "Awaiting race",
+    mwVerdictMarketDescription:
+      "Historical performance relative to the selected market benchmark.",
+
+    mwVerdictDecisionQuestion:
+      "B · SHOULD I BUY OR SELL?",
+    mwEvidencePending: "Evidence pending",
+    mwVerdictDecisionDescription:
+      "Historical risk-adjusted performance informs investment assessment but does not establish a buy or sell recommendation.",
+
+    mwPlanTitle: "My Wealth Plan",
+    mwPlanDescription:
+      "Receive your selected Wealth Plans, expected returns, risk metrics and portfolio holdings in one PDF.",
+    mwPlanSend: "Send PDF",
+    mwPlanPrivacy:
+      "Your email is used only to deliver your Wealth Plan.",
+    mwPlanDownload: "Download PDF",
+
+yourPlans: "Your Wealth Plans",
+plansHistoryKicker: "NEPTOON · WEALTH PLANS",
+plansHistorySubtitle:
+  "Compare up to 5 Wealth Plans. Total return index (rebased to 100).",
+wealthPlan: "Wealth Plan",
+    yourInvestments: "Your investments",
+
+    assetsHistoryKicker: "NEPTOON · ASSETS",
+    assetsHistoryTitle: "Historical performance",
+    assetsHistorySubtitle:
+      "Compare up to 5 instruments. Total return index (rebased to 100).",
+
+    period1Y: "1Y",
+    period3Y: "3Y",
+    period5Y: "5Y",
+    period10Y: "10Y",
+    periodMAX: "MAX",
+
+    assetsHistoryPeriodLabel:
+      "Historical index · Base = 100",
+
+    instrument: "Instrument",
+    totalReturn: "Total return",
+    annualReturn: "Ann. return",
+
+    assetsHistoryNote:
+      "Historical total return index, including reinvested distributions where reflected in the source series. Historical data may include benchmark-substituted periods.",
+  
+
+
+  welcome: "Welcome",
+
+  marketOverview: "MARKET OVERVIEW",
+  marketsToday: "Markets Today",
+  latestQuotes: "Latest available quotes",
+  stocksInFocus: "Stocks in focus",
+
+  previousStocks: "Previous stocks",
+  nextStocks: "Next stocks",
+
+  marketFoot:
+    "Prices may be delayed. Daily change versus previous close.",
+
+  welcomePreview:
+    "What could your investment become?",
+
+  assets: "Assets",
+
+  welcomeAssetsText:
+    "Choose up to five stocks, ETFs or funds you are curious about.",
+
+  viewAssets: "View Assets",
+
+  portfolios: "Portfolios",
+
+  welcomePlansText:
+    "Find ready-made Wealth Plans by your risk preference.",
+
+  viewPlans: "View Wealth Plans"
+
+
+
+
+
+
+  },
+
+  da: {
+
+    welcome: "Velkommen",
+
+    marketOverview: "MARKEDSOVERBLIK",
+    marketsToday: "Markederne i dag",
+    latestQuotes: "Senest tilgængelige kurser",
+    stocksInFocus: "Aktier i fokus",
+    previousStocks: "Forrige aktier",
+    nextStocks: "Næste aktier",
+    marketFoot:
+      "Kurser kan være forsinkede. Dagens ændring i forhold til seneste lukkekurs.",
+
+    welcomePreview:
+      "Hvad kan din investering blive til?",
+
+    assets: "Værdipapirer",
+    welcomeAssetsText:
+      "Vælg op til fem aktier, ETF'er eller fonde, du er nysgerrig på.",
+    viewAssets: "Se værdipapirer",
+
+    portfolios: "Porteføljer",
+    welcomePlansText:
+      "Find færdige formueplaner ud fra din risikopræference.",
+    viewPlans: "Se formueplaner",
+
+    viewHistory: "Se historik →",
+
+    timeMachineTitle: "Tidsmaskinen",
+    timeMachineSubtitle:
+      "Hvordan føles det at investere gennem historien?",
+
+    tmWealth: "FORMUE",
+    tmReturn: "AFKAST",
+    tmDrawdown: "KURSFALD",
+    tmHistoricalDate: "HISTORISK DATO",
+
+    tmPlay: "AFSPIL",
+    tmNominal: "NOMINEL",
+    tmReal: "REAL",
+
+    tmMessage:
+      "Et forventet afkast på 10 % er et tal. Et tab på 40 % er en oplevelse.",
+
+    tmSource:
+      "Historiske totalafkast for S&P 500 inklusive udbytter. Nominel og inflationskorrigeret formue. Kilde: Shillers historiske data.",
+
+    tmStatisticsKicker:
+      "NEPTOON WEALTH · TIDSMASKINEN",
+    tmStatisticsTitle: "Historiske afkast",
+    tmStatisticsSubtitle:
+      "S&P 500 · Udbytter geninvesteret",
+
+    tmStatsPeriod: "PERIODE",
+    tmStatsEra: "HISTORISK EPOKE",
+    tmStatsAccumulated: "AKKUMULERET",
+    tmStatsAnnualized: "ÅRLIGT AFKAST",
+    tmStatsTotal: "I ALT",
+
+    tmStatisticsNote:
+      "Historiske totalafkast inklusive udbytter. Årlige afkast er geometrisk beregnet. Historiske afkast er ingen garanti for fremtidige afkast.",
+
+
+    mwInvestmentKicker: "DIN INVESTERING",
+    mwStartingPoint: "Udgangspunkt",
+    mwStartingWealth: "Startformue",
+    mwMonthlySavings: "Månedlig opsparing",
+
+    mwEngineKicker: "NEPTOON · FORMUEMODEL",
+    mwWaitingStatus: "VENTER",
+    mwTimeHorizon: "Tidshorisont",
+    mwExpectedWealth: "FORVENTET FORMUE",
+    mwCostImpact: "OMKOSTNINGSEFFEKT",
+
+    mwWaitingTitle: "Afventer investeringer",
+    mwWaitingDescription:
+      "Send op til fem investeringer fra Værdipapirer eller Formueplaner.",
+
+    mwChartTitle: "Forventet formue",
+    mwChartCaption: "10-årig fremskrivning",
+
+    mwMarketRace: "MARKEDSKAPløBET",
+    mwSelectInvestment: "Vælg en investering",
+    mwHistoryDescription:
+      "Historisk akkumuleret NAV · Fælles start ved 100",
+    mwHistoryPeriod: "OP TIL 15 ÅR",
+
+    mwComparisonMethod: "Sammenligningsmetode",
+    mwMarket: "MARKED",
+    mwJensen: "JENSEN 1-FAKTOR",
+    mwPlayHistory: "AFSPIL HISTORIK",
+
+    mwNavA: "NAV · A",
+    mwNavB: "NAV · B",
+    mwAccumReturnA: "AKK. AFKAST · A",
+    mwAccumReturnB: "AKK. AFKAST · B",
+    mwRelative: "RELATIVT",
+
+    mwVerdict: "KONKLUSIONEN",
+    mwPending: "AFVENTER",
+    mwVerdictMarketQuestion:
+      "A · HAR DEN SLÅET MARKEDET?",
+    mwAwaitingRace: "Afventer sammenligning",
+    mwVerdictMarketDescription:
+      "Historisk afkast sammenlignet med det valgte markedsbenchmark.",
+
+    mwVerdictDecisionQuestion:
+      "B · BØR JEG KØBE ELLER SÆLGE?",
+    mwEvidencePending: "Datagrundlag afventes",
+    mwVerdictDecisionDescription:
+      "Historisk risikojusteret afkast bidrager til investeringsvurderingen, men udgør ikke en anbefaling om køb eller salg.",
+
+    mwPlanTitle: "Min formueplan",
+    mwPlanDescription:
+      "Modtag dine valgte formueplaner, forventede afkast, risikomål og porteføljebeholdninger samlet i én PDF.",
+    mwPlanSend: "Send PDF",
+    mwPlanPrivacy:
+      "Din e-mailadresse bruges kun til at levere din formueplan.",
+    mwPlanDownload: "Hent PDF",
+
+yourPlans: "Dine formueplaner",
+plansHistoryKicker: "NEPTOON · FORMUEPLANER",
+plansHistorySubtitle:
+  "Sammenlign op til 5 formueplaner. Totalafkastindeks (indeks 100).",
+wealthPlan: "Formueplan",
+
+
+    yourInvestments: "Dine investeringer",
+
+    assetsHistoryKicker: "NEPTOON · VÆRDIPAPIRER",
+    assetsHistoryTitle: "Historisk afkast",
+    assetsHistorySubtitle:
+      "Sammenlign op til 5 værdipapirer. Totalafkastindeks (indeks 100).",
+
+    period1Y: "1 år",
+    period3Y: "3 år",
+    period5Y: "5 år",
+    period10Y: "10 år",
+    periodMAX: "MAKS",
+
+    assetsHistoryPeriodLabel:
+      "Historisk indeks · Basis = 100",
+
+    instrument: "Værdipapir",
+    totalReturn: "Samlet afkast",
+    annualReturn: "Årligt afkast",
+
+    assetsHistoryNote:
+      "Historisk totalafkastindeks inklusive geninvesterede udlodninger, hvor dette indgår i datagrundlaget. Historiske data kan omfatte perioder, hvor benchmarkdata er anvendt som erstatning.",
+  welcome: "Velkommen",
+
+  marketOverview: "MARKEDSOVERBLIK",
+  marketsToday: "Markederne i dag",
+  latestQuotes: "Senest tilgængelige kurser",
+  stocksInFocus: "Aktier i fokus",
+
+  previousStocks: "Forrige aktier",
+  nextStocks: "Næste aktier",
+
+  marketFoot:
+    "Kurser kan være forsinkede. Dagens ændring er beregnet i forhold til seneste lukkekurs.",
+
+  welcomePreview:
+    "Hvad kan din investering blive til?",
+
+  assets: "Værdipapirer",
+
+  welcomeAssetsText:
+    "Vælg op til fem aktier, ETF'er eller fonde, du er interesseret i.",
+
+  viewAssets: "Se værdipapirer",
+
+  portfolios: "Porteføljer",
+
+  welcomePlansText:
+    "Find færdige formueplaner ud fra din risikopræference.",
+
+  viewPlans: "Se formueplaner"
+
+
+
+
+
+
+
+  }
+
+};
+
+
+
+
+
+
 
 function calculateWelcomeInstrument(tickerExchange){
 
@@ -7063,6 +7518,15 @@ function playMyWealthCinema(){
 
   const investment =
     MYWEALTH_HISTORY.selected;
+
+console.log("investment selected",MYWEALTH_HISTORY.selected);
+
+console.log("investment selected",MYWEALTH_HISTORY.selected);
+
+console.log("investment selected",MYWEALTH_HISTORY.selected);
+
+console.log("investment selected",MYWEALTH_HISTORY.selected);
+ 
 
   const sourceSeries =
     MYWEALTH_HISTORY.series;
@@ -9820,13 +10284,54 @@ function selectMyWealthHistoryInvestment(investment){
   /* ============================================
      UPDATE HISTORY STATE
   ============================================ */
+/* ============================================
+   UPDATE HISTORY STATE
+============================================ */
 
-  MYWEALTH_HISTORY.selectedId = selectedId;
-  MYWEALTH_HISTORY.selected = investment;
-  MYWEALTH_HISTORY.benchmark = benchmark || null;
-  MYWEALTH_HISTORY.series = [];
-  MYWEALTH_HISTORY.status = "pending";
+/*
+  Retrieve original instrument metadata.
+  Beta is supplied by instruments_v1.json.
+*/
 
+const sourceInstrument =
+  selectedMode === "stocks"
+    ? (INSTRUMENT_STATE.all || []).find(
+        x => x.tickerExchange === selectedId
+      )
+    : null;
+
+const beta =
+  sourceInstrument?.beta != null &&
+  sourceInstrument.beta !== "" &&
+  Number.isFinite(Number(sourceInstrument.beta))
+    ? Number(sourceInstrument.beta)
+    : null;
+
+/*
+  Preserve investment properties and
+  attach the original instrument beta.
+*/
+
+MYWEALTH_HISTORY.selectedId = selectedId;
+
+MYWEALTH_HISTORY.selected = {
+  ...investment,
+  beta
+};
+
+MYWEALTH_HISTORY.benchmark = benchmark || null;
+MYWEALTH_HISTORY.series = [];
+MYWEALTH_HISTORY.status = "pending";
+
+
+console.log(
+  "MYWEALTH HISTORY SELECTION",
+  {
+    id: selectedId,
+    mode: selectedMode,
+    beta: MYWEALTH_HISTORY.selected.beta
+  }
+);
 
   /* ============================================
      UPDATE SECTION HEADER
@@ -10904,6 +11409,8 @@ if (tab === 'history') {
 
 }
 
+
+
 function bindMyWealthComparisonToggle(){
 
   const marketBtn =
@@ -10915,6 +11422,48 @@ function bindMyWealthComparisonToggle(){
     document.getElementById(
       "mywealth-history-jensen"
     );
+
+  /*
+    ==========================================
+    SYNC BUTTON VISUAL STATE
+    ==========================================
+  */
+
+  function syncButtons(){
+
+    const isMarket =
+      comparisonMethod === "market";
+
+    const isJensen =
+      comparisonMethod === "jensen";
+
+    marketBtn?.classList.toggle(
+      "active",
+      isMarket
+    );
+
+    marketBtn?.setAttribute(
+      "aria-pressed",
+      String(isMarket)
+    );
+
+    jensenBtn?.classList.toggle(
+      "active",
+      isJensen
+    );
+
+    jensenBtn?.setAttribute(
+      "aria-pressed",
+      String(isJensen)
+    );
+
+  }
+
+  /*
+    ==========================================
+    CHANGE METHOD ONLY
+    ==========================================
+  */
 
   function changeMethod(method){
 
@@ -10929,14 +11478,18 @@ function bindMyWealthComparisonToggle(){
 
     syncMyWealthComparisonMode();
 
-    if(
-      Array.isArray(MYWEALTH_HISTORY.series) &&
-      MYWEALTH_HISTORY.series.length > 1
-    ){
-      playMyWealthCinema();
-    }
+    syncButtons();
+
+    // Cinema is NOT started here.
+    // User must click Play.
 
   }
+
+  /*
+    ==========================================
+    EVENT BINDINGS
+    ==========================================
+  */
 
   marketBtn?.addEventListener(
     "click",
@@ -10948,7 +11501,18 @@ function bindMyWealthComparisonToggle(){
     () => changeMethod("jensen")
   );
 
+  /*
+    ==========================================
+    INITIAL STATE
+    ==========================================
+  */
+
+  syncButtons();
+
 }
+
+
+
 /* =====================================================
    09 · ASSETS BASKET
 ===================================================== */
@@ -14570,33 +15134,109 @@ return {
 
 }
 
+function applyLang(lang){
+
+  const L = TXT[lang] || TXT.en;
+
+  document.querySelectorAll("[data-lang]").forEach(el => {
+
+    const key = el.dataset.lang;
+
+    if(Object.prototype.hasOwnProperty.call(L, key)){
+      el.textContent = L[key];
+    }
+
+  });
+
+  document.querySelectorAll("[data-lang-aria-label]").forEach(el => {
+
+    const key = el.getAttribute("data-lang-aria-label");
+
+    if(Object.prototype.hasOwnProperty.call(L, key)){
+      el.setAttribute("aria-label", L[key]);
+    }
+
+  });
+
+}
+
 /* =====================================================
    19 · LANGUAGE RENDERING
 ===================================================== */
 
-function renderLanguage() {
-    document.documentElement.lang = APP.lang;
-    document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = tr(el.dataset.i18n));
-    $('lang-en').classList.toggle('active', APP.lang === 'en');
-    $('lang-da').classList.toggle('active', APP.lang === 'da');
-    renderHeroes();
-    renderNav();
-    renderWelcome();
-    renderAssets();
-    renderPortfolios();
-    renderMyWealth();
- 
-// Time Machine replaces the old History renderer.
-if(TIME_MACHINE.data){
-  tmRender();
+
+function renderLanguage(){
+
+  INIT.lang = APP.lang;
+
+  document.documentElement.lang = APP.lang;
+
+  /*
+    ==========================================
+    STATIC LANGUAGE PAINT
+    ==========================================
+  */
+
+  applyLang(INIT.lang);
+
+  /*
+    ==========================================
+    EXISTING LANGUAGE BUTTONS
+    ==========================================
+  */
+
+  $('lang-en').classList.toggle(
+    'active',
+    APP.lang === 'en'
+  );
+
+  $('lang-da').classList.toggle(
+    'active',
+    APP.lang === 'da'
+  );
+
+  /*
+    ==========================================
+    DYNAMIC RENDERERS
+    ==========================================
+  */
+
+  renderHeroes();
+  renderNav();
+  renderWelcome();
+  renderAssets();
+  renderPortfolios();
+  renderMyWealth();
+
+  // Time Machine replaces old History renderer.
+
+  if(TIME_MACHINE.data){
+    tmRender();
+  }
+
+  const periodStatus =
+    document.getElementById(
+      'history-period-status'
+    );
+
+  if(periodStatus){
+
+    periodStatus.textContent =
+      `${HISTORY_VIEW.period} · ${
+        APP.lang === 'da'
+          ? 'Afventer historiske data'
+          : 'Awaiting historical series'
+      }`;
+
+  }
+
+  renderMarketPulse();
+
+  icons();
+
 }
 
-    const periodStatus = document.getElementById('history-period-status');
-    if (periodStatus) periodStatus.textContent = `${HISTORY_VIEW.period} · ${APP.lang === 'da' ? 'Afventer historiske data' : 'Awaiting historical series'}`;
-    renderMarketPulse();
-    icons();
-}
-/* Event delegation avoids rebinding when baskets rerender. */
+
 
 /* =====================================================
    20 · DELEGATED BUTTON EVENTS
@@ -14845,7 +15485,7 @@ $('lang-da').addEventListener('click', () => {
     APP.lang = 'da';
     renderLanguage();
 });
-$('view-history').addEventListener('click', () => openTab('history'));
+
 
 /* =====================================================
    HISTORY · PERIOD SELECTOR (PRESENTATION STATE)
