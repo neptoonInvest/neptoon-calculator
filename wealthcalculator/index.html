@@ -3858,6 +3858,40 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   color:#FFFFFF;
   border-color:#4E79BD;
 }
+
+
+/* ==========================================
+   HERO · CURRENCY PILL
+========================================== */
+
+.hero-right{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  justify-content:space-between;
+  align-self:stretch;
+  gap:12px;
+}
+
+.hero-currency{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  min-width:54px;
+  padding:5px 10px;
+
+  background:#4E79BD;
+  color:#fff;
+
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+
+  border-radius:0;
+  white-space:nowrap;
+}
+
 </style>
 </head>
 <body>
@@ -4704,7 +4738,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
           NEPTOON · WEALTH ENGINE
         </div>
 
-        <h2>MyWealth</h2>
+     <h2 data-lang="mywealth">MyWealth</h2>
 
       </div>
 
@@ -6224,6 +6258,9 @@ const TXT = {
     mwAwaitingRace: "Awaiting race",
     mwVerdictMarketDescription:
       "Historical performance relative to the selected market benchmark.",
+  mwModeWaiting: "WAITING",
+  mwModeStocks: "STOCKS",
+  mwModePortfolios: "WEALTH PLANS",
 
     mwVerdictDecisionQuestion:
       "B · SHOULD I BUY OR SELL?",
@@ -6347,6 +6384,9 @@ wealthPlan: "Wealth Plan",
     tmReturn: "AFKAST",
     tmDrawdown: "KURSFALD",
     tmHistoricalDate: "HISTORISK DATO",
+  mwModeWaiting: "AFVENTER",
+  mwModeStocks: "AKTIER",
+  mwModePortfolios: "INVESTERINGSPLANER",
 
     tmPlay: "AFSPIL",
     tmNominal: "NOMINEL",
@@ -6377,7 +6417,7 @@ wealthPlan: "Wealth Plan",
     mwInvestmentKicker: "DIN INVESTERING",
     mwStartingPoint: "Udgangspunkt",
     mwStartingWealth: "Startformue",
-    mwMonthlySavings: "Månedlig opsparing",
+    mwMonthlySavings: "Månedlig opsparing (indskud i aktivet)",
 
     mwEngineKicker: "NEPTOON · FORMUEMODEL",
     mwWaitingStatus: "VENTER",
@@ -11352,11 +11392,46 @@ function renderWealthPlanEmail(){
 
 }
 
-function renderHeroes() {
-    document.querySelectorAll('[data-hero]').forEach(el => {
-        const d = HERO[el.dataset.hero][APP.lang], name = HERO[el.dataset.hero].icon;
-        el.innerHTML = `<div class="hero"><div><div class="kicker">${esc(d[0])}</div><h1>${esc(d[1])}</h1><p>${esc(d[2])}</p></div><div class="hero-icon">${icon(name)}</div></div>`;
-    });
+
+
+function renderHeroes(){
+
+  const currency =
+    APP.lang === "da" ? "DKK" : "EUR";
+
+  document.querySelectorAll('[data-hero]').forEach(el => {
+
+    const hero = HERO[el.dataset.hero];
+
+    const d = hero[APP.lang];
+    const name = hero.icon;
+
+    el.innerHTML = `
+      <div class="hero">
+
+        <div>
+          <div class="kicker">${esc(d[0])}</div>
+          <h1>${esc(d[1])}</h1>
+          <p>${esc(d[2])}</p>
+        </div>
+
+        <div class="hero-right">
+
+          <div class="hero-currency">
+            ${currency}
+          </div>
+
+          <div class="hero-icon">
+            ${icon(name)}
+          </div>
+
+        </div>
+
+      </div>
+    `;
+
+  });
+
 }
 
 
@@ -14949,11 +15024,16 @@ function initPlanHistoryViewer(){
    MYWEALTH · MAIN RENDER
 ===================================================== */
 
+
 function renderMyWealth(){
 
   const source = APP.myWealth.source;
   const ids = APP.myWealth.ids || [];
-renderWealthPlanEmail();
+
+  const L = TXT[APP.lang] || TXT.en;
+
+  renderWealthPlanEmail();
+
   const waiting =
     !["assets","portfolios"].includes(source) ||
     ids.length === 0;
@@ -14976,10 +15056,24 @@ renderWealthPlanEmail();
   const raceSection =
     document.getElementById("mywealth-race-section");
 
+  /*
+    ==========================================
+    MODE PILL · BILINGUAL
+    ==========================================
+  */
+
   if(pill){
+
+    const modeLabel = waiting
+      ? L.mwModeWaiting
+      : myWealthMode === "stocks"
+        ? L.mwModeStocks
+        : L.mwModePortfolios;
+
     pill.textContent = waiting
-      ? "WAITING"
-      : `${myWealthMode.toUpperCase()} · ${ids.length}`;
+      ? modeLabel
+      : `${modeLabel} · ${ids.length}`;
+
   }
 
   if(waitingBox){
@@ -15005,6 +15099,7 @@ renderWealthPlanEmail();
   }
 
 }
+
 
 /* =====================================================
    16 · HISTORY DISPLAY
