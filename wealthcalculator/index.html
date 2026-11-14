@@ -5765,9 +5765,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
    01 · CONFIGURATION AND NAVIGATION
 ===================================================== */
 
-const BLUE = '#4E79BD';
-const NAV = [['welcome', 'house'], ['assets', 'search'], ['portfolios', 'layers'], ['mywealth', 'chart-no-axes-combined'], ['history', 'history']];
 
+const NAV = [['welcome', 'house'], ['assets', 'search'], ['portfolios', 'layers'], ['mywealth', 'chart-no-axes-combined'], ['history', 'history']];
+const BLUE = '#4E79BD';
 let comparisonMethod=null;
 
 /* =====================================================
@@ -6297,7 +6297,12 @@ wealthPlan: "Wealth Plan",
   welcomePlansText:
     "Find ready-made Wealth Plans by your risk preference.",
 
-  viewPlans: "View Wealth Plans"
+  viewPlans: "View Wealth Plans",
+  welcome: "Welcome",
+  assets: "Assets",
+  portfolios: "Wealth Plans",
+  mywealth: "MyWealth",
+  history: "Time Machine"
 
 
 
@@ -6431,6 +6436,12 @@ plansHistoryKicker: "NEPTOON · FORMUEPLANER",
 plansHistorySubtitle:
   "Sammenlign op til 5 formueplaner. Totalafkastindeks (indeks 100).",
 wealthPlan: "Formueplan",
+
+  welcome: "Velkommen",
+  assets: "Værdipapirer",
+  portfolios: "Formueplaner",
+  mywealth: "MinFormue",
+  history: "Tidsmaskinen",
 
 
     yourInvestments: "Dine investeringer",
@@ -11347,9 +11358,35 @@ function renderHeroes() {
         el.innerHTML = `<div class="hero"><div><div class="kicker">${esc(d[0])}</div><h1>${esc(d[1])}</h1><p>${esc(d[2])}</p></div><div class="hero-icon">${icon(name)}</div></div>`;
     });
 }
-function renderNav() {
-    $('bottom-nav').innerHTML = NAV.map(([id, ico]) => `<button type="button" class="nav-tab ${APP.activeTab === id ? 'active' : ''}" data-tab="${id}" aria-current="${APP.activeTab === id ? 'page' : 'false'}">${icon(ico)}<span>${tr(id)}</span></button>`).join('');
+
+
+function renderNav(){
+
+  const L =
+    TXT[APP.lang] || TXT.en;
+
+  $('bottom-nav').innerHTML = NAV.map(([id, ico]) => {
+
+    const label =
+      L[id] || id;
+
+    return `
+      <button
+        type="button"
+        class="nav-tab ${APP.activeTab === id ? 'active' : ''}"
+        data-tab="${id}"
+        aria-current="${APP.activeTab === id ? 'page' : 'false'}"
+      >
+        ${icon(ico)}
+        <span>${label}</span>
+      </button>
+    `;
+
+  }).join('');
+
 }
+
+
 function openTab(tab) {
 
     if (!NAV.some(x => x[0] === tab))
