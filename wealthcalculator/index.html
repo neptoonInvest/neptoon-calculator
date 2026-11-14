@@ -7514,19 +7514,11 @@ function completeMyWealthCinema(){
    PLAY 5-SECOND CINEMA
 ===================================================== */
 
+
 function playMyWealthCinema(){
 
   const investment =
     MYWEALTH_HISTORY.selected;
-
-console.log("investment selected",MYWEALTH_HISTORY.selected);
-
-console.log("investment selected",MYWEALTH_HISTORY.selected);
-
-console.log("investment selected",MYWEALTH_HISTORY.selected);
-
-console.log("investment selected",MYWEALTH_HISTORY.selected);
- 
 
   const sourceSeries =
     MYWEALTH_HISTORY.series;
@@ -7547,11 +7539,14 @@ console.log("investment selected",MYWEALTH_HISTORY.selected);
     =========================
   */
 
+  const method =
+    MYWEALTH_HISTORY.method || "market";
+
   const beta =
     Number(investment?.beta);
 
   const useJensen =
-    comparisonMethod === "jensen" &&
+    method === "jensen" &&
     myWealthMode === "stocks" &&
     Number.isFinite(beta);
 
@@ -7561,6 +7556,14 @@ console.log("investment selected",MYWEALTH_HISTORY.selected);
         beta
       )
     : sourceSeries;
+
+  /*
+    =========================
+    SYNCHRONIZE BUTTONS
+    =========================
+  */
+
+  renderMyWealthComparisonButtons();
 
   /*
     =========================
@@ -7604,11 +7607,11 @@ console.log("investment selected",MYWEALTH_HISTORY.selected);
       return;
     }
 
-    const elapsed = now-startTime;
+    const elapsed = now - startTime;
 
     const progress = Math.min(
       1,
-      elapsed/MYWEALTH_CINEMA.duration
+      elapsed / MYWEALTH_CINEMA.duration
     );
 
     MYWEALTH_CINEMA.progress = progress;
@@ -7634,7 +7637,6 @@ console.log("investment selected",MYWEALTH_HISTORY.selected);
     requestAnimationFrame(animate);
 
 }
-
 
 /* =====================================================
    BIND PLAY BUTTON
@@ -11415,13 +11417,18 @@ function bindMyWealthComparisonToggle(){
 
   const marketBtn =
     document.getElementById(
-      "mywealth-history-method-market"
+      "mywealth-history-market"
     );
 
   const jensenBtn =
     document.getElementById(
       "mywealth-history-jensen"
     );
+
+  if(!marketBtn || !jensenBtn){
+    console.warn("MyWealth comparison buttons missing");
+    return;
+  }
 
   /*
     ==========================================
@@ -11431,28 +11438,31 @@ function bindMyWealthComparisonToggle(){
 
   function syncButtons(){
 
+    const method =
+      MYWEALTH_HISTORY.method || "market";
+
     const isMarket =
-      comparisonMethod === "market";
+      method === "market";
 
     const isJensen =
-      comparisonMethod === "jensen";
+      method === "jensen";
 
-    marketBtn?.classList.toggle(
+    marketBtn.classList.toggle(
       "active",
       isMarket
     );
 
-    marketBtn?.setAttribute(
+    marketBtn.setAttribute(
       "aria-pressed",
       String(isMarket)
     );
 
-    jensenBtn?.classList.toggle(
+    jensenBtn.classList.toggle(
       "active",
       isJensen
     );
 
-    jensenBtn?.setAttribute(
+    jensenBtn.setAttribute(
       "aria-pressed",
       String(isJensen)
     );
@@ -11474,14 +11484,14 @@ function bindMyWealthComparisonToggle(){
       return;
     }
 
-    comparisonMethod = method;
+    MYWEALTH_HISTORY.method = method;
 
     syncMyWealthComparisonMode();
 
     syncButtons();
 
     // Cinema is NOT started here.
-    // User must click Play.
+    // User must click PLAY HISTORY.
 
   }
 
@@ -11491,15 +11501,13 @@ function bindMyWealthComparisonToggle(){
     ==========================================
   */
 
-  marketBtn?.addEventListener(
-    "click",
-    () => changeMethod("market")
-  );
+  marketBtn.onclick = () => {
+    changeMethod("market");
+  };
 
-  jensenBtn?.addEventListener(
-    "click",
-    () => changeMethod("jensen")
-  );
+  jensenBtn.onclick = () => {
+    changeMethod("jensen");
+  };
 
   /*
     ==========================================
@@ -11507,10 +11515,16 @@ function bindMyWealthComparisonToggle(){
     ==========================================
   */
 
+  if(
+    MYWEALTH_HISTORY.method !== "market" &&
+    MYWEALTH_HISTORY.method !== "jensen"
+  ){
+    MYWEALTH_HISTORY.method = "market";
+  }
+
   syncButtons();
 
 }
-
 
 
 /* =====================================================
