@@ -5001,6 +5001,104 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
   </div>
 
+<!-- =========================================
+     MYWEALTH · SEND WEALTH PLAN
+========================================= -->
+
+<section
+  id="mw-wealth-plan"
+  class="section mw-wealth-plan"
+  hidden>
+
+  <div class="mw-plan-content">
+
+    <div class="mw-plan-heading">
+
+      <div class="mw-plan-icon">
+        <i data-lucide="file-text"></i>
+      </div>
+
+      <div class="mw-plan-heading-text">
+
+        <h3 data-i18n="mwPlanTitle">
+          My Wealth Plan
+        </h3>
+
+        <p data-i18n="mwPlanDescription">
+          Receive your selected Wealth Plans,
+          expected returns, risk metrics and
+          portfolio holdings in one PDF.
+        </p>
+
+      </div>
+
+    </div>
+
+    <form id="mw-plan-form" class="mw-plan-form">
+
+      <input
+        type="email"
+        id="mw-plan-email"
+        name="email"
+        autocomplete="email"
+        placeholder="Your email address"
+        aria-label="Your email address"
+        required
+      >
+
+      <button
+        type="submit"
+        id="mw-plan-send"
+        class="mw-plan-send">
+
+        <i data-lucide="send"></i>
+
+        <span data-i18n="mwPlanSend">
+          Send PDF
+        </span>
+
+      </button>
+
+    </form>
+
+    <div class="mw-plan-footer">
+
+      <span data-i18n="mwPlanPrivacy">
+        Your email is used only to deliver
+        your Wealth Plan.
+      </span>
+
+      <button
+        type="button"
+        id="mw-plan-download"
+        class="mw-plan-download">
+
+        <i data-lucide="download"></i>
+
+        <span data-i18n="mwPlanDownload">
+          Download PDF
+        </span>
+
+      </button>
+
+    </div>
+
+    <div
+      id="mw-plan-status"
+      class="mw-plan-status"
+      role="status"
+      aria-live="polite"
+      hidden>
+    </div>
+
+  </div>
+
+</section>
+
+
+
+
+
 </section>
 
 
@@ -5429,102 +5527,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </p>
 
   </div>
-
-
-<!-- =========================================
-     MYWEALTH · SEND WEALTH PLAN
-========================================= -->
-
-<section
-  id="mw-wealth-plan"
-  class="section mw-wealth-plan"
-  hidden>
-
-  <div class="mw-plan-content">
-
-    <div class="mw-plan-heading">
-
-      <div class="mw-plan-icon">
-        <i data-lucide="file-text"></i>
-      </div>
-
-      <div class="mw-plan-heading-text">
-
-        <h3 data-i18n="mwPlanTitle">
-          My Wealth Plan
-        </h3>
-
-        <p data-i18n="mwPlanDescription">
-          Receive your selected Wealth Plans,
-          expected returns, risk metrics and
-          portfolio holdings in one PDF.
-        </p>
-
-      </div>
-
-    </div>
-
-    <form id="mw-plan-form" class="mw-plan-form">
-
-      <input
-        type="email"
-        id="mw-plan-email"
-        name="email"
-        autocomplete="email"
-        placeholder="Your email address"
-        aria-label="Your email address"
-        required
-      >
-
-      <button
-        type="submit"
-        id="mw-plan-send"
-        class="mw-plan-send">
-
-        <i data-lucide="send"></i>
-
-        <span data-i18n="mwPlanSend">
-          Send PDF
-        </span>
-
-      </button>
-
-    </form>
-
-    <div class="mw-plan-footer">
-
-      <span data-i18n="mwPlanPrivacy">
-        Your email is used only to deliver
-        your Wealth Plan.
-      </span>
-
-      <button
-        type="button"
-        id="mw-plan-download"
-        class="mw-plan-download">
-
-        <i data-lucide="download"></i>
-
-        <span data-i18n="mwPlanDownload">
-          Download PDF
-        </span>
-
-      </button>
-
-    </div>
-
-    <div
-      id="mw-plan-status"
-      class="mw-plan-status"
-      role="status"
-      aria-live="polite"
-      hidden>
-    </div>
-
-  </div>
-
-</section>
-
 
 
   <!-- =========================================
