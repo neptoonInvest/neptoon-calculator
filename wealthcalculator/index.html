@@ -3892,6 +3892,39 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   white-space:nowrap;
 }
 
+.hero-currency{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-width:54px;
+  padding:5px 12px;
+
+  background:#C62828;
+  color:#fff;
+
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  line-height:1.2;
+
+  border:1px solid #C62828;
+  border-radius:999px;
+
+  white-space:nowrap;
+  flex-shrink:0;
+}
+
+
+
+
+
+
+
+
+
+
+
 </style>
 </head>
 <body>
@@ -5189,15 +5222,17 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
           class="mw-plan-form"
         >
 
-          <input
-            type="email"
-            id="mw-plan-email"
-            name="email"
-            autocomplete="email"
-            placeholder="Your email address"
-            aria-label="Your email address"
-            required
-          />
+<input
+  type="email"
+  id="mw-plan-email"
+  name="email"
+  autocomplete="email"
+  placeholder="Your email address"
+  aria-label="Your email address"
+  data-lang-placeholder="mwEmailPlaceholder"
+  data-lang-aria-label="mwEmailPlaceholder"
+  required
+/>
 
           <button
             type="submit"
@@ -6339,7 +6374,8 @@ wealthPlan: "Wealth Plan",
   assets: "Assets",
   portfolios: "Wealth Plans",
   mywealth: "MyWealth",
-  history: "Time Machine"
+  history: "Time Machine",
+mwEmailPlaceholder : "Your email address"
 
 
 
@@ -6503,6 +6539,7 @@ wealthPlan: "Formueplan",
     instrument: "Værdipapir",
     totalReturn: "Samlet afkast",
     annualReturn: "Årligt afkast",
+mwEmailPlaceholder : "Din e-mailadresse",
 
     assetsHistoryNote:
       "Historisk totalafkastindeks inklusive geninvesterede udlodninger, hvor dette indgår i datagrundlaget. Historiske data kan omfatte perioder, hvor benchmarkdata er anvendt som erstatning.",
@@ -8426,7 +8463,7 @@ function nwPdfPlans(){
    PDF GENERATOR
 ===================================================== */
 
-function generateWealthPlanPDF(){
+function generateWealthPlanPDF(download = true){	
 
   const jsPDF = window.jspdf?.jsPDF;
 
@@ -8983,25 +9020,115 @@ function generateWealthPlanPDF(){
 
   }
 
+/* =====================================
+   DOWNLOAD / EMAIL
+===================================== */
 
-  /* =====================================
-     DOWNLOAD
-  ===================================== */
+const dateFile =
+  timestamp.toISOString().slice(0,10);
 
-  const dateFile =
-    timestamp.toISOString().slice(0,10);
+console.log(
+  "WEALTH PLAN PDF GENERATED",
+  {
+    models: plans.length,
+    pages: pageCount
+  }
+);
+
+if(download){
 
   pdf.save(
-    `Neptoon_Wealth_Plan_${dateFile}.pdf`
+    `Neptoon-Wealth-Plan-${dateFile}.pdf`
   );
 
-  console.log(
-    "WEALTH PLAN PDF GENERATED",
-    {
-      models:plans.length,
-      pages:pageCount
+  return;
+}
+
+return pdf.output("datauristring").split(",")[1];
+
+}
+
+
+function bindWealthPlanEmail(){
+
+  const button =
+    document.getElementById("mw-plan-send");
+
+  const emailInput =
+    document.getElementById("mw-plan-email");
+
+  const form = button?.closest("form");
+
+  if(!button || !emailInput || !form) return;
+
+  form.addEventListener("submit", async event => {
+
+    event.preventDefault();
+
+    if(!form.reportValidity()) return;
+
+    const da = APP.lang === "da";
+    const email = emailInput.value.trim();
+
+    button.disabled = true;
+
+    try {
+
+      const pdfBase64 =
+        generateWealthPlanPDF(false);
+
+      if(!pdfBase64){
+        throw new Error("PDF generation failed");
+      }
+
+      const response = await fetch(
+        "https://qwrztkweyxoivzwqwaki.supabase.co/functions/v1/send-wealth-plan",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            email,
+            language:APP.lang,
+            pdfBase64
+          })
+        }
+      );
+
+      const result = await response.json();
+
+      if(!response.ok || !result.success){
+        throw new Error(
+          result.error || "Email delivery failed"
+        );
+      }
+
+      alert(
+        da
+          ? "Din formueplan er sendt."
+          : "Your Wealth Plan has been sent."
+      );
+
+      emailInput.value = "";
+
+    }catch(error){
+
+      console.error("WEALTH PLAN EMAIL ERROR",error);
+
+      alert(
+        da
+          ? "Kunne ikke sende e-mailen."
+          : "Could not send the email."
+      );
+
+    }finally{
+
+      button.disabled = false;
+
     }
-  );
+
+  });
 
 }
 
@@ -10730,10 +10857,14 @@ if(horizonSlider){
       fmt(MYWEALTH_VIEW.monthlySavings);
   }
 
-  if(horizonValue){
-    horizonValue.textContent =
-      `${MYWEALTH_VIEW.horizon} YEARS`;
-  }
+if(horizonValue){
+
+  horizonValue.textContent =
+    INIT.lang === "da"
+      ? `${MYWEALTH_VIEW.horizon} ÅR`
+      : `${MYWEALTH_VIEW.horizon} YEARS`;
+
+}
 
   const costsEnabled =
     myWealthMode === "portfolios";
@@ -10770,23 +10901,33 @@ if(horizonSlider){
 
   }
 
-  const chartTitle =
-    document.getElementById("mywealth-chart-title");
+const chartTitle =
+  document.getElementById("mywealth-chart-title");
 
-  if(chartTitle){
-    chartTitle.textContent =
-      MYWEALTH_VIEW.metric === "costs"
-        ? "Cost impact"
-        : "Expected wealth";
-  }
+if(chartTitle){
+
+  chartTitle.textContent =
+    MYWEALTH_VIEW.metric === "costs"
+      ? (INIT.lang === "da"
+          ? "Omkostningseffekt"
+          : "Cost impact")
+      : (INIT.lang === "da"
+          ? "Forventet formue"
+          : "Expected wealth");
+
+}
 
   const caption =
     document.getElementById("mywealth-chart-caption");
 
-  if(caption){
-    caption.textContent =
-      `${MYWEALTH_VIEW.horizon}-year projection`;
-  }
+if(caption){
+
+  caption.textContent =
+    INIT.lang === "da"
+      ? `${MYWEALTH_VIEW.horizon}-årig fremskrivning`
+      : `${MYWEALTH_VIEW.horizon}-year projection`;
+
+}
 
 }
 
@@ -11979,30 +12120,19 @@ function drawMyWealthRace(){
       ? Math.round(value).toLocaleString(locale)
       : "—";
 
-  const compactMoney = value => {
+const compactMoney = value => {
 
-    if(!Number.isFinite(value)) return "—";
+  if(!Number.isFinite(value)) return "—";
 
-    if(Math.abs(value) >= 1000000){
-      return (
-        (value/1000000).toLocaleString(
-          locale,
-          {maximumFractionDigits:2}
-        ) + "M"
-      );
+  return Math.round(value).toLocaleString(
+    locale,
+    {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
     }
+  );
 
-    if(Math.abs(value) >= 1000){
-      return (
-        (value/1000).toLocaleString(
-          locale,
-          {maximumFractionDigits:0}
-        ) + "K"
-      );
-    }
-
-    return money(value);
-  };
+};
 
   const left = compact ? 38 : 52;
   const right = compact ? 12 : 20;
@@ -12118,13 +12248,15 @@ if(isSelected){
     ctx.fillStyle = "#64748b";
     ctx.font = "10px Arial";
 
-    ctx.fillText(
-      isCosts
-        ? "Cost impact"
-        : (p.expRetNet*100).toFixed(2)+"%",
-      width-right,
-      y+24
-    );
+ctx.fillText(
+  isCosts
+    ? (INIT.lang === "da"
+        ? "Omkostningseffekt"
+        : "Cost impact")
+    : (p.expRetNet * 100).toFixed(2) + "%",
+  width - right,
+  y + 24
+);
 
     /* Background track */
 
@@ -16994,6 +17126,7 @@ document
 }
 
 initializeApp();
+bindWealthPlanEmail();
 
 </script>
 </body></html>
