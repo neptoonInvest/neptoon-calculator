@@ -19063,6 +19063,7 @@ gameCSS.onerror = () =>
   console.error("NEPTOON GAME CSS FAILED");
 
 document.head.appendChild(gameCSS);
+gameCSS.disabled = true;
 
 let strategyGameInstance = null;
 
@@ -19087,6 +19088,7 @@ window.openStrategyGameModal = function(){
         : "en";
 
   modal.hidden = false;
+gameCSS.disabled = false;
 
   if(!strategyGameInstance){
 
@@ -19105,6 +19107,7 @@ window.closeStrategyGameModal = function(){
   if(!modal) return;
 
   modal.hidden = true;
+gameCSS.disabled = true;
 
   if(strategyGameInstance){
 
