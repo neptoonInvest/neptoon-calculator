@@ -4584,8 +4584,8 @@ body{
     right:16px;
     bottom:calc(var(--navh) + 16px);
 
-    width:52px;
-    height:52px;
+    width:43px;
+    height:43px;
   }
 
 }
@@ -5009,6 +5009,55 @@ body{
   font-size: 26px;
   cursor: pointer;
 }
+
+
+
+
+
+
+
+
+
+
+/* ==========================================
+   STRATEGY GAME · CLOSE BUTTON
+========================================== */
+
+#nt-strategy-modal .nt-strategy-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  margin: 0;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  color: #A8B9D1;
+
+  border: 1px solid rgba(168,185,209,0.35);
+  border-radius: 0;
+
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1;
+
+  cursor: pointer;
+  z-index: 100;
+}
+
+#nt-strategy-modal .nt-strategy-close:hover {
+  background: #4E79BD;
+  color: #FFFFFF;
+  border-color: #4E79BD;
+}
+
+
+
 </style>
 
 
@@ -16928,8 +16977,8 @@ function renderFloatingPortfolioButton(){
   btn.innerHTML = `
     <svg
       viewBox="0 0 24 24"
-      width="27"
-      height="27"
+      width="23"
+      height="23"
       fill="none"
       stroke="currentColor"
       stroke-width="2.5"
@@ -18997,6 +19046,23 @@ renderFloatingPortfolioButton();
 
 import { mountGame } from
   "https://neptooninvest.github.io/neptoon-strategy-game/game.js";
+
+/* LOAD STRATEGY GAME CSS */
+
+const gameCSS = document.createElement("link");
+
+gameCSS.rel = "stylesheet";
+
+gameCSS.href =
+  "https://neptooninvest.github.io/neptoon-strategy-game/styles.css";
+
+gameCSS.onload = () =>
+  console.log("NEPTOON GAME CSS LOADED");
+
+gameCSS.onerror = () =>
+  console.error("NEPTOON GAME CSS FAILED");
+
+document.head.appendChild(gameCSS);
 
 let strategyGameInstance = null;
 
