@@ -4958,6 +4958,57 @@ body{
   }
 
 }
+
+/* ==========================================
+   STRATEGY GAME MODAL — VISIBILITY FIX
+========================================== */
+
+#nt-strategy-modal[hidden] {
+  display: none !important;
+}
+
+#nt-strategy-modal:not([hidden]) {
+  position: fixed !important;
+
+  top: 64px;
+  bottom: 70px;
+  left: 0;
+  right: 0;
+
+  z-index: 1000 !important;
+
+  display: flex !important;
+  justify-content: center;
+
+  background: #071631;
+  overflow: hidden;
+}
+
+#nt-strategy-modal .nt-strategy-modal-panel {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  height: 100%;
+  overflow-y: auto;
+  background: #071631;
+  border-radius: 0;
+}
+
+#nt-strategy-modal .nt-strategy-close {
+  position: sticky;
+  top: 8px;
+  margin: 8px 8px -44px auto;
+  z-index: 10;
+  display: block;
+  background: #4E79BD;
+  color: white;
+  border: 0;
+  border-radius: 0;
+  width: 36px;
+  height: 36px;
+  font-size: 26px;
+  cursor: pointer;
+}
 </style>
 
 
