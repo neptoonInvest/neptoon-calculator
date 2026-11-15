@@ -4958,112 +4958,14 @@ body{
   }
 
 }
-
-
-/* ==========================================
-   NEPTOON STRATEGY GAME MODAL
-   HEADER + BOTTOM NAV REMAIN VISIBLE
-========================================== */
-
-:root {
-  --nt-game-header-height: 64px;
-}
-
-.nt-strategy-modal[hidden] {
-  display: none !important;
-}
-
-.nt-strategy-modal {
-  position: fixed;
-
-  top: var(--nt-game-header-height);
-  bottom: var(--navh, 70px);
-  left: 0;
-  right: 0;
-
-  z-index: 100;
-
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-
-  background: #071631;
-  overflow: hidden;
-}
-
-.nt-strategy-modal-panel {
-  position: relative;
-
-  width: 100%;
-  max-width: 560px;
-  height: 100%;
-
-  background: #071631;
-  border: none;
-  border-radius: 0;
-
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-}
-
-.nt-strategy-close {
-  position: sticky;
-  top: 8px;
-  margin: 8px 8px -44px auto;
-
-  z-index: 100;
-
-  width: 36px;
-  height: 36px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: #4E79BD;
-  color: #fff;
-
-  border: 0;
-  border-radius: 0;
-
-  font-size: 26px;
-  line-height: 1;
-
-  cursor: pointer;
-}
-
-#nt-strategy-game-root {
-  width: 100%;
-  min-height: 100%;
-}
-
-/* ==========================================
-   MOBILE
-========================================== */
-
-@media (max-width: 600px) {
-
-  .nt-strategy-modal {
-    bottom: calc(
-      var(--navh, 70px) + env(safe-area-inset-bottom, 0px)
-    );
-  }
-
-  .nt-strategy-modal-panel {
-    max-width: none;
-  }
-
-}
 </style>
 
-<link
-  rel="stylesheet"
-  href="https://neptooninvest.github.io/neptoon-strategy-game/styles.css"
->
+
 
 
 </head>
+
+
 <body>
 
 
@@ -7270,35 +7172,7 @@ body{
 </main>
 <!-- END · MAIN -->
 
-<!-- NEPTOON STRATEGY GAME MODAL -->
 
-<div
-  id="nt-strategy-modal"
-  class="nt-strategy-modal"
-  hidden
->
-  <div
-    class="nt-strategy-modal-panel"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Neptoon Strategy Game"
-  >
-
-    <button
-      type="button"
-      id="nt-strategy-close"
-      class="nt-strategy-close"
-      aria-label="Close Strategy Game"
-    >
-      &times;
-    </button>
-
-    <div
-      id="nt-strategy-game-root"
-    ></div>
-
-  </div>
-</div>
 
 <!-- =========================================
      NEPTOON · GLOBAL APPLICATION FOOTER
@@ -10261,43 +10135,6 @@ function generateWealthPlanPDF(download = true){
   /* =====================================
      HEADER · EVERY PAGE
   ===================================== */
-
-let strategyGameInstance = null;
-
-function openStrategyGameModal() {
-
-  const modal =
-    document.getElementById("nt-strategy-modal");
-
-  const root =
-    document.getElementById("nt-strategy-game-root");
-
-  if (!modal || !root) return;
-
-  const lang =
-    neptoonUser?.lang === "da" ? "da" : "en";
-
-  modal.hidden = false;
-
-  if (!strategyGameInstance) {
-    strategyGameInstance = mountGame(root, { lang });
-  } else {
-    strategyGameInstance.setLanguage(lang);
-  }
-}
-
-function closeStrategyGameModal() {
-
-  const modal =
-    document.getElementById("nt-strategy-modal");
-
-  if (!modal || modal.hidden) return;
-
-  modal.hidden = true;
-
-  strategyGameInstance?.destroy();
-  strategyGameInstance = null;
-}
 
   function drawHeader(){
 
@@ -17056,7 +16893,15 @@ btn.addEventListener("click", () => {
 
   console.log("NEPTOON STRATEGY GAME OPEN");
 
-  window.openStrategyGameModal();
+  if(typeof window.openStrategyGameModal === "function"){
+
+    window.openStrategyGameModal();
+
+  } else {
+
+    console.error("Strategy Game bridge not loaded");
+
+  }
 
 });
 
@@ -17438,15 +17283,26 @@ document.addEventListener('click', e => {
      NAVIGATION
   ========================= */
 
-  if(b.dataset.tab){
-    openTab(b.dataset.tab);
-    return;
-  }
+/* =========================
+   NAVIGATION
+========================= */
 
-  if(b.dataset.go){
-    openTab(b.dataset.go);
-    return;
-  }
+if(b.dataset.tab){
+
+  window.closeStrategyGameModal?.();
+
+  openTab(b.dataset.tab);
+  return;
+}
+
+if(b.dataset.go){
+
+  window.closeStrategyGameModal?.();
+
+  openTab(b.dataset.go);
+  return;
+}
+
 
   if(b.dataset.send){
     sendToMyWealth(b.dataset.send);
@@ -19033,10 +18889,6 @@ document
   .getElementById("mw-plan-download")
   ?.addEventListener("click", generateWealthPlanPDF);
 
-document
-  .getElementById("nt-strategy-close")
-  ?.addEventListener("click", closeStrategyGameModal);
-
 
   /* ================================================
      MARKET PULSE REFRESH
@@ -19055,6 +18907,8 @@ renderFloatingPortfolioButton();
 
 </script>
 
+<!-- NEPTOON STRATEGY GAME BRIDGE -->
+
 <script type="module">
 
 import { mountGame } from
@@ -19062,7 +18916,7 @@ import { mountGame } from
 
 let strategyGameInstance = null;
 
-window.openStrategyGameModal = function() {
+window.openStrategyGameModal = function(){
 
   const modal =
     document.getElementById("nt-strategy-modal");
@@ -19070,7 +18924,10 @@ window.openStrategyGameModal = function() {
   const root =
     document.getElementById("nt-strategy-game-root");
 
-  if (!modal || !root) return;
+  if(!modal || !root){
+    console.error("Strategy Game modal elements missing");
+    return;
+  }
 
   const lang =
     document.documentElement.lang
@@ -19081,34 +18938,46 @@ window.openStrategyGameModal = function() {
 
   modal.hidden = false;
 
-  if (!strategyGameInstance) {
-    strategyGameInstance = mountGame(root, { lang });
-  } else {
-    strategyGameInstance.setLanguage?.(lang);
+  if(!strategyGameInstance){
+
+    strategyGameInstance =
+      mountGame(root, { lang });
+
   }
 
 };
 
-window.closeStrategyGameModal = function() {
+window.closeStrategyGameModal = function(){
 
   const modal =
     document.getElementById("nt-strategy-modal");
 
-  if (!modal || modal.hidden) return;
+  if(!modal) return;
 
   modal.hidden = true;
 
-  strategyGameInstance?.destroy();
-  strategyGameInstance = null;
+  if(strategyGameInstance){
+
+    strategyGameInstance.destroy();
+    strategyGameInstance = null;
+
+  }
 
 };
 
-document
-  .getElementById("nt-strategy-close")
-  ?.addEventListener(
+const closeBtn =
+  document.getElementById("nt-strategy-close");
+
+if(closeBtn){
+
+  closeBtn.addEventListener(
     "click",
     window.closeStrategyGameModal
   );
+
+}
+
+console.log("NEPTOON STRATEGY GAME BRIDGE READY");
 
 </script>
 
