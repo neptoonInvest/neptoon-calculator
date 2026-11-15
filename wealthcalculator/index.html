@@ -5056,8 +5056,96 @@ body{
   border-color: #4E79BD;
 }
 
+#nt-strategy-modal .nt-strategy-close {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: auto;
+  margin: 0;
 
+  width: 30px;
+  height: 30px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  color: #A8B9D1;
+
+  border: 1px solid rgba(168,185,209,0.35);
+  border-radius: 0;
+
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 100;
+}
+
+/* =====================================================
+   NEPTOON STRATEGY GAME · FINAL PWA LAYOUT
+===================================================== */
+
+/* Game modal occupies screen above bottom navigation */
+
+#nt-strategy-modal:not([hidden]) {
+  top: 0 !important;
+  bottom: var(--navh, 70px);
+}
+
+/* Game introduction: position and vertical balance */
+
+#nt-strategy-modal .game-root .start-body {
+  justify-content: flex-start;
+  padding-top: 65px;
+  box-sizing: border-box;
+  transform: translateY(30px);
+}
+
+/* Additional space before PLAY LEVEL 1 */
+
+#nt-strategy-modal .game-root .start-body .play-btn {
+  margin-top: 30px;
+}
+
+/* Center the sound control */
+
+#nt-strategy-modal .game-root .start-top .icon-btn {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+/* Discreet close button, upper right */
+
+#nt-strategy-modal .nt-strategy-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  left: auto;
+  margin: 0;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  color: #A8B9D1;
+
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 100;
+}
 </style>
 
 
@@ -19087,6 +19175,7 @@ window.openStrategyGameModal = function(){
         ? "da"
         : "en";
 
+document.querySelector("header.masthead").style.display = "none";
   modal.hidden = false;
 gameCSS.disabled = false;
 
@@ -19107,6 +19196,7 @@ window.closeStrategyGameModal = function(){
   if(!modal) return;
 
   modal.hidden = true;
+document.querySelector("header.masthead").style.display = "";
 gameCSS.disabled = true;
 
   if(strategyGameInstance){
