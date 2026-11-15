@@ -3909,7 +3909,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   line-height:1.2;
 
   border:1px solid #C62828;
-  border-radius:999px;
+  border-radius:0px;
 
   white-space:nowrap;
   flex-shrink:0;
@@ -3986,7 +3986,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   padding:5px 10px;
   background:#D62828;
   color:#FFFFFF;
-  border-radius:999px;
+  border-radius:0px;
   font-size:9px;
   font-weight:800;
   letter-spacing:.04em;
@@ -4079,7 +4079,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   background:#D62828;
   color:#FFFFFF;
 
-  border-radius:999px;
+  border-radius:0px;
 
   font-size:9px;
   font-weight:800;
@@ -4187,7 +4187,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   color:#FFFFFF;
 
   padding:5px 10px;
-  border-radius:999px;
+  border-radius:0px;
 
   font-size:9px;
   font-weight:800;
@@ -4212,7 +4212,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   color:#FFFFFF;
 
   padding:5px 10px;
-  border-radius:999px;
+  border-radius:0px;
 
   font-size:9px;
   font-weight:800;
@@ -4236,7 +4236,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   color:#FFFFFF;
 
   padding:5px 10px;
-  border-radius:999px;
+  border-radius:0px;
 
   font-size:9px;
   font-weight:800;
@@ -4420,7 +4420,546 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
 }
 
+.bottom-nav{
+  position:fixed;
+  top:auto;
+  bottom:0;
+  left:0;
+  right:0;
+  height:var(--navh);
+}
 
+body{
+  padding-top:0;
+  padding-bottom:calc(var(--navh) + 36px);
+}
+  .bottom-nav{
+  position:fixed;
+  top:auto;
+  bottom:0;
+  left:0;
+  right:0;
+  height:var(--navh);
+
+  background:#FFFFFF;
+  border-top:1px solid #E5E7EB;
+}
+
+/* NAVIGATION TEXT AND ICONS */
+
+.bottom-nav button,
+.bottom-nav a{
+  color:#071631;
+}
+
+.bottom-nav svg{
+  color:#071631;
+  stroke:#071631;
+}
+
+/* PAGE SPACING */
+
+body{
+  padding-top:0;
+  padding-bottom:calc(var(--navh) + 36px);
+}
+  
+  /* ACTIVE NAVIGATION TAB */
+
+.bottom-nav .active{
+  background:#FFFFFF;
+  color:#4E79BD;
+}
+
+.bottom-nav .active svg{
+  color:#4E79BD;
+  stroke:#4E79BD;
+}
+  /* ACTIVE NAVIGATION TAB */
+
+.bottom-nav .active{
+  background:linear-gradient(
+    180deg,
+    #E4F3FC 0%,
+    #F0F8FD 55%,
+    #FFFFFF 100%
+  );
+
+  color:#4E79BD;
+}
+
+.bottom-nav .active svg{
+  color:#4E79BD;
+  stroke:#4E79BD;
+}
+
+.nav-icon-wrap{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.nav-count-badge{
+  position:absolute;
+  top:-8px;
+  right:-12px;
+
+  min-width:19px;
+  height:19px;
+  padding:0 5px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:#FF3B30;
+  color:#FFFFFF;
+
+  border-radius:999px;
+
+  font-size:11px;
+  font-weight:700;
+  line-height:1;
+
+  pointer-events:none;
+}
+
+/* =========================================
+   NEPTOON · FLOATING PORTFOLIO BUTTON
+========================================= */
+
+.nt-floating-plus{
+  position:fixed;
+
+  right:20px;
+  bottom:calc(var(--navh) + 20px);
+
+  width:56px;
+  height:56px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:linear-gradient(
+    180deg,
+    #E4F3FC 0%,
+    #B8DEFA 100%
+  );
+
+  color:#4E79BD;
+
+  border:none;
+  border-radius:50%;
+
+  box-shadow:
+    0 4px 14px rgba(7,22,49,.16);
+
+  cursor:pointer;
+  z-index:110;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.nt-floating-plus:hover{
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 6px 18px rgba(7,22,49,.20);
+}
+
+.nt-floating-plus:active{
+  transform:scale(.95);
+}
+
+.nt-floating-plus svg{
+  display:block;
+  flex-shrink:0;
+}
+
+@media(max-width:600px){
+
+  .nt-floating-plus{
+    right:16px;
+    bottom:calc(var(--navh) + 16px);
+
+    width:52px;
+    height:52px;
+  }
+
+}
+
+/* =========================================
+   WELCOME · CAPITAL MARKET METHODOLOGY
+========================================= */
+
+.welcome-methodology{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+/* HEADER */
+
+.welcome-methodology-head{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.welcome-methodology-kicker{
+  color:#6EC6ED;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.10em;
+}
+
+.welcome-methodology-head h2{
+  margin:0;
+  font-size:22px;
+  line-height:1.2;
+}
+
+.welcome-methodology-head p{
+  margin:0;
+  font-size:13px;
+  line-height:1.6;
+  opacity:.78;
+  max-width:650px;
+}
+
+/* TWO QUESTION CARDS */
+
+.welcome-methodology-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+
+.welcome-methodology-card{
+  display:flex;
+  flex-direction:column;
+  gap:13px;
+
+  padding:20px;
+
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(110,198,237,.22);
+  border-radius:0;
+}
+
+.welcome-methodology-card-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.welcome-methodology-card-top > svg{
+  width:23px;
+  height:23px;
+  color:#6EC6ED;
+  stroke:#6EC6ED;
+}
+
+/* BLUE RECTANGULAR PILLS */
+
+.welcome-methodology-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:6px 11px;
+
+  background:#4E79BD;
+  color:#FFFFFF;
+
+  border:none;
+  border-radius:0;
+
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.07em;
+  line-height:1;
+}
+
+.welcome-methodology-card h3{
+  margin:0;
+  font-size:16px;
+  line-height:1.35;
+}
+
+.welcome-methodology-card p{
+  margin:0;
+  font-size:12px;
+  line-height:1.65;
+  opacity:.82;
+}
+
+.welcome-methodology-note{
+  margin-top:auto;
+  padding-top:12px;
+
+  font-size:11px;
+  font-weight:600;
+  color:#6EC6ED;
+}
+
+/* SOURCES */
+
+.welcome-methodology-sources{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+
+  padding-top:18px;
+  border-top:1px solid rgba(110,198,237,.22);
+}
+
+.welcome-methodology-sources-title{
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.10em;
+  color:#6EC6ED;
+}
+
+.welcome-methodology-source-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+
+.welcome-methodology-source{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+
+  min-width:0;
+  padding:16px 10px;
+
+  text-align:center;
+  text-decoration:none;
+
+  color:inherit;
+  background:rgba(255,255,255,.025);
+
+  border:1px solid rgba(110,198,237,.16);
+  border-radius:0;
+
+  transition:
+    background .2s ease,
+    border-color .2s ease;
+}
+
+.welcome-methodology-source:hover{
+  background:rgba(78,121,189,.12);
+  border-color:#4E79BD;
+}
+
+.welcome-methodology-source > svg:first-child{
+  width:25px;
+  height:25px;
+  color:#6EC6ED;
+  stroke:#6EC6ED;
+}
+
+.welcome-methodology-source strong{
+  font-size:12px;
+  line-height:1.3;
+}
+
+.welcome-methodology-source span{
+  font-size:10px;
+  line-height:1.4;
+  opacity:.7;
+}
+
+.welcome-methodology-external{
+  width:12px;
+  height:12px;
+  opacity:.55;
+}
+
+.welcome-methodology-disclaimer{
+  margin:0;
+  font-size:10px;
+  line-height:1.5;
+  opacity:.55;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+  .welcome-methodology{
+    gap:16px;
+  }
+
+  .welcome-methodology-head h2{
+    font-size:19px;
+  }
+
+  .welcome-methodology-grid{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+
+  .welcome-methodology-card{
+    padding:16px;
+    gap:10px;
+  }
+
+  .welcome-methodology-card h3{
+    font-size:14px;
+  }
+
+  .welcome-methodology-source-grid{
+    gap:6px;
+  }
+
+  .welcome-methodology-source{
+    padding:12px 5px;
+    gap:6px;
+  }
+
+  .welcome-methodology-source strong{
+    font-size:10px;
+  }
+
+  .welcome-methodology-source span{
+    font-size:9px;
+  }
+
+  .welcome-methodology-source > svg:first-child{
+    width:21px;
+    height:21px;
+  }
+
+}
+
+
+/* =========================================
+   NEPTOON · GLOBAL FOOTER
+========================================= */
+
+.app-footer{
+  width:100%;
+  background:#071631;
+  color:#FFFFFF;
+  border-top:1px solid rgba(110,198,237,.22);
+  border-radius:0;
+
+  padding:22px 20px 26px;
+}
+
+.app-footer-inner{
+  max-width:1200px;
+  margin:0 auto;
+
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.app-footer-brand{
+  display:flex;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.app-footer-brand strong{
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.08em;
+}
+
+.app-footer-brand span{
+  font-size:11px;
+  color:#A8BED7;
+}
+
+.app-footer-disclaimer{
+  margin:0;
+  max-width:950px;
+
+  font-size:11px;
+  line-height:1.65;
+  color:#C3D1E2;
+}
+
+.app-footer-bottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+
+  padding-top:12px;
+  border-top:1px solid rgba(255,255,255,.12);
+}
+
+.app-footer-copyright{
+  font-size:10px;
+  color:#A8BED7;
+}
+
+.app-footer-links{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.app-footer-links a{
+  color:#C3D1E2;
+  text-decoration:none;
+  font-size:11px;
+}
+
+.app-footer-links a:hover{
+  color:#6EC6ED;
+  text-decoration:underline;
+}
+
+.app-footer-separator{
+  color:#7088A6;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+  .app-footer{
+    padding:18px 16px 22px;
+  }
+
+  .app-footer-inner{
+    gap:12px;
+  }
+
+  .app-footer-brand{
+    flex-direction:column;
+    gap:4px;
+  }
+
+  .app-footer-disclaimer{
+    font-size:10px;
+    line-height:1.6;
+  }
+
+  .app-footer-bottom{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:10px;
+  }
+
+}
 </style>
 </head>
 <body>
@@ -4603,6 +5142,233 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     ></div>
 
   </div>
+
+  <!-- =================================================
+       WELCOME · DOCUMENTATION
+  ================================================== -->
+
+<!-- =========================================
+     WELCOME · CAPITAL MARKET METHODOLOGY
+========================================= -->
+
+<section
+  class="section welcome-methodology"
+  id="welcome-methodology"
+>
+
+  <div class="welcome-methodology-head">
+
+    <div
+      class="welcome-methodology-kicker"
+      data-lang="welcomeMethodKicker"
+    >
+      THE METHOD BEHIND THE NUMBERS
+    </div>
+
+    <h2 data-lang="welcomeMethodTitle">
+      Where do our assumptions come from?
+    </h2>
+
+    <p data-lang="welcomeMethodIntro">
+      Our wealth projections combine long-term capital
+      market assumptions with estimates of investment risk.
+    </p>
+
+  </div>
+
+
+  <!-- TWO QUESTIONS -->
+
+  <div class="welcome-methodology-grid">
+
+    <!-- RETURN -->
+
+    <article class="welcome-methodology-card">
+
+      <div class="welcome-methodology-card-top">
+
+        <i data-lucide="trending-up"></i>
+
+        <span
+          class="welcome-methodology-pill"
+          data-lang="welcomeMethodReturnPill"
+        >
+          RETURN
+        </span>
+
+      </div>
+
+      <h3 data-lang="welcomeMethodReturnTitle">
+        Where do expected returns come from?
+      </h3>
+
+      <p data-lang="welcomeMethodReturnText">
+        Expected returns are based on forward-looking
+        capital market assumptions for major asset classes.
+        They reflect long-term economic expectations rather
+        than simply extending recent market performance.
+      </p>
+
+      <div
+        class="welcome-methodology-note"
+        data-lang="welcomeMethodReturnNote"
+      >
+        Estimates, not promises.
+      </div>
+
+    </article>
+
+
+    <!-- RISK -->
+
+    <article class="welcome-methodology-card">
+
+      <div class="welcome-methodology-card-top">
+
+        <i data-lucide="activity"></i>
+
+        <span
+          class="welcome-methodology-pill"
+          data-lang="welcomeMethodRiskPill"
+        >
+          RISK
+        </span>
+
+      </div>
+
+      <h3 data-lang="welcomeMethodRiskTitle">
+        Where does investment risk come from?
+      </h3>
+
+      <p data-lang="welcomeMethodRiskText">
+        Investment risk reflects uncertainty in future
+        returns. Market volatility and asset characteristics
+        help estimate the range of possible wealth outcomes.
+        Actual results may differ substantially.
+      </p>
+
+      <div
+        class="welcome-methodology-note"
+        data-lang="welcomeMethodRiskNote"
+      >
+        Scenarios, not guaranteed limits.
+      </div>
+
+    </article>
+
+  </div>
+
+
+  <!-- SOURCES -->
+
+  <div class="welcome-methodology-sources">
+
+    <div
+      class="welcome-methodology-sources-title"
+      data-lang="welcomeMethodSources"
+    >
+      SOURCES & METHODOLOGY
+    </div>
+
+    <div class="welcome-methodology-source-grid">
+
+      <!-- BLACKROCK -->
+
+      <a
+        class="welcome-methodology-source"
+        href="https://www.blackrock.com/institutions/en-global/institutional-insights/thought-leadership/capital-market-assumptions"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="BlackRock Capital Market Assumptions"
+      >
+
+        <i data-lucide="chart-no-axes-combined"></i>
+
+        <strong>BlackRock</strong>
+
+        <span data-lang="welcomeMethodBlackrock">
+          Capital Market Assumptions
+        </span>
+
+        <i
+          data-lucide="external-link"
+          class="welcome-methodology-external"
+        ></i>
+
+      </a>
+
+
+      <!-- RÅDET -->
+
+      <a
+        class="welcome-methodology-source"
+        href="https://afkastforventninger.dk/afkastforventninger/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Rådet for Afkastforventninger"
+      >
+
+        <i data-lucide="landmark"></i>
+
+        <strong data-lang="welcomeMethodCouncilName">
+          Rådet
+        </strong>
+
+        <span data-lang="welcomeMethodCouncil">
+          Afkastforventninger
+        </span>
+
+        <i
+          data-lucide="external-link"
+          class="welcome-methodology-external"
+        ></i>
+
+      </a>
+
+
+      <!-- NEPTOON -->
+
+      <a
+        class="welcome-methodology-source"
+        href="https://www.neptoonwealth.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Neptoon Wealth methodology"
+      >
+
+        <i data-lucide="waves"></i>
+
+        <strong>Neptoon Wealth</strong>
+
+        <span data-lang="welcomeMethodNeptoon">
+          Model & Methodology
+        </span>
+
+        <i
+          data-lucide="external-link"
+          class="welcome-methodology-external"
+        ></i>
+
+      </a>
+
+    </div>
+
+    <p
+      class="welcome-methodology-disclaimer"
+      data-lang="welcomeMethodDisclaimer"
+    >
+      External research is provided for reference.
+      Neptoon's estimates are its own and do not imply
+      endorsement by the listed institutions.
+    </p>
+
+  </div>
+
+</section>
+
+
+
+
 
 
   <!-- =================================================
@@ -6403,9 +7169,86 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 <!-- END · MAIN -->
 
 
+
+<!-- =========================================
+     NEPTOON · GLOBAL APPLICATION FOOTER
+========================================= -->
+
+<footer class="app-footer">
+
+  <div class="app-footer-inner">
+
+    <!-- BRAND -->
+
+    <div class="app-footer-brand">
+
+      <strong>NEPTOON WEALTH</strong>
+
+      <span data-lang="footerTagline">
+        Financial modelling & investment analytics
+      </span>
+
+    </div>
+
+
+    <!-- DISCLAIMER -->
+
+    <p
+      class="app-footer-disclaimer"
+      data-lang="footerDisclaimer"
+    >
+      Neptoon Wealth Calculator is a free educational
+      tool. Expected returns, risk estimates and wealth
+      projections are model-based illustrations, not
+      forecasts or guarantees. Historical performance
+      does not predict future returns. The information
+      does not constitute personal investment advice.
+    </p>
+
+
+    <!-- BOTTOM LINE -->
+
+    <div class="app-footer-bottom">
+
+      <span class="app-footer-copyright">
+        © 2026 NEPTOON WEALTH
+      </span>
+
+      <div class="app-footer-links">
+
+        <a
+          href="https://www.neptoonwealth.com/disclaimers"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-lang="footerDisclaimers"
+        >
+          Disclaimers
+        </a>
+
+        <span class="app-footer-separator">·</span>
+
+        <a
+          href="https://www.neptoonwealth.com/investment-methodology"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-lang="footerMethodology"
+        >
+          Investment Methodology
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
 <nav class="bottom-nav" aria-label="Primary navigation">
   <div class="nav-inner" id="bottom-nav"></div>
 </nav>
+
 
 
 <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
@@ -6983,6 +7826,71 @@ mwEmailPlaceholder : "Your email address",
   mwVerdictPillB: "DECISION",
   tmIntroAction: "Press Play to experience the journey.",
 
+  welcomeMethodKicker:
+    "THE METHOD BEHIND THE NUMBERS",
+
+  welcomeMethodTitle:
+    "Where do our assumptions come from?",
+
+  welcomeMethodIntro:
+    "Our wealth projections combine long-term capital market assumptions with estimates of investment risk.",
+
+  welcomeMethodReturnPill:
+    "RETURN",
+
+  welcomeMethodReturnTitle:
+    "Where do expected returns come from?",
+
+  welcomeMethodReturnText:
+    "Expected returns are based on forward-looking capital market assumptions for major asset classes. They reflect long-term economic expectations rather than simply extending recent market performance.",
+
+  welcomeMethodReturnNote:
+    "Estimates, not promises.",
+
+  welcomeMethodRiskPill:
+    "RISK",
+
+  welcomeMethodRiskTitle:
+    "Where does investment risk come from?",
+
+  welcomeMethodRiskText:
+    "Investment risk reflects uncertainty in future returns. Market volatility and asset characteristics help estimate the range of possible wealth outcomes. Actual results may differ substantially.",
+
+  welcomeMethodRiskNote:
+    "Scenarios, not guaranteed limits.",
+
+  welcomeMethodSources:
+    "SOURCES & METHODOLOGY",
+
+  footerTagline:
+    "Financial modelling & investment analytics",
+
+  footerDisclaimer:
+    "Neptoon Wealth Calculator is a free educational tool. Expected returns, risk estimates and wealth projections are model-based illustrations, not forecasts or guarantees. Historical performance does not predict future returns. The information does not constitute personal investment advice.",
+
+  footerDisclaimers:
+    "Disclaimers",
+
+  footerMethodology:
+    "Investment Methodology",
+
+  welcomeMethodBlackrock:
+    "Capital Market Assumptions",
+
+  welcomeMethodCouncilName:
+    "The Council",
+
+  welcomeMethodCouncil:
+    "Expected Returns",
+
+  welcomeMethodNeptoon:
+    "Model & Methodology",
+
+  welcomeMethodDisclaimer:
+    "External research is provided for reference. Neptoon's estimates are its own and do not imply endorsement by the listed institutions."
+
+
+
 
 
 
@@ -7007,6 +7915,17 @@ mwEmailPlaceholder : "Your email address",
       "Hvad kan din investering blive til?",
   welcomeAssetsPill: "VÆLG SELV",
   welcomePlansPill: "FÆRDIGE PLANER",
+terTagline:
+    "Finansiel modellering og investeringsanalyse",
+
+  footerDisclaimer:
+    "Neptoon Wealth Calculator er et gratis informations- og beregningsværktøj. Forventede afkast, risikoestimater og formuefremskrivninger er modelbaserede illustrationer, ikke prognoser eller garantier. Historiske afkast er ikke en pålidelig indikator for fremtidige afkast. Informationen udgør ikke personlig investeringsrådgivning.",
+
+  footerDisclaimers:
+    "Ansvarsfraskrivelse",
+
+  footerMethodology:
+    "Investeringsmetode",
 
     assets: "Værdipapirer",
     welcomeAssetsText:
@@ -7188,6 +8107,57 @@ mwEmailPlaceholder : "Din e-mailadresse",
   viewPlans: "Se formueplaner",
   mwVerdictPillA: "AFKAST",
   mwVerdictPillB: "BESLUTNING",
+  welcomeMethodKicker:
+    "METODEN BAG TALLENE",
+
+  welcomeMethodTitle:
+    "Hvor kommer vores forudsætninger fra?",
+
+  welcomeMethodIntro:
+    "Vores formuefremskrivninger bygger på langsigtede kapitalmarkedsforventninger og estimater for investeringsrisiko.",
+
+  welcomeMethodReturnPill:
+    "AFKAST",
+
+  welcomeMethodReturnTitle:
+    "Hvor kommer de forventede afkast fra?",
+
+  welcomeMethodReturnText:
+    "De forventede afkast bygger på fremadrettede kapitalmarkedsforudsætninger for de vigtigste aktivklasser. De afspejler langsigtede økonomiske forventninger frem for blot at videreføre de seneste års markedsafkast.",
+
+  welcomeMethodReturnNote:
+    "Forventninger, ikke garantier.",
+
+  welcomeMethodRiskPill:
+    "RISIKO",
+
+  welcomeMethodRiskTitle:
+    "Hvor kommer investeringsrisikoen fra?",
+
+  welcomeMethodRiskText:
+    "Investeringsrisiko afspejler usikkerheden om fremtidige afkast. Markedsudsving og aktivernes egenskaber bruges til at estimere mulige formueudfald. De faktiske resultater kan afvige væsentligt.",
+
+  welcomeMethodRiskNote:
+    "Scenarier, ikke garanterede grænser.",
+
+  welcomeMethodSources:
+    "KILDER & METODE",
+
+  welcomeMethodBlackrock:
+    "Kapitalmarkedsforventninger",
+
+  welcomeMethodCouncilName:
+    "Rådet",
+
+  welcomeMethodCouncil:
+    "Afkastforventninger",
+
+  welcomeMethodNeptoon:
+    "Model & metode",
+
+  welcomeMethodDisclaimer:
+    "Ekstern research vises som reference. Neptoons estimater er vores egne og indebærer ikke, at de nævnte institutioner anbefaler eller står inde for modellen."
+
 
 
 
@@ -12275,16 +13245,31 @@ function renderHeroes(){
 
 }
 
-
 function renderNav(){
 
   const L =
     TXT[APP.lang] || TXT.en;
 
+  const myWealthCount =
+    APP.myWealth?.ids?.length || 0;
+
   $('bottom-nav').innerHTML = NAV.map(([id, ico]) => {
 
     const label =
       L[id] || id;
+
+    const navIcon =
+      id === "mywealth"
+        ? `
+          <span class="nav-icon-wrap">
+            ${icon(ico)}
+            <span
+              class="nav-count-badge"
+              id="mywealth-nav-badge"
+            >${myWealthCount}</span>
+          </span>
+        `
+        : icon(ico);
 
     return `
       <button
@@ -12293,7 +13278,7 @@ function renderNav(){
         data-tab="${id}"
         aria-current="${APP.activeTab === id ? 'page' : 'false'}"
       >
-        ${icon(ico)}
+        ${navIcon}
         <span>${label}</span>
       </button>
     `;
@@ -13039,13 +14024,18 @@ function sendToMyWealth(source){
   MYWEALTH_VIEW.horizon = 0;
   MYWEALTH_VIEW.metric = "wealth";
 
+  // Reset chart interaction
+  MYWEALTH_INTERACTION.hoverIndex = -1;
+  MYWEALTH_INTERACTION.selectedId = null;
+
   // Navigate to MyWealth
-MYWEALTH_INTERACTION.hoverIndex = -1;
-MYWEALTH_INTERACTION.selectedId = null;
   openTab("mywealth");
 
   // Synchronize controls, received state and chart
   renderMyWealth();
+
+  // Update navigation notification badge
+  updateMyWealthBadge(APP.myWealth.ids.length);
 
 }
 
@@ -15863,7 +16853,49 @@ function initPlanHistoryViewer(){
 /* =====================================================
    MYWEALTH · MAIN RENDER
 ===================================================== */
+function renderFloatingPortfolioButton(){
 
+  if(document.getElementById("nt-floating-plus")){
+    return;
+  }
+
+  const btn = document.createElement("button");
+
+  btn.id = "nt-floating-plus";
+  btn.type = "button";
+  btn.className = "nt-floating-plus";
+
+  btn.setAttribute(
+    "aria-label",
+    "Open portfolio suggestions"
+  );
+
+  btn.innerHTML = `
+    <svg
+      viewBox="0 0 24 24"
+      width="27"
+      height="27"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      aria-hidden="true"
+    >
+      <path d="M12 5v14M5 12h14"/>
+    </svg>
+  `;
+
+  btn.addEventListener("click", () => {
+
+    console.log("NEPTOON PORTFOLIO PLUS CLICKED");
+
+    // Portfolio suggestions modal comes next.
+
+  });
+
+  document.body.appendChild(btn);
+
+}
 
 function renderMyWealth(){
 
@@ -17848,6 +18880,7 @@ document
 
 initializeApp();
 bindWealthPlanEmail();
+renderFloatingPortfolioButton();
 
 </script>
 </body></html>
