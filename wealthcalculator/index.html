@@ -11020,7 +11020,62 @@ const result = JSON.parse(raw);
 
 }
 
+/* =====================================================
+   STRATEGY GAME → MYWEALTH
+   ADD ONE PORTFOLIO WITHOUT NAVIGATION
+===================================================== */
 
+function addStrategyPortfolioToMyWealth(modelNo){
+
+  modelNo = Number(modelNo);
+
+  if(!Number.isInteger(modelNo) || modelNo <= 0){
+    return { ok:false, reason:"invalid" };
+  }
+
+  const existing = APP.myWealth.ids || [];
+
+  // MyWealth currently contains individual assets.
+  // Do not silently delete those assets.
+  if(
+    APP.myWealth.source === "assets" &&
+    existing.length
+  ){
+    return { ok:false, reason:"assets-active" };
+  }
+
+  const ids = existing.map(Number);
+
+  // Prevent duplicate models
+  if(ids.includes(modelNo)){
+    return { ok:false, reason:"duplicate" };
+  }
+
+  // Respect the existing maximum of five
+  if(ids.length >= 5){
+    return { ok:false, reason:"full" };
+  }
+
+  // Add one model, preserve previous models
+  APP.myWealth.source = "portfolios";
+  APP.myWealth.ids = [...ids, modelNo];
+
+  myWealthMode = "portfolios";
+
+  APP.myWealth.selectedIndex = 0;
+
+  // Synchronize MyWealth without opening its tab
+  renderMyWealth();
+
+  // Update the bottom navigation badge
+  updateMyWealthBadge(APP.myWealth.ids.length);
+
+  return {
+    ok:true,
+    count:APP.myWealth.ids.length
+  };
+
+}
 
 /* =====================================================
    RENDER CHAPTER HEADER
@@ -13539,8 +13594,14 @@ function renderNav(){
   const L =
     TXT[APP.lang] || TXT.en;
 
+  /* ==========================================
+     MYWEALTH · LIVE BASKET COUNT
+  ========================================== */
+
   const myWealthCount =
-    APP.myWealth?.ids?.length || 0;
+    Array.isArray(APP.myWealth?.ids)
+      ? APP.myWealth.ids.length
+      : 0;
 
   $('bottom-nav').innerHTML = NAV.map(([id, ico]) => {
 
@@ -13552,10 +13613,15 @@ function renderNav(){
         ? `
           <span class="nav-icon-wrap">
             ${icon(ico)}
+
             <span
               class="nav-count-badge"
               id="mywealth-nav-badge"
-            >${myWealthCount}</span>
+              ${myWealthCount === 0 ? 'hidden' : ''}
+            >
+              ${myWealthCount}
+            </span>
+
           </span>
         `
         : icon(ico);
@@ -13576,6 +13642,29 @@ function renderNav(){
 
 }
 
+
+/* ==========================================
+   MYWEALTH · UPDATE BADGE WITHOUT NAV RENDER
+========================================== */
+
+function updateMyWealthBadge(){
+
+  const count =
+    Array.isArray(APP.myWealth?.ids)
+      ? APP.myWealth.ids.length
+      : 0;
+
+  const badge =
+    document.getElementById("mywealth-nav-badge");
+
+  if(!badge){
+    return;
+  }
+
+  badge.textContent = count;
+  badge.hidden = count === 0;
+
+}
 
 function openTab(tab) {
 
@@ -19352,6 +19441,55 @@ if(closeBtn){
   );
 
 }
+
+
+
+window.addEventListener(
+  "neptoon:strategy-to-mywealth",
+  event => {
+
+    const { modelNo } = event.detail || {};
+
+    const result =
+      addStrategyPortfolioToMyWealth(modelNo);
+
+    console.log(
+      "STRATEGY → MYWEALTH",
+      modelNo,
+      result
+    );
+
+    if(result.ok){
+
+      alert(
+        `Portfolio added to MyWealth (${result.count}/5)`
+      );
+
+      return;
+    }
+
+    if(result.reason === "duplicate"){
+      alert("Portfolio already in MyWealth.");
+      return;
+    }
+
+    if(result.reason === "full"){
+      alert("MyWealth already contains five portfolios.");
+      return;
+    }
+
+    if(result.reason === "assets-active"){
+      alert(
+        "MyWealth currently contains individual assets. " +
+        "Switching to portfolios requires replacing that selection."
+      );
+      return;
+    }
+
+    alert("Portfolio could not be added.");
+
+  }
+);
 
 console.log("NEPTOON STRATEGY GAME BRIDGE READY");
 
