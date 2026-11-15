@@ -5146,6 +5146,103 @@ body{
   cursor: pointer;
   z-index: 100;
 }
+
+/* =========================================
+   NEPTOON · FLOATING PORTFOLIO BUTTON
+========================================= */
+
+.nt-floating-plus{
+  position:fixed;
+
+  right:20px;
+  bottom:calc(var(--navh) + 20px);
+
+  width:56px;
+  height:56px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+background:#4E79BD;
+color:#FFFFFF;
+
+  border:none;
+  border-radius:50%;
+
+  box-shadow:
+    0 4px 14px rgba(7,22,49,.16);
+
+  cursor:pointer;
+  z-index:110;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+.nt-floating-plus:hover{
+  background:#A5D3F5;
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 6px 18px rgba(7,22,49,.20);
+}
+
+.nt-floating-plus:active{
+  transform:scale(.95);
+}
+
+.nt-floating-plus svg{
+  display:block;
+  flex-shrink:0;
+}
+
+@media(max-width:600px){
+
+  .nt-floating-plus{
+    right:16px;
+    bottom:calc(var(--navh) + 16px);
+
+    width:43px;
+    height:43px;
+  }
+
+}
+.nav-icon-wrap{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.nav-count-badge{
+  position:absolute;
+  top:-8px;
+  right:-12px;
+
+  min-width:19px;
+  height:19px;
+  padding:0 4px;
+
+  box-sizing:border-box;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+background:#4E79BD;
+color:#FFFFFF;
+  border-radius:50%;
+
+  font-size:11px;
+  font-weight:700;
+  line-height:1;
+
+  pointer-events:none;
+}
+
 </style>
 
 
