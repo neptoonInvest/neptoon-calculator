@@ -19168,6 +19168,8 @@ window.openStrategyGameModal = function(){
     return;
   }
 
+  /* READ CURRENT PWA LANGUAGE */
+
   const lang =
     document.documentElement.lang
       .toLowerCase()
@@ -19175,14 +19177,33 @@ window.openStrategyGameModal = function(){
         ? "da"
         : "en";
 
-document.querySelector("header.masthead").style.display = "none";
+  /* HIDE MAIN PWA HEADER */
+
+  const header =
+    document.querySelector("header.masthead");
+
+  if(header){
+    header.style.display = "none";
+  }
+
+  /* ACTIVATE GAME CSS */
+
+  gameCSS.disabled = false;
+
+  /* SHOW GAME MODAL */
+
   modal.hidden = false;
-gameCSS.disabled = false;
+
+  /* MOUNT STRATEGY GAME */
 
   if(!strategyGameInstance){
 
     strategyGameInstance =
       mountGame(root, { lang });
+
+  } else {
+
+    strategyGameInstance.setLanguage?.(lang);
 
   }
 
@@ -19195,13 +19216,28 @@ window.closeStrategyGameModal = function(){
 
   if(!modal) return;
 
+  /* HIDE STRATEGY GAME */
+
   modal.hidden = true;
-document.querySelector("header.masthead").style.display = "";
-gameCSS.disabled = true;
+
+  /* RESTORE MAIN PWA HEADER */
+
+  const header =
+    document.querySelector("header.masthead");
+
+  if(header){
+    header.style.display = "";
+  }
+
+  /* DISABLE GAME CSS */
+
+  gameCSS.disabled = true;
+
+  /* CLEAN UP GAME INSTANCE */
 
   if(strategyGameInstance){
 
-    strategyGameInstance.destroy();
+    strategyGameInstance.destroy?.();
     strategyGameInstance = null;
 
   }
