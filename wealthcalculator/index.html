@@ -19421,6 +19421,12 @@ const gameCSSReady = new Promise(resolve => {
 
 document.head.appendChild(gameCSS);
 
+gameCSSReady.then(loaded => {
+  if (loaded) {
+    gameCSS.disabled = true;
+  }
+});
+
 let strategyGameInstance = null;
 
 window.openStrategyGameModal = async function(){
@@ -19444,6 +19450,7 @@ window.openStrategyGameModal = async function(){
     console.error("Cannot open Strategy Game: CSS unavailable");
     return;
   }
+gameCSS.disabled = false;
 
   /* READ CURRENT PWA LANGUAGE */
 
@@ -19492,6 +19499,8 @@ window.closeStrategyGameModal = function(){
   /* HIDE STRATEGY GAME */
 
   modal.hidden = true;
+
+gameCSS.disabled = true;
 
   /* RESTORE MAIN PWA HEADER */
 
