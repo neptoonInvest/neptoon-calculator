@@ -19421,8 +19421,17 @@ document
 initializeApp();
 bindWealthPlanEmail();
 
+console.log("BOOT DONE BEFORE GAME");
+
+   const timestamp = Date.now();
+   
 
 renderFloatingPortfolioButton();  ///THE MODAL GAME BUTTON 
+
+console.log(
+  "BOOT DONE TIME - NEPTOON STRATEGY GAME FETCH",
+  new Date(timestamp).toLocaleString()
+);
 
 </script>              //////BOTTOM OF SCRIPT BEFORE GAME
 
