@@ -5243,6 +5243,63 @@ color:#FFFFFF;
   pointer-events:none;
 }
 
+/* HERO · CURRENCY PILL */
+
+.hero-currency{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-width:54px;
+  padding:5px 12px;
+
+  background:#B8DEFA;
+  color:#071631;
+
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  line-height:1.2;
+
+  border:1px solid #B8DEFA;
+  border-radius:0;
+
+  white-space:nowrap;
+  flex-shrink:0;
+}
+
+/* MYWEALTH · PDF PILL */
+
+.mw-plan-title-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.mw-plan-title-row h3{
+  margin:0;
+}
+
+.mw-plan-title-row .mywealth-mail-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:4px 8px;
+
+  background:#B8DEFA;
+  color:#071631;
+
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.08em;
+
+  border:0;
+  border-radius:0;
+  flex-shrink:0;
+}
+
 </style>
 
 
@@ -6803,13 +6860,22 @@ color:#FFFFFF;
             <i data-lucide="file-text"></i>
           </div>
 
-<span class="mywealth-mail-pill">PDF</span>
 
           <div class="mw-plan-heading-text">
 
-            <h3 data-lang="mwPlanTitle">
-              My Wealth Plan
-            </h3>
+<div class="mw-plan-heading-text">
+
+  <div class="mw-plan-title-row">
+
+    <h3 data-lang="mwPlanTitle">
+      My Wealth Plan
+    </h3>
+
+    <span class="mywealth-mail-pill">
+      PDF
+    </span>
+
+  </div>
 
             <p data-lang="mwPlanDescription">
               Receive your selected Wealth Plans,
@@ -8017,7 +8083,7 @@ const TXT = {
     mwVerdict: "THE VERDICT",
     mwPending: "PENDING",
     mwVerdictMarketQuestion:
-      "A · HAS IT BEATEN THE MARKET?",
+      "A · PERFORMANCE?",
     mwAwaitingRace: "Awaiting race",
     mwVerdictMarketDescription:
       "Historical performance relative to the selected market benchmark.",
@@ -8304,7 +8370,7 @@ terTagline:
     mwVerdict: "KONKLUSIONEN",
     mwPending: "AFVENTER",
     mwVerdictMarketQuestion:
-      "A · HAR DEN SLÅET MARKEDET?",
+      "A · PERFORMANCE?",
     mwAwaitingRace: "Afventer sammenligning",
     mwVerdictMarketDescription:
       "Historisk afkast sammenlignet med det valgte markedsbenchmark.",
@@ -19277,9 +19343,11 @@ document
 
 initializeApp();
 bindWealthPlanEmail();
-renderFloatingPortfolioButton();
 
-</script>
+
+renderFloatingPortfolioButton();  ///THE MODAL GAME BUTTON 
+
+</script>              //////BOTTOM OF SCRIPT BEFORE GAME
 
 
 <!-- ==========================================
@@ -19341,7 +19409,7 @@ gameCSS.disabled = true;
 
 let strategyGameInstance = null;
 
-window.openStrategyGameModal = function(){
+window.openStrategyGameModal = async function(){
 
   const modal =
     document.getElementById("nt-strategy-modal");
@@ -19351,6 +19419,15 @@ window.openStrategyGameModal = function(){
 
   if(!modal || !root){
     console.error("Strategy Game modal elements missing");
+    return;
+  }
+
+  /* WAIT UNTIL GAME CSS IS LOADED */
+
+  const cssLoaded = await gameCSSReady;
+
+  if(!cssLoaded){
+    console.error("Cannot open Strategy Game: CSS unavailable");
     return;
   }
 
@@ -19371,10 +19448,6 @@ window.openStrategyGameModal = function(){
   if(header){
     header.style.display = "none";
   }
-
-  /* ACTIVATE GAME CSS */
-
-  gameCSS.disabled = false;
 
   /* SHOW GAME MODAL */
 
@@ -19415,9 +19488,7 @@ window.closeStrategyGameModal = function(){
     header.style.display = "";
   }
 
-  /* DISABLE GAME CSS */
 
-  gameCSS.disabled = true;
 
   /* CLEAN UP GAME INSTANCE */
 
