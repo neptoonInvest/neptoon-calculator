@@ -17345,13 +17345,44 @@ function renderFloatingPortfolioButton(){
 
 btn.addEventListener("click", async () => {
 
-  console.log("NEPTOON STRATEGY GAME OPEN");
+  console.log("========== STRATEGY GAME OPEN ==========");
+
+  function debugBadge(stage){
+
+    const badge =
+      document.getElementById("mywealth-nav-badge");
+
+    console.log("BADGE DEBUG · " + stage, {
+
+      exists: !!badge,
+
+      hidden: badge?.hidden,
+
+      attribute: badge?.getAttribute("hidden"),
+
+      display: badge
+        ? getComputedStyle(badge).display
+        : null,
+
+      text: badge?.textContent.trim()
+
+    });
+
+  }
+
+  /* 1 · BEFORE OPEN */
+
+  debugBadge("1 BEFORE MODAL");
 
   if(typeof window.openStrategyGameModal === "function"){
 
+    /* 2 · OPEN MODAL */
+
     await window.openStrategyGameModal();
 
-    /* FORCE MYWEALTH BADGE VISIBLE */
+    debugBadge("2 AFTER MODAL");
+
+    /* 3 · RESTORE BADGE */
 
     const badge =
       document.getElementById("mywealth-nav-badge");
@@ -17360,17 +17391,40 @@ btn.addEventListener("click", async () => {
       badge.hidden = false;
     }
 
+    debugBadge("3 AFTER RESTORE");
+
+    /* 4 · CHECK AFTER 100 MS */
+
+    setTimeout(() => {
+      debugBadge("4 AFTER 100 MS");
+    }, 100);
+
+    /* 5 · CHECK AFTER 500 MS */
+
+    setTimeout(() => {
+      debugBadge("5 AFTER 500 MS");
+    }, 500);
+
+    /* 6 · CHECK AFTER 1500 MS */
+
+    setTimeout(() => {
+      debugBadge("6 AFTER 1500 MS");
+    }, 1500);
+
   } else {
 
     console.error("Strategy Game bridge not loaded");
 
   }
 
+  console.log("========== DEBUG INSTALLED ==========");
+
 });
 
-  document.body.appendChild(btn);
+document.body.appendChild(btn);
 
 }
+
 
 function renderMyWealth(){
 
