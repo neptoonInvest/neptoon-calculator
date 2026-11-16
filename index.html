@@ -19500,7 +19500,14 @@ gameCSS.disabled = false;
     strategyGameInstance.setLanguage?.(lang);
 
   }
+  /* KEEP MYWEALTH BADGE VISIBLE */
 
+  const badge =
+    document.getElementById("mywealth-nav-badge");
+
+  if(badge){
+    badge.hidden = false;
+  }
 };
 
 window.closeStrategyGameModal = function(){
