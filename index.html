@@ -18275,6 +18275,36 @@ function bindPortfolioMetrics(){
 
 }
 
+let neptoonNoticeTimer;
+
+function showNeptoonNotice(message) {
+
+  let notice =
+    document.getElementById("neptoonNotice");
+
+  if (!notice) {
+
+    notice = document.createElement("div");
+    notice.id = "neptoonNotice";
+    notice.className = "neptoon-notice";
+    notice.setAttribute("role", "status");
+    notice.setAttribute("aria-live", "polite");
+
+    document.body.appendChild(notice);
+
+  }
+
+  clearTimeout(neptoonNoticeTimer);
+
+  notice.textContent = message;
+  notice.classList.add("show");
+
+  neptoonNoticeTimer = setTimeout(() => {
+    notice.classList.remove("show");
+  }, 3000);
+
+}
+
 async function loadInstrumentDatabase(){
 
   if(INSTRUMENT_STATE.loading) return;
@@ -19622,8 +19652,6 @@ if(closeBtn){
 
 }
 
-
-
 window.addEventListener(
   "neptoon:strategy-to-mywealth",
   event => {
@@ -19639,38 +19667,49 @@ window.addEventListener(
       result
     );
 
-    if(result.ok){
+    if (result.ok) {
 
-      alert(
+      showNeptoonNotice(
         `Portfolio added to MyWealth (${result.count}/5)`
       );
 
       return;
     }
 
-    if(result.reason === "duplicate"){
-      alert("Portfolio already in MyWealth.");
+    if (result.reason === "duplicate") {
+
+      showNeptoonNotice(
+        "Portfolio already in MyWealth."
+      );
+
       return;
     }
 
-    if(result.reason === "full"){
-      alert("MyWealth already contains five portfolios.");
+    if (result.reason === "full") {
+
+      showNeptoonNotice(
+        "MyWealth already contains five portfolios."
+      );
+
       return;
     }
 
-    if(result.reason === "assets-active"){
-      alert(
+    if (result.reason === "assets-active") {
+
+      showNeptoonNotice(
         "MyWealth currently contains individual assets. " +
         "Switching to portfolios requires replacing that selection."
       );
+
       return;
     }
 
-    alert("Portfolio could not be added.");
+    showNeptoonNotice(
+      "Portfolio could not be added."
+    );
 
   }
 );
-
 console.log("NEPTOON STRATEGY GAME BRIDGE READY");
 
 </script>
