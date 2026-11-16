@@ -5300,10 +5300,6 @@ color:#FFFFFF;
   flex-shrink:0;
 }
 
-   #mywealth-nav-badge[hidden] {
-  display: flex !important;
-}
-
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -17347,13 +17343,22 @@ function renderFloatingPortfolioButton(){
     </svg>
   `;
 
-btn.addEventListener("click", () => {
+btn.addEventListener("click", async () => {
 
   console.log("NEPTOON STRATEGY GAME OPEN");
 
   if(typeof window.openStrategyGameModal === "function"){
 
-    window.openStrategyGameModal();
+    await window.openStrategyGameModal();
+
+    /* FORCE MYWEALTH BADGE VISIBLE */
+
+    const badge =
+      document.getElementById("mywealth-nav-badge");
+
+    if(badge){
+      badge.hidden = false;
+    }
 
   } else {
 
@@ -19504,14 +19509,7 @@ gameCSS.disabled = false;
     strategyGameInstance.setLanguage?.(lang);
 
   }
-  /* KEEP MYWEALTH BADGE VISIBLE */
 
-  const badge =
-    document.getElementById("mywealth-nav-badge");
-
-  if(badge){
-    badge.hidden = false;
-  }
 };
 
 window.closeStrategyGameModal = function(){
