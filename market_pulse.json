@@ -1,0 +1,100 @@
+{
+  "updatedAt": "2026-11-16T04:38:05.154443+00:00",
+  "quotes": {
+    "AAPL.US": {
+      "realtimePrice": 356.27,
+      "return": 0.003917,
+      "timestamp": 1794605340
+    },
+    "MSFT.US": {
+      "realtimePrice": 523.88,
+      "return": 0.001683,
+      "timestamp": 1794605340
+    },
+    "NVDA.US": {
+      "realtimePrice": 162.85,
+      "return": -0.020097,
+      "timestamp": 1794605340
+    },
+    "GOOGL.US": {
+      "realtimePrice": 295.77,
+      "return": -0.009809,
+      "timestamp": 1794605340
+    },
+    "AMZN.US": {
+      "realtimePrice": 266.66,
+      "return": -0.0029170000000000003,
+      "timestamp": 1794605340
+    },
+    "META.US": {
+      "realtimePrice": 641.69,
+      "return": 0.028992,
+      "timestamp": 1794605340
+    },
+    "TSLA.US": {
+      "realtimePrice": 390.22,
+      "return": -0.018191,
+      "timestamp": 1794605340
+    },
+    "RHM.XETRA": {
+      "realtimePrice": 765.5,
+      "return": -0.00919,
+      "timestamp": 1794587940
+    },
+    "NOVO-B.CO": {
+      "realtimePrice": 278.45,
+      "return": 0.009791,
+      "timestamp": 1794585600
+    },
+    "ASML.AS": {
+      "realtimePrice": 1338.8,
+      "return": -0.0276,
+      "timestamp": 1794587880
+    },
+    "GSPC.INDX": {
+      "realtimePrice": 7561.6699,
+      "return": -0.004047,
+      "timestamp": 1794606180
+    },
+    "IXIC.INDX": {
+      "realtimePrice": 25136.2734,
+      "return": -0.00906,
+      "timestamp": 1794608160
+    },
+    "LSMC.XETRA": {
+      "realtimePrice": 95.08,
+      "return": -0.04269,
+      "timestamp": 1794587760
+    },
+    "OMXC25.INDX": {
+      "realtimePrice": 2017.0966,
+      "return": 0.0011749999999999998,
+      "timestamp": 1794585900
+    },
+    "GDAXI.INDX": {
+      "realtimePrice": 26749.9492,
+      "return": -0.000819,
+      "timestamp": 1794589200
+    },
+    "FTSE.INDX": {
+      "realtimePrice": null,
+      "return": null,
+      "timestamp": "NA"
+    },
+    "OMXS30.INDX": {
+      "realtimePrice": 3356.8708,
+      "return": -0.000745,
+      "timestamp": 1794587700
+    },
+    "FCHI.INDX": {
+      "realtimePrice": 8368.9102,
+      "return": 0.000903,
+      "timestamp": 1794589500
+    },
+    "EUNL.XETRA": {
+      "realtimePrice": 130.44,
+      "return": -0.00904,
+      "timestamp": 1794587760
+    }
+  }
+}
