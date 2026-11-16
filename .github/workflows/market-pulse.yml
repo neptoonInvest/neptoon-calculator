@@ -58,7 +58,7 @@ jobs:
 
       - name: Fetch EODHD quotes
 
-        working-directory: wealthcalculator
+     
 
         env:
           EODHD_TOKEN: ${{ secrets.EODHD_TOKEN }}
