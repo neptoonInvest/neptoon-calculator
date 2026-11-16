@@ -13668,6 +13668,7 @@ function renderHeroes(){
 
 }
 
+
 function renderNav(){
 
   const L =
@@ -13696,7 +13697,6 @@ function renderNav(){
             <span
               class="nav-count-badge"
               id="mywealth-nav-badge"
-              ${myWealthCount === 0 ? 'hidden' : ''}
             >
               ${myWealthCount}
             </span>
@@ -13722,6 +13722,7 @@ function renderNav(){
 }
 
 
+
 /* ==========================================
    MYWEALTH · UPDATE BADGE WITHOUT NAV RENDER
 ========================================== */
@@ -13741,7 +13742,7 @@ function updateMyWealthBadge(){
   }
 
   badge.textContent = count;
-  badge.hidden = count === 0;
+  badge.hidden = false;
 
 }
 
