@@ -19602,5 +19602,21 @@ console.log("NEPTOON STRATEGY GAME BRIDGE READY");
 
 </script>
 
+
+   <script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/sw.js", { scope: "/" })
+      .then(reg => {
+        console.log("NEPTOON PWA SERVICE WORKER READY", reg.scope);
+      })
+      .catch(err => {
+        console.error("NEPTOON PWA SERVICE WORKER FAILED", err);
+      });
+  });
+}
+</script>
+
 </body></html>
 
