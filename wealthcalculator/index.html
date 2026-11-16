@@ -19389,7 +19389,8 @@ renderFloatingPortfolioButton();  ///THE MODAL GAME BUTTON
 import { mountGame } from
   "https://neptooninvest.github.io/neptoon-strategy-game/game.js";
 
-/* LOAD STRATEGY GAME CSS */
+
+/* LOAD STRATEGY GAME CSS ONCE */
 
 const gameCSS = document.createElement("link");
 
@@ -19398,14 +19399,27 @@ gameCSS.rel = "stylesheet";
 gameCSS.href =
   "https://neptooninvest.github.io/neptoon-strategy-game/styles.css";
 
-gameCSS.onload = () =>
-  console.log("NEPTOON GAME CSS LOADED");
+/* WAIT FOR CSS TO FINISH LOADING */
 
-gameCSS.onerror = () =>
-  console.error("NEPTOON GAME CSS FAILED");
+const gameCSSReady = new Promise(resolve => {
+
+  gameCSS.onload = () => {
+
+    console.log("NEPTOON GAME CSS LOADED");
+    resolve(true);
+
+  };
+
+  gameCSS.onerror = () => {
+
+    console.error("NEPTOON GAME CSS FAILED");
+    resolve(false);
+
+  };
+
+});
 
 document.head.appendChild(gameCSS);
-gameCSS.disabled = true;
 
 let strategyGameInstance = null;
 
