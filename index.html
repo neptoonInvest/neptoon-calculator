@@ -19592,12 +19592,14 @@ gameCSS.disabled = false;
 
   /* MOUNT STRATEGY GAME */
 
-  if(!strategyGameInstance){
+if(!strategyGameInstance){
 
-    strategyGameInstance =
-      mountGame(root, { lang });
+  await initializeGameData();
 
-  } else {
+  strategyGameInstance =
+    mountGame(root, { lang });
+
+} else {
 
     strategyGameInstance.setLanguage?.(lang);
 
