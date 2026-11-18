@@ -17097,7 +17097,67 @@ function getDanishFundMetrics(
 
 
 
+/* =====================================================
+   NEPTOON · GLOBAL COMPACT HERO RENDERER
+===================================================== */
 
+function renderHeroes(){
+
+  const currency =
+    APP.lang === "da" ? "DKK" : "EUR";
+
+  document.querySelectorAll("[data-hero]").forEach(el => {
+
+    const hero = HERO[el.dataset.hero];
+
+    if(!hero) return;
+
+    const d =
+      hero[APP.lang] || hero.en;
+
+    if(!d) return;
+
+    const name = hero.icon;
+
+    el.innerHTML = `
+
+      <div class="hero hero-compact">
+
+        <div class="hero-content">
+
+          <div class="kicker">
+            ${esc(d[0])}
+          </div>
+
+          <h1>
+            ${esc(d[1])}
+          </h1>
+
+          <p>
+            ${esc(d[2])}
+          </p>
+
+        </div>
+
+        <div class="hero-right">
+
+          <div class="hero-currency">
+            ${currency}
+          </div>
+
+          <div class="hero-icon">
+            ${icon(name)}
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+}
 
 
 
