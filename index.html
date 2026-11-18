@@ -5483,6 +5483,21 @@ color:#FFFFFF;
 
 
 
+.market-ticker-price{
+  color:#FFFFFF;
+  font-size:11px;
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+.market-ticker-item{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  white-space:nowrap;
+}
+
 
 
 
@@ -19956,10 +19971,11 @@ const INSTRUMENT_STATE = {
   error: null
 };
 
-
 /* =====================================================
-   FETCH + FLATTEN
+   GLOBAL MARKET TICKER
+   Price + Daily Return
 ===================================================== */
+
 function renderGlobalMarketTicker(){
 
   const container =
@@ -19970,9 +19986,13 @@ function renderGlobalMarketTicker(){
   const instruments =
     MARKET_STATE.instruments || [];
 
+  const locale =
+    APP.lang === "da" ? "da-DK" : "en-US";
+
   const items = instruments
     .filter(item =>
-      Number.isFinite(item.return)
+      item.return != null &&
+      Number.isFinite(Number(item.return))
     )
     .map(item => {
 
@@ -19984,7 +20004,24 @@ function renderGlobalMarketTicker(){
       const value =
         Number(item.return);
 
-      const positive = value >= 0;
+      const positive =
+        value >= 0;
+
+      const price =
+        item.realtimePrice == null
+          ? null
+          : Number(item.realtimePrice);
+
+      const priceText =
+        Number.isFinite(price)
+          ? price.toLocaleString(locale,{
+              minimumFractionDigits:2,
+              maximumFractionDigits:2
+            })
+          : "—";
+
+      const returnText =
+        `${positive ? "+" : ""}${value.toFixed(2)}%`;
 
       return `
         <div class="market-ticker-item">
@@ -19993,12 +20030,13 @@ function renderGlobalMarketTicker(){
             ${esc(name)}
           </span>
 
+          <span class="market-ticker-price">
+            ${priceText}
+          </span>
+
           <span class="market-ticker-return
             ${positive ? "positive" : "negative"}">
-
-            ${positive ? "+" : ""}
-            ${value.toFixed(2)}%
-
+            (${returnText})
           </span>
 
         </div>
@@ -20014,16 +20052,25 @@ function renderGlobalMarketTicker(){
 
   container.innerHTML = `
     <div class="market-ticker-track">
+
       <div class="market-ticker-group">
         ${items}
       </div>
-      <div class="market-ticker-group" aria-hidden="true">
+
+      <div
+        class="market-ticker-group"
+        aria-hidden="true">
         ${items}
       </div>
+
     </div>
   `;
 
 }
+
+
+
+
 /* =====================================================
    WEALTHPLANS · VIEW METRICS + EXPECTED WEALTH EVENTS
 ===================================================== */
