@@ -1,7 +1,10 @@
 
-/* NEPTOON WEALTH — PWA SERVICE WORKER */
+/* =====================================================
+   NEPTOON WEALTH · PWA SERVICE WORKER
+   Network-first application shell
+===================================================== */
 
-const CACHE_NAME = "neptoon-shell-v1";
+const CACHE_NAME = "neptoon-shell-v2";
 
 const SHELL_URLS = [
   "/",
@@ -13,18 +16,30 @@ const SHELL_URLS = [
   "/icons/apple-touch-icon.png"
 ];
 
+/* INSTALL */
+
 self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(async cache => {
-      await Promise.allSettled(
-        SHELL_URLS.map(url => cache.add(url))
-      );
-    })
-  );
+
+  self.skipWaiting();
+
+  event.waitUntil((async () => {
+
+    const cache = await caches.open(CACHE_NAME);
+
+    await Promise.allSettled(
+      SHELL_URLS.map(url => cache.add(url))
+    );
+
+  })());
+
 });
 
+/* ACTIVATE */
+
 self.addEventListener("activate", event => {
+
   event.waitUntil((async () => {
+
     const names = await caches.keys();
 
     await Promise.all(
@@ -37,45 +52,68 @@ self.addEventListener("activate", event => {
     );
 
     await self.clients.claim();
+
   })());
+
 });
 
+/* FETCH */
+
 self.addEventListener("fetch", event => {
+
   const request = event.request;
 
-  if (request.method !== "GET") return;
+  if(request.method !== "GET") return;
 
   const url = new URL(request.url);
 
-  if (url.origin !== self.location.origin) return;
+  if(url.origin !== self.location.origin) return;
 
-  // Never cache live market data
-  if (
+  // Live data must never be served from shell cache.
+  if(
     url.pathname.endsWith(".json") ||
     url.pathname.endsWith(".webmanifest") ||
     url.pathname.startsWith("/api/")
-  ) return;
+  ){
+    return;
+  }
 
-  // Only handle page navigation
-  if (request.mode !== "navigate") return;
+  // Network-first for page navigation.
+  if(request.mode !== "navigate") return;
 
   event.respondWith((async () => {
-    try {
-      const response = await fetch(request);
 
-      if (response.ok) {
+    try {
+
+      const response = await fetch(request, {
+        cache:"no-store"
+      });
+
+      if(response.ok){
+
         const cache = await caches.open(CACHE_NAME);
-        await cache.put("/index.html", response.clone());
+
+        await cache.put(
+          "/index.html",
+          response.clone()
+        );
+
       }
 
       return response;
 
-    } catch (error) {
-      const cached = await caches.match("/index.html");
+    } catch(error){
 
-      if (cached) return cached;
+      const cache = await caches.open(CACHE_NAME);
+
+      const cached = await cache.match("/index.html");
+
+      if(cached) return cached;
 
       throw error;
+
     }
+
   })());
+
 });
