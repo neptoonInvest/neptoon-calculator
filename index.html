@@ -21081,6 +21081,33 @@ gameCSSReady.then(loaded => {
   }
 });
 
+window.addEventListener(
+  "neptoon:game-portfolios-transfer",
+  async event => {
+
+    try {
+
+      await receiveCustomLevelPortfolios(
+        event.detail.selectedLevelPortfolios
+      );
+
+      // Close the Game modal here using
+      // your existing modal close function.
+
+      // The receiver opens the Portfolios tab.
+
+    } catch(error) {
+
+      console.error(
+        "GAME TRANSFER FAILED",
+        error
+      );
+
+    }
+
+  }
+);
+
 let strategyGameInstance = null;
 
 window.openStrategyGameModal = async function(){
