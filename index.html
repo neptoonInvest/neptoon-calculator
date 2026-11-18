@@ -21692,18 +21692,43 @@ console.log("NEPTOON STRATEGY GAME BRIDGE READY");
 </script>
 
 
-   <script>
+<script>
 if ("serviceWorker" in navigator) {
+
   window.addEventListener("load", () => {
+
     navigator.serviceWorker
-      .register("/sw.js", { scope: "/" })
+      .register("/sw.js", {
+        scope: "/",
+        updateViaCache: "none"
+      })
       .then(reg => {
-        console.log("NEPTOON PWA SERVICE WORKER READY", reg.scope);
+
+        console.log(
+          "NEPTOON PWA SERVICE WORKER READY",
+          reg.scope
+        );
+
+        // Check for an updated Service Worker.
+        reg.update().catch(err => {
+          console.warn(
+            "NEPTOON PWA UPDATE CHECK FAILED",
+            err
+          );
+        });
+
       })
       .catch(err => {
-        console.error("NEPTOON PWA SERVICE WORKER FAILED", err);
+
+        console.error(
+          "NEPTOON PWA SERVICE WORKER FAILED",
+          err
+        );
+
       });
+
   });
+
 }
 </script>
 
