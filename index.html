@@ -11397,6 +11397,28 @@ function addStrategyPortfolioToMyWealth(modelNo){
    RENDER CHAPTER HEADER
 ===================================================== */
 
+	
+/* =====================================================
+   RISK SCORE · 1–7
+===================================================== */
+
+function riskDotFromRisk(risk){
+
+  const r = Number(risk);
+
+  if(!Number.isFinite(r)) return 0;
+
+  if(r <= 0.05) return 1;
+  if(r <= 0.12) return 2;
+  if(r <= 0.15) return 3;
+  if(r <= 0.20) return 4;
+  if(r <= 0.25) return 5;
+  if(r <= 0.35) return 6;
+
+  return 7;
+
+}
+
 function tmRenderChapter(){
 
   const chapter = tmCurrentChapter();
