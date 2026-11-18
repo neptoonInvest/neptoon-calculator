@@ -5300,6 +5300,163 @@ color:#FFFFFF;
   flex-shrink:0;
 }
 
+
+/* =========================================
+   NEPTOON · COMPACT GLOBAL HERO
+========================================= */
+
+[data-hero] .hero {
+  min-height: 0;
+  padding: 12px 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  border-radius: 0;
+}
+
+[data-hero] .hero .kicker {
+  font-size: 9px;
+  letter-spacing: 1.1px;
+  margin-bottom: 5px;
+}
+
+[data-hero] .hero h1 {
+  font-size: 19px;
+  line-height: 1.12;
+  margin: 0 0 5px;
+  max-width: 260px;
+}
+
+[data-hero] .hero p {
+  font-size: 11px;
+  line-height: 1.35;
+  margin: 0;
+  max-width: 300px;
+}
+
+[data-hero] .hero-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  align-self: stretch;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+[data-hero] .hero-currency {
+  padding: 5px 9px;
+  font-size: 10px;
+}
+
+[data-hero] .hero-icon {
+  width: 22px;
+  height: 22px;
+}
+
+[data-hero] .hero-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+
+/* =========================================
+   NEPTOON · GLOBAL MARKET TICKER
+========================================= */
+
+.global-market-ticker{
+  width:100%;
+  overflow:hidden;
+  background:#0B1933;
+  border-top:1px solid #263D5D;
+  border-bottom:1px solid #263D5D;
+  padding:10px 0;
+  border-radius:0;
+}
+
+.market-ticker-track{
+  display:flex;
+  width:max-content;
+  animation:marketTickerScroll 35s linear infinite;
+}
+
+.market-ticker-group{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  flex-shrink:0;
+  padding-right:28px;
+}
+
+.market-ticker-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  white-space:nowrap;
+  font-size:11px;
+}
+
+.market-ticker-name{
+  color:#DCEAF8;
+  font-weight:700;
+}
+
+.market-ticker-return{
+  font-weight:750;
+}
+
+.market-ticker-return.positive{
+  color:#45D6B4;
+}
+
+.market-ticker-return.negative{
+  color:#FF637A;
+}
+
+@keyframes marketTickerScroll{
+  from{
+    transform:translateX(0);
+  }
+  to{
+    transform:translateX(-50%);
+  }
+}
+
+.global-market-ticker:hover .market-ticker-track{
+  animation-play-state:paused;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .market-ticker-track{
+    animation:none;
+  }
+}
+
+
+
+.global-market-ticker {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: #0B1933;
+  border-top: 1px solid #263D5D;
+  border-bottom: 1px solid #263D5D;
+  padding: 9px 0;
+  border-radius: 0;
+}
+
+
+
+
+
+
+
+
+
+
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -5336,6 +5493,12 @@ color:#FFFFFF;
   </div>
 
 </header>
+
+<div
+  id="globalMarketTicker"
+  class="global-market-ticker shell"
+  aria-label="Latest market returns">
+</div>
 
 
 <main class="shell">
@@ -13858,45 +14021,7 @@ function renderWealthPlanEmail(){
 
 
 
-function renderHeroes(){
-
-  const currency =
-    APP.lang === "da" ? "DKK" : "EUR";
-
-  document.querySelectorAll('[data-hero]').forEach(el => {
-
-    const hero = HERO[el.dataset.hero];
-
-    const d = hero[APP.lang];
-    const name = hero.icon;
-
-    el.innerHTML = `
-      <div class="hero">
-
-        <div>
-          <div class="kicker">${esc(d[0])}</div>
-          <h1>${esc(d[1])}</h1>
-          <p>${esc(d[2])}</p>
-        </div>
-
-        <div class="hero-right">
-
-          <div class="hero-currency">
-            ${currency}
-          </div>
-
-          <div class="hero-icon">
-            ${icon(name)}
-          </div>
-
-        </div>
-
-      </div>
-    `;
-
-  });
-
-}
+	
 
 
 function renderNav(){
@@ -19686,12 +19811,19 @@ MARKET_STATE.quotes = data.quotes;
   } catch (err) {
     MARKET_STATE.error = err.message;
     console.error('NW-111 Market Pulse:', err);
-  } finally {
-    MARKET_STATE.loading = false;
-    renderMarketPulse();
-renderMarketIndices();
+  } 
+finally {
 
-  }
+  MARKET_STATE.loading = false;
+
+  renderMarketPulse();
+  renderMarketIndices();
+
+  renderGlobalMarketTicker();
+
+}
+
+
 }
 
 
@@ -19713,7 +19845,70 @@ const INSTRUMENT_STATE = {
 /* =====================================================
    FETCH + FLATTEN
 ===================================================== */
+function renderGlobalMarketTicker(){
 
+  const container =
+    document.getElementById("globalMarketTicker");
+
+  if(!container) return;
+
+  const instruments =
+    MARKET_STATE.instruments || [];
+
+  const items = instruments
+    .filter(item =>
+      Number.isFinite(item.return)
+    )
+    .map(item => {
+
+      const name =
+        item.shortName ||
+        item.instrumentName ||
+        item.tickerExchange;
+
+      const value =
+        Number(item.return);
+
+      const positive = value >= 0;
+
+      return `
+        <div class="market-ticker-item">
+
+          <span class="market-ticker-name">
+            ${esc(name)}
+          </span>
+
+          <span class="market-ticker-return
+            ${positive ? "positive" : "negative"}">
+
+            ${positive ? "+" : ""}
+            ${value.toFixed(2)}%
+
+          </span>
+
+        </div>
+      `;
+
+    })
+    .join("");
+
+  if(!items){
+    container.replaceChildren();
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="market-ticker-track">
+      <div class="market-ticker-group">
+        ${items}
+      </div>
+      <div class="market-ticker-group" aria-hidden="true">
+        ${items}
+      </div>
+    </div>
+  `;
+
+}
 /* =====================================================
    WEALTHPLANS · VIEW METRICS + EXPECTED WEALTH EVENTS
 ===================================================== */
