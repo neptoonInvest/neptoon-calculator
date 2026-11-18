@@ -20020,8 +20020,8 @@ function renderGlobalMarketTicker(){
             })
           : "—";
 
-      const returnText =
-        `${positive ? "+" : ""}${value.toFixed(2)}%`;
+const returnText =
+  marketFormatReturn(value);
 
       return `
         <div class="market-ticker-item">
