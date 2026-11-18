@@ -7657,7 +7657,9 @@ const HERO = {
 /* =====================================================
    WEALTHPLANS · INVESTMENT PREFERENCES
 ===================================================== */
+const CUSTOM_MODELNO_BASE = 900000;
 
+let CUSTOM_PORTFOLIOS = [];
 
 const MYWEALTH_VIEW = {
   w0:100000,
@@ -7705,10 +7707,15 @@ const INVESTMENT_PREFERENCES = {
     en: "Very High Risk",
     da: "Meget høj risiko",
     modelNos: []
+  },
+
+  custom: {
+    en: "Custom",
+    da: "Egne porteføljer",
+    modelNos: []
   }
 
 };
-
 
 
 /* =====================================================
@@ -8527,12 +8534,6 @@ mwEmailPlaceholder : "Din e-mailadresse",
     "Ekstern research vises som reference. Neptoons estimater er vores egne og indebærer ikke, at de nævnte institutioner anbefaler eller står inde for modellen."
 
 
-
-
-
-
-
-
   }
 
 };
@@ -8540,6 +8541,15 @@ mwEmailPlaceholder : "Din e-mailadresse",
 
 
 
+
+
+
+function syncCustomInvestmentPreference(){
+
+  INVESTMENT_PREFERENCES.custom.modelNos =
+    CUSTOM_PORTFOLIOS.map(p => Number(p.modelNo));
+
+}
 
 
 
@@ -12068,8 +12078,13 @@ function populateInvestmentPreferences(){
 
   const groups = INVESTMENT_PREFERENCES;
 
-  Object.values(groups).forEach(group => {
+  // Reset standard investment preferences
+  Object.entries(groups).forEach(([key, group]) => {
+
+    if(key === "custom") return;
+
     group.modelNos = [];
+
   });
 
   models.forEach(p => {
@@ -12108,6 +12123,15 @@ function populateInvestmentPreferences(){
 
   });
 
+/*
+  ==========================================
+  CUSTOM PORTFOLIOS · STRATEGY GAME
+  ==========================================
+*/
+
+groups.custom.modelNos =
+  CUSTOM_PORTFOLIOS.map(p => Number(p.modelNo));
+
   console.log(
     "INVESTMENT PREFERENCES POPULATED",
     groups
@@ -12115,6 +12139,212 @@ function populateInvestmentPreferences(){
 
 }
 
+
+/* =====================================================
+   STRATEGY GAME → PORTFOLIOS TAB
+===================================================== */
+
+async function receiveCustomLevelPortfolios(
+  selectedLevelPortfolios
+){
+
+  const selected =
+    (selectedLevelPortfolios || []).filter(p =>
+      Number.isInteger(Number(p.level)) &&
+      Number(p.level) >= 1 &&
+      Number(p.level) <= 10 &&
+      Array.isArray(p.holdings) &&
+      p.holdings.length > 0
+    );
+
+  if(!selected.length){
+    throw new Error(
+      "No valid Game portfolios selected"
+    );
+  }
+
+  /*
+    ==========================================
+    A · BUILD CUSTOM MODELS
+    ==========================================
+  */
+
+  // Build everything before changing APP state.
+  // If any calculation fails, no partial import.
+
+  const builtModels = await Promise.all(
+    selected.map(async gamePortfolio => {
+
+      const level =
+        Number(gamePortfolio.level);
+
+      const result =
+        await buildPortCustomMetricsHistory(
+          gamePortfolio.holdings
+        );
+
+      return {
+        modelNo:
+          CUSTOM_MODELNO_BASE + level,
+
+        modelLabel:
+          gamePortfolio.strategyName ||
+          `Game Level ${level}`,
+
+        anchorStrategyId: "custom",
+
+        issuerName: "Neptoon Strategy Game",
+
+        descriptionLong: "",
+        descriptionLong_en: "",
+
+        ...result
+      };
+
+    })
+  );
+
+  /*
+    ==========================================
+    B · UPSERT CUSTOM MODELS
+    ==========================================
+  */
+
+  const customByModelNo = new Map(
+    CUSTOM_PORTFOLIOS.map(p => [
+      Number(p.modelNo),
+      p
+    ])
+  );
+
+  builtModels.forEach(p => {
+    customByModelNo.set(
+      Number(p.modelNo),
+      p
+    );
+  });
+
+  const nextCustomPortfolios =
+    [...customByModelNo.values()]
+      .sort((a,b) =>
+        Number(a.modelNo) - Number(b.modelNo)
+      );
+
+  /*
+    ==========================================
+    C · SYNCHRONIZE PORTFOLIO UNIVERSE
+    ==========================================
+  */
+
+  const customModelNos = new Set(
+    nextCustomPortfolios.map(p =>
+      Number(p.modelNo)
+    )
+  );
+
+  const standardModels =
+    (PORTFOLIO_STATE.all || []).filter(p =>
+      !customModelNos.has(Number(p.modelNo)) &&
+      !(
+        Number(p.modelNo) > CUSTOM_MODELNO_BASE &&
+        Number(p.modelNo) <= CUSTOM_MODELNO_BASE + 10
+      )
+    );
+
+  CUSTOM_PORTFOLIOS = nextCustomPortfolios;
+
+  PORTFOLIO_STATE.all = [
+    ...standardModels,
+    ...CUSTOM_PORTFOLIOS
+  ];
+
+  /*
+    ==========================================
+    D · UPDATE INVESTMENT PREFERENCES
+    ==========================================
+  */
+
+  populateInvestmentPreferences();
+
+  /*
+    ==========================================
+    E · OPEN PORTFOLIOS TAB
+    ==========================================
+  */
+
+  openTab("portfolios");
+
+  renderPortfolios();
+
+  console.log(
+    "CUSTOM GAME PORTFOLIOS IMPORTED",
+    {
+      imported: builtModels.length,
+      available: CUSTOM_PORTFOLIOS.length,
+      modelNos: builtModels.map(p => p.modelNo)
+    }
+  );
+
+  return builtModels;
+
+}
+
+
+/* =====================================================
+   PAGE LEVELS END · SEND BUTTON
+===================================================== */
+
+async function sendSelectedGamePortfolios(){
+
+  const selectedLevels = [
+    1, 2, 3, 4, 5, 6, 9, 10
+  ];
+
+  // Replace completedLevelPortfolios with
+  // the actual Game collection.
+
+  const selectedPortfolios =
+    completedLevelPortfolios.filter(p =>
+      selectedLevels.includes(Number(p.level))
+    );
+
+  if(selectedPortfolios.length !== selectedLevels.length){
+    throw new Error(
+      "Some selected Game levels are missing"
+    );
+  }
+
+  const button =
+    document.getElementById(
+      "btnSendGamePortfolios"
+    );
+
+  if(button){
+    button.disabled = true;
+  }
+
+  try {
+
+    await receiveCustomLevelPortfolios(
+      selectedPortfolios
+    );
+
+  }
+  catch(err){
+
+    console.error(
+      "GAME PORTFOLIO TRANSFER FAILED",
+      err
+    );
+
+    if(button){
+      button.disabled = false;
+    }
+
+    // Show your existing APP toast here.
+  }
+
+}
 
 
 /* =====================================================
@@ -15481,6 +15711,1294 @@ const p90 = Number(result.q90);
 
 }
 
+
+/* =====================================================
+   CUSTOM PORTFOLIO · METRICS + HISTORY
+===================================================== */
+
+function buildPortCustomMetricsHistory(levelHoldings){
+
+  const BASE_DATE = "2014-12-31";
+
+  const instruments =
+    INSTRUMENT_STATE.all || [];
+
+  const holdings =
+    (levelHoldings || []).map(h => {
+
+      const tickerExchange =
+        String(h.tickerExchange || "")
+          .trim()
+          .toUpperCase();
+
+      const classNo = Number(h.classNo);
+      const weight = Number(h.weight);
+
+      const instrument = instruments.find(x =>
+        String(x.tickerExchange || "")
+          .trim()
+          .toUpperCase() === tickerExchange &&
+        Number(x.classNo) === classNo
+      );
+
+      if(!instrument){
+        throw new Error(
+          `Custom portfolio: instrument not found ${tickerExchange}`
+        );
+      }
+
+      if(!Number.isFinite(weight) || weight < 0){
+        throw new Error(
+          `Invalid weight: ${tickerExchange}`
+        );
+      }
+
+      return {
+        ...instrument,
+        weight
+      };
+
+    });
+
+  if(!holdings.length){
+    throw new Error("Custom portfolio has no holdings");
+  }
+
+  const totalWeight =
+    holdings.reduce(
+      (sum, h) => sum + h.weight,
+      0
+    );
+
+  if(Math.abs(totalWeight - 1) > 0.000001){
+    throw new Error(
+      `Custom portfolio weights must sum to 1: ${totalWeight}`
+    );
+  }
+
+
+  /*
+    ==========================================
+    1 · PORTFOLIO METRICS
+    ==========================================
+  */
+
+  const objKeyFigures =
+    getMetrics(holdings);
+
+
+  /*
+    ==========================================
+    2 · CANONICAL MONTHLY DATES
+    ==========================================
+  */
+
+  const historyMaps =
+    holdings.map(h => {
+
+      const history =
+        h.arrayHistory || [];
+
+      const map = new Map();
+
+      history.forEach(row => {
+
+        const date =
+          String(row.date || "").slice(0, 10);
+
+        const index =
+          Number(row.accPortIndex);
+
+        if(
+          date &&
+          Number.isFinite(index) &&
+          index > 0
+        ){
+          map.set(date, index);
+        }
+
+      });
+
+      if(!map.has(BASE_DATE)){
+        throw new Error(
+          `Missing base date history: ${h.tickerExchange}`
+        );
+      }
+
+      return map;
+
+    });
+
+  // Use the first instrument's monthly dates
+  // as the canonical timeline.
+  const canonicalDates =
+    [...historyMaps[0].keys()]
+      .filter(date => date >= BASE_DATE)
+      .sort();
+
+  if(canonicalDates[0] !== BASE_DATE){
+    throw new Error(
+      "Custom portfolio base date is missing"
+    );
+  }
+
+
+  /*
+    ==========================================
+    3 · CONSTANT-WEIGHT MONTHLY RETURNS
+    ==========================================
+  */
+
+  let nav = 100;
+
+  const arrayHistory = [
+    {
+      date: BASE_DATE,
+      accPortIndex: 100
+    }
+  ];
+
+  for(let t = 1; t < canonicalDates.length; t++){
+
+    const date = canonicalDates[t];
+    const previousDate = canonicalDates[t - 1];
+
+    let portfolioReturn = 0;
+
+    holdings.forEach((holding, i) => {
+
+      const map = historyMaps[i];
+
+      const previous = map.get(previousDate);
+      const current = map.get(date);
+
+      if(
+        !Number.isFinite(previous) ||
+        !Number.isFinite(current) ||
+        previous <= 0
+      ){
+        throw new Error(
+          `Missing monthly history: ${holding.tickerExchange} ${date}`
+        );
+      }
+
+      const monthlyReturn =
+        current / previous - 1;
+
+      portfolioReturn +=
+        holding.weight * monthlyReturn;
+
+    });
+
+    nav *= 1 + portfolioReturn;
+
+    arrayHistory.push({
+      date,
+      accPortIndex: nav
+    });
+
+  }
+
+
+  /*
+    ==========================================
+    4 · RETURN PORTFOLIO COMPONENTS
+    ==========================================
+  */
+
+  return {
+    arrayHoldings: holdings,
+    objKeyFigures,
+    arrayHistory
+  };
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*
+    ==========================================
+    4 · CUSTOM PORTFOLIO   MATH
+    ==========================================
+  */
+
+  /*
+    ==========================================
+    4 · CUSTOM PORTFOLIO   MATH
+    ==========================================
+  */
+
+  /*
+    ==========================================
+    4 · CUSTOM PORTFOLIO   MATH
+    ==========================================
+  */
+
+  /*
+    ==========================================
+    4 · CUSTOM PORTFOLIO   MATH
+    ==========================================
+  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export async function getMetrics(holdingRows,alphaOverlay=0,costOverlay=0) {
+
+
+  try {
+
+
+    const core = await calculatePortfolioCore(holdingRows, {
+      alphaOverlay: 0,
+      costOverlay: 0,
+      enrichIfMissing: true
+    });
+
+ 
+
+    return {
+        expRetGross: core.expRetGross,
+        expRetNet: core.expRetNet,
+        costs: core.costs,
+        risk: core.risk,
+        sharpeRatioNet: core.sharpeRatioNet,
+        riskFreeRate: core.riskFreeRate,
+        totalWeight: core.totalWeight,
+        equityWeight: core.allocationTop?.equity ?? 0,
+        bondsWeight: core.allocationTop?.bonds ?? 0,
+        alternativesWeight: core.allocationTop?.alternatives ?? 0,
+        singleStocksWeight: core.allocationTop?.singleStocks ?? 0,
+        bondRiskFreeWeight: core.bondRiskFreeWeight ?? 0,
+        bondCreditWeight: core.bondCreditWeight ?? 0,
+        neptoonRiskScore: riskDotFromRisk(core.risk) || "-"
+      
+      };
+  
+
+  } catch (err) {
+ 
+
+    return {
+      ok: false,
+ 
+      error: err.message,
+      stack: err.stack
+    };
+  }
+}
+
+async function calculatePortfolioCore(input, opts = {}) {
+  
+  let trace=[];
+
+  const {
+    rhoStocks = 0.25,
+    defaultStockRisk = 0.22,
+    alphaOverlay = 0,
+    costOverlay = 0,
+    enrichIfMissing = true,
+    corrFull: corrOverride = null,
+    classNoToIndex: indexOverride = null,
+    riskFreeRate: rfOverride = null
+  } = opts;
+
+  const eq = await getEquilibriumCache();
+
+  let rows = normalizeRowsInput(input);
+
+  const didEnrich = enrichIfMissing && needsEnrichment(rows);
+  if (didEnrich) {
+    rows = await enrichRowsWithMetrics(rows);
+  }
+
+  const corrFull = corrOverride || eq.corrFull;
+  const classNoToIndex = indexOverride || eq.classNoToIndex;
+  const riskFreeRate = rfOverride != null ? numOr(rfOverride, 0) : numOr(eq.riskFreeRate, 0);
+
+  const fundRows = rows.filter(r => numOr(r.classNo, -1) !== 100);
+  const stockRows = rows.filter(r => numOr(r.classNo, -1) === 100);
+
+  const W_f = sumWeights(fundRows);
+  const W_s = sumWeights(stockRows);
+  const totalWeight = W_f + W_s;
+
+  const baseGrossReturn = weightedAvg(rows, "expRetGross");
+  const baseCosts = weightedAvg(rows, "costs");
+
+  const expRetGross =
+    ((1 + numOr(baseGrossReturn, 0)) * (1 + numOr(alphaOverlay, 0))) - 1;
+
+  const costs =
+    ((1 + numOr(baseCosts, 0)) * (1 + numOr(costOverlay, 0))) - 1;
+
+  const expRetNet =
+    ((1 + expRetGross) / (1 + costs)) - 1;
+
+  const { bondRiskFreeWeight, bondCreditWeight } = buildBondSubWeights(rows);
+  
+  
+  const rhoFundsStocks = rhoCrossDynamic(
+  { bondRiskFreeWeight, bondCreditWeight }
+);
+    trace.push("rhoFundsStocks",rhoFundsStocks);
+
+ const sigma2_f = W_f > 0
+  ? fundBlockVariance(fundRows, W_f, corrFull, classNoToIndex)
+  : 0;
+
+  
+const sigma2_s = W_s > 0
+  ? stockBlockVariance(stockRows, W_s, rhoStocks, defaultStockRisk)
+  : 0;
+  
+trace.push("sigma stock varaine  funds",sigma2_s);
+trace.push("sigma fund varaine  funds", sigma2_f);
+
+  const sigma_s = Math.sqrt(Math.max(0, sigma2_s));
+  const sigma_f = Math.sqrt(Math.max(0, sigma2_f));
+
+  const sigma2_total =
+    (W_f * W_f * sigma2_f) +
+    (W_s * W_s * sigma2_s) +
+    (2 * W_f * W_s * rhoFundsStocks * sigma_f * sigma_s);
+
+  const risk = Math.sqrt(Math.max(0, sigma2_total));
+
+  const sharpeRatioNet =
+    risk > 0
+      ? (expRetNet - riskFreeRate) / risk
+      : null;
+
+  const allocationTop = buildAllocationTop(rows);
+
+  return {
+    expRetGross,
+    expRetNet,
+    costs,
+    risk,
+    sharpeRatioNet,
+    riskFreeRate,
+    totalWeight,
+
+    baseGrossReturn,
+    baseCosts,
+    trace,
+    bondRiskFreeWeight,
+    bondCreditWeight,
+    allocationTop,
+
+    debug: {
+      rowCount: rows.length,
+      fundCount: fundRows.length,
+      stockCount: stockRows.length,
+      W_f,
+      W_s,
+      sigma_f,
+      sigma_s,
+      sigma2_f,
+      sigma2_s,
+      sigma2_total,
+      rhoFundsStocks,
+      didEnrich,
+      corrSource: eq.corrSource,
+      cacheLoadedAt: eq.loadedAt
+    }
+  };
+}
+
+
+
+// ============================================================
+// SAFE NUMERIC HELPERS
+// ============================================================
+
+function numOr(value, fallback = 0) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function isFiniteNumber(x) {
+  return Number.isFinite(Number(x));
+}
+
+function safeCorr(x) {
+  const n = Number(x);
+
+  if (!Number.isFinite(n)) return 0;
+  if (n > 1) return 1;
+  if (n < -1) return -1;
+
+  return n;
+}
+
+function safeVariance(v) {
+  const n = Number(v);
+
+  if (!Number.isFinite(n)) return 0;
+
+  // NEVER allow negative variance
+  return Math.max(0, n);
+}
+
+function safeSigma(v) {
+  return Math.sqrt(safeVariance(v));
+}
+
+// ============================================================
+// FUND BLOCK VARIANCE
+// ============================================================
+
+function fundBlockVariance(
+  fundRows,
+  W_f,
+  corrFull,
+  classNoToIndex,
+  trace = []
+) {
+  trace.push("FUND VAR entered");
+
+  if (!Array.isArray(fundRows) || !fundRows.length) {
+    trace.push("FUND VAR exit: no fundRows");
+    return 0;
+  }
+
+  if (!Number.isFinite(W_f) || W_f <= 0) {
+    trace.push("FUND VAR exit: invalid W_f " + W_f);
+    return 0;
+  }
+
+  const n = fundRows.length;
+  const w = new Array(n);
+  const sig = new Array(n);
+  const idx = new Array(n);
+
+  for (let i = 0; i < n; i++) {
+    const r = fundRows[i];
+
+    w[i] = numOr(r.weight, 0) / W_f;
+    sig[i] = numOr(r?.metrics?.risk ?? r?.risk, 0);
+    idx[i] = classNoToIndex?.[String(Number(r.classNo))];
+
+    trace.push(
+      `FUND ${i}: classNo=${r.classNo}, weight=${r.weight}, condW=${w[i]}, risk=${sig[i]}, idx=${idx[i]}`
+    );
+  }
+
+  let variance = 0;
+
+  for (let i = 0; i < n; i++) {
+    if (!w[i] || !sig[i] || idx[i] == null) {
+      trace.push(`FUND ${i} skipped`);
+      continue;
+    }
+
+    const diag = w[i] * w[i] * sig[i] * sig[i];
+    variance += diag;
+
+    trace.push(`FUND diag ${i}: term=${diag}, variance=${variance}`);
+
+    for (let j = i + 1; j < n; j++) {
+      if (!w[j] || !sig[j] || idx[j] == null) {
+        trace.push(`FUND pair ${i}-${j} skipped`);
+        continue;
+      }
+
+      const rho = safeCorr(corrFull?.[idx[i]]?.[idx[j]]);
+
+      const term =
+        2 * w[i] * w[j] * sig[i] * sig[j] * rho;
+
+      variance += term;
+
+      trace.push(
+        `FUND pair ${i}-${j}: rho=${rho}, term=${term}, variance=${variance}`
+      );
+    }
+  }
+
+  const out = safeVariance(variance);
+  trace.push("FUND VAR final=" + out);
+
+  return out;
+}
+
+// ============================================================
+// STOCK BLOCK VARIANCE
+// ============================================================
+
+function stockBlockVariance(
+  stockRows,
+  W_s,
+  rhoStocks = 0.25,
+  defaultStockRisk = 0.22,
+) {
+
+
+  if (!Array.isArray(stockRows) || !stockRows.length) {
+    return 0;
+  }
+
+  if (!Number.isFinite(W_s) || W_s <= 0) {
+    return 0;
+  }
+
+  const n = stockRows.length;
+
+  const w = stockRows.map(r => numOr(r.weight, 0) / W_s);
+  const sig = stockRows.map(r =>
+    numOr(r?.metrics?.risk ?? r?.risk, defaultStockRisk)
+  );
+
+  const rho = safeCorr(rhoStocks);
+
+
+  let variance = 0;
+
+  for (let i = 0; i < n; i++) {
+    const diag = w[i] * w[i] * sig[i] * sig[i];
+    variance += diag;
+
+
+    for (let j = i + 1; j < n; j++) {
+      const term =
+        2 * rho * w[i] * w[j] * sig[i] * sig[j];
+
+      variance += term;
+
+    }
+  }
+
+  const out = safeVariance(variance);
+
+  return out;
+}
+
+
+function rhoCrossDynamic(
+  {
+    bondRiskFreeWeight = 0,
+    bondCreditWeight = 0
+  } = {},
+) {
+  const bw = Math.max(
+    0,
+    Math.min(1, bondRiskFreeWeight + bondCreditWeight)
+  );
+
+  const denom = bondRiskFreeWeight + bondCreditWeight;
+  const rfShare = denom > 0 ? bondRiskFreeWeight / denom : 0;
+
+  const rhoBonds = rhoAllBonds(rfShare);
+
+  const out = 0.90 + bw * (rhoBonds - 0.90);
+
+
+  return out;
+}
+function rhoAllBonds(riskFreeShare) {
+  const x = Math.max(0, Math.min(1, numOr(riskFreeShare, 0)));
+  return 0.50 - 0.75 * x;
+}
+
+// ============================================================
+// TOTAL PORTFOLIO RISK
+// ============================================================
+
+
+
+
+function sumWeights(rows = []) {
+  return rows.reduce((s, r) => s + numOr(r.weight, 0), 0);
+}
+
+function getMetric(row, key) {
+  const a = row?.metrics?.[key];
+  if (Number.isFinite(Number(a))) return Number(a);
+
+  const b = row?.[key];
+  if (Number.isFinite(Number(b))) return Number(b);
+
+  return null;
+}
+
+function weightedAvg(rows = [], key) {
+  let acc = 0;
+
+  for (const r of rows) {
+    const w = numOr(r.weight, 0);
+    const v = getMetric(r, key);
+
+    if (w <= 0 || !Number.isFinite(v)) continue;
+
+    acc += w * v;
+  }
+
+  return acc;
+}
+
+function buildBondSubWeights(rows = []) {
+  let bondRiskFreeWeight = 0;
+  let bondCreditWeight = 0;
+
+  for (const r of rows) {
+    const w = numOr(r.weight, 0);
+    const cn = Number(r.classNo);
+
+    if (w <= 0 || !Number.isFinite(cn)) continue;
+
+    if (cn >= 0 && cn <= 1) {
+      bondRiskFreeWeight += w;
+    } else if (cn >= 2 && cn <= 4) {
+      bondCreditWeight += w;
+    }
+  }
+
+  return {
+    bondRiskFreeWeight,
+    bondCreditWeight
+  };
+}
+
+
+
+function buildAllocationTop(rows = []) {
+  const out = {
+    equity: 0,
+    bonds: 0,
+    alternatives: 0,
+    singleStocks: 0
+  };
+
+  for (const r of rows) {
+    const w = numOr(r.weight, 0);
+    const cn = Number(r.classNo);
+
+    if (w <= 0 || !Number.isFinite(cn)) continue;
+
+    if (cn === 100) {
+      out.equity += w;
+      out.singleStocks += w;
+    } else if (cn >= 0 && cn <= 4) {
+      out.bonds += w;
+    } else if ((cn >= 5 && cn <= 19) || (cn >= 25 && cn <= 28)) {
+      out.equity += w;
+    } else if (cn >= 20 && cn <= 24) {
+      out.alternatives += w;
+    }
+  }
+
+  return out;
+}
+
+
+
+/* =====================================================
+   EQUILIBRIUM CACHE · APP ENDPOINT
+===================================================== */
+
+let _eqCache = {
+  loaded: false
+};
+
+let _eqLoadingPromise = null;
+
+const EQUILIBRIUM_ENDPOINT =
+  "YOUR_EQUILIBRIUM_ENDPOINT_URL";
+
+
+async function getEquilibriumCache({
+  forceReload = false
+} = {}) {
+
+  if(_eqCache.loaded && !forceReload){
+    return _eqCache;
+  }
+
+  // Prevent simultaneous duplicate requests.
+  if(_eqLoadingPromise && !forceReload){
+    return _eqLoadingPromise;
+  }
+
+  const request = (async () => {
+
+    const response = await fetch(
+      EQUILIBRIUM_ENDPOINT,
+      { cache: "no-cache" }
+    );
+
+    if(!response.ok){
+      throw new Error(
+        `Equilibrium endpoint failed: ${response.status}`
+      );
+    }
+
+    const eq = await response.json();
+
+    /*
+      ==========================================
+      VALIDATE ENDPOINT STRUCTURE
+      ==========================================
+    */
+
+    if(
+      !Array.isArray(eq.corrFull) ||
+      !Array.isArray(eq.classNos) ||
+      !eq.classNoToIndex ||
+      typeof eq.classNoToIndex !== "object" ||
+      !Number.isFinite(Number(eq.riskFreeRate))
+    ){
+      throw new Error(
+        "Invalid equilibrium endpoint structure"
+      );
+    }
+
+    const n = eq.classNos.length;
+
+    if(
+      n === 0 ||
+      eq.corrFull.length !== n ||
+      eq.corrFull.some(row =>
+        !Array.isArray(row) ||
+        row.length !== n ||
+        row.some(v => !Number.isFinite(v))
+      )
+    ){
+      throw new Error(
+        "Invalid equilibrium correlation matrix"
+      );
+    }
+
+    /*
+      ==========================================
+      STORE CACHE
+      ==========================================
+    */
+
+    _eqCache = {
+      ...eq,
+      loaded: true,
+      riskFreeRate: Number(eq.riskFreeRate),
+      corrSource: eq.corrSource || "endpoint",
+      loadedAt: new Date()
+    };
+
+    console.log(
+      "EQUILIBRIUM CACHE LOADED",
+      _eqCache
+    );
+
+    return _eqCache;
+
+  })();
+
+  _eqLoadingPromise = request;
+
+  try {
+    return await request;
+  }
+  finally {
+    if(_eqLoadingPromise === request){
+      _eqLoadingPromise = null;
+    }
+  }
+
+}
+function buildFallbackCorrMatrix(classNos = []) {
+  return classNos.map(rowCn =>
+    classNos.map(colCn => {
+
+      if (rowCn === colCn) return 1;
+
+      const rowIsClass01 = rowCn === 0 || rowCn === 1;
+      const colIsClass01 = colCn === 0 || colCn === 1;
+
+      const rowIsClass34 = rowCn === 3 || rowCn === 4;
+      const colIsClass34 = colCn === 3 || colCn === 4;
+
+      // Correlation between class 0 and class 1
+      if (rowIsClass01 && colIsClass01) {
+        return -0.2;
+      }
+
+      // Correlation between class 3 and class 4
+      if (rowIsClass34 && colIsClass34) {
+        return 0.4;
+      }
+
+      // All other class combinations
+      return 0.85;
+    })
+  );
+}
+
+function needsEnrichment(rows = []) {
+  return rows.some(r => {
+    const m = r?.metrics || {};
+
+    return (
+      !Number.isFinite(Number(m.expRetGross)) ||
+      !Number.isFinite(Number(m.expRetNet)) ||
+      !Number.isFinite(Number(m.costs)) ||
+      !Number.isFinite(Number(m.risk))
+    );
+  });
+}
+
+async function enrichRowsWithMetrics(rows = []) {
+  const tickers = [
+    ...new Set(
+      rows
+        .map(r => String(r.tickerExchange || r.ticker || "").trim().toUpperCase())
+        .filter(Boolean)
+    )
+  ];
+
+  if (!tickers.length) return rows;
+
+  const found = [];
+
+  for (let i = 0; i < tickers.length; i += 100) {
+    const part = tickers.slice(i, i + 100);
+
+    const res = await wixData.query(DB_UNIVERSE)
+      .hasSome("tickerExchange", part)
+      .limit(1000)
+      .find(AUTH);
+
+    found.push(...(res.items || []));
+  }
+
+  const byTicker = new Map();
+
+  for (const item of found) {
+    const key = String(item.tickerExchange || "").trim().toUpperCase();
+    if (key) byTicker.set(key, item);
+  }
+
+  return rows.map(r => {
+    const key = String(r.tickerExchange || r.ticker || "").trim().toUpperCase();
+    const db = byTicker.get(key) || {};
+
+    const metricsIn = r.metrics || {};
+
+    return {
+      ...r,
+
+      tickerExchange: r.tickerExchange || db.tickerExchange || null,
+      instrumentName: r.instrumentName || db.instrumentName || db.name || null,
+
+      classNo: Number.isFinite(Number(r.classNo))
+        ? Number(r.classNo)
+        : Number.isFinite(Number(db.classNo))
+          ? Number(db.classNo)
+          : null,
+
+      metrics: {
+        expRetGross: firstFinite(metricsIn.expRetGross, r.expRetGross, db.expRetGross),
+        expRetNet: firstFinite(metricsIn.expRetNet, r.expRetNet, db.expRetNet),
+        costs: firstFinite(metricsIn.costs, r.costs, db.costs),
+        risk: firstFinite(metricsIn.risk, r.risk, db.risk)
+      }
+    };
+  });
+}
+
+function normalizeRowsInput(input) {
+  const rows =
+    Array.isArray(input?.rows) ? input.rows :
+    Array.isArray(input?.holdings) ? input.holdings :
+    Array.isArray(input) ? input :
+    [];
+
+  return rows
+    .map(normalizeRowShape)
+    .filter(r => numOr(r.weight, 0) > 0);
+}
+
+function normalizeRowShape(r = {}) {
+  const metricsIn = r.metrics || {};
+
+  return {
+    ...r,
+
+    tickerExchange: String(r.tickerExchange || r.ticker || "").trim(),
+
+    instrumentName: r.instrumentName || r.name || null,
+
+    classNo: Number.isFinite(Number(r.classNo))
+      ? Number(r.classNo)
+      : null,
+
+    weight: Number.isFinite(Number(r.weight))
+      ? Number(r.weight)
+      : 0,
+
+    metrics: {
+      expRetGross: firstFinite(metricsIn.expRetGross, r.expRetGross),
+      expRetNet: firstFinite(metricsIn.expRetNet, r.expRetNet),
+      costs: firstFinite(metricsIn.costs, r.costs),
+      risk: firstFinite(metricsIn.risk, r.risk)
+    }
+  };
+}
+
+function firstFinite(...vals) {
+  for (const v of vals) {
+    const n = Number(v);
+    if (Number.isFinite(n)) return n;
+  }
+  return null;
+}
+
+function getDanishFundMetrics(
+  expRetGross,
+  risk,
+  costs,
+  sharpeRatioNet,
+  riskFreeRate = 0,
+  alpha = 0
+){
+
+  const premium = 0.005;
+
+
+  const safeGross =
+    Number.isFinite(Number(expRetGross))
+      ? Number(expRetGross)
+      : 0;
+
+  const safeRisk =
+    Number.isFinite(Number(risk))
+      ? Math.max(0, Number(risk))
+      : 0;
+
+  const safeCosts =
+    Number.isFinite(Number(costs))
+      ? Number(costs)
+      : 0;
+
+  const safeRiskFreeRate =
+    Number.isFinite(Number(riskFreeRate))
+      ? Number(riskFreeRate)
+      : 0;
+
+  const safeAlpha =
+    Number.isFinite(Number(alpha))
+      ? Number(alpha)
+      : 0;
+
+
+  const expRetGrossNew =
+    safeGross +
+    premium +
+    safeAlpha;
+
+
+  const expRetNetNew =
+    (1 + expRetGrossNew) /
+    (1 + safeCosts) -
+    1;
+
+
+  const riskNew =
+    safeRisk + 0.0125;
+
+
+  const sharpeRatioNetNew =
+    riskNew > 0
+      ? (
+          expRetNetNew -
+          safeRiskFreeRate
+        ) / riskNew
+      : 0;
+
+
+  return {
+    expRetGross: expRetGrossNew,
+    expRetNet: expRetNetNew,
+    risk: riskNew,
+    costs: safeCosts,
+    sharpeRatioNet: sharpeRatioNetNew
+  };
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*
+    ==========================================
+    4 · CUSTOM PORTFOLIO   MATH
+    ==========================================
+  */
+
+  /*
+    ==========================================
+    4 · CUSTOM PORTFOLIO   MATH
+    ==========================================
+  */
+
+  /*
+    ==========================================
+    4 · CUSTOM PORTFOLIO   MATH
+    ==========================================
+  */
+
+  /*
+    ==========================================
+    4 · CUSTOM PORTFOLIO   MATH
+    ==========================================
+  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function bindPortfolioSelectors(){
 
   const basket =
@@ -15547,36 +17065,46 @@ function bindPortfolioSelectors(){
       ==========================================
     */
 
-    if(target.matches("[data-plan-select]")){
+/*
+  ==========================================
+  2 · INVESTMENT MODEL
+  ==========================================
+*/
 
-      const i =
-        Number(target.dataset.planSelect);
+if(target.matches("[data-plan-select]")){
 
-      if(!APP.planSlots[i]){
-        return;
-      }
+  const i =
+    Number(target.dataset.planSelect);
 
-      const modelNo =
-        target.value;
+  if(!APP.planSlots[i]){
+    return;
+  }
 
-      APP.planSlots[i].modelNo =
-        modelNo === ""
-          ? ""
-          : Number(modelNo);
+  const value =
+    target.value;
 
-      APP.expandedPlan = null;
-      APP.metricsPlan = null;
+  APP.planSlots[i].modelNo =
+    value === ""
+      ? ""
+      : APP.planSlots[i].preference === "custom"
+        ? value
+        : Number(value);
 
-      renderPortfolios();
+  APP.expandedPlan = null;
+  APP.metricsPlan = null;
 
-      console.log(
-        "INVESTMENT MODEL CHANGED",
-        i,
-        APP.planSlots[i].modelNo
-      );
+  renderPortfolios();
 
-      return;
-    }
+  console.log(
+    "INVESTMENT MODEL CHANGED",
+    i,
+    APP.planSlots[i].modelNo
+  );
+
+  return;
+}
+
+
 
   });
 
@@ -19435,6 +20963,13 @@ bindMyWealthComparisonToggle();
 document
   .getElementById("mw-plan-download")
   ?.addEventListener("click", generateWealthPlanPDF);
+
+document
+  .getElementById("btnSendGamePortfolios")
+  ?.addEventListener(
+    "click",
+    sendSelectedGamePortfolios
+  );
 
 
   /* ================================================
