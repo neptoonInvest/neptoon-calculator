@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-17T22:21:55.568092+00:00",
+  "updatedAt": "2026-11-18T03:47:17.263692+00:00",
   "quotes": {
     "AAPL.US": {
       "realtimePrice": 351.91,
@@ -59,7 +59,7 @@
     "IXIC.INDX": {
       "realtimePrice": 24328.3828,
       "return": -0.0074,
-      "timestamp": 1794953160
+      "timestamp": 1794953760
     },
     "LSMC.XETRA": {
       "realtimePrice": 89.36,
