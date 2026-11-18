@@ -1,80 +1,80 @@
 {
-  "updatedAt": "2026-11-18T12:37:43.188766+00:00",
+  "updatedAt": "2026-11-18T20:54:30.234232+00:00",
   "quotes": {
     "AAPL.US": {
-      "realtimePrice": 351.91,
-      "return": 0.001337,
-      "timestamp": 1794949200
+      "realtimePrice": 352.22,
+      "return": 0.000881,
+      "timestamp": 1795034340
     },
     "MSFT.US": {
-      "realtimePrice": 506.24,
-      "return": -0.022684000000000003,
-      "timestamp": 1794949200
+      "realtimePrice": 507.5,
+      "return": 0.002489,
+      "timestamp": 1795034280
     },
     "NVDA.US": {
-      "realtimePrice": 155.46,
-      "return": -0.004355,
-      "timestamp": 1794949200
+      "realtimePrice": 151.154,
+      "return": -0.027698,
+      "timestamp": 1795034280
     },
     "GOOGL.US": {
-      "realtimePrice": 280.2,
-      "return": 0.003115,
-      "timestamp": 1794949200
+      "realtimePrice": 283.08,
+      "return": 0.010278,
+      "timestamp": 1795034280
     },
     "AMZN.US": {
-      "realtimePrice": 257.89,
-      "return": 0.000543,
-      "timestamp": 1794949200
+      "realtimePrice": 266.14,
+      "return": 0.03199,
+      "timestamp": 1795034280
     },
     "META.US": {
-      "realtimePrice": 618.87,
-      "return": -0.012036999999999999,
-      "timestamp": 1794949200
+      "realtimePrice": 614.82,
+      "return": -0.0065439999999999995,
+      "timestamp": 1795034280
     },
     "TSLA.US": {
-      "realtimePrice": 380.11,
-      "return": 0.000974,
-      "timestamp": 1794949200
+      "realtimePrice": 383.73,
+      "return": 0.009524,
+      "timestamp": 1795034280
     },
     "RHM.XETRA": {
-      "realtimePrice": 768.4,
-      "return": 0.009857,
-      "timestamp": 1795004520
+      "realtimePrice": 744.2,
+      "return": -0.021948,
+      "timestamp": 1795020000
     },
     "NOVO-B.CO": {
-      "realtimePrice": 274.35,
-      "return": -0.004174,
-      "timestamp": 1795004460
+      "realtimePrice": 271.45,
+      "return": -0.014700999999999999,
+      "timestamp": 1795017540
     },
     "ASML.AS": {
-      "realtimePrice": 1284.4,
-      "return": 0.038486,
-      "timestamp": 1795004460
+      "realtimePrice": 1260.8,
+      "return": 0.019405,
+      "timestamp": 1795019940
     },
     "GSPC.INDX": {
-      "realtimePrice": 7340.5298,
-      "return": -0.010256000000000001,
-      "timestamp": 1794951720
+      "realtimePrice": 7325.0898,
+      "return": -0.002103,
+      "timestamp": 1795034340
     },
     "IXIC.INDX": {
-      "realtimePrice": 24328.3828,
-      "return": -0.0074,
-      "timestamp": 1794953760
+      "realtimePrice": 24420.2402,
+      "return": 0.003776,
+      "timestamp": 1795034340
     },
     "LSMC.XETRA": {
-      "realtimePrice": 93.9,
-      "return": 0.050806,
-      "timestamp": 1795004460
+      "realtimePrice": 90.88,
+      "return": 0.01701,
+      "timestamp": 1795019760
     },
     "OMXC25.INDX": {
-      "realtimePrice": 1984.2098,
-      "return": -0.004426,
-      "timestamp": 1795004520
+      "realtimePrice": 1972.2316,
+      "return": -0.010436,
+      "timestamp": 1795017900
     },
     "GDAXI.INDX": {
-      "realtimePrice": 26043.7207,
-      "return": -6.3e-05,
-      "timestamp": 1795004520
+      "realtimePrice": 25736.2402,
+      "return": -0.011869000000000001,
+      "timestamp": 1795021200
     },
     "FTSE.INDX": {
       "realtimePrice": null,
@@ -82,19 +82,19 @@
       "timestamp": "NA"
     },
     "OMXS30.INDX": {
-      "realtimePrice": 3282.0818,
-      "return": -0.0016420000000000002,
-      "timestamp": 1795004520
+      "realtimePrice": 3256.2063,
+      "return": -0.009513,
+      "timestamp": 1795019700
     },
     "FCHI.INDX": {
-      "realtimePrice": 8208.9805,
-      "return": -0.000949,
-      "timestamp": 1795004520
+      "realtimePrice": 8146.8301,
+      "return": -0.008513,
+      "timestamp": 1795021500
     },
     "EUNL.XETRA": {
-      "realtimePrice": 128.19,
-      "return": 0.008735,
-      "timestamp": 1795004520
+      "realtimePrice": 127.105,
+      "return": 0.000197,
+      "timestamp": 1795019700
     }
   }
 }
