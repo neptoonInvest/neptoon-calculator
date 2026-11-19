@@ -3,15 +3,13 @@
 # =====================================================
 # NW-111 · MARKET PULSE
 # EODHD AUTOMATIC PRICE UPDATE
+# EXTERNAL SCHEDULER: cron-job.org
 # =====================================================
 
 name: NW-111 Market Pulse
 
 on:
   workflow_dispatch:
-
-  schedule:
-    - cron: "7,22,37,52 * * * 1-5"
 
 
 # =====================================================
