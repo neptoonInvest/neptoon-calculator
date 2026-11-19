@@ -5532,7 +5532,23 @@ color:#FFFFFF;
 }
 
 
+/* GAME MODAL · iOS TOUCH SCROLLING */
 
+@media screen and (max-width:600px){
+
+  #nt-strategy-modal{
+    height:100dvh !important;
+    max-height:100dvh !important;
+  }
+
+  .nt-strategy-modal-panel{
+    overflow-y:scroll !important;
+    -webkit-overflow-scrolling:touch !important;
+    touch-action:pan-y !important;
+    overscroll-behavior-y:contain !important;
+  }
+
+}
 
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
