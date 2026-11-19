@@ -6113,7 +6113,72 @@ color:#FFFFFF;
 }
 
 
+/* ==========================================
+   MYWEALTH · PDF MOBILE LAYOUT
+========================================== */
 
+@media(max-width:600px){
+
+  #mw-wealth-plan .mw-plan-content{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:18px !important;
+    padding:16px !important;
+  }
+
+  /* Section 1 */
+
+  #mw-wealth-plan .mw-plan-heading{
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:flex-start !important;
+    gap:12px !important;
+    width:100% !important;
+  }
+
+  #mw-wealth-plan .mw-plan-heading-text{
+    flex:1 !important;
+    min-width:0 !important;
+  }
+
+  /* Section 2 */
+
+  #mw-wealth-plan .mw-plan-actions{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:12px !important;
+    width:100% !important;
+    min-width:0 !important;
+  }
+
+  #mw-plan-form{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:8px !important;
+    width:100% !important;
+  }
+
+  #mw-plan-email,
+  #mw-plan-send{
+    width:100% !important;
+    max-width:none !important;
+    box-sizing:border-box !important;
+  }
+
+  #mw-wealth-plan .mw-plan-footer{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:10px !important;
+    width:100% !important;
+  }
+
+  #mw-plan-download{
+    width:100% !important;
+    justify-content:center !important;
+  }
+
+}
 
 
 
@@ -7707,109 +7772,106 @@ color:#FFFFFF;
       hidden
     >
 
-      <div class="mw-plan-content">
 
-        <div class="mw-plan-heading">
+<div class="mw-plan-content">
 
-          <div class="mw-plan-icon">
-            <i data-lucide="file-text"></i>
-          </div>
+  <!-- SECTION 1 · DESCRIPTION -->
 
+  <div class="mw-plan-heading">
 
-          <div class="mw-plan-heading-text">
+    <div class="mw-plan-icon">
+      <i data-lucide="file-text"></i>
+    </div>
 
-<div class="mw-plan-heading-text">
+    <div class="mw-plan-heading-text">
 
-  <div class="mw-plan-title-row">
+      <div class="mw-plan-title-row">
 
-    <h3 data-lang="mwPlanTitle">
-      My Wealth Plan
-    </h3>
+        <h3 data-lang="mwPlanTitle">
+          My Wealth Plan
+        </h3>
 
-    <span class="mywealth-mail-pill">
-      PDF
-    </span>
+        <span class="mywealth-mail-pill">
+          PDF
+        </span>
+
+      </div>
+
+      <p data-lang="mwPlanDescription">
+        Receive your selected Wealth Plans,
+        expected returns, risk metrics and
+        portfolio holdings in one PDF.
+      </p>
+
+    </div>
 
   </div>
 
-            <p data-lang="mwPlanDescription">
-              Receive your selected Wealth Plans,
-              expected returns, risk metrics and
-              portfolio holdings in one PDF.
-            </p>
+  <!-- SECTION 2 · ACTIONS -->
 
-          </div>
+  <div class="mw-plan-actions">
 
-        </div>
+    <form
+      id="mw-plan-form"
+      class="mw-plan-form"
+    >
 
+      <input
+        type="email"
+        id="mw-plan-email"
+        name="email"
+        autocomplete="email"
+        placeholder="Your email address"
+        aria-label="Your email address"
+        data-lang-placeholder="mwEmailPlaceholder"
+        data-lang-aria-label="mwEmailPlaceholder"
+        required
+      />
 
-        <form
-          id="mw-plan-form"
-          class="mw-plan-form"
-        >
+      <button
+        type="submit"
+        id="mw-plan-send"
+        class="mw-plan-send"
+      >
+        <i data-lucide="send"></i>
+        <span data-lang="mwPlanSend">
+          Send PDF
+        </span>
+      </button>
 
-<input
-  type="email"
-  id="mw-plan-email"
-  name="email"
-  autocomplete="email"
-  placeholder="Your email address"
-  aria-label="Your email address"
-  data-lang-placeholder="mwEmailPlaceholder"
-  data-lang-aria-label="mwEmailPlaceholder"
-  required
-/>
+    </form>
 
-          <button
-            type="submit"
-            id="mw-plan-send"
-            class="mw-plan-send"
-          >
+    <div class="mw-plan-footer">
 
-            <i data-lucide="send"></i>
+      <span data-lang="mwPlanPrivacy">
+        Your email is used only to deliver
+        your Wealth Plan.
+      </span>
 
-            <span data-lang="mwPlanSend">
-              Send PDF
-            </span>
+      <button
+        type="button"
+        id="mw-plan-download"
+        class="mw-plan-download"
+      >
+        <i data-lucide="download"></i>
+        <span data-lang="mwPlanDownload">
+          Download PDF
+        </span>
+      </button>
 
-          </button>
+    </div>
 
-        </form>
+    <div
+      id="mw-plan-status"
+      class="mw-plan-status"
+      role="status"
+      aria-live="polite"
+      hidden
+    ></div>
 
+  </div>
 
-        <div class="mw-plan-footer">
-
-          <span data-lang="mwPlanPrivacy">
-            Your email is used only to deliver
-            your Wealth Plan.
-          </span>
-
-          <button
-            type="button"
-            id="mw-plan-download"
-            class="mw-plan-download"
-          >
-
-            <i data-lucide="download"></i>
-
-            <span data-lang="mwPlanDownload">
-              Download PDF
-            </span>
-
-          </button>
-
-        </div>
-
-
-        <div
-          id="mw-plan-status"
-          class="mw-plan-status"
-          role="status"
-          aria-live="polite"
-          hidden
-        ></div>
-
-      </div>
+</div>
 
     </section>
 
