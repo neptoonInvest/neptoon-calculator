@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-19T21:52:23.131945+00:00",
+  "updatedAt": "2026-11-19T22:07:20.142455+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 97.17,
@@ -59,7 +59,7 @@
     "IXIC.INDX": {
       "realtimePrice": 23879.1992,
       "return": -0.022541000000000002,
-      "timestamp": 1795124220
+      "timestamp": 1795125120
     },
     "LSMC.XETRA": {
       "realtimePrice": 91.86,
