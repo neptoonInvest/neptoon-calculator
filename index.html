@@ -5550,6 +5550,547 @@ color:#FFFFFF;
 
 }
 
+
+/* WELCOME · SUBTLE INVESTMENT REFRESH */
+
+.welcome-investment-card{
+  transition:opacity 350ms ease;
+}
+
+.welcome-investment-card.is-refreshing{
+  opacity:0.25;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .welcome-investment-card{
+    transition:none;
+  }
+}
+
+
+/* ==========================================
+   NEPTOON · WELCOME NAVIGATION CARDS
+   FINAL DESIGN
+========================================== */
+
+.welcome-grid{
+  display:grid;
+  grid-template-columns:repeat(
+    auto-fit,
+    minmax(min(100%,280px),1fr)
+  );
+  gap:10px;
+  align-items:stretch;
+}
+
+/* ==========================================
+   CARD
+========================================== */
+
+.welcome-choice{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+
+  padding:16px 16px 14px;
+  min-width:0;
+  min-height:0;
+
+  background:linear-gradient(
+    145deg,
+    #193B68 0%,
+    #102A50 55%,
+    #0D2243 100%
+  );
+
+  border:1px solid #34577D;
+  border-radius:0;
+  box-shadow:none;
+}
+
+/* ==========================================
+   CATEGORY LABEL
+========================================== */
+
+.welcome-choice-pill{
+  position:static;
+  display:block;
+  align-self:flex-start;
+
+  margin:0 0 12px;
+  padding:0;
+
+  background:transparent;
+  border:0;
+  border-radius:0;
+
+  color:#75D9EE;
+  font-size:10px;
+  font-weight:750;
+  letter-spacing:1.4px;
+  line-height:1.4;
+  text-transform:uppercase;
+}
+
+/* ==========================================
+   ICON + CONTENT
+========================================== */
+
+.welcome-choice-content{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+
+  margin:0 0 14px;
+  min-width:0;
+}
+
+.welcome-choice-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  width:28px;
+  height:36px;
+  min-width:28px;
+  padding:0;
+
+  background:transparent;
+  border:none;
+  border-radius:0;
+  box-shadow:none;
+
+  color:#EAF5FF;
+}
+
+.welcome-choice-icon svg{
+  width:24px;
+  height:24px;
+  stroke-width:1.6;
+}
+
+/* ==========================================
+   TITLE + DESCRIPTION
+========================================== */
+
+.welcome-choice-info{
+  flex:1;
+  min-width:0;
+}
+
+.welcome-choice-info h2{
+  margin:0 0 5px;
+
+  color:#FFFFFF;
+  font-size:18px;
+  font-weight:750;
+  line-height:1.2;
+  letter-spacing:-0.2px;
+}
+
+.welcome-choice-info p{
+  margin:0;
+
+  color:#B9CBE0;
+  font-size:12px;
+  font-weight:400;
+  line-height:1.45;
+}
+
+/* ==========================================
+   ACTION BUTTON
+========================================== */
+
+.welcome-choice-btn{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  width:100%;
+  min-height:36px;
+  height:36px;
+  margin-top:auto;
+  padding:8px 12px;
+
+  background:linear-gradient(
+    90deg,
+    #4E79BD,
+    #45B8D3
+  );
+
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+
+  color:#071C36;
+  font-size:12px;
+  font-weight:750;
+  text-align:left;
+
+  transition:filter .2s ease;
+}
+
+.welcome-choice-btn span{
+  color:#071C36;
+  font-size:12px;
+  font-weight:750;
+}
+
+.welcome-choice-btn svg{
+  width:16px;
+  height:16px;
+  color:#071C36;
+  flex-shrink:0;
+}
+
+.welcome-choice-btn:hover{
+  filter:brightness(1.09);
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media screen and (max-width:600px){
+
+  .welcome-grid{
+    grid-template-columns:minmax(0,1fr);
+    gap:10px;
+  }
+
+  .welcome-choice{
+    padding:16px 16px 14px;
+  }
+
+}
+
+
+
+/* ==========================================
+   NEPTOON · ASSET HISTORY SECTION
+   UNIFIED BLUE-GREY DESIGN
+========================================== */
+
+#assetHistorySection{
+  position:relative;
+
+  margin-top:-10px !important;
+
+  background:#EAF1F8 !important;
+
+  border:1px solid #C8D8EA;
+  border-radius:0;
+
+  box-shadow:none !important;
+}
+
+/* ==========================================
+   BACKGROUND EXTENSION ABOVE SECTION
+========================================== */
+
+#assetHistorySection::before{
+  content:"";
+
+  position:absolute;
+  left:-1px;
+  right:-1px;
+  bottom:100%;
+
+  height:22px;
+
+  background:#EAF1F8;
+  pointer-events:none;
+}
+
+/* ==========================================
+   HEADER + TOOLBAR
+========================================== */
+
+#assetHistorySection .asset-history-header,
+#assetHistorySection .asset-history-toolbar,
+#assetHistorySection .asset-history-period-label{
+  background:#EAF1F8 !important;
+}
+
+/* ==========================================
+   CHART CANVAS + RESULTS
+========================================== */
+
+#assetHistorySection #assetHistoryCanvas,
+#assetHistorySection #assetHistoryResults{
+  background:#EAF1F8 !important;
+}
+
+/* ==========================================
+   PRESERVE SQUARE CORNERS
+========================================== */
+
+#assetHistorySection{
+  border-radius:0 !important;
+}
+
+
+/* ==========================================
+   NEPTOON · WEALTH PLANS HISTORY
+   UNIFIED BLUE-GREY DESIGN
+========================================== */
+
+#planHistorySection{
+  position:relative !important;
+  margin-top:-10px !important;
+
+  background:#EAF1F8 !important;
+  border:1px solid #C8D8EA !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+}
+
+/* ==========================================
+   BACKGROUND EXTENSION ABOVE SECTION
+========================================== */
+
+#planHistorySection::before{
+  content:"";
+  position:absolute;
+  left:-1px;
+  right:-1px;
+  bottom:100%;
+
+  height:22px;
+  background:#EAF1F8;
+  pointer-events:none;
+}
+
+/* ==========================================
+   HEADER + TOOLBAR
+========================================== */
+
+#planHistorySection .asset-history-header,
+#planHistorySection .asset-history-toolbar,
+#planHistorySection .asset-history-period-label{
+  background:#EAF1F8 !important;
+}
+
+/* ==========================================
+   CHART + CANVAS
+========================================== */
+
+#planHistorySection .asset-history-chart-panel,
+#planHistorySection .asset-history-chart,
+#planHistorySection #planHistoryCanvas{
+  background:#EAF1F8 !important;
+}
+
+/* ==========================================
+   PERFORMANCE RESULTS
+========================================== */
+
+#planHistorySection .asset-history-results,
+#planHistorySection .asset-history-results-head,
+#planHistorySection #planHistoryResults{
+  background:#EAF1F8 !important;
+}
+
+
+/* =====================================================
+   NEPTOON · MYWEALTH
+   CONSOLIDATED BLUE SURFACES
+===================================================== */
+
+#page-mywealth{
+
+  --mw-surface:#EAF1F8;
+  --mw-engine:#DCE8F4;
+  --mw-inner:#DFEAF5;
+  --mw-border:#C8D8EA;
+  --mw-ink:#102A50;
+
+}
+
+/* =====================================================
+   1. STARTING POINT
+===================================================== */
+
+#mywealth-inputs{
+
+  background:var(--mw-surface) !important;
+  border:1px solid var(--mw-border) !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+
+}
+
+#mywealth-inputs .mywealth-input-row{
+
+  background:transparent !important;
+
+}
+
+/* =====================================================
+   2. MYWEALTH ENGINE
+===================================================== */
+
+#mywealth-engine{
+
+  background:var(--mw-engine) !important;
+  border:1px solid #B9CDE3 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+
+}
+
+/* Engine internal surfaces */
+
+#mywealth-engine .mywealth-horizon,
+#mywealth-engine .mywealth-waiting,
+#mywealth-engine .mywealth-race-section,
+#mywealth-engine .mywealth-race{
+
+  background:var(--mw-inner) !important;
+  border-radius:0 !important;
+
+}
+
+/* Holdings canvas */
+
+#mywealth-race-canvas{
+
+  background:transparent !important;
+  border-radius:0 !important;
+
+}
+
+/* =====================================================
+   3. MYWEALTH HISTORY
+===================================================== */
+
+#mywealth-history-section{
+
+  background:var(--mw-surface) !important;
+  border:1px solid var(--mw-border) !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+
+}
+
+/* History internal panels */
+
+#mywealth-history-section .mywealth-history-controls,
+#mywealth-history-section .mywealth-history-chart,
+#mywealth-history-section .mywealth-history-nav-card,
+#mywealth-history-section .mywealth-history-verdict-card{
+
+  background:var(--mw-inner) !important;
+  border-radius:0 !important;
+
+}
+
+/* History chart canvas */
+
+#mywealth-history-canvas{
+
+  background:var(--mw-inner) !important;
+  border-radius:0 !important;
+
+}
+
+/* =====================================================
+   4. WEALTH PLAN
+===================================================== */
+
+#mw-wealth-plan,
+#mw-wealth-plan .mw-plan-content{
+
+  background:var(--mw-surface) !important;
+  border-radius:0 !important;
+
+}
+
+/* Gap above PLAY HISTORY */
+
+#mywealth-history-section .mywealth-history-verdict{
+  margin-top:8px;
+}
+
+
+
+#mywealth-history-verdict
+.mywealth-history-verdict-header h3{
+  font-weight:500 !important;
+}
+
+
+
+/* =====================================================
+   MYWEALTH · VERDICT CARDS
+   NEUTRAL ICONS + COMPACT TITLES
+===================================================== */
+
+/* Remove red verdict labels */
+
+#mywealth-history-verdict
+.mywealth-history-verdict-card
+.mywealth-verdict-pill{
+  display:none !important;
+}
+
+/* Icon positioning */
+
+#mywealth-history-verdict
+.mywealth-history-verdict-card{
+  position:relative;
+}
+
+/* Shared icon styling */
+
+#mywealth-history-verdict
+.mywealth-history-verdict-card::after{
+  position:absolute;
+  top:12px;
+  right:12px;
+  color:#173B70;
+  font-size:19px;
+  font-weight:400;
+  line-height:1;
+  pointer-events:none;
+}
+
+/* A · Performance */
+
+#mywealth-history-verdict
+.mywealth-history-verdict-card:first-child::after{
+  content:"▥";
+}
+
+/* B · Decision */
+
+#mywealth-history-verdict
+.mywealth-history-verdict-card:last-child::after{
+  content:"⚖";
+}
+
+/* =====================================================
+   VERDICT · CONCLUSION TITLES
+===================================================== */
+
+#mywealth-history-section
+.mywealth-history-verdict-card h4{
+  font-size:15px !important;
+  line-height:1.35 !important;
+  font-weight:500 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -7916,13 +8457,166 @@ let comparisonMethod=null;
    02 · SHARED HERO CONTENT
 ===================================================== */
 
+
 const HERO = {
-    welcome: { icon: 'sparkles', en: ['NEPTOON WEALTH · WELCOME', 'What could your money become?', 'Look up an investment or choose a ready-made Wealth Plan. See what it could mean for your money.'], da: ['NEPTOON WEALTH · VELKOMMEN', 'Hvad kan dine penge blive til?', 'Find en investering eller vælg en færdig investeringsplan. Se, hvad den kan betyde for din formue.'] },
-    assets: { icon: 'search', en: ['NEPTOON WEALTH · ASSETS', 'Choose your investments', 'Start with five examples. Replace them with stocks, ETFs or funds you are curious about.'], da: ['NEPTOON WEALTH · INVESTERINGER', 'Vælg dine investeringer', 'Begynd med fem eksempler. Erstat dem med aktier, ETF’er eller fonde, du er interesseret i.'] },
-    portfolios: { icon: 'layers', en: ['NEPTOON WEALTH · PORTFOLIOS', 'Choose your Wealth Plans', 'Find ready-made investment plans that match your risk preference.'], da: ['NEPTOON WEALTH · PORTEFØLJER', 'Vælg dine Wealth Plans', 'Find færdige investeringsplaner, der passer til din risikopræference.'] },
-    mywealth: { icon: 'chart-no-axes-combined', en: ['NEPTOON WEALTH · MYWEALTH', 'What could your money become?', 'Compare your selected investments and see their potential future value.'], da: ['NEPTOON WEALTH · MYWEALTH', 'Hvad kan dine penge blive til?', 'Sammenlign dine valgte investeringer og se deres mulige fremtidige værdi.'] },
-    history: { icon: 'history', en: ['NEPTOON WEALTH · HISTORY', 'Investment history', 'See how your selected investment has performed over time.'], da: ['NEPTOON WEALTH · HISTORIK', 'Investeringshistorik', 'Se, hvordan din valgte investering har klaret sig over tid.'] }
+
+  /* ==========================================
+     WELCOME
+  ========================================== */
+
+  welcome: {
+
+    icon: 'sparkles',
+
+    en: [
+      'STOCKS · ETF · MUTUAL FUNDS ',
+      'What could your money become?',
+      'Look up an investment or choose a ready-made Wealth Plan. See what it could mean for your future.'
+    ],
+
+    da: [
+      'AKTIER · ETF · FONDE ',
+      'Hvad kan dine penge blive til?',
+      'Altid ved hånden - Find hurtigt finansielle instrumenter eller globale investeringsplaner. Se, hvad finansmarkedet kan gøre for din økonomi og dit liv.'
+    ]
+
+  },
+
+
+  /* ==========================================
+     ASSETS
+  ========================================== */
+
+  assets: {
+
+    icon: 'search',
+
+    en: [
+      'NEPTOON WEALTH · ASSETS',
+      'Choose your investments',
+      'Start with five examples. Replace them with stocks, ETFs or funds you are curious about.'
+    ],
+
+    da: [
+      'NEPTOON WEALTH · INVESTERINGER',
+      'Vælg dine investeringer',
+      'Begynd med fem eksempler. Erstat dem med aktier, ETF’er eller fonde, du er interesseret i.'
+    ]
+
+  },
+
+
+  /* ==========================================
+     PORTFOLIOS
+  ========================================== */
+
+  portfolios: {
+
+    icon: 'layers',
+
+    en: [
+      'NEPTOON WEALTH · PORTFOLIOS',
+      'Choose your Wealth Plans',
+      'Find ready-made investment plans that match your risk preference.'
+    ],
+
+    da: [
+      'NEPTOON WEALTH · PORTEFØLJER',
+      'Vælg dine Wealth Plans',
+      'Find færdige investeringsplaner, der passer til din risikopræference.'
+    ]
+
+  },
+
+
+  /* ==========================================
+     MYWEALTH
+  ========================================== */
+
+  mywealth: {
+
+    icon: 'chart-no-axes-combined',
+
+    en: [
+      'NEPTOON WEALTH · MYWEALTH',
+      'What could your money become?',
+      'Compare your selected investments and see their potential future value.'
+    ],
+
+    da: [
+      'NEPTOON WEALTH · MYWEALTH',
+      'Hvad kan dine penge blive til?',
+      'Sammenlign dine valgte investeringer og se deres mulige fremtidige værdi.'
+    ]
+
+  },
+
+
+  /* ==========================================
+     HISTORY
+  ========================================== */
+
+  history: {
+
+    icon: 'history',
+
+    en: [
+      'NEPTOON WEALTH · HISTORY',
+      'Investment history',
+      'See how your selected investment has performed over time.'
+    ],
+
+    da: [
+      'NEPTOON WEALTH · HISTORIK',
+      'Investeringshistorik',
+      'Se, hvordan din valgte investering har klaret sig over tid.'
+    ]
+
+  }
+
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* =====================================================
    WEALTHPLANS · INVESTMENT PREFERENCES
@@ -8478,7 +9172,7 @@ mwEmailPlaceholder : "Your email address",
   tmIntroText:
     "Travel through more than a century of market ups and downs. See how your wealth changes through booms, crashes and recoveries — and discover what level of risk feels right for you.",
   mwVerdictPillA: "PERFORMANCE",
-  mwVerdictPillB: "DECISION",
+  mwVerdictPillB: "RELECTIONS",
   tmIntroAction: "Press Play to experience the journey.",
 
   welcomeMethodKicker:
@@ -8667,7 +9361,7 @@ terTagline:
     mwAccumReturnB: "AKK. AFKAST · BENCHMARK",
     mwRelative: "RELATIVT AFKAST",
 
-    mwVerdict: "KONKLUSIONEN",
+    mwVerdict: "OVERVEJELSER",
     mwPending: "AFVENTER",
     mwVerdictMarketQuestion:
       "A · PERFORMANCE?",
@@ -8866,118 +9560,7 @@ function riskDots(n) {
     return `<span class="risk" aria-label="Risk ${Number(n) || 0} of 7">${Array.from({ length: 7 }, (_, i) => `<span class="dot ${i < n ? 'on' : ''}"></span>`).join('')}</span>`;
 }
 
-
-function initMyWealthRaceInteraction(){
-
-  const canvas =
-    document.getElementById("mywealth-race-canvas");
-
-  if(!canvas || canvas.dataset.interactionBound === "1"){
-    return;
-  }
-
-  canvas.dataset.interactionBound = "1";
-
-  const getRowIndex = event => {
-
-    const rect = canvas.getBoundingClientRect();
-
-    const compact = rect.width < 500;
-    const rowH = compact ? 66 : 70;
-    const topPad = 16;
-
-    const y = event.clientY - rect.top;
-
-    const index = Math.floor(
-      (y - topPad) / rowH
-    );
-
-    const count = Math.min(
-      5,
-      getMyWealthBarScale().length
-    );
-
-    if(
-      y < topPad ||
-      index < 0 ||
-      index >= count
-    ){
-      return -1;
-    }
-
-    return index;
-  };
-
-  canvas.addEventListener("pointermove", event => {
-
-    if(event.pointerType === "touch"){
-      return;
-    }
-
-    const index = getRowIndex(event);
-
-    if(MYWEALTH_INTERACTION.hoverIndex !== index){
-
-      MYWEALTH_INTERACTION.hoverIndex = index;
-
-      canvas.style.cursor =
-        index >= 0 ? "pointer" : "default";
-
-      drawMyWealthRace();
-    }
-
-  });
-
-  canvas.addEventListener("pointerleave", () => {
-
-    MYWEALTH_INTERACTION.hoverIndex = -1;
-    canvas.style.cursor = "default";
-
-    drawMyWealthRace();
-
-  });
-
-  canvas.addEventListener("click", event => {
-
-    const index = getRowIndex(event);
-
-    if(index < 0){
-      return;
-    }
-
-    const isCosts =
-      myWealthMode === "portfolios" &&
-      MYWEALTH_VIEW.metric === "costs";
-
-    const investments =
-      isCosts
-        ? getMyWealthCostBarScale()
-        : getMyWealthBarScale();
-
-    const selected = investments[index];
-
-    if(!selected){
-      return;
-    }
-
-    MYWEALTH_INTERACTION.selectedId =
-      selected.id;
-
-    APP.myWealth.selectedIndex = index;
-
-selectMyWealthHistoryInvestment(selected);
-
-    console.log(
-      "MYWEALTH INVESTMENT SELECTED",
-      selected
-    );
-
-    drawMyWealthRace();
-
-  });
-
-}
-
+	
 /* =====================================================
    STOP / RESET
 ===================================================== */
@@ -14019,7 +14602,7 @@ function renderWelcome(){
         <div class="welcome-statistics">
 
           <div>
-            <span>P10</span>
+            <span>MINIMUM</span>
             <strong>${fmt(q10)}</strong>
           </div>
 
@@ -14029,7 +14612,7 @@ function renderWelcome(){
           </div>
 
           <div>
-            <span>P90</span>
+            <span>MAXIMUM</span>
             <strong>${fmt(q90)}</strong>
           </div>
 
@@ -14056,7 +14639,38 @@ const WELCOME_ROTATION_POOL = [
   "NVDA.US",
   "AAPL.US",
   "MSFT.US",
-  "GOOGL.US"
+  "GOOGL.US",
+  "MCD.US",
+  "NKE.US",
+  "SBUX.US",
+  "UBER.US",
+  "VOW3.XETRA",
+  "NOVO-B.CO",
+  "MAERSK-B.CO",
+  "DANSKE.CO",
+  "VWS.CO",
+  "CL.US",
+  "BO.CO",
+  "TIV.CO",
+  "ENR.XETRA",
+  "RHM.XETRA",
+  "UPS.US",
+XACTC25.CO
+XDN0.XETRA
+4BRZ.XETRA
+EUNL.XETRA
+IS3N.XETRA
+IUSQ.XETRA
+LYTR.XETRA
+8PSG.XETRA
+IQQ6.XETRA
+IQQI.XETRA
+WBIT.XETRA
+
+
+
+
+
 ];
 
 let welcomeRotationTimer = null;
@@ -14101,9 +14715,63 @@ function rotateWelcomeInvestment(){
   welcomeRotationSlot =
     (welcomeRotationSlot + 1) % tickers.length;
 
-  tickers[welcomeRotationSlot] = nextTicker;
 
+const slot = welcomeRotationSlot;
+
+const card = document.querySelectorAll(
+  "#welcome-preview .welcome-investment-card"
+)[slot];
+
+if(!card){
+  tickers[slot] = nextTicker;
   renderWelcome();
+  return;
+}
+
+/* Fade existing card */
+
+card.classList.add("is-refreshing");
+
+setTimeout(() => {
+
+  /* Update investment */
+
+  tickers[slot] = nextTicker;
+
+  /* Recalculate wealth metrics */
+  renderWelcome();
+
+  /* Fade new card into view */
+
+  const newCard = document.querySelectorAll(
+    "#welcome-preview .welcome-investment-card"
+  )[slot];
+
+  if(!newCard) return;
+
+  newCard.classList.add("is-refreshing");
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      newCard.classList.remove("is-refreshing");
+    });
+  });
+
+}, 180);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 function startWelcomeRotation(){
@@ -14864,6 +15532,11 @@ const compactMoney = value => {
 
 /* Hover and selected row background */
 
+
+/* ==========================================
+   HOLDINGS · ROW PAINTING
+========================================== */
+
 const isHovered =
   MYWEALTH_INTERACTION.hoverIndex === i;
 
@@ -14871,21 +15544,32 @@ const isSelected =
   MYWEALTH_INTERACTION.selectedId != null &&
   String(MYWEALTH_INTERACTION.selectedId) === String(p.id);
 
-if(isHovered || isSelected){
+/* Base row background */
 
-  ctx.fillStyle =
-    isHovered
-      ? "#EAF1FB"
-      : "#F1F5FA";
+ctx.fillStyle =
+  isHovered
+    ? "#D4E5F5"
+    : isSelected
+      ? "#DCEAF8"
+      : "#F4F8FC";
 
-  ctx.fillRect(
-    0,
-    y - 2,
-    width,
-    rowH - 2
-  );
+ctx.fillRect(
+  0,
+  y - 2,
+  width,
+  rowH - 2
+);
 
-}
+/* Subtle bottom separator */
+
+ctx.beginPath();
+ctx.moveTo(0, y + rowH - 3);
+ctx.lineTo(width, y + rowH - 3);
+ctx.strokeStyle = "#C8D8EA";
+ctx.lineWidth = 1;
+ctx.stroke();
+
+/* Selected investment indicator */
 
 if(isSelected){
 
@@ -14899,6 +15583,7 @@ if(isSelected){
   );
 
 }
+
 
     /* Ranking */
 
@@ -15942,8 +16627,8 @@ const p90 = Number(result.q90);
           <div class="kicker">
             ${
               da
-                ? "FORVENTET FORMUE"
-                : "EXPECTED WEALTH"
+                ? "FORVENTET DKK FORMUE (EFTER OMKOSTNINGER)"
+                : "EXPECTED EUR WEALTH (AFTER COSTS)"
             }
           </div>
 
