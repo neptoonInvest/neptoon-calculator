@@ -11324,6 +11324,116 @@ function tmSetSpeed(speed){
 /* =====================================================
    METRICS
 ===================================================== */
+function initMyWealthRaceInteraction(){
+
+  const canvas =
+    document.getElementById("mywealth-race-canvas");
+
+  if(!canvas || canvas.dataset.interactionBound === "1"){
+    return;
+  }
+
+  canvas.dataset.interactionBound = "1";
+
+  const getRowIndex = event => {
+
+    const rect = canvas.getBoundingClientRect();
+
+    const compact = rect.width < 500;
+    const rowH = compact ? 66 : 70;
+    const topPad = 16;
+
+    const y = event.clientY - rect.top;
+
+    const index = Math.floor(
+      (y - topPad) / rowH
+    );
+
+    const count = Math.min(
+      5,
+      getMyWealthBarScale().length
+    );
+
+    if(
+      y < topPad ||
+      index < 0 ||
+      index >= count
+    ){
+      return -1;
+    }
+
+    return index;
+  };
+
+  canvas.addEventListener("pointermove", event => {
+
+    if(event.pointerType === "touch"){
+      return;
+    }
+
+    const index = getRowIndex(event);
+
+    if(MYWEALTH_INTERACTION.hoverIndex !== index){
+
+      MYWEALTH_INTERACTION.hoverIndex = index;
+
+      canvas.style.cursor =
+        index >= 0 ? "pointer" : "default";
+
+      drawMyWealthRace();
+    }
+
+  });
+
+  canvas.addEventListener("pointerleave", () => {
+
+    MYWEALTH_INTERACTION.hoverIndex = -1;
+    canvas.style.cursor = "default";
+
+    drawMyWealthRace();
+
+  });
+
+  canvas.addEventListener("click", event => {
+
+    const index = getRowIndex(event);
+
+    if(index < 0){
+      return;
+    }
+
+    const isCosts =
+      myWealthMode === "portfolios" &&
+      MYWEALTH_VIEW.metric === "costs";
+
+    const investments =
+      isCosts
+        ? getMyWealthCostBarScale()
+        : getMyWealthBarScale();
+
+    const selected = investments[index];
+
+    if(!selected){
+      return;
+    }
+
+    MYWEALTH_INTERACTION.selectedId =
+      selected.id;
+
+    APP.myWealth.selectedIndex = index;
+
+selectMyWealthHistoryInvestment(selected);
+
+    console.log(
+      "MYWEALTH INVESTMENT SELECTED",
+      selected
+    );
+
+    drawMyWealthRace();
+
+  });
+
+}
 
 function tmCalculateMetrics(){
 
