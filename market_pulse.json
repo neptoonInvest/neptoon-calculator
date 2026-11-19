@@ -1,80 +1,80 @@
 {
-  "updatedAt": "2026-11-19T10:27:01.381621+00:00",
+  "updatedAt": "2026-11-19T18:51:02.682954+00:00",
   "quotes": {
     "AAPL.US": {
-      "realtimePrice": 352.45,
-      "return": 0.000369,
-      "timestamp": 1795035600
+      "realtimePrice": 350.01,
+      "return": -0.006923,
+      "timestamp": 1795113300
     },
     "MSFT.US": {
-      "realtimePrice": 508.29,
-      "return": 0.004049,
-      "timestamp": 1795035600
+      "realtimePrice": 502.42,
+      "return": -0.011549,
+      "timestamp": 1795113300
     },
     "NVDA.US": {
-      "realtimePrice": 150.96,
-      "return": -0.028946,
-      "timestamp": 1795035600
+      "realtimePrice": 149.06,
+      "return": -0.012586,
+      "timestamp": 1795113300
     },
     "GOOGL.US": {
-      "realtimePrice": 282.44,
-      "return": -0.00046,
-      "timestamp": 1795035600
+      "realtimePrice": 280.4705,
+      "return": -0.006973,
+      "timestamp": 1795113300
     },
     "AMZN.US": {
-      "realtimePrice": 267.74,
-      "return": 0.038195,
-      "timestamp": 1795035600
+      "realtimePrice": 260.36,
+      "return": -0.027564,
+      "timestamp": 1795113300
     },
     "META.US": {
-      "realtimePrice": 616.38,
-      "return": -0.004023,
-      "timestamp": 1795035600
+      "realtimePrice": 603.43,
+      "return": -0.02101,
+      "timestamp": 1795113300
     },
     "TSLA.US": {
-      "realtimePrice": 383.72,
-      "return": 0.009497,
-      "timestamp": 1795035600
+      "realtimePrice": 378.8243,
+      "return": -0.012759,
+      "timestamp": 1795113300
     },
     "RHM.XETRA": {
-      "realtimePrice": 734.3,
-      "return": -0.013303,
-      "timestamp": 1795083060
+      "realtimePrice": 725.6,
+      "return": -0.024992999999999998,
+      "timestamp": 1795106340
     },
     "NOVO-B.CO": {
-      "realtimePrice": 270.0,
-      "return": -0.005342,
-      "timestamp": 1795082820
+      "realtimePrice": 265.15,
+      "return": -0.023209,
+      "timestamp": 1795103940
     },
     "ASML.AS": {
-      "realtimePrice": 1313.8,
-      "return": 0.042037000000000005,
-      "timestamp": 1795082940
+      "realtimePrice": 1288.2,
+      "return": 0.021732,
+      "timestamp": 1795106100
     },
     "GSPC.INDX": {
-      "realtimePrice": 7323.6299,
-      "return": -0.002302,
-      "timestamp": 1795039020
+      "realtimePrice": 7242.8901,
+      "return": -0.011025,
+      "timestamp": 1795113300
     },
     "IXIC.INDX": {
-      "realtimePrice": 24429.8848,
-      "return": 0.004172,
-      "timestamp": 1795040160
+      "realtimePrice": 24152.4648,
+      "return": -0.011356,
+      "timestamp": 1795113300
     },
     "LSMC.XETRA": {
-      "realtimePrice": 93.38,
-      "return": 0.027509000000000002,
-      "timestamp": 1795083000
+      "realtimePrice": 91.86,
+      "return": 0.010783000000000001,
+      "timestamp": 1795106100
     },
     "OMXC25.INDX": {
-      "realtimePrice": 1972.2153,
-      "return": -7e-06,
-      "timestamp": 1795083060
+      "realtimePrice": 1950.83,
+      "return": -0.010851,
+      "timestamp": 1795104300
     },
     "GDAXI.INDX": {
-      "realtimePrice": 25820.6094,
-      "return": 0.0032779999999999997,
-      "timestamp": 1795083060
+      "realtimePrice": 25463.8105,
+      "return": -0.010585,
+      "timestamp": 1795107600
     },
     "FTSE.INDX": {
       "realtimePrice": null,
@@ -82,19 +82,19 @@
       "timestamp": "NA"
     },
     "OMXS30.INDX": {
-      "realtimePrice": 3279.5654,
-      "return": 0.007174000000000001,
-      "timestamp": 1795083060
+      "realtimePrice": 3256.7207,
+      "return": 0.00015800000000000002,
+      "timestamp": 1795106100
     },
     "FCHI.INDX": {
-      "realtimePrice": 8174.1499,
-      "return": 0.003353,
-      "timestamp": 1795083060
+      "realtimePrice": 8080.7402,
+      "return": -0.008112000000000001,
+      "timestamp": 1795107900
     },
     "EUNL.XETRA": {
-      "realtimePrice": 128.09,
-      "return": 0.007749000000000001,
-      "timestamp": 1795083060
+      "realtimePrice": 126.79,
+      "return": -0.0024779999999999997,
+      "timestamp": 1795106160
     }
   }
 }
