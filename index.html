@@ -6180,7 +6180,49 @@ color:#FFFFFF;
 
 }
 
+/* WELCOME · CARDS WITHOUT PILL LABELS */
 
+.welcome-choice-content{
+  margin-top:4px;
+}
+
+.welcome-choice-pill{
+  display:none !important;
+}
+/* ==========================================
+   WELCOME · UPPER-RIGHT ICONS
+========================================== */
+
+.welcome-choice{
+  position:relative;
+}
+
+.welcome-choice-pill{
+  position:absolute;
+  top:12px;
+  right:12px;
+
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+
+  width:24px;
+  height:24px;
+  padding:0;
+
+  background:transparent !important;
+  border:0 !important;
+  border-radius:0 !important;
+
+  color:#61C8E8 !important;
+  font-size:0;
+}
+
+.welcome-choice-pill svg{
+  width:19px;
+  height:19px;
+  stroke-width:1.8;
+}
 
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
@@ -6647,88 +6689,93 @@ color:#FFFFFF;
 
   <!-- ASSETS -->
 
-  <article class="welcome-choice">
 
-    <span
-      class="welcome-choice-pill"
-      data-lang="welcomeAssetsPill"
-    >
-      PICK YOUR OWN
-    </span>
+<!-- ==========================================
+     WELCOME · ASSETS
+========================================== -->
 
-    <div class="welcome-choice-content">
+<article class="welcome-choice">
+<span class="welcome-choice-pill" aria-hidden="true">
+  <i data-lucide="search"></i>
+</span>
 
-      <div class="welcome-choice-icon">
-        <i data-lucide="search"></i>
-      </div>
+  <div class="welcome-choice-content">
 
-      <div class="welcome-choice-info">
+    <div class="welcome-choice-icon">
+      <i data-lucide="search"></i>
+    </div>
 
-        <h2 data-lang="assets">
-          Assets
-        </h2>
+    <div class="welcome-choice-info">
 
-        <p data-lang="welcomeAssetsText">
-          Choose up to five stocks, ETFs or funds you are curious about.
-        </p>
+      <h2 data-lang="assets">
+        Assets
+      </h2>
 
-      </div>
+      <p data-lang="welcomeAssetsText">
+        Choose up to five stocks, ETFs or funds you are curious about.
+      </p>
 
     </div>
 
-    <button
-      type="button"
-      class="btn welcome-choice-btn"
-      data-go="assets"
-    >
-      <span data-lang="viewAssets">View Assets</span>
-      <i data-lucide="arrow-right"></i>
-    </button>
+  </div>
 
-  </article>
-
-
-  <!-- WEALTH PLANS -->
-
-  <article class="welcome-choice">
-
-    <span
-      class="welcome-choice-pill"
-      data-lang="welcomePlansPill"
-    >
-      READY-MADE
+  <button
+    type="button"
+    class="btn welcome-choice-btn"
+    data-go="assets"
+  >
+    <span data-lang="viewAssets">
+      View Assets
     </span>
 
-    <div class="welcome-choice-content">
+    <i data-lucide="arrow-right"></i>
+  </button>
 
-      <div class="welcome-choice-icon">
-        <i data-lucide="layers"></i>
-      </div>
+</article>
 
-      <div class="welcome-choice-info">
 
-        <h2 data-lang="portfolios">
-          Wealth Plans
-        </h2>
+<!-- ==========================================
+     WELCOME · WEALTH PLANS
+========================================== -->
 
-        <p data-lang="welcomePlansText">
-          Find ready-made Wealth Plans by your risk preference.
-        </p>
+<article class="welcome-choice">
+<span class="welcome-choice-pill" aria-hidden="true">
+  <i data-lucide="layers-3"></i>
+</span>
 
-      </div>
+  <div class="welcome-choice-content">
+
+    <div class="welcome-choice-icon">
+      <i data-lucide="layers"></i>
+    </div>
+
+    <div class="welcome-choice-info">
+
+      <h2 data-lang="portfolios">
+        Wealth Plans
+      </h2>
+
+      <p data-lang="welcomePlansText">
+        Find ready-made Wealth Plans by your risk preference.
+      </p>
 
     </div>
 
-    <button
-      type="button"
-      class="btn welcome-choice-btn"
-      data-go="portfolios"
-    >
-      <span data-lang="viewPlans">View Wealth Plans</span>
-      <i data-lucide="arrow-right"></i>
-    </button>
+  </div>
 
-  </article>
+  <button
+    type="button"
+    class="btn welcome-choice-btn"
+    data-go="portfolios"
+  >
+    <span data-lang="viewPlans">
+      View Wealth Plans
+    </span>
+
+    <i data-lucide="arrow-right"></i>
+  </button>
+
+</article> 
 
 </div>
 
