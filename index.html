@@ -15101,7 +15101,7 @@ function renderWelcome(){
 /* ==========================================
    WELCOME · INVESTMENT ROTATION
 ========================================== */
-const WELCOME_ROTATION_INTERVAL=30000;
+const WELCOME_ROTATION_INTERVAL=10000;
 
 const WELCOME_ROTATION_POOL = [
 "ANT.US",
@@ -15176,10 +15176,11 @@ function rotateWelcomeInvestment(){
 
   if(!candidates.length) return;
 
-  const nextTicker =
-    candidates[
-      welcomeRotationIndex % candidates.length
-    ];
+const nextTicker =
+  candidates[
+    Math.floor(Math.random() * candidates.length)
+  ];
+
 
   welcomeRotationIndex++;
   welcomeRotationSlot =
