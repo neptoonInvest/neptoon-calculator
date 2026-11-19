@@ -17251,6 +17251,39 @@ async function buildPortCustomMetricsHistory(levelHoldings){
     );
   }
 
+/*
+  ==========================================
+  CUSTOM PORTFOLIO · BENCHMARK ALLOCATION
+  ==========================================
+*/
+
+const bondWeight = holdings
+  .filter(h => Number(h.classNo) <= 4)
+  .reduce((sum, h) => sum + h.weight, 0);
+
+const equityWeight = holdings
+  .filter(h => Number(h.classNo) > 4)
+  .reduce((sum, h) => sum + h.weight, 0);
+
+const arrayBenchHoldings = [
+  {
+    tickerExchange: "EUNL.XETRA",
+    weight: equityWeight
+  },
+  {
+    tickerExchange: "LYQ2.XETRA",
+    weight: bondWeight
+  }
+];
+
+console.log(
+  "CUSTOM BENCHMARK ALLOCATION",
+  {
+    equityWeight,
+    bondWeight
+  }
+);
+
 
   /*
     ==========================================
@@ -17323,6 +17356,48 @@ const history =
   }
 
 
+/*
+  ==========================================
+  CUSTOM PORTFOLIO · BENCHMARK HISTORY
+  ==========================================
+*/
+
+const getBenchmarkHistoryMap = ticker => {
+
+  const history =
+    INSTRUMENT_HISTORY_STATE.byTicker.get(ticker) || [];
+
+  const map = new Map();
+
+  history.forEach(row => {
+
+    const date = String(row.date || "").slice(0, 10);
+    const index = Number(row.accIndexTotal);
+
+    if(
+      date &&
+      Number.isFinite(index) &&
+      index > 0
+    ){
+      map.set(date, index);
+    }
+
+  });
+
+  return map;
+};
+
+const equityBenchmarkHistory =
+  equityWeight > 0
+    ? getBenchmarkHistoryMap("EUNL.XETRA")
+    : null;
+
+const bondBenchmarkHistory =
+  bondWeight > 0
+    ? getBenchmarkHistoryMap("LYQ2.XETRA")
+    : null;
+
+
   /*
     ==========================================
     3 · CONSTANT-WEIGHT MONTHLY RETURNS
@@ -17332,10 +17407,15 @@ const history =
 
 let nav = 100;
 
+
+let nav = 100;
+let benchmarkNAV = 100;
+
 const arrayHistory = [
   {
     date: BASE_DATE,
-    accPortIndex: 100
+    accPortIndex: 100,
+    accBenchIndex: 100
   }
 ];
 
@@ -17371,12 +17451,67 @@ const arrayHistory = [
 
     });
 
-    nav *= 1 + portfolioReturn;
 
-    arrayHistory.push({
-      date,
-      accPortIndex: nav
-    });
+nav *= 1 + portfolioReturn;
+
+/*
+  ==========================================
+  SYNTHETIC BENCHMARK MONTHLY RETURN
+  ==========================================
+*/
+
+let benchmarkReturn = 0;
+
+const benchmarkComponents = [
+  {
+    ticker: "EUNL.XETRA",
+    weight: equityWeight,
+    history: equityBenchmarkHistory
+  },
+  {
+    ticker: "LYQ2.XETRA",
+    weight: bondWeight,
+    history: bondBenchmarkHistory
+  }
+];
+
+benchmarkComponents.forEach(component => {
+
+  if(component.weight <= 0){
+    return;
+  }
+
+  const previous =
+    component.history?.get(previousDate);
+
+  const current =
+    component.history?.get(date);
+
+  if(
+    !Number.isFinite(previous) ||
+    !Number.isFinite(current) ||
+    previous <= 0
+  ){
+    throw new Error(
+      `Missing benchmark history: ${component.ticker} ${date}`
+    );
+  }
+
+  const monthlyReturn =
+    current / previous - 1;
+
+  benchmarkReturn +=
+    component.weight * monthlyReturn;
+
+});
+
+benchmarkNAV *= 1 + benchmarkReturn;
+
+arrayHistory.push({
+  date,
+  accPortIndex: nav,
+  accBenchIndex: benchmarkNAV
+});
 
   }
 
@@ -17387,11 +17522,12 @@ const arrayHistory = [
     ==========================================
   */
 
-  return {
-    arrayHoldings: holdings,
-    objKeyFigures,
-    arrayHistory
-  };
+ return {
+  arrayHoldings: holdings,
+  arrayBenchHoldings,
+  objKeyFigures,
+  arrayHistory
+};
 
 }
 
