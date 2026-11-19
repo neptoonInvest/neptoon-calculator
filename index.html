@@ -8115,7 +8115,12 @@ const DEFAULT_PLAN_MODEL_NOS = [9];
 const RISK_GROUPS = Object.fromEntries([1, 2, 3, 4, 5].map(n => [n, DEMO_PLANS.filter(p => p.riskGroup === n).map(p => p.modelNo)]));
 
 const APP = {
-  lang: 'en',
+  
+lang: navigator.language
+  .toLowerCase()
+  .startsWith("da") ? "da" : "en",
+
+
   activeTab: 'welcome',
 
   assets: DEMO_ASSETS.slice(0, 5).map(a => a.id),
