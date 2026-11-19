@@ -14631,10 +14631,7 @@ function renderWelcome(){
    WELCOME · INVESTMENT ROTATION
 ========================================== */
 
-const WELCOME_ROTATION_INTERVAL = 30000;
 
-// Replace these with actual tickerExchange values
-// from your instrument database.
 const WELCOME_ROTATION_POOL = [
   "NVDA.US",
   "AAPL.US",
@@ -14655,23 +14652,20 @@ const WELCOME_ROTATION_POOL = [
   "ENR.XETRA",
   "RHM.XETRA",
   "UPS.US",
-XACTC25.CO,
-XDN0.XETRA,
-4BRZ.XETRA,
-EUNL.XETRA,
-IS3N.XETRA,
-IUSQ.XETRA,
-LYTR.XETRA,
-8PSG.XETRA,
-IQQ6.XETRA,
-IQQI.XETRA,
-WBIT.XETRA
-
-
-
-
-
+  "XACTC25.CO",
+  "XDN0.XETRA",
+  "4BRZ.XETRA",
+  "EUNL.XETRA",
+  "IS3N.XETRA",
+  "IUSQ.XETRA",
+  "LYTR.XETRA",
+  "8PSG.XETRA",
+  "IQQ6.XETRA",
+  "IQQI.XETRA",
+  "WBIT.XETRA"
 ];
+
+
 
 let welcomeRotationTimer = null;
 let welcomeRotationIndex = 0;
