@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-19T21:22:26.197680+00:00",
+  "updatedAt": "2026-11-19T21:37:21.836056+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 97.17,
@@ -8,7 +8,7 @@
     },
     "AAPL.US": {
       "realtimePrice": 349.21,
-      "return": 0.0,
+      "return": -0.009193,
       "timestamp": 1795122000
     },
     "MSFT.US": {
@@ -28,7 +28,7 @@
     },
     "AMZN.US": {
       "realtimePrice": 257.37,
-      "return": 0.0,
+      "return": 0.000155,
       "timestamp": 1795122000
     },
     "META.US": {
@@ -54,12 +54,12 @@
     "GSPC.INDX": {
       "realtimePrice": 7175.8301,
       "return": -0.020182000000000002,
-      "timestamp": 1795122420
+      "timestamp": 1795123200
     },
     "IXIC.INDX": {
       "realtimePrice": 23879.1992,
       "return": -0.022541000000000002,
-      "timestamp": 1795122420
+      "timestamp": 1795123320
     },
     "LSMC.XETRA": {
       "realtimePrice": 91.86,
