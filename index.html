@@ -8788,7 +8788,7 @@ const HERO = {
 
 
 
-
+console.log("BOOT INDEX 1");
 
 
 
@@ -10445,6 +10445,7 @@ setMetric(
    FINAL VERDICT
 ===================================================== */
 
+console.log("BOOT INDEX 2");
 function completeMyWealthCinema(){
 
   const series = MYWEALTH_CINEMA.series;
@@ -11072,6 +11073,7 @@ function tmFormatNumber(value){
 
 }
 
+console.log("BOOT INDEX 3");
 function tmFormatPercent(value){
 
   const sign = value > 0 ? "+" : "";
@@ -15559,6 +15561,9 @@ function bindMyWealthComparisonToggle(){
     ==========================================
   */
 
+	
+console.log("BOOT INDEX 4");
+
   function changeMethod(method){
 
     if(
@@ -17406,6 +17411,7 @@ const bondBenchmarkHistory =
 
 
 
+console.log("BOOT INDEX 5");
 
 let nav = 100;
 let benchmarkNAV = 100;
@@ -19219,6 +19225,7 @@ function renderPlanDetails(){
    MYWEALTH · CURRENT SELECTION
 ===================================================== */
 
+console.log("BOOT INDEX 6");
 function currentSelection(){
 
   const {
@@ -22360,6 +22367,7 @@ renderPlanHistory();
 ===================================================== */
 
 
+console.log("BOOT INDEX 7");
 
 /* =====================================================
    MYWEALTH · GET MODEL BENCHMARK WEIGHTS
@@ -22684,17 +22692,18 @@ window.addEventListener('resize', renderMarketPulse);
 /* =====================================================
    32 · APPLICATION STARTUP
 ===================================================== */
-
+console.log("BOOT INDEX 8a");
 async function initializeApp(){
-
+console.log("BOOT INDEX 8aa");
   renderLanguage();
   openTab("welcome");
 
   /* ================================================
      MARKET DATA
   ================================================ */
-
+console.log("BOOT INDEX 9");
   loadMarketPulse();
+	console.log("BOOT INDEX 9a");
 
   // Start loading instruments independently.
   loadInstrumentDatabase();
@@ -22730,11 +22739,16 @@ async function initializeApp(){
   ================================================ */
 
   bindPortfolioSelectors();
+	
+
   bindPortfolioModelSelection();
   bindPortfolioMetrics();
 initMyWealthControls();
+	
+console.log("BOOT INDEX 10");
 initMyWealthRaceInteraction();
 initMyWealthCinema();
+	
 bindMyWealthComparisonToggle();
 startWelcomeRotation();
 
