@@ -26,13 +26,15 @@ TICKERS = [
     # STOCKS · 10
     # ==========================================
 
+      "ANT.US",
+  
     "AAPL.US",
+  
     "MSFT.US",
     "NVDA.US",
     "GOOGL.US",
     "AMZN.US",
     "META.US",
-    "TSLA.US",
     "RHM.XETRA",
     "NOVO-B.CO",
     "ASML.AS",
