@@ -6268,6 +6268,27 @@ nav.bottom-nav {
   width: 32px !important;
   height: 32px !important;
 }
+
+/* =========================================
+   STRATEGY GAME · MOBILE MODAL SCROLL
+   ========================================= */
+
+@media (max-width: 767px) {
+
+  .nt-strategy-modal-panel {
+    height: calc(100dvh - 78px) !important;
+    max-height: calc(100dvh - 78px) !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior-y: contain;
+  }
+
+}
+	
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
