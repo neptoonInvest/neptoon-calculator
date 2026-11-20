@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-20T10:07:24.044862+00:00",
+  "updatedAt": "2026-11-20T10:22:20.857457+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 97.17,
@@ -37,19 +37,19 @@
       "timestamp": 1795122000
     },
     "RHM.XETRA": {
-      "realtimePrice": 709.4,
-      "return": -0.022326000000000002,
-      "timestamp": 1795168320
+      "realtimePrice": 714.4,
+      "return": -0.015436,
+      "timestamp": 1795169220
     },
     "NOVO-B.CO": {
-      "realtimePrice": 261.65,
-      "return": -0.0132,
-      "timestamp": 1795168260
+      "realtimePrice": 262.0,
+      "return": -0.01188,
+      "timestamp": 1795168980
     },
     "ASML.AS": {
-      "realtimePrice": 1207.4,
-      "return": -0.062723,
-      "timestamp": 1795168080
+      "realtimePrice": 1210.0,
+      "return": -0.060705,
+      "timestamp": 1795169160
     },
     "GSPC.INDX": {
       "realtimePrice": 7175.8301,
@@ -62,19 +62,19 @@
       "timestamp": 1795126560
     },
     "LSMC.XETRA": {
-      "realtimePrice": 85.58,
-      "return": -0.068365,
-      "timestamp": 1795168320
+      "realtimePrice": 85.85,
+      "return": -0.065426,
+      "timestamp": 1795169100
     },
     "OMXC25.INDX": {
-      "realtimePrice": 1919.9919,
-      "return": -0.015808,
-      "timestamp": 1795168320
+      "realtimePrice": 1922.8737,
+      "return": -0.01433,
+      "timestamp": 1795169220
     },
     "GDAXI.INDX": {
-      "realtimePrice": 24951.4707,
-      "return": -0.02012,
-      "timestamp": 1795168320
+      "realtimePrice": 24984.0,
+      "return": -0.018843000000000002,
+      "timestamp": 1795169220
     },
     "FTSE.INDX": {
       "realtimePrice": null,
@@ -82,19 +82,19 @@
       "timestamp": "NA"
     },
     "OMXS30.INDX": {
-      "realtimePrice": 3181.5798,
-      "return": -0.023073,
-      "timestamp": 1795168320
+      "realtimePrice": 3187.4136,
+      "return": -0.021280999999999998,
+      "timestamp": 1795169220
     },
     "FCHI.INDX": {
-      "realtimePrice": 7957.1201,
-      "return": -0.015298,
-      "timestamp": 1795168320
+      "realtimePrice": 7964.1602,
+      "return": -0.014427,
+      "timestamp": 1795169220
     },
     "EUNL.XETRA": {
-      "realtimePrice": 123.855,
-      "return": -0.023149000000000003,
-      "timestamp": 1795168320
+      "realtimePrice": 124.08,
+      "return": -0.021374,
+      "timestamp": 1795169220
     }
   }
 }
