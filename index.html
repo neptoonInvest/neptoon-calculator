@@ -6533,7 +6533,12 @@ nav.bottom-nav {
 
 
 
-
+#nt-history-chart{
+  display:block;
+  width:100%;
+  height:100%;
+  touch-action:none;
+}
 
 
 
@@ -11010,6 +11015,7 @@ function completeMyWealthCinema(){
 let ntHistoryTicker = null;
 let ntHistoryPeriod = "3y";
 
+
 async function openMarketHistoryModal(ticker){
 
   const modal =
@@ -11020,7 +11026,26 @@ async function openMarketHistoryModal(ticker){
   ntHistoryTicker = ticker;
   ntHistoryPeriod = "3y";
 
+  // Reset previous chart state.
+
+  ntHistoryPrices = [];
+  ntHistoryHoverIndex = -1;
+  ntHistoryChartGeometry = null;
+
   modal.hidden = false;
+
+  // Reset horizon selector to 3Y.
+
+  document.querySelectorAll(
+    ".nt-history-horizons button"
+  ).forEach(button => {
+
+    button.classList.toggle(
+      "active",
+      button.dataset.period === "3y"
+    );
+
+  });
 
   const name =
     document.getElementById("nt-history-name");
@@ -11038,26 +11063,43 @@ async function openMarketHistoryModal(ticker){
   meta.textContent = ticker;
   price.textContent = "—";
 
-  logo.src =
-    `./icons/stocks/${encodeURIComponent(ticker)}.png`;
+  logo.style.visibility = "visible";
 
   logo.onerror = () => {
     logo.style.visibility = "hidden";
   };
 
-  logo.style.visibility = "visible";
+  logo.src =
+    `./icons/stocks/${encodeURIComponent(ticker)}.png`;
+
+  // Clear old chart while loading.
+
+  drawMarketHistoryChart();
 
   try{
 
     const history =
       await getMarketTickerHistory(ticker);
 
-    if(!history?.prices?.length){
-      throw new Error("No price history available");
+    // Ignore stale asynchronous responses.
+
+    if(
+      ntHistoryTicker !== ticker ||
+      modal.hidden
+    ){
+      return;
     }
 
-    // Next step:
-    // renderMarketHistoryChart(history.prices, ntHistoryPeriod);
+    if(!history?.prices?.length){
+      throw new Error(
+        "No price history available"
+      );
+    }
+
+    ntHistoryPrices = history.prices;
+    ntHistoryHoverIndex = -1;
+
+    drawMarketHistoryChart();
 
     console.log(
       "HISTORY MODAL READY",
@@ -11077,7 +11119,12 @@ async function openMarketHistoryModal(ticker){
 
 }
 
+
 function closeMarketHistoryModal(){
+
+ntHistoryPrices = [];
+ntHistoryHoverIndex = -1;
+ntHistoryChartGeometry = null;
 
   const modal =
     document.getElementById("nt-history-modal");
@@ -11111,7 +11158,9 @@ document.querySelectorAll(
       button.dataset.period;
 
     // Next step:
-    // renderMarketHistoryChart(...);
+  ntHistoryHoverIndex = -1;
+
+drawMarketHistoryChart();
 
   });
 
@@ -19406,6 +19455,545 @@ if(target.matches("[data-plan-select]")){
 /* =====================================================
    12 · EXPANDABLE HOLDINGS · LIVE PORTFOLIO DATA
 ===================================================== */
+
+
+/* ==========================================
+   NW-111 · MARKET HISTORY CHART
+   RAW DAILY CLOSE · DA / EN
+========================================== */
+
+let ntHistoryPrices = [];
+let ntHistoryHoverIndex = -1;
+let ntHistoryChartGeometry = null;
+
+function ntHistoryLanguage(){
+  return INIT.lang === "da" ? "da-DK" : "en-GB";
+}
+
+function ntHistoryFilterPrices(prices, period){
+
+  const valid = (prices || [])
+    .filter(p =>
+      Array.isArray(p) &&
+      typeof p[0] === "string" &&
+      Number.isFinite(Number(p[1])) &&
+      Number(p[1]) > 0
+    )
+    .map(p => ({
+      date: p[0],
+      value: Number(p[1]),
+      time: Date.parse(p[0] + "T00:00:00Z")
+    }))
+    .filter(p => Number.isFinite(p.time))
+    .sort((a, b) => a.time - b.time);
+
+  if(!valid.length) return [];
+
+  const months = {
+    "3m": 3,
+    "6m": 6,
+    "12m": 12,
+    "3y": 36
+  }[period] || 36;
+
+  // Anchor the selected horizon to the
+  // latest available trading observation.
+
+  const latest = valid[valid.length - 1];
+
+  const cutoff = new Date(latest.time);
+  cutoff.setUTCMonth(
+    cutoff.getUTCMonth() - months
+  );
+
+  return valid.filter(p =>
+    p.time >= cutoff.getTime()
+  );
+
+}
+
+function ntHistoryNiceStep(raw){
+
+  if(!Number.isFinite(raw) || raw <= 0){
+    return 1;
+  }
+
+  const power =
+    Math.pow(10, Math.floor(Math.log10(raw)));
+
+  const fraction = raw / power;
+
+  const nice =
+    fraction <= 1 ? 1 :
+    fraction <= 2 ? 2 :
+    fraction <= 2.5 ? 2.5 :
+    fraction <= 5 ? 5 : 10;
+
+  return nice * power;
+}
+
+function ntHistoryFormatPrice(value){
+
+  return Number(value).toLocaleString(
+    ntHistoryLanguage(),
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }
+  );
+
+}
+
+function ntHistoryFormatDate(dateString){
+
+  return new Date(
+    dateString + "T00:00:00Z"
+  ).toLocaleDateString(
+    ntHistoryLanguage(),
+    {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      timeZone: "UTC"
+    }
+  );
+
+}
+
+function drawMarketHistoryChart(){
+
+  const canvas =
+    document.getElementById("nt-history-chart");
+
+  const tooltip =
+    document.getElementById("nt-history-tooltip");
+
+  if(!canvas) return;
+
+  const container = canvas.parentElement;
+
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+
+  if(width < 50 || height < 50) return;
+
+  const dpr = window.devicePixelRatio || 1;
+
+  canvas.width = Math.round(width * dpr);
+  canvas.height = Math.round(height * dpr);
+
+  const ctx = canvas.getContext("2d");
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+
+  const points = ntHistoryFilterPrices(
+    ntHistoryPrices,
+    ntHistoryPeriod
+  );
+
+  ntHistoryChartGeometry = null;
+
+  if(!points.length){
+
+    ctx.fillStyle = "#a9c8df";
+    ctx.font = "13px Arial";
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+      INIT.lang === "da"
+        ? "Ingen kurshistorik tilgængelig"
+        : "No price history available",
+      width / 2,
+      height / 2
+    );
+
+    if(tooltip) tooltip.hidden = true;
+
+    return;
+  }
+
+  const mobile = width < 500;
+
+  const pad = {
+    top: 22,
+    right: 12,
+    bottom: 37,
+    left: mobile ? 51 : 66
+  };
+
+  const plotW =
+    width - pad.left - pad.right;
+
+  const plotH =
+    height - pad.top - pad.bottom;
+
+  const values = points.map(p => p.value);
+
+  const dataMin = Math.min(...values);
+  const dataMax = Math.max(...values);
+
+  const rawRange =
+    Math.max(
+      dataMax - dataMin,
+      Math.abs(dataMax) * .02,
+      .01
+    );
+
+  const step =
+    ntHistoryNiceStep(rawRange / 4);
+
+  const yMin =
+    Math.max(
+      0,
+      Math.floor(
+        (dataMin - rawRange * .08) / step
+      ) * step
+    );
+
+  const yMax =
+    Math.ceil(
+      (dataMax + rawRange * .08) / step
+    ) * step;
+
+  const minTime = points[0].time;
+
+  const maxTime =
+    points[points.length - 1].time;
+
+  const timeRange =
+    Math.max(1, maxTime - minTime);
+
+  const x = time =>
+    pad.left +
+    (time - minTime) / timeRange * plotW;
+
+  const y = value =>
+    pad.top +
+    (yMax - value) /
+    Math.max(.000001, yMax - yMin) * plotH;
+
+  /* ======================================
+     GRID + PRICE AXIS
+  ====================================== */
+
+  ctx.font =
+    mobile ? "10px Arial" : "11px Arial";
+
+  ctx.textAlign = "right";
+  ctx.textBaseline = "middle";
+
+  for(
+    let tick = yMin;
+    tick <= yMax + step * .001;
+    tick += step
+  ){
+
+    const yy = y(tick);
+
+    ctx.beginPath();
+    ctx.moveTo(pad.left, yy);
+    ctx.lineTo(width - pad.right, yy);
+
+    ctx.strokeStyle = "#244c6c";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.fillStyle = "#a9c8df";
+
+    ctx.fillText(
+      tick.toLocaleString(
+        ntHistoryLanguage(),
+        {
+          maximumFractionDigits: 2
+        }
+      ),
+      pad.left - 7,
+      yy
+    );
+
+  }
+
+  /* ======================================
+     DATE AXIS
+  ====================================== */
+
+  const ticks = mobile ? 3 : 5;
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.fillStyle = "#a9c8df";
+
+  for(let i = 0; i <= ticks; i++){
+
+    const ratio = i / ticks;
+
+    const timestamp =
+      minTime + ratio * (maxTime - minTime);
+
+    const date = new Date(timestamp);
+
+    const label =
+      ntHistoryPeriod === "3y"
+        ? String(date.getUTCFullYear())
+        : date.toLocaleDateString(
+            ntHistoryLanguage(),
+            {
+              month: "short",
+              year: "2-digit",
+              timeZone: "UTC"
+            }
+          );
+
+    const xx =
+      pad.left + ratio * plotW;
+
+    ctx.fillText(
+      label,
+      xx,
+      height - pad.bottom + 12
+    );
+
+  }
+
+  /* ======================================
+     PRICE AREA GRADIENT
+  ====================================== */
+
+  const gradient =
+    ctx.createLinearGradient(
+      0,
+      pad.top,
+      0,
+      pad.top + plotH
+    );
+
+  gradient.addColorStop(
+    0,
+    "rgba(69,207,239,.38)"
+  );
+
+  gradient.addColorStop(
+    1,
+    "rgba(69,207,239,0)"
+  );
+
+  ctx.beginPath();
+
+  points.forEach((p, i) => {
+
+    const xx = x(p.time);
+    const yy = y(p.value);
+
+    if(i === 0){
+      ctx.moveTo(xx, yy);
+    }else{
+      ctx.lineTo(xx, yy);
+    }
+
+  });
+
+  ctx.lineTo(
+    x(points[points.length - 1].time),
+    pad.top + plotH
+  );
+
+  ctx.lineTo(
+    x(points[0].time),
+    pad.top + plotH
+  );
+
+  ctx.closePath();
+
+  ctx.fillStyle = gradient;
+  ctx.fill();
+
+  /* ======================================
+     PRICE LINE
+  ====================================== */
+
+  ctx.beginPath();
+
+  points.forEach((p, i) => {
+
+    const xx = x(p.time);
+    const yy = y(p.value);
+
+    if(i === 0){
+      ctx.moveTo(xx, yy);
+    }else{
+      ctx.lineTo(xx, yy);
+    }
+
+  });
+
+  ctx.strokeStyle = "#73e2fa";
+  ctx.lineWidth = 2.2;
+  ctx.lineJoin = "round";
+  ctx.lineCap = "round";
+  ctx.stroke();
+
+  /* ======================================
+     HOVER CROSSHAIR
+  ====================================== */
+
+  if(
+    ntHistoryHoverIndex >= 0 &&
+    ntHistoryHoverIndex < points.length
+  ){
+
+    const p =
+      points[ntHistoryHoverIndex];
+
+    const xx = x(p.time);
+    const yy = y(p.value);
+
+    ctx.beginPath();
+    ctx.moveTo(xx, pad.top);
+    ctx.lineTo(xx, pad.top + plotH);
+
+    ctx.strokeStyle =
+      "rgba(255,255,255,.65)";
+
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.beginPath();
+    ctx.arc(xx, yy, 4.5, 0, Math.PI * 2);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+
+    ctx.strokeStyle = "#45cfef";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    if(tooltip){
+
+      tooltip.hidden = false;
+
+      tooltip.textContent =
+        ntHistoryFormatDate(p.date) +
+        " · " +
+        ntHistoryFormatPrice(p.value);
+
+      const tooltipWidth =
+        tooltip.offsetWidth || 140;
+
+      tooltip.style.left =
+        Math.max(
+          4,
+          Math.min(
+            width - tooltipWidth - 4,
+            xx - tooltipWidth / 2
+          )
+        ) + "px";
+
+    }
+
+  }else if(tooltip){
+
+    tooltip.hidden = true;
+
+  }
+
+  /* ======================================
+     SAVE GEOMETRY FOR HOVER
+  ====================================== */
+
+  ntHistoryChartGeometry = {
+    points,
+    pad,
+    plotW,
+    x
+  };
+
+}
+
+
+/* ==========================================
+   MARKET HISTORY · HOVER / TOUCH
+========================================== */
+
+function ntHistoryPointerMove(event){
+
+  const canvas =
+    document.getElementById("nt-history-chart");
+
+  const geometry =
+    ntHistoryChartGeometry;
+
+  if(!canvas || !geometry) return;
+
+  const rect =
+    canvas.getBoundingClientRect();
+
+  const px =
+    event.clientX - rect.left;
+
+  const points = geometry.points;
+
+  if(!points.length) return;
+
+  // Find nearest trading observation.
+
+  let nearest = 0;
+  let minDistance = Infinity;
+
+  points.forEach((p, i) => {
+
+    const distance =
+      Math.abs(geometry.x(p.time) - px);
+
+    if(distance < minDistance){
+      minDistance = distance;
+      nearest = i;
+    }
+
+  });
+
+  if(ntHistoryHoverIndex !== nearest){
+
+    ntHistoryHoverIndex = nearest;
+
+    drawMarketHistoryChart();
+
+  }
+
+}
+
+function ntHistoryPointerLeave(){
+
+  ntHistoryHoverIndex = -1;
+
+  drawMarketHistoryChart();
+
+}
+
+const ntHistoryCanvas =
+  document.getElementById("nt-history-chart");
+
+if(ntHistoryCanvas){
+
+  ntHistoryCanvas.addEventListener(
+    "pointermove",
+    ntHistoryPointerMove
+  );
+
+  ntHistoryCanvas.addEventListener(
+    "pointerleave",
+    ntHistoryPointerLeave
+  );
+
+  ntHistoryCanvas.addEventListener(
+    "pointercancel",
+    ntHistoryPointerLeave
+  );
+
+}
+
 
 function renderPlanDetails(){
 
