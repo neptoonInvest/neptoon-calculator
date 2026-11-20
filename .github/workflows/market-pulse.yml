@@ -1,5 +1,4 @@
 
-
 # =====================================================
 # NW-111 · MARKET PULSE
 # EODHD AUTOMATIC PRICE UPDATE
@@ -10,6 +9,15 @@ name: NW-111 Market Pulse
 
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "Market Pulse update mode"
+        required: true
+        default: "live"
+        type: choice
+        options:
+          - live
+          - close
 
 
 # =====================================================
@@ -47,6 +55,8 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: main
 
 
       # -----------------------------------------------
@@ -68,6 +78,7 @@ jobs:
 
         env:
           EODHD_TOKEN: ${{ secrets.EODHD_TOKEN }}
+          MARKET_PULSE_MODE: ${{ inputs.mode }}
 
         run: python scripts/update_market_pulse.py
 
@@ -85,6 +96,7 @@ jobs:
           git add market_pulse.json
 
           if ! git diff --cached --quiet; then
-            git commit -m "Update Market Pulse quotes"
+            git commit -m "Update Market Pulse (${{ inputs.mode }})"
             git push
           fi
+
