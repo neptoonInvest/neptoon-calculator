@@ -6543,6 +6543,35 @@ nav.bottom-nav {
 
 
 
+#nt-history-icon{
+  width:52px;
+  height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #52799c;
+  color:#8ed4f4;
+  flex-shrink:0;
+}
+
+#nt-history-icon svg{
+  width:29px;
+  height:29px;
+  stroke-width:1.7;
+}
+
+@media(max-width:520px){
+  #nt-history-icon{
+    width:42px;
+    height:42px;
+  }
+
+  #nt-history-icon svg{
+    width:25px;
+    height:25px;
+  }
+}
+
 
 
 
@@ -8916,12 +8945,9 @@ nav.bottom-nav {
 
       <div class="nt-history-identity">
 
-        <img
-          id="nt-history-logo"
-          alt=""
-          width="52"
-          height="52"
-        >
+<div id="nt-history-icon" aria-hidden="true">
+  <i data-lucide="building-2"></i>
+</div>
 
         <div class="nt-history-instrument">
           <h2 id="nt-history-name">Apple</h2>
@@ -11034,6 +11060,11 @@ async function openMarketHistoryModal(ticker){
 
   modal.hidden = false;
 
+
+renderMarketHistoryMeta(ticker);
+renderMarketHistoryIcon(ticker);
+renderMarketHistoryStory(ticker);
+
   // Reset horizon selector to 3Y.
 
   document.querySelectorAll(
@@ -11068,10 +11099,8 @@ async function openMarketHistoryModal(ticker){
   logo.onerror = () => {
     logo.style.visibility = "hidden";
   };
-
-  logo.src =
-    `./icons/stocks/${encodeURIComponent(ticker)}.png`;
-
+renderMarketHistoryMeta(ticker);
+renderMarketHistoryIcon(ticker);
   // Clear old chart while loading.
 
   drawMarketHistoryChart();
@@ -14109,6 +14138,50 @@ groups.custom.modelNos =
    STRATEGY GAME → PORTFOLIOS TAB
 ===================================================== */
 
+
+function ntHistoryIconName(ticker){
+
+  if(ticker === "8PSG.XETRA"){
+    return "gem";
+  }
+
+  if(ticker.endsWith(".INDX")){
+    return "chart-no-axes-combined";
+  }
+
+  if([
+    "LSMC.XETRA",
+    "EUNL.XETRA",
+    "DBXZ.XETRA"
+  ].includes(ticker)){
+    return "layers-3";
+  }
+
+  return "building-2";
+}
+
+function renderMarketHistoryIcon(ticker){
+
+  const container =
+    document.getElementById("nt-history-icon");
+
+  if(!container) return;
+
+  const iconName =
+    ntHistoryIconName(ticker);
+
+  container.innerHTML =
+    `<i data-lucide="${iconName}"></i>`;
+
+  if(window.lucide?.createIcons){
+    window.lucide.createIcons({
+      root:container
+    });
+  }
+
+}
+
+
 async function receiveCustomLevelPortfolios(
   selectedLevelPortfolios
 ){
@@ -14998,6 +15071,101 @@ console.log(
 
 
 
+function renderMarketHistoryMeta(ticker){
+
+  const instrument =
+    (INSTRUMENT_STATE.all || []).find(
+      x => x.tickerExchange === ticker
+    );
+
+  const da = INIT.lang === "da";
+
+  const name =
+    instrument?.name || ticker;
+
+  const type =
+    da
+      ? instrument?.type_label_dk
+      : instrument?.type_label_eng;
+
+  const sector =
+    da
+      ? instrument?.sector
+      : instrument?.sector_eng;
+
+  const currency =
+    instrument?.ccy || "";
+
+  document.getElementById("nt-history-name")
+    .textContent = name;
+
+document.getElementById("nt-history-meta")
+  .textContent = [
+    ticker,
+    type,
+    sector && sector !== "none" ? sector : null,
+    isin ? `ISIN: ${isin}` : null
+  ].filter(Boolean).join(" · ");
+
+
+const isin =
+  instrument?.isin || "";
+
+
+
+  document.getElementById("nt-history-price-label")
+    .textContent = [
+      currency,
+      da ? "Seneste kurs" : "Latest price"
+    ].filter(Boolean).join(" · ");
+
+}
+
+
+function renderMarketHistoryStory(ticker){
+
+  const lang =
+    INIT.lang === "da" ? "da" : "en";
+
+  const instrument =
+    MARKET_INSTRUMENT_META?.[ticker];
+
+  const story =
+    instrument?.story?.[lang] || "";
+
+  document.getElementById("nt-history-story-title")
+    .textContent =
+      lang === "da"
+        ? "OM VIRKSOMHEDEN"
+        : "ABOUT THE COMPANY";
+
+  document.getElementById("nt-history-story-text")
+    .textContent = story;
+
+}
+
+let MARKET_INSTRUMENT_META = {};
+function renderMarketHistoryStory(ticker){
+
+  const lang =
+    INIT.lang === "da" ? "da" : "en";
+
+  const instrument =
+    MARKET_INSTRUMENT_META?.[ticker];
+
+  const story =
+    instrument?.story?.[lang] || "";
+
+  document.getElementById("nt-history-story-title")
+    .textContent =
+      lang === "da"
+        ? "OM VIRKSOMHEDEN"
+        : "ABOUT THE COMPANY";
+
+  document.getElementById("nt-history-story-text")
+    .textContent = story;
+
+}
 
 
 /* =====================================================
@@ -15725,6 +15893,9 @@ async function loadWelcomeRotationPool(){
   if(welcomePoolReady){
     return welcomePoolReady;
   }
+
+MARKET_INSTRUMENT_META =
+  payload.metadata || {};
 
   welcomePoolReady = (async () => {
 
