@@ -1,3 +1,35 @@
+"""NW-111: rolling three-year unadjusted EODHD closing-price cache."""
+import json
+import math
+import os
+import urllib.parse
+import urllib.request
+from datetime import date, datetime, timezone
+from pathlib import Path
+from zoneinfo import ZoneInfo
+
+ROOT = Path(__file__).resolve().parents[1]
+CONFIG = ROOT / "market_instruments.json"
+OUTPUT = ROOT / "market_history_3y.json"
+COPENHAGEN = ZoneInfo("Europe/Copenhagen")
+
+
+def three_years_ago(today):
+    try:
+        return today.replace(year=today.year - 3)
+    except ValueError:  # February 29
+        return today.replace(year=today.year - 3, day=28)
+
+
+def load_previous():
+    if not OUTPUT.exists():
+        return {}
+    with OUTPUT.open(encoding="utf-8") as handle:
+        payload = json.load(handle)
+    return payload.get("instruments", {}) if isinstance(payload, dict) else {}
+
+
+def fetch_closes(ticker, start, end, token):
     params = urllib.parse.urlencode({
         "api_token": token,
         "from": start.isoformat(),
