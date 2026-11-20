@@ -15099,47 +15099,71 @@ function renderWelcome(){
 
 
 /* ==========================================
-   WELCOME · INVESTMENT ROTATION
-========================================== */
-const WELCOME_ROTATION_INTERVAL=10000;
 
-const WELCOME_ROTATION_POOL = [
-"ANT.US",
-  
-"NVDA.US",
-  "AAPL.US",
-  "MSFT.US",
-  "GOOGL.US",
-"EUNL.XETRA",
-  "IS3N.XETRA",
-  "UBER.US",
-  "IUSQ.XETRA",
-"RHM.XETRA",
-  "NOVO-B.CO",
-  "ANT.US",
-  "MCD.US",
-  
-"NKE.US",
-  "SBUX.US",
-  "UBER.US",
-"LYTR.XETRA",
-  "8PSG.XETRA",
-  "IQQ6.XETRA",
-    "ANT.US",
-"VOW3.XETRA",
-  "MAERSK-B.CO",
-  "DANSKE.CO",
-  "VWS.CO",
-  "CL.US",
-  "ENR.XETRA",
-  
-  "UPS.US",
-  "XACTC25.CO",
-  "XDN0.XETRA",
-  "4BRZ.XETRA",
-  "IQQI.XETRA",
-  "WBIT.XETRA"
-];
+/* ==========================================
+   WELCOME · INVESTMENT ROTATION
+   SHARED 25-INSTRUMENT UNIVERSE
+========================================== */
+
+const WELCOME_ROTATION_INTERVAL = 10000;
+
+let WELCOME_ROTATION_POOL = [];
+
+let welcomePoolReady = null;
+
+async function loadWelcomeRotationPool(){
+
+  if(welcomePoolReady){
+    return welcomePoolReady;
+  }
+
+  welcomePoolReady = (async () => {
+
+    const response = await fetch(
+      "./market_instruments.json",
+      { cache: "no-store" }
+    );
+
+    if(!response.ok){
+      throw new Error(
+        `Market instruments HTTP ${response.status}`
+      );
+    }
+
+    const payload = await response.json();
+
+    const tickers = payload.tickers;
+
+    if(
+      !Array.isArray(tickers) ||
+      tickers.length !== 25 ||
+      new Set(tickers).size !== 25
+    ){
+      throw new Error(
+        "Invalid Welcome instrument universe"
+      );
+    }
+
+    WELCOME_ROTATION_POOL = [...tickers];
+
+    console.log(
+      "WELCOME ROTATION POOL READY",
+      WELCOME_ROTATION_POOL.length
+    );
+
+    return WELCOME_ROTATION_POOL;
+
+  })().catch(error => {
+
+    welcomePoolReady = null;
+    throw error;
+
+  });
+
+  return welcomePoolReady;
+
+}
+
 
 
 
@@ -22584,6 +22608,76 @@ function getMyWealthCostBarScale(){
 
 }
 
+
+/* ==========================================
+   NW-111 · DAILY MARKET HISTORY CACHE
+========================================== */
+
+let MARKET_HISTORY_CACHE = null;
+let MARKET_HISTORY_REQUEST = null;
+
+async function loadMarketHistory(){
+
+  if(MARKET_HISTORY_CACHE){
+    return MARKET_HISTORY_CACHE;
+  }
+
+  if(MARKET_HISTORY_REQUEST){
+    return MARKET_HISTORY_REQUEST;
+  }
+
+  MARKET_HISTORY_REQUEST = (async () => {
+
+    const response = await fetch(
+      "./market_history_3y.json",
+      { cache: "no-store" }
+    );
+
+    if(!response.ok){
+      throw new Error(
+        `Market history HTTP ${response.status}`
+      );
+    }
+
+    const payload = await response.json();
+
+    if(
+      !payload.instruments ||
+      typeof payload.instruments !== "object"
+    ){
+      throw new Error(
+        "Invalid market history JSON"
+      );
+    }
+
+    MARKET_HISTORY_CACHE = payload;
+
+    console.log(
+      "MARKET HISTORY READY",
+      Object.keys(payload.instruments).length
+    );
+
+    return payload;
+
+  })().finally(() => {
+    MARKET_HISTORY_REQUEST = null;
+  });
+
+  return MARKET_HISTORY_REQUEST;
+
+}
+
+async function getMarketTickerHistory(ticker){
+
+  const payload = await loadMarketHistory();
+
+  return (
+    payload.instruments?.[ticker] || null
+  );
+
+}
+
+
 /* =====================================================
    GET PORTFOLIO BY MODEL NUMBER
 ===================================================== */
@@ -22773,7 +22867,23 @@ initMyWealthRaceInteraction();
 initMyWealthCinema();
 	
 bindMyWealthComparisonToggle();
-startWelcomeRotation();
+
+
+loadWelcomeRotationPool()
+  .then(() => {
+    startWelcomeRotation();
+  })
+  .catch(error => {
+    console.error(
+      "WELCOME ROTATION INITIALIZATION FAILED",
+      error
+    );
+  });
+
+loadMarketHistory8);
+
+
+
 
 document
   .getElementById("mw-plan-download")
