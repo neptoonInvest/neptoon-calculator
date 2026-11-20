@@ -31,9 +31,10 @@ NEW_YORK = ZoneInfo("America/New_York")
 # 00 · INSTRUMENTS
 # =====================================================
 
+
 TICKERS = [
 
-    # STOCKS · 10
+    # STOCKS · 15
 
     "ANT.US",
     "AAPL.US",
@@ -45,29 +46,34 @@ TICKERS = [
     "RHM.XETRA",
     "NOVO-B.CO",
     "ASML.AS",
+    "MCD.US",
+    "NKE.US",
+    "MAERSK-B.CO",
+    "DANSKE.CO",
+    "VWS.CO",
 
-    # PERMANENT US INDICES · 2
+    # ETFs · 2
+
+    "LSMC.XETRA",
+    "EUNL.XETRA",
+
+    # GOLD ETC · 1
+
+    "8PSG.XETRA",
+
+    # US INDICES · 2
 
     "GSPC.INDX",
     "IXIC.INDX",
 
-    # EDITORIAL MARKET FOCUS · 1
-
-    "LSMC.XETRA",
-
-    # LOCAL MARKET INDICES · 5
+    # EUROPEAN INDICES · 5
 
     "OMXC25.INDX",
     "GDAXI.INDX",
     "FTSE.INDX",
     "OMXS30.INDX",
-    "FCHI.INDX",
-
-    # GLOBAL FALLBACK · 1
-
-    "EUNL.XETRA"
+    "FCHI.INDX"
 ]
-
 
 US_INDICES = [
     "GSPC.INDX",
