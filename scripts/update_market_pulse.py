@@ -1,178 +1,62 @@
 
-import os
-import json
-import math
-import urllib.request
-import urllib.parse
-from datetime import datetime, timezone
-from pathlib import Path
+name: NW-111 Market Pulse
 
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Market Pulse update mode"
+        required: true
+        default: "live"
+        type: choice
+        options:
+          - live
+          - close
 
-# =====================================================
-# NW-111 · MARKET PULSE
-# EODHD REALTIME QUOTES
-# =====================================================
+permissions:
+  contents: write
 
-TOKEN = os.environ["EODHD_TOKEN"]
+concurrency:
+  group: nw111-market-pulse
+  cancel-in-progress: false
 
-# Replace these examples with the 10 agreed tickers.
-# Use exact EODHD tickerExchange identifiers.
+jobs:
+  update-market-pulse:
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-TICKERS = [
+      - name: Run Market Pulse
+        env:
+          EODHD_TOKEN: ${{ secrets.EODHD_TOKEN }}
+          MARKET_PULSE_MODE: ${{ inputs.mode }}
+        run: |
+          echo "Market Pulse mode: $MARKET_PULSE_MODE"
+          python market_pulse.py
 
-    # ==========================================
-    # STOCKS · 10
-    # ==========================================
+      - name: Commit updated Market Pulse JSON
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      "ANT.US",
-  
-    "AAPL.US",
-  
-    "MSFT.US",
-    "NVDA.US",
-    "GOOGL.US",
-    "AMZN.US",
-    "META.US",
-    "RHM.XETRA",
-    "NOVO-B.CO",
-    "ASML.AS",
+          git add market_pulse.json
 
-    # ==========================================
-    # PERMANENT INDICES · 2
-    # ==========================================
+          if git diff --cached --quiet; then
+            echo "No Market Pulse changes"
+            exit 0
+          fi
 
-    "GSPC.INDX",       # S&P 500
-    "IXIC.INDX",       # NASDAQ Composite
+          git commit -m "Update Market Pulse (${{ inputs.mode }})"
 
-    # ==========================================
-    # EDITORIAL MARKET FOCUS · 1
-    # ==========================================
-
-    "LSMC.XETRA",      # Semiconductors ETF
-
-    # ==========================================
-    # LOCAL MARKET INDICES · 5
-    # ==========================================
-
-    "OMXC25.INDX",     # Denmark · OMX Copenhagen 25
-    "GDAXI.INDX",      # Germany · DAX 40
-    "FTSE.INDX",       # United Kingdom · FTSE 100
-    "OMXS30.INDX",     # Sweden · OMX Stockholm 30
-    "FCHI.INDX",       # France · CAC 40
-
-    # ==========================================
-    # GLOBAL FALLBACK · 1
-    # ==========================================
-
-    "EUNL.XETRA"       # MSCI World ETF
-
-]
-
-
-
-
-# =====================================================
-# 01 · SAFE NUMBER
-# =====================================================
-
-def safe_num(value):
-
-    try:
-        n = float(value)
-        return n if math.isfinite(n) else None
-
-    except (TypeError, ValueError):
-        return None
-
-
-# =====================================================
-# 02 · FETCH SINGLE QUOTE
-# =====================================================
-
-def fetch_quote(ticker):
-
-    params = urllib.parse.urlencode({
-        "api_token": TOKEN,
-        "fmt": "json"
-    })
-
-    url = (
-        "https://eodhd.com/api/real-time/"
-        + urllib.parse.quote(ticker, safe="")
-        + "?"
-        + params
-    )
-
-    request = urllib.request.Request(
-        url,
-        headers={"User-Agent": "NeptoonMarketPulse/1.0"}
-    )
-
-    with urllib.request.urlopen(
-        request,
-        timeout=20
-    ) as response:
-
-        data = json.load(response)
-
-    price = safe_num(
-        data.get("close", data.get("price"))
-    )
-
-    change = safe_num(
-        data.get("change_p")
-    )
-
-    return {
-        "realtimePrice": price,
-        "return": change / 100 if change is not None else None,
-        "timestamp": data.get("timestamp")
-    }
-
-
-# =====================================================
-# 03 · BUILD MARKET DATA
-# =====================================================
-
-def main():
-
-    quotes = {}
-
-    for ticker in TICKERS:
-
-        try:
-
-            quotes[ticker] = fetch_quote(ticker)
-
-            print("OK:", ticker)
-
-        except Exception as error:
-
-            print("ERROR:", ticker, error)
-
-            quotes[ticker] = {
-                "realtimePrice": None,
-                "return": None,
-                "timestamp": None
-            }
-
-    result = {
-        "updatedAt": datetime.now(
-            timezone.utc
-        ).isoformat(),
-
-        "quotes": quotes
-    }
-
-    Path("market_pulse.json").write_text(
-        json.dumps(result, indent=2),
-        encoding="utf-8"
-    )
-
-    print("Market Pulse JSON updated")
-
-
-if __name__ == "__main__":
-    main()
+          git pull --rebase origin main
+          git push origin HEAD:main
