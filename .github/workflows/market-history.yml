@@ -1,0 +1,50 @@
+name: NW-111 Daily Market History
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 07:30 Copenhagen: 06:30 UTC in winter, 05:30 UTC in summer.
+    # Both schedules run; a timezone guard below selects the right one.
+    - cron: '30 5 * * 1-5'
+    - cron: '30 6 * * 1-5'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nw111-market-history
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check Copenhagen local time
+        id: localtime
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$(TZ=Europe/Copenhagen date +%H:%M)" = "07:30" ]; then
+            echo 'run=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'run=false' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Fetch daily closing prices
+        if: steps.localtime.outputs.run == 'true'
+        env:
+          EODHD_TOKEN: ${{ secrets.EODHD_TOKEN }}
+        run: python scripts/update_market_history.py
+      - name: Commit cache
+        if: steps.localtime.outputs.run == 'true'
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add market_history_3y.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update NW-111 daily market history'
+            git push
+          fi
