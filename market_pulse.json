@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-20T10:37:21.469692+00:00",
+  "updatedAt": "2026-11-20T10:37:55.648583+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 97.17,
@@ -62,9 +62,9 @@
       "timestamp": 1795126560
     },
     "LSMC.XETRA": {
-      "realtimePrice": 85.69,
-      "return": -0.067167,
-      "timestamp": 1795170000
+      "realtimePrice": 85.86,
+      "return": -0.065317,
+      "timestamp": 1795170120
     },
     "OMXC25.INDX": {
       "realtimePrice": 1926.9517,
@@ -72,8 +72,8 @@
       "timestamp": 1795170120
     },
     "GDAXI.INDX": {
-      "realtimePrice": 25031.6699,
-      "return": -0.016971,
+      "realtimePrice": 25046.4395,
+      "return": -0.016391,
       "timestamp": 1795170120
     },
     "FTSE.INDX": {
@@ -87,8 +87,8 @@
       "timestamp": 1795170120
     },
     "FCHI.INDX": {
-      "realtimePrice": 7973.79,
-      "return": -0.013234999999999999,
+      "realtimePrice": 7978.1201,
+      "return": -0.012699,
       "timestamp": 1795170120
     },
     "EUNL.XETRA": {
