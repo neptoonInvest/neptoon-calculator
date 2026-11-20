@@ -27,58 +27,66 @@ OUTPUT = Path("market_pulse.json")
 NEW_YORK = ZoneInfo("America/New_York")
 
 
+
+
 # =====================================================
 # 00 · INSTRUMENTS
+# SHARED WITH DAILY MARKET HISTORY
 # =====================================================
 
+CONFIG = Path("market_instruments.json")
 
-TICKERS = [
 
-    # STOCKS · 15
+def load_tickers():
 
-    "ANT.US",
-    "AAPL.US",
-    "MSFT.US",
-    "NVDA.US",
-    "GOOGL.US",
-    "AMZN.US",
-    "META.US",
-    "RHM.XETRA",
-    "NOVO-B.CO",
-    "ASML.AS",
-    "MCD.US",
-    "NKE.US",
-    "MAERSK-B.CO",
-    "DANSKE.CO",
-    "VWS.CO",
+    with CONFIG.open(
+        "r",
+        encoding="utf-8"
+    ) as file:
 
-    # ETFs · 2
+        payload = json.load(file)
 
-    "LSMC.XETRA",
-    "EUNL.XETRA",
+    # Same configuration used by
+    # update_market_history.py
 
-    # GOLD ETC · 1
+    tickers = payload["tickers"]
 
-    "8PSG.XETRA",
+    if not isinstance(tickers, list):
+        raise ValueError(
+            "Invalid market instrument configuration"
+        )
 
-    # US INDICES · 2
+    tickers = [
+        str(t).strip().upper()
+        for t in tickers
+    ]
 
-    "GSPC.INDX",
-    "IXIC.INDX",
+    if (
+        len(tickers) != 25
+        or len(set(tickers)) != 25
+        or any(not t for t in tickers)
+    ):
+        raise ValueError(
+            "Expected exactly 25 unique tickers"
+        )
 
-    # EUROPEAN INDICES · 5
+    return tickers
 
-    "OMXC25.INDX",
-    "GDAXI.INDX",
-    "FTSE.INDX",
-    "OMXS30.INDX",
-    "FCHI.INDX"
-]
+
+TICKERS = load_tickers()
+
+
+# Official close override remains unchanged.
 
 US_INDICES = [
     "GSPC.INDX",
     "IXIC.INDX"
 ]
+
+if not set(US_INDICES).issubset(TICKERS):
+    raise ValueError(
+        "US indices missing from shared configuration"
+    )
 
 
 # =====================================================
