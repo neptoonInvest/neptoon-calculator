@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "tickers": [
+    "ANT.US", "AAPL.US", "MSFT.US", "NVDA.US", "GOOGL.US",
+    "AMZN.US", "META.US", "RHM.XETRA", "NOVO-B.CO", "ASML.AS",
+    "MCD.US", "NKE.US", "MAERSK-B.CO", "DANSKE.CO", "VWS.CO",
+    "LSMC.XETRA", "EUNL.XETRA", "8PSG.XETRA",
+    "GSPC.INDX", "IXIC.INDX", "OMXC25.INDX", "GDAXI.INDX",
+    "FTSE.INDX", "OMXS30.INDX", "FCHI.INDX"
+  ]
+}
