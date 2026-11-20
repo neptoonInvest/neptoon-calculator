@@ -1,11 +1,184 @@
+
 {
-  "version": "1.0",
+  "version": "1.1",
   "tickers": [
-    "ANT.US", "AAPL.US", "MSFT.US", "NVDA.US", "GOOGL.US",
-    "AMZN.US", "META.US", "RHM.XETRA", "NOVO-B.CO", "ASML.AS",
-    "MCD.US", "NKE.US", "MAERSK-B.CO", "DANSKE.CO", "VWS.CO",
-    "LSMC.XETRA", "EUNL.XETRA", "8PSG.XETRA",
-    "GSPC.INDX", "IXIC.INDX", "OMXC25.INDX", "GDAXI.INDX",
-    "DBXZ.XETRA", "OMXS30.INDX", "FCHI.INDX"
-  ]
+    "ANT.US",
+    "AAPL.US",
+    "MSFT.US",
+    "NVDA.US",
+    "GOOGL.US",
+    "AMZN.US",
+    "META.US",
+    "RHM.XETRA",
+    "NOVO-B.CO",
+    "ASML.AS",
+    "MCD.US",
+    "NKE.US",
+    "MAERSK-B.CO",
+    "DANSKE.CO",
+    "VWS.CO",
+    "LSMC.XETRA",
+    "EUNL.XETRA",
+    "8PSG.XETRA",
+    "GSPC.INDX",
+    "IXIC.INDX",
+    "OMXC25.INDX",
+    "GDAXI.INDX",
+    "DBXZ.XETRA",
+    "OMXS30.INDX",
+    "FCHI.INDX"
+  ],
+  "metadata": {
+    "ANT.US": {
+      "story": {
+        "da": "Anthropic udvikler kunstig intelligens med Claude som sit mest kendte produkt. Virksomheden arbejder med AI-assistenter til både private brugere og virksomheder og er en central aktør i konkurrencen om fremtidens AI-teknologi.",
+        "en": "Anthropic develops artificial intelligence, with Claude as its best-known product. The company builds AI assistants for consumers and businesses and is a major participant in the race to develop the next generation of AI technology."
+      }
+    },
+    "AAPL.US": {
+      "story": {
+        "da": "Apple er kendt for iPhone, Mac, iPad og Apple Watch. Virksomheden kombinerer hardware, software og digitale tjenester i et tæt forbundet økosystem, hvor loyalitet og design spiller en vigtig rolle.",
+        "en": "Apple is known for the iPhone, Mac, iPad and Apple Watch. The company combines hardware, software and digital services in a closely connected ecosystem where customer loyalty and design play an important role."
+      }
+    },
+    "MSFT.US": {
+      "story": {
+        "da": "Microsoft står bag Windows, Microsoft 365, Azure og en række AI-løsninger. Virksomheden leverer software og cloudteknologi til millioner af virksomheder og private brugere verden over.",
+        "en": "Microsoft is behind Windows, Microsoft 365, Azure and a range of AI solutions. The company provides software and cloud technology to millions of businesses and consumers worldwide."
+      }
+    },
+    "NVDA.US": {
+      "story": {
+        "da": "NVIDIA begyndte med grafikchips til computerspil, men er blevet en nøgleleverandør af processorer til kunstig intelligens. Virksomhedens teknologi bruges i datacentre, avanceret forskning og AI-modeller.",
+        "en": "NVIDIA began with graphics chips for computer games but has become a key supplier of processors for artificial intelligence. Its technology is used in data centers, advanced research and AI models."
+      }
+    },
+    "GOOGL.US": {
+      "story": {
+        "da": "Alphabet er moderselskab for Google, YouTube og flere teknologivirksomheder. Søgning og digital annoncering er centrale forretninger, mens cloudteknologi og kunstig intelligens er vigtige udviklingsområder.",
+        "en": "Alphabet is the parent company of Google, YouTube and several technology businesses. Search and digital advertising are core activities, while cloud technology and artificial intelligence are important areas of development."
+      }
+    },
+    "AMZN.US": {
+      "story": {
+        "da": "Amazon begyndte som en onlineboghandel og er i dag en global handels- og teknologivirksomhed. Foruden e-handel driver Amazon Web Services en af verdens største cloudplatforme.",
+        "en": "Amazon began as an online bookstore and has become a global commerce and technology company. Alongside e-commerce, Amazon Web Services operates one of the world's largest cloud platforms."
+      }
+    },
+    "META.US": {
+      "story": {
+        "da": "Meta ejer Facebook, Instagram og WhatsApp. Virksomheden tjener hovedparten af sine indtægter på digital annoncering og investerer samtidig betydeligt i kunstig intelligens og nye digitale platforme.",
+        "en": "Meta owns Facebook, Instagram and WhatsApp. The company earns most of its revenue from digital advertising while investing heavily in artificial intelligence and new digital platforms."
+      }
+    },
+    "RHM.XETRA": {
+      "story": {
+        "da": "Rheinmetall er en tysk industrikoncern med en central rolle i europæisk forsvarsteknologi. Virksomheden producerer blandt andet ammunition, militære køretøjer og avancerede forsvarssystemer.",
+        "en": "Rheinmetall is a German industrial group with a major role in European defense technology. Its products include ammunition, military vehicles and advanced defense systems."
+      }
+    },
+    "NOVO-B.CO": {
+      "story": {
+        "da": "Novo Nordisk er en dansk medicinalvirksomhed med speciale i diabetes, fedme og andre kroniske sygdomme. Virksomheden er blandt verdens førende inden for behandlinger baseret på GLP-1-teknologi.",
+        "en": "Novo Nordisk is a Danish pharmaceutical company specializing in diabetes, obesity and other chronic diseases. It is among the world's leading developers of treatments based on GLP-1 technology."
+      }
+    },
+    "ASML.AS": {
+      "story": {
+        "da": "ASML fra Holland producerer avancerede litografimaskiner, som bruges til fremstilling af mikrochips. Virksomhedens EUV-teknologi er afgørende for produktionen af nogle af verdens mest avancerede halvledere.",
+        "en": "ASML, based in the Netherlands, manufactures advanced lithography machines used to produce microchips. Its EUV technology is essential for manufacturing some of the world's most advanced semiconductors."
+      }
+    },
+    "MCD.US": {
+      "story": {
+        "da": "McDonald's er en af verdens mest kendte restaurantkæder. Forretningen bygger i høj grad på franchising, stærke varemærker og et globalt netværk af restauranter.",
+        "en": "McDonald's is one of the world's most recognizable restaurant chains. Its business relies heavily on franchising, strong brands and a global network of restaurants."
+      }
+    },
+    "NKE.US": {
+      "story": {
+        "da": "Nike er en global producent af sportssko, sportstøj og sportsudstyr. Virksomheden er kendt for sit Swoosh-logo, samarbejder med internationale sportsstjerner og stærk markedsføring.",
+        "en": "Nike is a global producer of athletic footwear, clothing and sports equipment. The company is known for its Swoosh logo, partnerships with international athletes and powerful marketing."
+      }
+    },
+    "MAERSK-B.CO": {
+      "story": {
+        "da": "A.P. Møller - Mærsk er en dansk transport- og logistikvirksomhed, som forbinder verdenshandlen gennem containerskibe, havneterminaler og logistiktjenester. Virksomhedens aktiviteter er tæt knyttet til udviklingen i den globale handel.",
+        "en": "A.P. Moller - Maersk is a Danish transport and logistics company connecting global trade through container ships, port terminals and logistics services. Its activities are closely linked to developments in international trade."
+      }
+    },
+    "DANSKE.CO": {
+      "story": {
+        "da": "Danske Bank er en af Nordens største finansielle virksomheder. Banken tilbyder blandt andet boliglån, opsparing, betalinger og finansielle tjenester til privatkunder og virksomheder.",
+        "en": "Danske Bank is one of the Nordic region's largest financial institutions. Its services include mortgages, savings, payments and financial solutions for individuals and businesses."
+      }
+    },
+    "VWS.CO": {
+      "story": {
+        "da": "Vestas er en dansk producent af vindmøller og leverandør af service til vindenergiprojekter verden over. Virksomheden spiller en vigtig rolle i udbygningen af vedvarende energi.",
+        "en": "Vestas is a Danish wind turbine manufacturer and service provider for wind energy projects worldwide. The company plays an important role in the expansion of renewable energy."
+      }
+    },
+    "LSMC.XETRA": {
+      "story": {
+        "da": "Beskrivelse af ETF-produktet tilføjes senere.",
+        "en": "ETF product description to be added."
+      }
+    },
+    "EUNL.XETRA": {
+      "story": {
+        "da": "Beskrivelse af ETF-produktet tilføjes senere.",
+        "en": "ETF product description to be added."
+      }
+    },
+    "8PSG.XETRA": {
+      "story": {
+        "da": "Beskrivelse af guld-ETC-produktet tilføjes senere.",
+        "en": "Gold ETC product description to be added."
+      }
+    },
+    "GSPC.INDX": {
+      "story": {
+        "da": "Beskrivelse af aktieindekset tilføjes senere.",
+        "en": "Stock index description to be added."
+      }
+    },
+    "IXIC.INDX": {
+      "story": {
+        "da": "Beskrivelse af aktieindekset tilføjes senere.",
+        "en": "Stock index description to be added."
+      }
+    },
+    "OMXC25.INDX": {
+      "story": {
+        "da": "Beskrivelse af aktieindekset tilføjes senere.",
+        "en": "Stock index description to be added."
+      }
+    },
+    "GDAXI.INDX": {
+      "story": {
+        "da": "Beskrivelse af aktieindekset tilføjes senere.",
+        "en": "Stock index description to be added."
+      }
+    },
+    "DBXZ.XETRA": {
+      "story": {
+        "da": "Beskrivelse af ETF-produktet tilføjes senere.",
+        "en": "ETF product description to be added."
+      }
+    },
+    "OMXS30.INDX": {
+      "story": {
+        "da": "Beskrivelse af aktieindekset tilføjes senere.",
+        "en": "Stock index description to be added."
+      }
+    },
+    "FCHI.INDX": {
+      "story": {
+        "da": "Beskrivelse af aktieindekset tilføjes senere.",
+        "en": "Stock index description to be added."
+      }
+    }
+  }
 }
+
