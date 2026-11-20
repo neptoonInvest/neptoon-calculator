@@ -6289,6 +6289,260 @@ nav.bottom-nav {
 
 }
 	
+
+
+
+/* ==========================================
+   NW-111 · MARKET HISTORY MODAL
+========================================== */
+
+.nt-history-modal[hidden]{
+  display:none !important;
+}
+
+.nt-history-modal{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  background:rgba(0,12,28,.88);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px;
+}
+
+.nt-history-shell{
+  width:100%;
+  max-width:720px;
+  max-height:calc(100dvh - 24px);
+  overflow-y:auto;
+  background:linear-gradient(
+    145deg,
+    #061b36,
+    #0a3055
+  );
+  border:1px solid #52799c;
+  border-radius:0;
+  color:#fff;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-y;
+}
+
+.nt-history-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:52px;
+  padding-left:18px;
+  border-bottom:1px solid #456b8c;
+  font-size:13px;
+  letter-spacing:2px;
+  font-weight:700;
+}
+
+.nt-history-header b{
+  color:#68d8ef;
+}
+
+#nt-history-close{
+  width:52px;
+  height:52px;
+  background:transparent;
+  color:white;
+  border:0;
+  border-left:1px solid #456b8c;
+  border-radius:0;
+  font-size:30px;
+  cursor:pointer;
+}
+
+.nt-history-body{
+  padding:20px 18px 24px;
+}
+
+.nt-history-identity{
+  display:grid;
+  grid-template-columns:52px minmax(0,1fr) auto;
+  align-items:center;
+  gap:14px;
+  margin-bottom:24px;
+}
+
+#nt-history-logo{
+  width:52px;
+  height:52px;
+  object-fit:contain;
+  border:1px solid #52799c;
+  padding:5px;
+}
+
+.nt-history-instrument{
+  min-width:0;
+}
+
+#nt-history-name{
+  font-size:22px;
+  line-height:1.2;
+  margin:0 0 5px;
+}
+
+#nt-history-meta{
+  color:#a9c8df;
+  font-size:12px;
+}
+
+.nt-history-quote{
+  text-align:right;
+}
+
+#nt-history-price{
+  display:block;
+  font-size:22px;
+  white-space:nowrap;
+}
+
+#nt-history-price-label{
+  font-size:11px;
+  color:#a9c8df;
+}
+
+.nt-history-horizons{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  margin-bottom:20px;
+  border:1px solid #6388a6;
+}
+
+.nt-history-horizons button{
+  padding:11px 4px;
+  border:0;
+  border-right:1px solid #6388a6;
+  border-radius:0;
+  background:transparent;
+  color:white;
+  font-weight:700;
+  font-size:13px;
+  cursor:pointer;
+}
+
+.nt-history-horizons button:last-child{
+  border-right:0;
+}
+
+.nt-history-horizons button.active{
+  background:#8ed4f4;
+  color:#061b36;
+}
+
+.nt-history-chart-wrap{
+  position:relative;
+  height:290px;
+  width:100%;
+}
+
+#nt-history-chart{
+  display:block;
+  width:100%;
+  height:100%;
+  touch-action:pan-y;
+}
+
+.nt-history-tooltip{
+  position:absolute;
+  top:12px;
+  left:12px;
+  padding:8px 11px;
+  background:#0c3659;
+  border:1px solid #8ed4f4;
+  color:white;
+  font-size:12px;
+  pointer-events:none;
+  white-space:nowrap;
+}
+
+.nt-history-note{
+  margin-top:12px;
+  font-size:10px;
+  color:#a9c8df;
+  text-align:center;
+}
+
+.nt-history-story{
+  margin-top:25px;
+  padding-top:20px;
+  border-top:1px solid #456b8c;
+}
+
+#nt-history-story-title{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:1.5px;
+  color:#8ed4f4;
+}
+
+#nt-history-story-text{
+  font-size:14px;
+  line-height:1.6;
+  margin:12px 0 0;
+}
+
+@media(max-width:520px){
+
+  .nt-history-modal{
+    padding:0;
+    align-items:stretch;
+  }
+
+  .nt-history-shell{
+    max-height:100dvh;
+    border-left:0;
+    border-right:0;
+  }
+
+  .nt-history-body{
+    padding:16px 12px 24px;
+  }
+
+  .nt-history-identity{
+    grid-template-columns:42px minmax(0,1fr);
+    gap:10px;
+  }
+
+  #nt-history-logo{
+    width:42px;
+    height:42px;
+  }
+
+  #nt-history-name{
+    font-size:18px;
+  }
+
+  .nt-history-quote{
+    grid-column:1 / -1;
+    text-align:left;
+    padding-top:8px;
+  }
+
+  .nt-history-chart-wrap{
+    height:250px;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -8625,6 +8879,112 @@ nav.bottom-nav {
 </footer>
 
 
+<!-- ==========================================
+     NW-111 · MARKET HISTORY MODAL
+========================================== -->
+
+<div
+  id="nt-history-modal"
+  class="nt-history-modal"
+  hidden
+>
+  <section
+    class="nt-history-shell"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="nt-history-name"
+  >
+
+    <header class="nt-history-header">
+      <span>NEPTOON <b>WEALTH</b> · <span id="nt-history-type">AKTIE</span></span>
+
+      <button
+        id="nt-history-close"
+        type="button"
+        aria-label="Close"
+      >×</button>
+    </header>
+
+    <div class="nt-history-body">
+
+      <!-- INSTRUMENT IDENTITY -->
+
+      <div class="nt-history-identity">
+
+        <img
+          id="nt-history-logo"
+          alt=""
+          width="52"
+          height="52"
+        >
+
+        <div class="nt-history-instrument">
+          <h2 id="nt-history-name">Apple</h2>
+          <div id="nt-history-meta">
+            AAPL.US · Technology · USA
+          </div>
+        </div>
+
+        <div class="nt-history-quote">
+          <strong id="nt-history-price">—</strong>
+          <span id="nt-history-price-label">Seneste kurs</span>
+        </div>
+
+      </div>
+
+      <!-- HORIZON SELECTORS -->
+
+      <nav
+        class="nt-history-horizons"
+        aria-label="Price history period"
+      >
+        <button data-period="3m">3M</button>
+        <button data-period="6m">6M</button>
+        <button data-period="12m">12M</button>
+        <button data-period="3y" class="active">3Y</button>
+      </nav>
+
+      <!-- CHART -->
+
+      <div class="nt-history-chart-wrap">
+
+        <canvas
+          id="nt-history-chart"
+          aria-label="Historical daily closing prices"
+        ></canvas>
+
+        <div
+          id="nt-history-tooltip"
+          class="nt-history-tooltip"
+          hidden
+        ></div>
+
+      </div>
+
+      <div class="nt-history-note">
+        Historiske lukkekurser · Uden justering for udbytte og aktiesplit
+      </div>
+
+      <!-- GAME STORY -->
+
+      <div class="nt-history-story">
+        <div id="nt-history-story-title">
+          HISTORIEN BAG VIRKSOMHEDEN
+        </div>
+
+        <p id="nt-history-story-text">
+          —
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+</div>
+
+
+
+
 <nav class="bottom-nav" aria-label="Primary navigation">
   <div class="nav-inner" id="bottom-nav"></div>
 </nav>
@@ -10620,6 +10980,206 @@ function completeMyWealthCinema(){
   );
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================
+   NW-111 · MARKET HISTORY CONTROLLER
+========================================== */
+
+let ntHistoryTicker = null;
+let ntHistoryPeriod = "3y";
+
+async function openMarketHistoryModal(ticker){
+
+  const modal =
+    document.getElementById("nt-history-modal");
+
+  if(!modal) return;
+
+  ntHistoryTicker = ticker;
+  ntHistoryPeriod = "3y";
+
+  modal.hidden = false;
+
+  const name =
+    document.getElementById("nt-history-name");
+
+  const meta =
+    document.getElementById("nt-history-meta");
+
+  const logo =
+    document.getElementById("nt-history-logo");
+
+  const price =
+    document.getElementById("nt-history-price");
+
+  name.textContent = ticker;
+  meta.textContent = ticker;
+  price.textContent = "—";
+
+  logo.src =
+    `./icons/stocks/${encodeURIComponent(ticker)}.png`;
+
+  logo.onerror = () => {
+    logo.style.visibility = "hidden";
+  };
+
+  logo.style.visibility = "visible";
+
+  try{
+
+    const history =
+      await getMarketTickerHistory(ticker);
+
+    if(!history?.prices?.length){
+      throw new Error("No price history available");
+    }
+
+    // Next step:
+    // renderMarketHistoryChart(history.prices, ntHistoryPeriod);
+
+    console.log(
+      "HISTORY MODAL READY",
+      ticker,
+      history.prices.length
+    );
+
+  }catch(error){
+
+    console.error(
+      "HISTORY MODAL ERROR",
+      ticker,
+      error
+    );
+
+  }
+
+}
+
+function closeMarketHistoryModal(){
+
+  const modal =
+    document.getElementById("nt-history-modal");
+
+  if(modal){
+    modal.hidden = true;
+  }
+
+  ntHistoryTicker = null;
+}
+
+document.getElementById("nt-history-close")
+  ?.addEventListener(
+    "click",
+    closeMarketHistoryModal
+  );
+
+document.querySelectorAll(
+  ".nt-history-horizons button"
+).forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    document.querySelectorAll(
+      ".nt-history-horizons button"
+    ).forEach(b => b.classList.remove("active"));
+
+    button.classList.add("active");
+
+    ntHistoryPeriod =
+      button.dataset.period;
+
+    // Next step:
+    // renderMarketHistoryChart(...);
+
+  });
+
+});
+
+window.openMarketHistoryModal =
+  openMarketHistoryModal;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* =====================================================
