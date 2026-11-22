@@ -15061,7 +15061,6 @@ console.log(
 }
 
 
-
 function renderMarketHistoryMeta(ticker){
 
   const instrument =
@@ -15087,22 +15086,21 @@ function renderMarketHistoryMeta(ticker){
   const currency =
     instrument?.ccy || "";
 
+  const isin =
+    instrument?.isin || "";
+
   document.getElementById("nt-history-name")
     .textContent = name;
 
-document.getElementById("nt-history-meta")
-  .textContent = [
-    ticker,
-    type,
-    sector && sector !== "none" ? sector : null,
-    isin ? `ISIN: ${isin}` : null
-  ].filter(Boolean).join(" · ");
-
-
-const isin =
-  instrument?.isin || "";
-
-
+  document.getElementById("nt-history-meta")
+    .textContent = [
+      ticker,
+      type,
+      sector && sector !== "none"
+        ? sector
+        : null,
+      isin ? `ISIN: ${isin}` : null
+    ].filter(Boolean).join(" · ");
 
   document.getElementById("nt-history-price-label")
     .textContent = [
