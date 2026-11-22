@@ -7595,6 +7595,40 @@ fontweight:700px
 
 	
 
+/* ============================================
+   NEPTOON STRATEGY GAME · DESKTOP
+   Preserve original mobile layout
+============================================ */
+
+@media (min-width:900px){
+
+  /* Outer game modal */
+
+  .nt-strategy-modal{
+    width:100vw !important;
+    max-width:none !important;
+    left:0 !important;
+    right:0 !important;
+  }
+
+  /* Game root */
+
+  .nt-strategy-modal .game-root{
+    width:100% !important;
+    max-width:none !important;
+  }
+
+  /* Centered desktop game stage */
+
+  .nt-strategy-modal .game-root .shell{
+    width:min(900px, calc(100vw - 80px)) !important;
+    max-width:none !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+}
+
 
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
