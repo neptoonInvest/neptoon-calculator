@@ -7989,7 +7989,74 @@ fontweight:700px
 
 }
 
+/* =====================================================
+   NEPTOON FRONT DOOR · EARTH
+===================================================== */
 
+.nt-orbit-planet{
+  position:absolute;
+
+  left:50%;
+  top:calc(45% - 80px);
+
+  width:72%;
+  aspect-ratio:1;
+
+  transform:translate(-50%,-50%);
+
+  background-image:url("./icons/earh.png");
+  background-size:contain;
+  background-position:center;
+  background-repeat:no-repeat;
+
+  border-radius:50%;
+  box-shadow:none;
+
+  z-index:1;
+  pointer-events:none;
+}
+
+
+/* =====================================================
+   NEPTOON FRONT DOOR · EARTH
+   MOBILE + DESKTOP
+===================================================== */
+
+/* MOBILE · Keep tested position */
+
+.nt-orbit-planet{
+  position:absolute;
+
+  left:50%;
+  top:calc(45% - 80px);
+
+  width:72%;
+  aspect-ratio:1;
+
+  transform:translate(-50%,-50%);
+
+  background-image:url("./icons/earh.png");
+  background-size:contain;
+  background-position:center;
+  background-repeat:no-repeat;
+
+  border-radius:50%;
+  box-shadow:none;
+
+  z-index:1;
+  pointer-events:none;
+}
+
+
+/* DESKTOP · Move Earth lower */
+
+@media (min-width:900px){
+
+  .nt-orbit-planet{
+    top:calc(45% - 20px);
+  }
+
+}
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
