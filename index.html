@@ -7099,7 +7099,7 @@ background:rgba(78,121,189,.20);
   position:absolute;
 
   left:50%;
-  top:45%;
+ top:calc(45% - 30px);
 
   transform:translate(-50%,-50%);
 
@@ -12276,18 +12276,7 @@ function renderFrontDoor(){
    FRONT DOOR · OPEN / CLOSE
 ========================================== */
 
-function openFrontDoor(){
-
-  renderFrontDoor();
-
-  const modal =
-    document.getElementById("nt-frontdoor");
-
-  if(!modal) return;
-
-  modal.hidden = false;
-
-}
+top:calc(45% - 30px);
 
 function closeFrontDoor(){
 
@@ -12324,30 +12313,32 @@ function bindFrontDoor(){
     ?.addEventListener("click", close);
 
 
-  modal.querySelectorAll(
-    "[data-frontdoor-gate]"
-  ).forEach(button => {
+modal.querySelectorAll(
+  "[data-frontdoor-gate]"
+).forEach(button => {
 
-    button.addEventListener("click", () => {
+  button.addEventListener("click", () => {
 
-      const gate =
-        button.dataset.frontdoorGate;
+    const gate =
+      button.dataset.frontdoorGate;
 
-      closeFrontDoor();
+    const destinations = {
+      markets: "welcome",
+      future: "assets",
+      retirement: "portfolios"
+    };
 
-      /*
-        Connect actual navigation here
-        after we agree on destinations.
-      */
+    const tab = destinations[gate];
 
-      console.log(
-        "FRONT DOOR GATE:",
-        gate
-      );
+    if(!tab) return;
 
-    });
+    closeFrontDoor();
+
+    openTab(tab);
 
   });
+
+});
 
 }
 
@@ -12483,6 +12474,125 @@ async function openMarketHistoryModal(ticker){
   }
 
 }
+
+
+/* =====================================================
+   NEPTOON · FRONT DOOR
+   ANIMATED ORBITAL TRAINS
+===================================================== */
+
+function initFrontDoorOrbit(){
+
+  const scene =
+    document.querySelector(".nt-orbit-scene");
+
+  const path =
+    document.getElementById("nt-orbit-motion-path");
+
+  const trains = [
+    document.querySelector(".nt-orbit-train-1"),
+    document.querySelector(".nt-orbit-train-2"),
+    document.querySelector(".nt-orbit-train-3")
+  ];
+
+  if(
+    !scene ||
+    !path ||
+    trains.some(train => !train)
+  ){
+    return;
+  }
+
+  // Prevent duplicate animation loops.
+
+  if(scene.dataset.orbitRunning === "1"){
+    return;
+  }
+
+  scene.dataset.orbitRunning = "1";
+
+  const pathLength =
+    path.getTotalLength();
+
+  // One revolution every 18 seconds.
+
+  const duration = 18000;
+
+  // Three trains evenly distributed.
+
+  const offsets = [
+    0,
+    1 / 3,
+    2 / 3
+  ];
+
+  const colors = [
+    "#20aaff",
+    "#8ce53c",
+    "#ffbd32"
+  ];
+
+  trains.forEach((train, index) => {
+
+    const glow =
+      train.querySelector(".nt-orbit-train-glow");
+
+    if(glow){
+      glow.setAttribute("fill", colors[index]);
+      glow.style.fill = colors[index];
+    }
+
+  });
+
+  let startTime = null;
+
+  function animate(timestamp){
+
+    if(startTime === null){
+      startTime = timestamp;
+    }
+
+    const elapsed =
+      timestamp - startTime;
+
+    const progress =
+      (elapsed % duration) / duration;
+
+    trains.forEach((train, index) => {
+
+      const position =
+        (progress + offsets[index]) % 1;
+
+      const point =
+        path.getPointAtLength(
+          position * pathLength
+        );
+
+      train.setAttribute(
+        "transform",
+        `translate(${point.x}, ${point.y})`
+      );
+
+    });
+
+    requestAnimationFrame(animate);
+
+  }
+
+  // Respect reduced-motion accessibility setting.
+
+  if(
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+  ){
+    return;
+  }
+
+  requestAnimationFrame(animate);
+
+}
+
 
 function closeMarketHistoryModal(){
 
