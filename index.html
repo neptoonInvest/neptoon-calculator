@@ -7378,7 +7378,31 @@ background:rgba(78,121,189,.20);
 }
 
 
+/* MARKET PULSE · PRICE + CURRENCY */
 
+#page-welcome .market-stock-card .market-price{
+  display:flex;
+  align-items:baseline;
+  justify-content:flex-end;
+  gap:6px;
+  white-space:nowrap;
+  min-width:0;
+}
+
+#page-welcome .market-stock-card .market-price-ccy{
+  font-size:9px;
+  font-weight:500;
+  color:#9fb8d4;
+  flex-shrink:0;
+}
+
+#page-welcome .market-stock-card .market-price-value{
+  font-size:12px;
+  font-weight:750;
+  color:#ffffff;
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
 
 
 
@@ -25737,7 +25761,17 @@ const perPage = 5;
 
         <div class="market-name">${esc(item.name)}</div>
         <div class="market-symbol">${esc(item.tickerExchange)}</div>
-        <div class="market-price">${marketFormatPrice(item.realtimePrice, item.currency)}</div>
+
+       <div class="market-price">
+  <span class="market-price-ccy">
+    ${esc(item.currency || "")}
+  </span>
+  <span class="market-price-value">
+    ${marketFormatPrice(item.realtimePrice, "")}
+  </span>
+</div>
+
+
         <div class="market-change ${direction}">${marketFormatReturn(item.return)}</div>
       </article>
     `;
