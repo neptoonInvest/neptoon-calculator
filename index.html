@@ -25629,7 +25629,20 @@ async function getMarketTickerHistory(ticker){
 
 }
 
+function openFrontDoor(){
 
+  renderFrontDoor();
+
+  const modal =
+    document.getElementById("nt-frontdoor");
+
+  if(!modal) return;
+
+  modal.hidden = false;
+
+  initFrontDoorOrbit();
+
+}
 
 function renderMarketHistoryLivePrice(ticker){
 
@@ -25741,44 +25754,83 @@ const perPage = 5;
 
 
 
-  const totalPages = Math.max(1, Math.ceil(instruments.length / perPage));
-  MARKET_STATE.page = Math.max(0, Math.min(MARKET_STATE.page, totalPages - 1));
 
-  const start = MARKET_STATE.page * perPage;
-  const visible = instruments.slice(start, start + perPage);
+const totalPages = Math.max(
+  1,
+  Math.ceil(instruments.length / perPage)
+);
 
-  track.innerHTML = visible.map(item => {
-    const direction = item.return == null
-      ? 'unknown'
-      : item.return >= 0 ? 'up' : 'down';
+MARKET_STATE.page = Math.max(
+  0,
+  Math.min(MARKET_STATE.page, totalPages - 1)
+);
 
-    return `
-    
-  <article
-    class="market-stock-card"
-    data-history-ticker="${esc(item.tickerExchange)}"
-    role="button"
-    tabindex="0"
-    aria-label="View price history for ${esc(item.name)}"
-  >
+const start = MARKET_STATE.page * perPage;
+const visible = instruments.slice(start, start + perPage);
 
-        <div class="market-name">${esc(item.name)}</div>
-        <div class="market-symbol">${esc(item.tickerExchange)}</div>
+const priceFormatter = new Intl.NumberFormat(
+  APP.lang === "da" ? "da-DK" : "en-GB",
+  {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }
+);
 
-       <div class="market-price">
-  <span class="market-price-ccy">
-    ${esc(item.currency || "")}
-  </span>
-  <span class="market-price-value">
-    ${marketFormatPrice(item.realtimePrice, "")}
-  </span>
-</div>
+track.innerHTML = visible.map(item => {
 
+  const direction = item.return == null
+    ? "unknown"
+    : item.return >= 0 ? "up" : "down";
 
-        <div class="market-change ${direction}">${marketFormatReturn(item.return)}</div>
-      </article>
-    `;
-  }).join('');
+  const price = (
+    item.realtimePrice !== null &&
+    item.realtimePrice !== undefined &&
+    item.realtimePrice !== "" &&
+    Number.isFinite(Number(item.realtimePrice))
+  )
+    ? priceFormatter.format(Number(item.realtimePrice))
+    : "—";
+
+  const currency = item.currency || "";
+
+  return `
+    <article
+      class="market-stock-card"
+      data-history-ticker="${esc(item.tickerExchange)}"
+      role="button"
+      tabindex="0"
+      aria-label="View price history for ${esc(item.name)}"
+    >
+
+      <div class="market-name">
+        ${esc(item.name)}
+      </div>
+
+      <div class="market-symbol">
+        ${esc(item.tickerExchange)}
+      </div>
+
+      <div class="market-price">
+
+        <span class="market-price-ccy">
+          ${esc(currency)}
+        </span>
+
+        <span class="market-price-value">
+          ${price}
+        </span>
+
+      </div>
+
+      <div class="market-change ${direction}">
+        ${marketFormatReturn(item.return)}
+      </div>
+
+    </article>
+  `;
+
+}).join("");
+
 
   $('market-stock-count').textContent =
     `${start + 1}–${Math.min(start + perPage, instruments.length)} / ${instruments.length}`;
@@ -26054,20 +26106,7 @@ window.addEventListener(
   }
 );
 
-function openFrontDoor(){
 
-  renderFrontDoor();
-
-  const modal =
-    document.getElementById("nt-frontdoor");
-
-  if(!modal) return;
-
-  modal.hidden = false;
-
-  initFrontDoorOrbit();
-
-}
 
 let strategyGameInstance = null;
 
