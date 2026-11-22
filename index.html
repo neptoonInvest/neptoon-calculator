@@ -7451,6 +7451,151 @@ fontweight:700px
 }
 
 
+/* =====================================================
+   NEPTOON FRONT DOOR V2 · DESKTOP RESPONSIVE
+   Mobile CSS remains unchanged
+===================================================== */
+
+@media(min-width:900px){
+
+  /* Full desktop viewport */
+
+  .nt-frontdoor-panel{
+    width:100%;
+    max-width:none;
+    height:100dvh;
+    max-height:none;
+  }
+
+  /* Header across desktop */
+
+  .nt-frontdoor-header{
+    width:100%;
+    padding:24px 48px;
+    box-sizing:border-box;
+  }
+
+  .nt-frontdoor-brand{
+    font-size:15px;
+  }
+
+  /* Two-column composition */
+
+  .nt-frontdoor-content{
+    width:100%;
+    max-width:1200px;
+    min-height:calc(100dvh - 90px);
+
+    margin:0 auto;
+    padding:40px 48px;
+
+    box-sizing:border-box;
+
+    display:grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    column-gap:70px;
+    align-items:center;
+  }
+
+  /* Left column: Hero */
+
+  .nt-frontdoor-hero{
+    align-self:center;
+  }
+
+  .nt-frontdoor-kicker{
+    font-size:12px;
+    margin-bottom:20px;
+  }
+
+  .nt-frontdoor-title{
+    font-size:clamp(36px,3.3vw,52px);
+    line-height:1.1;
+    margin-bottom:24px;
+  }
+
+  .nt-frontdoor-intro{
+    font-size:16px;
+    line-height:1.7;
+    max-width:460px;
+  }
+
+  /* Right column: Orbital navigation */
+
+  .nt-orbit-scene{
+    width:100%;
+    max-width:540px;
+    aspect-ratio:1 / 1.32;
+
+    margin:0 auto;
+    align-self:center;
+  }
+
+  /* Larger destination cards */
+
+  .nt-orbit-card{
+    width:34%;
+    min-height:145px;
+    padding:16px 16px 28px;
+  }
+
+  .nt-orbit-card strong{
+    font-size:15px;
+  }
+
+  .nt-orbit-card small{
+    font-size:12px;
+  }
+
+  .nt-orbit-card-icon svg{
+    width:25px;
+    height:25px;
+  }
+
+  /* Footnote beneath composition */
+
+  .nt-frontdoor-footnote{
+    grid-column:1 / -1;
+    text-align:center;
+    margin:0;
+    padding-top:12px;
+  }
+
+}
+
+/* =====================================================
+   DESKTOP · SHORTER BROWSER WINDOWS
+===================================================== */
+
+@media(min-width:900px) and (max-height:760px){
+
+  .nt-frontdoor-content{
+    padding-top:18px;
+    padding-bottom:18px;
+  }
+
+  .nt-orbit-scene{
+    max-width:440px;
+  }
+
+  .nt-orbit-card{
+    min-height:115px;
+    padding:10px 12px 24px;
+  }
+
+  .nt-orbit-card strong{
+    font-size:12px;
+  }
+
+  .nt-orbit-card small{
+    font-size:10px;
+  }
+
+}
+
+	
+
+
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
