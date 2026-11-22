@@ -11042,6 +11042,7 @@ let ntHistoryTicker = null;
 let ntHistoryPeriod = "3y";
 
 
+
 async function openMarketHistoryModal(ticker){
 
   const modal =
@@ -11052,7 +11053,9 @@ async function openMarketHistoryModal(ticker){
   ntHistoryTicker = ticker;
   ntHistoryPeriod = "3y";
 
-  // Reset previous chart state.
+  /*
+    RESET PREVIOUS CHART STATE
+  */
 
   ntHistoryPrices = [];
   ntHistoryHoverIndex = -1;
@@ -11060,12 +11063,18 @@ async function openMarketHistoryModal(ticker){
 
   modal.hidden = false;
 
-renderMarketHistoryLivePrice(ticker);
-renderMarketHistoryMeta(ticker);
-renderMarketHistoryIcon(ticker);
-renderMarketHistoryStory(ticker);
+  /*
+    POPULATE MODAL CONTENT
+  */
 
-  // Reset horizon selector to 3Y.
+  renderMarketHistoryMeta(ticker);
+  renderMarketHistoryLivePrice(ticker);
+  renderMarketHistoryIcon(ticker);
+  renderMarketHistoryStory(ticker);
+
+  /*
+    RESET HORIZON SELECTOR TO 3Y
+  */
 
   document.querySelectorAll(
     ".nt-history-horizons button"
@@ -11078,32 +11087,15 @@ renderMarketHistoryStory(ticker);
 
   });
 
-  const name =
-    document.getElementById("nt-history-name");
-
-  const meta =
-    document.getElementById("nt-history-meta");
-
-  const logo =
-    document.getElementById("nt-history-logo");
-
-  const price =
-    document.getElementById("nt-history-price");
-
-  name.textContent = ticker;
-  meta.textContent = ticker;
-  price.textContent = "—";
-
-  logo.style.visibility = "visible";
-
-  logo.onerror = () => {
-    logo.style.visibility = "hidden";
-  };
-renderMarketHistoryMeta(ticker);
-renderMarketHistoryIcon(ticker);
-  // Clear old chart while loading.
+  /*
+    CLEAR OLD CHART WHILE LOADING
+  */
 
   drawMarketHistoryChart();
+
+  /*
+    LOAD HISTORICAL PRICES
+  */
 
   try{
 
@@ -11147,7 +11139,6 @@ renderMarketHistoryIcon(ticker);
   }
 
 }
-
 
 function closeMarketHistoryModal(){
 
