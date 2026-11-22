@@ -7594,7 +7594,6 @@ fontweight:700px
 }
 
 	
-
 /* ============================================
    NEPTOON STRATEGY GAME · DESKTOP
    Preserve original mobile layout
@@ -7628,6 +7627,303 @@ fontweight:700px
   }
 
 }
+
+
+/* =====================================================
+   NEPTOON · GLOBAL HERO · DESKTOP
+   Mobile remains unchanged
+===================================================== */
+
+@media (min-width:900px){
+
+  /* Hero container */
+
+  .hero.hero-compact{
+    min-height:180px;
+    padding:28px 36px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:40px;
+  }
+
+  /* Left content */
+
+  .hero.hero-compact .hero-content{
+    flex:1;
+    max-width:760px;
+  }
+
+  /* Section label */
+
+  .hero.hero-compact .kicker{
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:1.5px;
+    line-height:1.4;
+    margin-bottom:12px;
+  }
+
+  /* Main heading */
+
+  .hero.hero-compact h1{
+    font-size:clamp(30px,2.8vw,42px);
+    font-weight:800;
+    line-height:1.12;
+    margin:0 0 14px;
+  }
+
+  /* Description */
+
+  .hero.hero-compact p{
+    font-size:16px;
+    line-height:1.65;
+    max-width:680px;
+    margin:0;
+  }
+
+  /* Right-side currency + icon */
+
+  .hero.hero-compact .hero-right{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    justify-content:space-between;
+    align-self:stretch;
+    gap:20px;
+  }
+
+  .hero.hero-compact .hero-currency{
+    font-size:12px;
+    font-weight:800;
+    padding:8px 18px;
+  }
+
+  .hero.hero-compact .hero-icon svg{
+    width:32px;
+    height:32px;
+  }
+
+}
+
+
+/* =====================================================
+   NEPTOON · MARKET STOCK CARDS · DESKTOP
+   Mobile remains unchanged
+===================================================== */
+
+@media (min-width:900px){
+
+  #page-welcome .market-stock-card{
+    min-height:125px;
+    padding:16px 18px;
+    box-sizing:border-box;
+  }
+
+  /* Company name */
+
+  #page-welcome .market-stock-card .market-name{
+    font-size:15px;
+    font-weight:800;
+    line-height:1.3;
+    text-align:left;
+  }
+
+  /* Ticker */
+
+  #page-welcome .market-stock-card .market-symbol{
+    font-size:11px;
+    font-weight:500;
+    line-height:1.4;
+    text-align:left;
+    margin-top:4px;
+  }
+
+  /* Price container */
+
+  #page-welcome .market-stock-card .market-price{
+    display:flex;
+    justify-content:flex-end;
+    align-items:baseline;
+    gap:7px;
+    width:100%;
+    margin-top:14px;
+    text-align:right;
+    white-space:nowrap;
+  }
+
+  /* Currency */
+
+  #page-welcome .market-stock-card .market-price-ccy{
+    font-size:10px;
+    font-weight:600;
+    color:#9fb8d4;
+  }
+
+  /* Price */
+
+  #page-welcome .market-stock-card .market-price-value{
+    font-size:17px;
+    font-weight:800;
+    color:#ffffff;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* Daily return */
+
+  #page-welcome .market-stock-card .market-change{
+    width:100%;
+    margin-top:6px;
+    font-size:14px;
+    font-weight:800;
+    line-height:1.3;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+  }
+
+}
+
+
+/* =====================================================
+   NEPTOON · MARKET INDEX CARDS · DESKTOP
+===================================================== */
+
+@media (min-width:900px){
+
+  /* Index name */
+
+  #page-welcome .market-index-card .market-name{
+    font-size:15px;
+    font-weight:800;
+    line-height:1.3;
+    color:#ffffff;
+  }
+
+  /* Ticker directly below index name */
+
+  #page-welcome .market-index-top .market-symbol{
+    font-size:12px;
+    font-weight:650;
+    color:#b8d3ee;
+    margin-top:5px;
+    letter-spacing:.2px;
+  }
+
+  /* Price and return on same horizontal line */
+
+  #page-welcome .market-index-card .market-quote{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:20px;
+    margin-top:20px;
+  }
+
+  /* Price: slightly smaller */
+
+  #page-welcome .market-index-card .market-price{
+    font-size:22px;
+    font-weight:800;
+    line-height:1.2;
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
+
+  /* Currency: discrete */
+
+  #page-welcome .market-index-card .market-price .market-symbol{
+    font-size:10px;
+    font-weight:600;
+    color:#a9c5df;
+    margin-left:5px;
+  }
+
+  /* Daily return: larger and more visible */
+
+  #page-welcome .market-index-card .market-change{
+    font-size:17px;
+    font-weight:800;
+    line-height:1.2;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
+
+}
+
+
+/* =====================================================
+   NEPTOON · TIME MACHINE INTRO · DESKTOP FIX
+===================================================== */
+
+@media (min-width:900px){
+
+  #page-history .tm-intro{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:flex-start;
+
+    width:100%;
+    box-sizing:border-box;
+    padding:30px 36px;
+    gap:0;
+  }
+
+  /* Red section label */
+
+  #page-history .tm-intro-pill{
+    position:static;
+    display:inline-block;
+    align-self:flex-start;
+
+    margin:0 0 18px;
+    width:auto;
+  }
+
+  /* Main heading */
+
+  #page-history .tm-title{
+    width:100%;
+    max-width:850px;
+    margin:0 0 16px;
+
+    font-size:clamp(26px,2.5vw,36px);
+    line-height:1.2;
+    text-align:left;
+  }
+
+  /* Description */
+
+  #page-history .tm-subtitle{
+    width:100%;
+    max-width:700px;
+    margin:0 0 22px;
+
+    font-size:15px;
+    line-height:1.65;
+    text-align:left;
+  }
+
+  /* Play instruction */
+
+  #page-history .tm-intro-action{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:10px;
+
+    width:auto;
+    margin:0;
+
+    font-size:13px;
+    text-align:left;
+  }
+
+}
+
 
 
 </style>
@@ -10972,7 +11268,7 @@ const TXT = {
 
     tmWealth: "WEALTH",
     tmReturn: "RETURN",
-    tmDrawdown: "DRAWDOWN",
+    tmDrawdown: "ANNUAL RETURN",
     tmHistoricalDate: "HISTORICAL DATE",
 
     tmPlay: "PLAY",
@@ -11255,7 +11551,7 @@ terTagline:
 
     tmWealth: "FORMUE",
     tmReturn: "AFKAST",
-    tmDrawdown: "KURSFALD",
+    tmDrawdown: "ÅRLIGT AFKAST",
     tmHistoricalDate: "HISTORISK DATO",
   mwModeWaiting: "AFVENTER",
   mwModeStocks: "AKTIER",
@@ -13945,6 +14241,7 @@ selectMyWealthHistoryInvestment(selected);
 
 }
 
+
 function tmCalculateMetrics(){
 
   const series = tmCurrentSeries();
@@ -13965,32 +14262,42 @@ function tmCalculateMetrics(){
   const start =
     Number(series[0][key]);
 
-  let peak = start;
+  // Elapsed months from the starting observation
+  const months = index;
 
-  for(let i = 1; i <= index; i++){
+  // Total accumulated return
+  const returnPct =
+    start > 0
+      ? (current / start - 1) * 100
+      : null;
 
-    peak = Math.max(
-      peak,
-      Number(series[i][key])
-    );
-
-  }
+  // Annualized compounded return (CAGR)
+  const annualizedReturnPct =
+    months > 0 &&
+    start > 0 &&
+    current > 0
+      ? (
+          Math.pow(
+            current / start,
+            12 / months
+          ) - 1
+        ) * 100
+      : null;
 
   return {
 
-    wealth:current * 1000,
+    wealth: current * 1000,
 
-    returnPct:
-      (current / start - 1) * 100,
+    returnPct,
 
-    drawdownPct:
-      (current / peak - 1) * 100,
+    annualizedReturnPct,
 
-    date:series[index].date
+    date: series[index].date
 
   };
 
 }
+
 
 
 /* =====================================================
@@ -14880,7 +15187,7 @@ function tmRenderMetrics(){
 
   const wealth = tmEl("tm-wealth");
   const ret = tmEl("tm-return");
-  const drawdown = tmEl("tm-drawdown");
+  const annualized = tmEl("tm-drawdown");
 
   wealth.textContent =
     tmFormatNumber(m.wealth);
@@ -14888,8 +15195,10 @@ function tmRenderMetrics(){
   ret.textContent =
     tmFormatPercent(m.returnPct);
 
-  drawdown.textContent =
-    tmFormatPercent(m.drawdownPct);
+  annualized.textContent =
+    m.annualizedReturnPct !== null
+      ? tmFormatPercent(m.annualizedReturnPct)
+      : "—";
 
   ret.classList.toggle(
     "negative",
