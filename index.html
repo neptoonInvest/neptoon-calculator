@@ -26017,6 +26017,21 @@ window.addEventListener(
   }
 );
 
+function openFrontDoor(){
+
+  renderFrontDoor();
+
+  const modal =
+    document.getElementById("nt-frontdoor");
+
+  if(!modal) return;
+
+  modal.hidden = false;
+
+  initFrontDoorOrbit();
+
+}
+
 let strategyGameInstance = null;
 
 window.openStrategyGameModal = async function(){
