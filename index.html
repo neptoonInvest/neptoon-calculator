@@ -18015,6 +18015,9 @@ function openTab(tab) {
     if (!NAV.some(x => x[0] === tab))
         return;
 
+  closeFrontDoor();
+
+
     APP.activeTab = tab;
 
     document.querySelectorAll('.page').forEach(p =>
