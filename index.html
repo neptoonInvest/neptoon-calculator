@@ -6819,7 +6819,501 @@ background:rgba(78,121,189,.20);
   margin:12px 0 0;
 }
 
-	
+
+
+
+/* =====================================================
+   NEPTOON · FRONT DOOR V2
+   ORBITAL NAVIGATION
+===================================================== */
+
+.nt-frontdoor{
+  position:fixed;
+  inset:0;
+  z-index:99990;
+
+  display:flex;
+  justify-content:center;
+  align-items:stretch;
+
+  width:100%;
+  height:100dvh;
+
+  padding:0;
+  background:#071b30;
+}
+
+.nt-frontdoor[hidden]{
+  display:none !important;
+}
+
+.nt-frontdoor-panel{
+  width:100%;
+  max-width:440px;
+  height:100dvh;
+  max-height:none;
+
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 62%,
+      #0d3555 0%,
+      #09243e 42%,
+      #071b30 100%
+    );
+
+  color:#fff;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.nt-frontdoor-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:18px 22px;
+  border-bottom:1px solid #294761;
+}
+
+.nt-frontdoor-brand{
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:1.3px;
+  color:#fff;
+}
+
+.nt-frontdoor-brand span{
+  color:#8ec6f3;
+}
+
+.nt-frontdoor-close{
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:#b8cbe0;
+
+  font-size:27px;
+  cursor:pointer;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.nt-frontdoor-content{
+  padding:22px 18px 28px;
+}
+
+.nt-frontdoor-kicker{
+  color:#8ec6f3;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.4px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+.nt-frontdoor-title{
+  font-size:clamp(22px,5.6vw,29px);
+  line-height:1.15;
+  font-weight:800;
+  letter-spacing:-.5px;
+
+  margin:0 0 13px;
+}
+
+.nt-frontdoor-intro{
+  color:#c5d4e5;
+  font-size:12px;
+  line-height:1.65;
+  margin:0;
+}
+
+/* =====================================================
+   ORBITAL SCENE
+===================================================== */
+
+.nt-orbit-scene{
+  position:relative;
+
+  width:100%;
+  max-width:400px;
+  aspect-ratio:1 / 1.32;
+
+  margin:22px auto 0;
+  isolation:isolate;
+}
+
+/* =====================================================
+   EARTH
+===================================================== */
+
+.nt-orbit-planet{
+  position:absolute;
+
+  left:50%;
+  top:45%;
+
+  width:72%;
+  aspect-ratio:1;
+
+  transform:translate(-50%,-50%);
+
+  background-image:url("neptoon-earth.webp");
+  background-size:cover;
+  background-position:center;
+
+  border-radius:50%;
+
+  box-shadow:
+    0 0 18px rgba(41,173,255,.35),
+    0 0 65px rgba(14,102,176,.22),
+    inset 0 0 35px rgba(0,0,0,.3);
+
+  z-index:1;
+  pointer-events:none;
+}
+
+/* =====================================================
+   SVG CIRCUIT
+===================================================== */
+
+.nt-orbit-svg{
+  position:absolute;
+
+  left:0;
+  top:0;
+
+  width:100%;
+  height:auto;
+
+  overflow:visible;
+  z-index:2;
+
+  pointer-events:none;
+}
+
+.nt-orbit-base{
+  fill:none;
+  stroke:#244a68;
+  stroke-width:7;
+}
+
+/* ALL COLORED ROUTES */
+
+.nt-orbit-route{
+  fill:none;
+  stroke-width:7;
+  stroke-linecap:round;
+
+  transform-origin:200px 200px;
+
+  /*
+    Circumference:
+    2 × PI × 172 ≈ 1080.7
+  */
+
+  stroke-dasharray:360 721;
+}
+
+/* BLUE · MARKETS */
+
+.nt-orbit-route-markets{
+  stroke:#20aaff;
+  transform:rotate(-90deg);
+  stroke-dashoffset:0;
+}
+
+/* GREEN · FUTURE */
+
+.nt-orbit-route-future{
+  stroke:#8ce53c;
+  transform:rotate(-90deg);
+  stroke-dashoffset:-360;
+}
+
+/* AMBER · RETIREMENT */
+
+.nt-orbit-route-retirement{
+  stroke:#ffbd32;
+  transform:rotate(-90deg);
+  stroke-dashoffset:-720;
+}
+
+/* =====================================================
+   STATIONS
+===================================================== */
+
+.nt-orbit-station{
+  fill:#10243d;
+  stroke:#fff;
+  stroke-width:3;
+}
+
+.nt-orbit-station-markets{
+  stroke:#8ec6f3;
+}
+
+.nt-orbit-station-future{
+  stroke:#8ce53c;
+}
+
+.nt-orbit-station-retirement{
+  stroke:#ffbd32;
+}
+
+/* =====================================================
+   MOVING TRAINS
+   Animation will be connected in JS.
+===================================================== */
+
+.nt-orbit-train{
+  pointer-events:none;
+}
+
+.nt-orbit-train-glow{
+  fill:#7dd3fc;
+  opacity:.7;
+}
+
+.nt-orbit-train-core{
+  fill:#fff;
+  stroke:#a7e6ff;
+  stroke-width:1.5;
+}
+
+/* =====================================================
+   CENTER BRAND
+===================================================== */
+
+.nt-orbit-center{
+  position:absolute;
+
+  left:50%;
+  top:45%;
+
+  transform:translate(-50%,-50%);
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  z-index:3;
+  pointer-events:none;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,.9);
+}
+
+.nt-orbit-center-brand{
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:1.5px;
+  color:#fff;
+}
+
+.nt-orbit-center-sub{
+  font-size:19px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:#8ec6f3;
+}
+
+/* =====================================================
+   THREE DESTINATION CARDS
+===================================================== */
+
+.nt-orbit-card{
+  position:absolute;
+  z-index:5;
+
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+
+  width:34%;
+  min-height:116px;
+
+  padding:11px 12px 26px;
+
+  background:rgba(9,34,58,.97);
+  color:#fff;
+
+  border:2px solid currentColor;
+  border-radius:0;
+
+  text-align:left;
+  cursor:pointer;
+
+  font:inherit;
+
+  transition:
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+.nt-orbit-card:hover,
+.nt-orbit-card:focus-visible{
+  background:#173c5c;
+  box-shadow:0 0 18px rgba(82,175,244,.2);
+}
+
+.nt-orbit-card-icon{
+  display:block;
+  margin-bottom:7px;
+}
+
+.nt-orbit-card-icon svg{
+  width:21px;
+  height:21px;
+}
+
+.nt-orbit-card strong{
+  display:block;
+
+  font-size:12px;
+  line-height:1.3;
+  font-weight:800;
+
+  margin-bottom:6px;
+}
+
+.nt-orbit-card small{
+  display:block;
+
+  font-size:10px;
+  line-height:1.45;
+  color:#c5d4e5;
+}
+
+.nt-orbit-card-arrow{
+  position:absolute;
+  right:9px;
+  bottom:8px;
+}
+
+.nt-orbit-card-arrow svg{
+  width:15px;
+  height:15px;
+}
+
+/* =====================================================
+   CARD POSITIONS
+===================================================== */
+
+/* 12 O'CLOCK */
+
+.nt-orbit-card-markets{
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+
+  color:#20aaff;
+}
+
+/* 4 O'CLOCK */
+
+.nt-orbit-card-future{
+  top:60%;
+  right:0;
+
+  color:#8ce53c;
+}
+
+/* 8 O'CLOCK */
+
+.nt-orbit-card-retirement{
+  top:60%;
+  left:0;
+
+  color:#ffbd32;
+}
+
+/* Keep card text white */
+
+.nt-orbit-card strong{
+  color:#fff;
+}
+
+.nt-orbit-card-icon,
+.nt-orbit-card-arrow{
+  color:inherit;
+}
+
+/* =====================================================
+   FOOTNOTE
+===================================================== */
+
+.nt-frontdoor-footnote{
+  margin:25px 0 0;
+
+  text-align:center;
+  color:#a9bfd5;
+
+  font-size:10px;
+  line-height:1.5;
+}
+
+/* =====================================================
+   SMALL PHONES
+===================================================== */
+
+@media(max-width:380px){
+
+  .nt-frontdoor-content{
+    padding:18px 14px 22px;
+  }
+
+  .nt-orbit-scene{
+    margin-top:18px;
+  }
+
+  .nt-orbit-card{
+    width:35%;
+    padding:9px 9px 24px;
+    min-height:108px;
+  }
+
+  .nt-orbit-card strong{
+    font-size:11px;
+  }
+
+  .nt-orbit-card small{
+    font-size:9px;
+  }
+
+  .nt-orbit-center-brand{
+    font-size:17px;
+  }
+
+  .nt-orbit-center-sub{
+    font-size:16px;
+  }
+
+}
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media(prefers-reduced-motion:reduce){
+
+  .nt-orbit-train{
+    animation:none !important;
+  }
+
+}
+
+
 /* ==========================================
    FRONT DOOR · FULL VIEWPORT
 ========================================== */
@@ -6875,6 +7369,15 @@ background:rgba(78,121,189,.20);
   }
 
 }
+
+
+
+
+
+
+
+
+
 
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
@@ -9317,6 +9820,12 @@ background:rgba(78,121,189,.20);
      NEPTOON · FRONT DOOR
 ========================================== -->
 
+
+<!-- ==========================================
+     NEPTOON · FRONT DOOR V2
+     ORBITAL NAVIGATION
+========================================== -->
+
 <div id="nt-frontdoor" class="nt-frontdoor" hidden>
 
   <section
@@ -9325,6 +9834,8 @@ background:rgba(78,121,189,.20);
     aria-modal="true"
     aria-labelledby="nt-frontdoor-title"
   >
+
+    <!-- HEADER -->
 
     <header class="nt-frontdoor-header">
 
@@ -9343,81 +9854,295 @@ background:rgba(78,121,189,.20);
 
     </header>
 
+
+    <!-- HERO -->
+
     <div class="nt-frontdoor-content">
 
-      <div
-        class="nt-frontdoor-kicker"
-        data-frontdoor="kicker"
-      ></div>
+      <div class="nt-frontdoor-hero">
 
-      <h1
-        id="nt-frontdoor-title"
-        class="nt-frontdoor-title"
-        data-frontdoor="title"
-      ></h1>
+        <div
+          class="nt-frontdoor-kicker"
+          data-frontdoor="kicker"
+        ></div>
 
-      <p
-        class="nt-frontdoor-intro"
-        data-frontdoor="intro"
-      ></p>
+        <h1
+          id="nt-frontdoor-title"
+          class="nt-frontdoor-title"
+          data-frontdoor="title"
+        ></h1>
 
-      <!-- THREE MAIN GATES -->
+        <p
+          class="nt-frontdoor-intro"
+          data-frontdoor="intro"
+        ></p>
 
-      <div class="nt-frontdoor-gates">
+      </div>
+
+
+      <!-- ==================================
+           ORBITAL NAVIGATION
+      ================================== -->
+
+      <div class="nt-orbit-scene">
+
+        <!-- EARTH / NEPTUNE BACKGROUND -->
+
+        <div
+          class="nt-orbit-planet"
+          aria-hidden="true"
+        ></div>
+
+
+        <!-- ORBITAL TRACK -->
+
+        <svg
+          class="nt-orbit-svg"
+          viewBox="0 0 400 400"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+
+          <defs>
+
+            <!-- CIRCULAR MOTION PATH -->
+
+            <path
+              id="nt-orbit-motion-path"
+              d="
+                M 200 28
+                A 172 172 0 1 1 199.99 28
+              "
+            />
+
+            <!-- LIGHT GLOW -->
+
+            <filter
+              id="nt-orbit-glow"
+              x="-100%"
+              y="-100%"
+              width="300%"
+              height="300%"
+            >
+              <feGaussianBlur stdDeviation="5"/>
+            </filter>
+
+          </defs>
+
+
+          <!-- BASE CIRCUIT -->
+
+          <circle
+            cx="200"
+            cy="200"
+            r="172"
+            class="nt-orbit-base"
+          />
+
+
+          <!-- THREE COLORED ROUTES -->
+
+          <circle
+            cx="200"
+            cy="200"
+            r="172"
+            class="nt-orbit-route nt-orbit-route-markets"
+          />
+
+          <circle
+            cx="200"
+            cy="200"
+            r="172"
+            class="nt-orbit-route nt-orbit-route-future"
+          />
+
+          <circle
+            cx="200"
+            cy="200"
+            r="172"
+            class="nt-orbit-route nt-orbit-route-retirement"
+          />
+
+
+          <!-- THREE STATIONS -->
+
+          <circle
+            cx="200"
+            cy="28"
+            r="8"
+            class="nt-orbit-station nt-orbit-station-markets"
+          />
+
+          <circle
+            cx="349"
+            cy="286"
+            r="8"
+            class="nt-orbit-station nt-orbit-station-future"
+          />
+
+          <circle
+            cx="51"
+            cy="286"
+            r="8"
+            class="nt-orbit-station nt-orbit-station-retirement"
+          />
+
+
+          <!-- MOVING DOTS -->
+
+          <g class="nt-orbit-train nt-orbit-train-1">
+
+            <circle
+              r="13"
+              class="nt-orbit-train-glow"
+              filter="url(#nt-orbit-glow)"
+            />
+
+            <circle
+              r="6"
+              class="nt-orbit-train-core"
+            />
+
+          </g>
+
+          <g class="nt-orbit-train nt-orbit-train-2">
+
+            <circle
+              r="13"
+              class="nt-orbit-train-glow"
+              filter="url(#nt-orbit-glow)"
+            />
+
+            <circle
+              r="6"
+              class="nt-orbit-train-core"
+            />
+
+          </g>
+
+          <g class="nt-orbit-train nt-orbit-train-3">
+
+            <circle
+              r="13"
+              class="nt-orbit-train-glow"
+              filter="url(#nt-orbit-glow)"
+            />
+
+            <circle
+              r="6"
+              class="nt-orbit-train-core"
+            />
+
+          </g>
+
+        </svg>
+
+
+        <!-- CENTER BRAND -->
+
+        <div class="nt-orbit-center" aria-hidden="true">
+
+          <div class="nt-orbit-center-brand">
+            NEPTOON
+          </div>
+
+          <div class="nt-orbit-center-sub">
+            WEALTH
+          </div>
+
+        </div>
+
+
+        <!-- ==================================
+             DESTINATION 01 · MARKETS
+        ================================== -->
 
         <button
-          class="nt-frontdoor-gate"
+          class="nt-orbit-card nt-orbit-card-markets"
           type="button"
           data-frontdoor-gate="markets"
         >
-          <span class="nt-frontdoor-gate-icon">
+
+          <span class="nt-orbit-card-icon">
             <i data-lucide="activity"></i>
           </span>
 
-          <span class="nt-frontdoor-gate-copy">
-            <strong data-frontdoor="marketsTitle"></strong>
-            <small data-frontdoor="marketsText"></small>
+          <strong
+            data-frontdoor="marketsTitle"
+          ></strong>
+
+          <small
+            data-frontdoor="marketsText"
+          ></small>
+
+          <span class="nt-orbit-card-arrow">
+            <i data-lucide="arrow-right"></i>
           </span>
 
-          <i data-lucide="arrow-right"></i>
         </button>
 
+
+        <!-- ==================================
+             DESTINATION 02 · ASSETS & FUTURE
+        ================================== -->
+
         <button
-          class="nt-frontdoor-gate"
+          class="nt-orbit-card nt-orbit-card-future"
           type="button"
           data-frontdoor-gate="future"
         >
-          <span class="nt-frontdoor-gate-icon">
+
+          <span class="nt-orbit-card-icon">
             <i data-lucide="chart-no-axes-combined"></i>
           </span>
 
-          <span class="nt-frontdoor-gate-copy">
-            <strong data-frontdoor="futureTitle"></strong>
-            <small data-frontdoor="futureText"></small>
+          <strong
+            data-frontdoor="futureTitle"
+          ></strong>
+
+          <small
+            data-frontdoor="futureText"
+          ></small>
+
+          <span class="nt-orbit-card-arrow">
+            <i data-lucide="arrow-right"></i>
           </span>
 
-          <i data-lucide="arrow-right"></i>
         </button>
 
+
+        <!-- ==================================
+             DESTINATION 03 · SAVINGS
+        ================================== -->
+
         <button
-          class="nt-frontdoor-gate"
+          class="nt-orbit-card nt-orbit-card-retirement"
           type="button"
           data-frontdoor-gate="retirement"
         >
-          <span class="nt-frontdoor-gate-icon">
+
+          <span class="nt-orbit-card-icon">
             <i data-lucide="wallet"></i>
           </span>
 
-          <span class="nt-frontdoor-gate-copy">
-            <strong data-frontdoor="retirementTitle"></strong>
-            <small data-frontdoor="retirementText"></small>
+          <strong
+            data-frontdoor="retirementTitle"
+          ></strong>
+
+          <small
+            data-frontdoor="retirementText"
+          ></small>
+
+          <span class="nt-orbit-card-arrow">
+            <i data-lucide="arrow-right"></i>
           </span>
 
-          <i data-lucide="arrow-right"></i>
         </button>
 
       </div>
 
+
+      <!-- FOOTNOTE -->
 
       <p
         class="nt-frontdoor-footnote"
