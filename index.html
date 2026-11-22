@@ -6573,7 +6573,22 @@ nav.bottom-nav {
 }
 
 
+.market-stock-card[data-history-ticker]{
+cursor:pointer;
+}
 
+.market-stock-card[data-history-ticker]:focus-visible{
+outline:2px solid #8ed4f4;
+outline-offset:2px;
+}
+
+@media(hover:hover){
+
+.market-stock-card[data-history-ticker]:hover{
+background:rgba(78,121,189,.20);
+}
+
+}
 
 
 
@@ -16112,7 +16127,14 @@ function renderMarketIndices(){
             : "down";
 
       return `
-        <article class="market-index-card">
+       
+  <article
+    class="market-index-card"
+    data-history-ticker="${esc(instrument.tickerExchange)}"
+    role="button"
+    tabindex="0"
+    aria-label="View price history for ${esc(instrument.name)}"
+  >
 
           <div class="market-index-top">
 
@@ -16159,6 +16181,64 @@ function renderMarketIndices(){
   icons();
 
 }
+
+
+function bindMarketIndexHistory(){
+
+  const host =
+    document.getElementById("market-index-grid");
+
+  if(!host) return;
+
+  // Prevent duplicate listeners.
+  if(host.dataset.historyBound === "1") return;
+
+  host.dataset.historyBound = "1";
+
+  function openFromCard(card){
+
+    const ticker =
+      card?.dataset.historyTicker;
+
+    if(!ticker) return;
+
+    openMarketHistoryModal(ticker);
+
+  }
+
+  host.addEventListener("click", event => {
+
+    const card =
+      event.target.closest("[data-history-ticker]");
+
+    if(!card || !host.contains(card)) return;
+
+    openFromCard(card);
+
+  });
+
+  host.addEventListener("keydown", event => {
+
+    if(
+      event.key !== "Enter" &&
+      event.key !== " "
+    ){
+      return;
+    }
+
+    const card =
+      event.target.closest("[data-history-ticker]");
+
+    if(!card || !host.contains(card)) return;
+
+    event.preventDefault();
+
+    openFromCard(card);
+
+  });
+
+}
+
 
 function renderWealthPlanEmail(){
 
@@ -22733,6 +22813,8 @@ finally {
 
   renderMarketPulse();
   renderMarketIndices();
+bindMarketIndexHistory();
+bindMarketStockHistory();
 
   renderGlobalMarketTicker();
 
@@ -23918,6 +24000,63 @@ function getMyWealthCostBarScale(){
 
 }
 
+function bindMarketStockHistory(){
+
+const track =
+document.getElementById("market-stock-track");
+
+if(!track) return;
+
+// Prevent duplicate event listeners.
+
+if(track.dataset.historyBound === "1") return;
+
+track.dataset.historyBound = "1";
+
+function openFromCard(card){
+
+const ticker =
+card?.dataset.historyTicker;
+
+if(!ticker) return;
+
+openMarketHistoryModal(ticker);
+
+}
+
+track.addEventListener("click", event => {
+
+const card =
+event.target.closest("[data-history-ticker]");
+
+if(!card || !track.contains(card)) return;
+
+openFromCard(card);
+
+});
+
+track.addEventListener("keydown", event => {
+
+if(
+event.key !== "Enter" &&
+event.key !== " "
+){
+return;
+}
+
+const card =
+event.target.closest("[data-history-ticker]");
+
+if(!card || !track.contains(card)) return;
+
+event.preventDefault();
+
+openFromCard(card);
+
+});
+
+}
+
 
 /* ==========================================
    NW-111 · DAILY MARKET HISTORY CACHE
@@ -24111,7 +24250,15 @@ const perPage = 5;
       : item.return >= 0 ? 'up' : 'down';
 
     return `
-      <article class="market-stock-card">
+    
+  <article
+    class="market-stock-card"
+    data-history-ticker="${esc(item.tickerExchange)}"
+    role="button"
+    tabindex="0"
+    aria-label="View price history for ${esc(item.name)}"
+  >
+
         <div class="market-name">${esc(item.name)}</div>
         <div class="market-symbol">${esc(item.tickerExchange)}</div>
         <div class="market-price">${marketFormatPrice(item.realtimePrice, item.currency)}</div>
