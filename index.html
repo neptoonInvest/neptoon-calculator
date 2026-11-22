@@ -7949,6 +7949,46 @@ fontweight:700px
 
 }
 
+/* =====================================================
+   NEPTOON STRATEGY GAME · DESKTOP
+   Exact equivalent of successful browser test
+   Mobile unchanged
+===================================================== */
+
+@media (min-width:900px){
+
+  /* 1. Parent of .game-root */
+
+  body:has(.game-root) .game-root{
+    width:100% !important;
+    max-width:none !important;
+  }
+
+  /* The actual modal container */
+  body:has(.game-root) .game-root{
+    position:relative;
+  }
+
+  /* Parent container — matches root.parentElement */
+  body:has(.game-root) div:has(> .game-root){
+    width:100vw !important;
+    max-width:none !important;
+    left:0 !important;
+    right:0 !important;
+  }
+
+  /* 2. Main game shell */
+
+  .game-root .shell{
+    width:900px !important;
+    max-width:none !important;
+
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+}
+
 
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
