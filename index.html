@@ -18597,9 +18597,9 @@ const quote =
 
           } else {
 
-            changeText =
-              `${absoluteChange >= 0 ? "+" : ""}` +
-              `${formatNumber(absoluteChange)} pts`;
+changeText =
+  `${absoluteChange >= 0 ? "+" : ""}` +
+  `${formatNumber(absoluteChange)} %-point`;
 
           }
 
@@ -18622,12 +18622,10 @@ const quote =
             ? "up"
             : "down";
 
-      const unit =
-        isVIX
-          ? ""
-          : isUS10Y
-            ? "%"
-            : instrument.currency || "";
+const unit =
+  isVIX || isUS10Y
+    ? "%"
+    : instrument.currency || "";
 
       return `
 
