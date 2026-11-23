@@ -18574,10 +18574,11 @@ const quote =
           ? price - previousClose
           : null;
 
-      const priceText =
-        price !== null
-          ? formatNumber(price)
-          : "—";
+
+const priceText =
+  price !== null
+    ? formatNumber(price) + (isUS10Y ? "%" : "")
+    : "—";
 
       let changeText = "—";
       let changeValue = null;
@@ -18601,7 +18602,7 @@ const quote =
 
 changeText =
   `${absoluteChange >= 0 ? "+" : ""}` +
-  `${formatNumber(absoluteChange)} %-point`;
+  `${formatNumber(absoluteChange)} %-pt	`;
 
           }
 
