@@ -154,6 +154,10 @@ def api_json(endpoint, ticker, extra=None):
 # 03 · LIVE QUOTE
 # =====================================================
 
+# =====================================================
+# 03 · LIVE QUOTE
+# =====================================================
+
 def fetch_live_quote(ticker):
 
     data = api_json(
@@ -161,10 +165,10 @@ def fetch_live_quote(ticker):
         ticker
     )
 
-price = safe_num(data.get("close"))
+    price = safe_num(data.get("close"))
 
-if price is None:
-    price = safe_num(data.get("price"))
+    if price is None:
+        price = safe_num(data.get("price"))
 
     change = safe_num(
         data.get("change_p")
