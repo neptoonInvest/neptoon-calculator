@@ -61,14 +61,23 @@ def load_tickers():
         for t in tickers
     ]
 
+
+    # Validate shared instrument configuration.
+    # The number of instruments may grow over time.
+
     if (
-        len(tickers) != 25
-        or len(set(tickers)) != 25
+        not tickers
+        or len(set(tickers)) != len(tickers)
         or any(not t for t in tickers)
     ):
         raise ValueError(
-            "Expected exactly 25 unique tickers"
+            "Invalid or duplicate market tickers"
         )
+
+    print(
+        "Market instruments loaded:",
+        len(tickers)
+    )
 
     return tickers
 
@@ -152,9 +161,10 @@ def fetch_live_quote(ticker):
         ticker
     )
 
-    price = safe_num(
-        data.get("close", data.get("price"))
-    )
+price = safe_num(data.get("close"))
+
+if price is None:
+    price = safe_num(data.get("price"))
 
     change = safe_num(
         data.get("change_p")
