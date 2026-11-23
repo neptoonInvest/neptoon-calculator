@@ -8226,6 +8226,54 @@ fontweight:700px
 }
 
 
+/* ==========================================
+   MARKET PULSE · TYPOGRAPHY HIERARCHY
+========================================== */
+
+/* INSTRUMENT NAME · PRIMARY */
+
+#market-index-grid .market-name{
+  font-size:12px;
+  font-weight:800;
+  line-height:1.35;
+  letter-spacing:0.15px;
+  color:#ffffff;
+
+  margin-bottom:8px;
+}
+
+/* PRICE · SECONDARY */
+
+#market-index-grid .market-price{
+  font-size:11px;
+  font-weight:500;
+  line-height:1.3;
+  color:#d5e4f5;
+  font-variant-numeric:tabular-nums;
+}
+
+/* CURRENCY / UNIT */
+
+#market-index-grid .market-price .market-symbol{
+  font-size:9px;
+  font-weight:400;
+  color:#9fb8d4;
+}
+
+/* DAILY CHANGE · COLORED SIGNAL */
+
+#market-index-grid .market-change{
+  font-size:12px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+/* SEPARATION BETWEEN NAME AND VALUES */
+
+#market-index-grid .market-index-top{
+  margin-bottom:4px;
+}
+
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -17969,6 +18017,7 @@ const INITIAL_ASSET_TICKERS = [
 let MARKET_COUNTRY = "DK";
 
 
+
 function getMarketIndexSelection(){
 
   const country =
@@ -17992,7 +18041,12 @@ function getMarketIndexSelection(){
   return [
     ...MARKET_INDEX_CONFIG.permanent,
     MARKET_INDEX_CONFIG.editorial,
-    selectedLocal
+    selectedLocal,
+
+    // MARKET INDICATORS
+    "VIX",
+    "US10Y"
+
   ]
   .map(id =>
     MARKET_INDICES.find(x => x.id === id)
@@ -18000,6 +18054,7 @@ function getMarketIndexSelection(){
   .filter(Boolean);
 
 }
+
 
 /* =====================================================
    18 · WELCOME PREVIEW
