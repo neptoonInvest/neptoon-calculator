@@ -27087,6 +27087,10 @@ let strategyGamePreviousScrollY = 0;
    OPEN STRATEGY GAME PAGE
 ===================================================== */
 
+/* =====================================================
+   OPEN STRATEGY GAME PAGE
+===================================================== */
+
 window.openStrategyGameModal = async function(){
 
   if(strategyGameOpening) return;
@@ -27102,7 +27106,7 @@ window.openStrategyGameModal = async function(){
     return;
   }
 
-  if(!page.hidden) return;
+  if(page.classList.contains("active")) return;
 
   strategyGameOpening = true;
 
@@ -27126,20 +27130,19 @@ window.openStrategyGameModal = async function(){
           ? "da"
           : "en";
 
-    /*
-      SAVE CURRENT VIEW AND SCROLL POSITION
-    */
+    /* SAVE PREVIOUS PAGE AND SCROLL */
 
-/* SAVE CURRENT APPLICATION PAGE */
+    strategyGamePreviousView =
+      document.querySelector(".page.active");
 
-strategyGamePreviousView =
-  document.querySelector(".page.active");
+    strategyGamePreviousScrollY =
+      window.scrollY;
 
-/* HIDE CURRENT APPLICATION PAGE */
+    /* DEACTIVATE MAIN APPLICATION PAGES */
 
-if(strategyGamePreviousView){
-  strategyGamePreviousView.classList.remove("active");
-}
+    document.querySelectorAll(".page").forEach(p => {
+      p.classList.remove("active");
+    });
 
     /* HIDE MAIN HEADER */
 
@@ -27150,13 +27153,32 @@ if(strategyGamePreviousView){
       header.style.display = "none";
     }
 
+    /* HIDE GLOBAL MARKET TICKER */
+
+    const ticker =
+      document.getElementById("globalMarketTicker");
+
+    if(ticker){
+      ticker.style.display = "none";
+    }
+
+    /* HIDE FLOATING PLUS BUTTON */
+
+    const floatingPlus =
+      document.getElementById("nt-floating-plus");
+
+    if(floatingPlus){
+      floatingPlus.style.display = "none";
+    }
+
     /* ENABLE GAME CSS */
 
     gameCSS.disabled = false;
 
-    /* SHOW GAME PAGE */
+    /* ACTIVATE GAME PAGE */
 
     page.hidden = false;
+    page.classList.add("active");
 
     /* INITIALIZE AND MOUNT */
 
@@ -27175,7 +27197,10 @@ if(strategyGamePreviousView){
 
     /* START AT TOP */
 
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      behavior: "instant"
+    });
 
     console.log("NEPTOON STRATEGY GAME PAGE OPEN");
 
@@ -27208,8 +27233,9 @@ window.closeStrategyGameModal = function(){
 
   if(!page) return;
 
-  /* HIDE GAME PAGE */
+  /* DEACTIVATE GAME PAGE */
 
+  page.classList.remove("active");
   page.hidden = true;
 
   /* DESTROY GAME INSTANCE */
@@ -27225,7 +27251,7 @@ window.closeStrategyGameModal = function(){
 
   gameCSS.disabled = true;
 
-  /* RESTORE PREVIOUS VIEW */
+  /* RESTORE PREVIOUS APPLICATION PAGE */
 
   if(strategyGamePreviousView){
 
@@ -27244,12 +27270,30 @@ window.closeStrategyGameModal = function(){
     header.style.display = "";
   }
 
+  /* RESTORE GLOBAL MARKET TICKER */
+
+  const ticker =
+    document.getElementById("globalMarketTicker");
+
+  if(ticker){
+    ticker.style.removeProperty("display");
+  }
+
+  /* RESTORE FLOATING PLUS BUTTON */
+
+  const floatingPlus =
+    document.getElementById("nt-floating-plus");
+
+  if(floatingPlus){
+    floatingPlus.style.removeProperty("display");
+  }
+
   /* RESTORE SCROLL POSITION */
 
-  window.scrollTo(
-    0,
-    strategyGamePreviousScrollY
-  );
+  window.scrollTo({
+    top: strategyGamePreviousScrollY || 0,
+    behavior: "instant"
+  });
 
   console.log("NEPTOON STRATEGY GAME PAGE CLOSED");
 
@@ -27259,13 +27303,6 @@ window.closeStrategyGameModal = function(){
 /* =====================================================
    RETURN FROM GAME TO MAIN APPLICATION
 ===================================================== */
-
-/*
-  The old modal X button has been removed.
-
-  Keep this function available for the
-  application's return/back navigation.
-*/
 
 window.returnFromStrategyGame = function(){
 
