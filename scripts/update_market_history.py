@@ -29,6 +29,7 @@ def load_previous():
     return payload.get("instruments", {}) if isinstance(payload, dict) else {}
 
 
+
 def fetch_closes(ticker, start, end, token):
 
     params = urllib.parse.urlencode({
@@ -97,8 +98,8 @@ def fetch_closes(ticker, start, end, token):
     ]
 
 
-
 def main():
+
     token = os.environ["EODHD_TOKEN"]
 
     with CONFIG.open(encoding="utf-8") as handle:
@@ -109,45 +110,111 @@ def main():
             "Configuration must contain unique tickers"
         )
 
-
     today = datetime.now(COPENHAGEN).date()
     start = three_years_ago(today)
+
     previous = load_previous()
+
+    # Only preserve previous prices if the entire
+    # previous cache uses split-only adjustments.
+    previous_is_split_adjusted = False
+
+    if OUTPUT.exists():
+        with OUTPUT.open(encoding="utf-8") as handle:
+            previous_payload = json.load(handle)
+
+        if isinstance(previous_payload, dict):
+            previous_is_split_adjusted = (
+                previous_payload.get("adjustmentType") == "split_only"
+                and previous_payload.get("dividendAdjusted") is False
+            )
+
     instruments = {}
     successful = 0
+    preserved = 0
 
     for ticker in tickers:
-        try:
-            prices = fetch_closes(ticker, start, today, token)
-            instruments[ticker] = {"prices": prices}
-            successful += 1
-            print(f"OK {ticker}: {len(prices)} observations through {prices[-1][0]}")
-        except Exception as exc:
-            print(f"FAILED {ticker}: {exc}")
-            old = previous.get(ticker, {})
-            old_prices = old.get("prices", []) if isinstance(old, dict) else []
-            valid_old = [p for p in old_prices if isinstance(p, list) and len(p) == 2 and isinstance(p[0], str) and start.isoformat() <= p[0] <= today.isoformat()]
-            if valid_old:
-                instruments[ticker] = {"prices": valid_old}
-                print(f"PRESERVED {ticker}: {len(valid_old)} cached observations")
 
-    
+        try:
+
+            prices = fetch_closes(
+                ticker,
+                start,
+                today,
+                token
+            )
+
+            instruments[ticker] = {
+                "prices": prices
+            }
+
+            successful += 1
+
+            print(
+                f"OK {ticker}: "
+                f"{len(prices)} observations "
+                f"through {prices[-1][0]}"
+            )
+
+        except Exception as exc:
+
+            print(f"FAILED {ticker}: {exc}")
+
+            if not previous_is_split_adjusted:
+                print(
+                    f"SKIPPED {ticker}: "
+                    "previous cache is not split-adjusted"
+                )
+                continue
+
+            old = previous.get(ticker, {})
+
+            old_prices = (
+                old.get("prices", [])
+                if isinstance(old, dict)
+                else []
+            )
+
+            valid_old = [
+                p for p in old_prices
+                if (
+                    isinstance(p, list)
+                    and len(p) == 2
+                    and isinstance(p[0], str)
+                    and start.isoformat() <= p[0] <= today.isoformat()
+                )
+            ]
+
+            if valid_old:
+
+                instruments[ticker] = {
+                    "prices": valid_old
+                }
+
+                preserved += 1
+
+                print(
+                    f"PRESERVED {ticker}: "
+                    f"{len(valid_old)} cached observations"
+                )
+
     if not instruments:
         raise RuntimeError(
-            "No history available; existing JSON left unchanged"
+            "No split-adjusted history available; "
+            "existing JSON left unchanged"
         )
 
-payload = {
-    "version": "1.0",
-    "updatedAt": datetime.now(timezone.utc).isoformat(),
-    "priceField": "close",
-    "adjusted": True,
-    "adjustmentType": "split_only",
-    "dividendAdjusted": False,
-    "windowStart": start.isoformat(),
-    "windowEnd": today.isoformat(),
-    "instruments": instruments,
-}
+    payload = {
+        "version": "1.0",
+        "updatedAt": datetime.now(timezone.utc).isoformat(),
+        "priceField": "close",
+        "adjusted": True,
+        "adjustmentType": "split_only",
+        "dividendAdjusted": False,
+        "windowStart": start.isoformat(),
+        "windowEnd": today.isoformat(),
+        "instruments": instruments,
+    }
 
     tmp = OUTPUT.with_suffix(".json.tmp")
 
@@ -165,6 +232,7 @@ payload = {
     print(
         f"History cache saved: "
         f"{successful} fresh / "
+        f"{preserved} preserved / "
         f"{len(instruments)} available / "
         f"{len(tickers)} configured"
     )
