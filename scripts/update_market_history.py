@@ -63,12 +63,18 @@ def fetch_closes(ticker, start, end, token):
     return [[day, prices[day]] for day in sorted(prices)]
 
 
+
 def main():
     token = os.environ["EODHD_TOKEN"]
+
     with CONFIG.open(encoding="utf-8") as handle:
         tickers = json.load(handle)["tickers"]
-if not tickers or len(set(tickers)) != len(tickers):
-    raise ValueError("Configuration must contain unique tickers")
+
+    if not tickers or len(set(tickers)) != len(tickers):
+        raise ValueError(
+            "Configuration must contain unique tickers"
+        )
+
 
     today = datetime.now(COPENHAGEN).date()
     start = three_years_ago(today)
@@ -91,8 +97,12 @@ if not tickers or len(set(tickers)) != len(tickers):
                 instruments[ticker] = {"prices": valid_old}
                 print(f"PRESERVED {ticker}: {len(valid_old)} cached observations")
 
+    
     if not instruments:
-        raise RuntimeError("No history available; existing JSON left unchanged")
+        raise RuntimeError(
+            "No history available; existing JSON left unchanged"
+        )
+
     payload = {
         "version": "1.0",
         "updatedAt": datetime.now(timezone.utc).isoformat(),
@@ -102,17 +112,27 @@ if not tickers or len(set(tickers)) != len(tickers):
         "windowEnd": today.isoformat(),
         "instruments": instruments,
     }
+
     tmp = OUTPUT.with_suffix(".json.tmp")
-    tmp.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
+    tmp.write_text(
+        json.dumps(
+            payload,
+            ensure_ascii=False,
+            separators=(",", ":")
+        ),
+        encoding="utf-8"
+    )
+
     tmp.replace(OUTPUT)
 
+    print(
+        f"History cache saved: "
+        f"{successful} fresh / "
+        f"{len(instruments)} available / "
+        f"{len(tickers)} configured"
+    )
 
-print(
-    f"History cache saved: "
-    f"{successful} fresh / "
-    f"{len(instruments)} available / "
-    f"{len(tickers)} configured"
-)
 
 if __name__ == "__main__":
     main()
