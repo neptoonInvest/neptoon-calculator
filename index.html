@@ -22709,12 +22709,14 @@ function drawMarketHistoryChart(){
      SAVE GEOMETRY FOR HOVER
   ====================================== */
 
-  ntHistoryChartGeometry = {
-    points,
-    pad,
-    plotW,
-    x
-  };
+ntHistoryChartGeometry = {
+  points,
+  pad,
+  plotW,
+  x
+};
+
+bindMarketHistoryHover();
 
 }
 
@@ -22778,25 +22780,44 @@ function ntHistoryPointerLeave(){
 
 }
 
-const ntHistoryCanvas =
-  document.getElementById("nt-history-chart");
 
-if(ntHistoryCanvas){
 
-  ntHistoryCanvas.addEventListener(
+}
+
+
+function bindMarketHistoryHover(){
+
+  const canvas =
+    document.getElementById("nt-history-chart");
+
+  if(!canvas) return;
+
+  // Prevent duplicate event listeners.
+
+  if(canvas.dataset.hoverBound === "1"){
+    return;
+  }
+
+  canvas.dataset.hoverBound = "1";
+
+  canvas.addEventListener(
     "pointermove",
     ntHistoryPointerMove
   );
 
-  ntHistoryCanvas.addEventListener(
+  canvas.addEventListener(
     "pointerleave",
     ntHistoryPointerLeave
   );
 
-  ntHistoryCanvas.addEventListener(
+  canvas.addEventListener(
     "pointercancel",
     ntHistoryPointerLeave
   );
+
+  // Enable touch dragging on the chart.
+
+  canvas.style.touchAction = "none";
 
 }
 
