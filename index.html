@@ -7450,6 +7450,10 @@ fontweight:700px
 
 }
 
+.nt-strategy-modal-panel > button[id*="close" i] {
+  display: none !important;
+}
+
 
 /* =====================================================
    NEPTOON FRONT DOOR V2 · DESKTOP RESPONSIVE
@@ -8056,6 +8060,25 @@ fontweight:700px
     top:calc(45% - 20px);
   }
 
+}
+
+
+/* =========================================
+   NEPTOON ORBIT — CENTER EARTH (0,0)
+========================================= */
+
+.nt-orbit-scene {
+  position: relative;
+}
+
+.nt-orbit-planet {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  margin: 0;
+  transform: translate(-50%, -50%);
 }
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
@@ -26649,36 +26672,23 @@ openFrontDoor();
 
 
 <!-- ==========================================
-     NEPTOON STRATEGY GAME MODAL
+     NEPTOON STRATEGY GAME PAGE
 ========================================== -->
 
-<div
-  id="nt-strategy-modal"
-  class="nt-strategy-modal"
+<!-- ==========================================
+     NEPTOON STRATEGY GAME PAGE
+========================================== -->
+
+<section
+  id="nt-strategy-page"
+  class="page nt-strategy-page"
+  aria-label="Neptoon Strategy Game"
   hidden
 >
+  <div id="nt-strategy-game-root"></div>
+</section>
 
-  <div
-    class="nt-strategy-modal-panel"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Neptoon Strategy Game"
-  >
 
-    <button
-      type="button"
-      id="nt-strategy-close"
-      class="nt-strategy-close"
-      aria-label="Close Strategy Game"
-    >
-      &times;
-    </button>
-
-    <div id="nt-strategy-game-root"></div>
-
-  </div>
-
-</div>
 
 <!-- NEPTOON STRATEGY GAME BRIDGE -->
 
@@ -26757,95 +26767,148 @@ window.addEventListener(
 
 
 
+
+/* =====================================================
+   NEPTOON STRATEGY GAME
+   FULL PAGE BRIDGE
+===================================================== */
+
 let strategyGameInstance = null;
+let strategyGameOpening = false;
+let strategyGamePreviousView = null;
+let strategyGamePreviousScrollY = 0;
+
+
+/* =====================================================
+   OPEN STRATEGY GAME PAGE
+===================================================== */
 
 window.openStrategyGameModal = async function(){
 
-  const modal =
-    document.getElementById("nt-strategy-modal");
+  if(strategyGameOpening) return;
+
+  const page =
+    document.getElementById("nt-strategy-page");
 
   const root =
     document.getElementById("nt-strategy-game-root");
 
-  if(!modal || !root){
-    console.error("Strategy Game modal elements missing");
+  if(!page || !root){
+    console.error("Strategy Game page elements missing");
     return;
   }
 
-  /* WAIT UNTIL GAME CSS IS LOADED */
+  if(!page.hidden) return;
 
-  const cssLoaded = await gameCSSReady;
+  strategyGameOpening = true;
 
-  if(!cssLoaded){
-    console.error("Cannot open Strategy Game: CSS unavailable");
-    return;
-  }
-gameCSS.disabled = false;
+  try {
 
-  /* READ CURRENT PWA LANGUAGE */
+    /* WAIT FOR GAME CSS */
 
-  const lang =
-    document.documentElement.lang
-      .toLowerCase()
-      .startsWith("da")
-        ? "da"
-        : "en";
+    const cssLoaded = await gameCSSReady;
 
-  /* HIDE MAIN PWA HEADER */
+    if(!cssLoaded){
+      console.error("Strategy Game CSS unavailable");
+      return;
+    }
 
-  const header =
-    document.querySelector("header.masthead");
+    /* CURRENT LANGUAGE */
 
-  if(header){
-    header.style.display = "none";
-  }
+    const lang =
+      document.documentElement.lang
+        .toLowerCase()
+        .startsWith("da")
+          ? "da"
+          : "en";
 
-  /* SHOW GAME MODAL */
+    /*
+      SAVE CURRENT VIEW AND SCROLL POSITION
+    */
 
-  modal.hidden = false;
+/* SAVE CURRENT APPLICATION PAGE */
 
-  /* MOUNT STRATEGY GAME */
+strategyGamePreviousView =
+  document.querySelector(".page.active");
 
-if(!strategyGameInstance){
+/* HIDE CURRENT APPLICATION PAGE */
 
-  await initializeGameData();
+if(strategyGamePreviousView){
+  strategyGamePreviousView.classList.remove("active");
+}
 
-  strategyGameInstance =
-    mountGame(root, { lang });
+    /* HIDE MAIN HEADER */
 
-} else {
+    const header =
+      document.querySelector("header.masthead");
 
-    strategyGameInstance.setLanguage?.(lang);
+    if(header){
+      header.style.display = "none";
+    }
+
+    /* ENABLE GAME CSS */
+
+    gameCSS.disabled = false;
+
+    /* SHOW GAME PAGE */
+
+    page.hidden = false;
+
+    /* INITIALIZE AND MOUNT */
+
+    if(!strategyGameInstance){
+
+      await initializeGameData();
+
+      strategyGameInstance =
+        mountGame(root, { lang });
+
+    } else {
+
+      strategyGameInstance.setLanguage?.(lang);
+
+    }
+
+    /* START AT TOP */
+
+    window.scrollTo(0, 0);
+
+    console.log("NEPTOON STRATEGY GAME PAGE OPEN");
+
+  } catch(error) {
+
+    console.error(
+      "STRATEGY GAME OPEN FAILED",
+      error
+    );
+
+    window.closeStrategyGameModal();
+
+  } finally {
+
+    strategyGameOpening = false;
 
   }
 
 };
 
+
+/* =====================================================
+   CLOSE STRATEGY GAME PAGE
+===================================================== */
+
 window.closeStrategyGameModal = function(){
 
-  const modal =
-    document.getElementById("nt-strategy-modal");
+  const page =
+    document.getElementById("nt-strategy-page");
 
-  if(!modal) return;
+  if(!page) return;
 
-  /* HIDE STRATEGY GAME */
+  /* HIDE GAME PAGE */
 
-  modal.hidden = true;
+  page.hidden = true;
 
-gameCSS.disabled = true;
-
-  /* RESTORE MAIN PWA HEADER */
-
-  const header =
-    document.querySelector("header.masthead");
-
-  if(header){
-    header.style.display = "";
-  }
-
-
-
-  /* CLEAN UP GAME INSTANCE */
+  /* DESTROY GAME INSTANCE */
 
   if(strategyGameInstance){
 
@@ -26854,19 +26917,62 @@ gameCSS.disabled = true;
 
   }
 
-};
+  /* DISABLE GAME CSS */
 
-const closeBtn =
-  document.getElementById("nt-strategy-close");
+  gameCSS.disabled = true;
 
-if(closeBtn){
+  /* RESTORE PREVIOUS VIEW */
 
-  closeBtn.addEventListener(
-    "click",
-    window.closeStrategyGameModal
+  if(strategyGamePreviousView){
+
+    strategyGamePreviousView.classList.add("active");
+
+  }
+
+  strategyGamePreviousView = null;
+
+  /* RESTORE MAIN HEADER */
+
+  const header =
+    document.querySelector("header.masthead");
+
+  if(header){
+    header.style.display = "";
+  }
+
+  /* RESTORE SCROLL POSITION */
+
+  window.scrollTo(
+    0,
+    strategyGamePreviousScrollY
   );
 
-}
+  console.log("NEPTOON STRATEGY GAME PAGE CLOSED");
+
+};
+
+
+/* =====================================================
+   RETURN FROM GAME TO MAIN APPLICATION
+===================================================== */
+
+/*
+  The old modal X button has been removed.
+
+  Keep this function available for the
+  application's return/back navigation.
+*/
+
+window.returnFromStrategyGame = function(){
+
+  window.closeStrategyGameModal();
+
+};
+
+
+/* =====================================================
+   STRATEGY GAME → MYWEALTH
+===================================================== */
 
 window.addEventListener(
   "neptoon:strategy-to-mywealth",
@@ -26883,7 +26989,7 @@ window.addEventListener(
       result
     );
 
-    if (result.ok) {
+    if(result.ok){
 
       showNeptoonNotice(
         `Portfolio added to MyWealth (${result.count}/5)`
@@ -26892,7 +26998,7 @@ window.addEventListener(
       return;
     }
 
-    if (result.reason === "duplicate") {
+    if(result.reason === "duplicate"){
 
       showNeptoonNotice(
         "Portfolio already in MyWealth."
@@ -26901,7 +27007,7 @@ window.addEventListener(
       return;
     }
 
-    if (result.reason === "full") {
+    if(result.reason === "full"){
 
       showNeptoonNotice(
         "MyWealth already contains five portfolios."
@@ -26910,7 +27016,7 @@ window.addEventListener(
       return;
     }
 
-    if (result.reason === "assets-active") {
+    if(result.reason === "assets-active"){
 
       showNeptoonNotice(
         "MyWealth currently contains individual assets. " +
@@ -26926,7 +27032,11 @@ window.addEventListener(
 
   }
 );
-console.log("NEPTOON STRATEGY GAME BRIDGE READY");
+
+
+console.log(
+  "NEPTOON STRATEGY GAME PAGE BRIDGE READY"
+);
 
 </script>
 
