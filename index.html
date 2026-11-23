@@ -18483,7 +18483,12 @@ function stopWelcomeRotation(){
 
 
 
-function renderMarketIndices(){
+function renderMarketIndices({
+  vixClose = null,
+  vixPreviousClose = null,
+  us10yClose = null,
+  us10yPreviousClose = null
+} = {}) {
 
   const host =
     document.getElementById("market-index-grid");
@@ -18511,8 +18516,24 @@ function renderMarketIndices(){
       const ticker =
         instrument.tickerExchange;
 
-      const quote =
-        quotes[ticker] || {};
+const liveQuote =
+  quotes[ticker] || {};
+
+const historicalQuote =
+  ticker === "VIX.INDX"
+    ? {
+        realtimePrice: vixClose,
+        previousClose: vixPreviousClose
+      }
+    : ticker === "US10Y.GBOND"
+      ? {
+          realtimePrice: us10yClose,
+          previousClose: us10yPreviousClose
+        }
+      : null;
+
+const quote =
+  historicalQuote || liveQuote;
 
       const isVIX =
         ticker === "VIX.INDX";
@@ -18670,6 +18691,52 @@ function renderMarketIndices(){
   icons();
 
 }
+
+
+async function renderMarketIndicesWithHistory(){
+
+  const [
+    vixHistory,
+    us10yHistory
+  ] = await Promise.all([
+    getMarketTickerHistory("VIX.INDX"),
+    getMarketTickerHistory("US10Y.GBOND")
+  ]);
+
+  function latestTwo(history){
+
+    const prices = history?.prices || [];
+
+    if(prices.length < 2){
+      return [null, null];
+    }
+
+    return [
+      Number(prices.at(-1)[1]),
+      Number(prices.at(-2)[1])
+    ];
+
+  }
+
+  const [
+    vixClose,
+    vixPreviousClose
+  ] = latestTwo(vixHistory);
+
+  const [
+    us10yClose,
+    us10yPreviousClose
+  ] = latestTwo(us10yHistory);
+
+  renderMarketIndices({
+    vixClose,
+    vixPreviousClose,
+    us10yClose,
+    us10yPreviousClose
+  });
+
+}
+
 
 
 function bindMarketIndexHistory(){
@@ -25303,12 +25370,27 @@ finally {
 
   MARKET_STATE.loading = false;
 
-  renderMarketPulse();
+
+
+
+renderMarketPulse();
+
+try {
+  await renderMarketIndicesWithHistory();
+} catch(error) {
+  console.error(
+    "Market indicator history:",
+    error
+  );
+
   renderMarketIndices();
+}
+
 bindMarketIndexHistory();
 bindMarketStockHistory();
 
-  renderGlobalMarketTicker();
+renderGlobalMarketTicker();
+
 
 }
 
