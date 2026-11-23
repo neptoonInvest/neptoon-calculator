@@ -8278,6 +8278,27 @@ fontweight:700px
   margin-bottom: 5px !important;
 }
 
+
+/* ==========================================
+   MOBILE · INTRO PILL POSITION
+========================================== */
+
+@media (max-width: 600px) {
+
+  .tm-intro-pill {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+
+    display: table !important;
+    margin: 0 0 15px auto !important;
+
+    transform: none !important;
+  }
+
+}
+
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -15568,6 +15589,7 @@ function tmRenderChapter(){
    RENDER METRICS
 ===================================================== */
 
+
 function tmRenderMetrics(){
 
   const m = tmCalculateMetrics();
@@ -15585,7 +15607,7 @@ function tmRenderMetrics(){
     tmFormatPercent(m.returnPct);
 
   annualized.textContent =
-    m.annualizedReturnPct !== null
+    m.annualizedReturnPct != null
       ? tmFormatPercent(m.annualizedReturnPct)
       : "—";
 
@@ -15599,15 +15621,21 @@ function tmRenderMetrics(){
     m.returnPct > 0
   );
 
-  drawdown.classList.toggle(
+  annualized.classList.toggle(
     "negative",
-    m.drawdownPct < 0
+    m.annualizedReturnPct < 0
+  );
+
+  annualized.classList.toggle(
+    "positive",
+    m.annualizedReturnPct > 0
   );
 
   tmEl("tm-current-date").textContent =
     tmFormatDate(m.date);
 
 }
+
 
 
 /* =====================================================
