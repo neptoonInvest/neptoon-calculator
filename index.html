@@ -8177,6 +8177,54 @@ fontweight:700px
 }
 
 
+/* =====================================================
+   ORBITAL SCENE · FIXED COORDINATE SYSTEM
+===================================================== */
+
+.nt-orbit-scene{
+  position:relative;
+  container-type:inline-size;
+
+  width:100%;
+  max-width:400px;
+  aspect-ratio:1 / 1.32;
+
+  margin:22px auto 0;
+  isolation:isolate;
+}
+
+
+/* =====================================================
+   EARTH · CENTERED IN SVG ORBIT
+===================================================== */
+
+.nt-orbit-planet{
+  position:absolute;
+
+  left:50%;
+  top:50cqw;
+
+  width:72%;
+  aspect-ratio:1;
+
+  transform:translate(-50%,-50%);
+
+  background-image:url("/icons/earh.png");
+  background-size:contain;
+  background-position:center;
+  background-repeat:no-repeat;
+
+  border-radius:50%;
+
+  box-shadow:
+    0 0 18px rgba(41,173,255,.35),
+    0 0 65px rgba(14,102,176,.22),
+    inset 0 0 35px rgba(0,0,0,.3);
+
+  z-index:1;
+  pointer-events:none;
+}
+
 
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
