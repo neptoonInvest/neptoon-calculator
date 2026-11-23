@@ -18609,7 +18609,8 @@ const quote =
 
 const priceText =
   price !== null
-    ? formatNumber(price) + (isUS10Y ? "%" : "")
+    ? formatNumber(price) +
+      (isVIX || isUS10Y ? "%" : "")
     : "—";
 
       let changeText = "—";
@@ -18658,8 +18659,8 @@ changeText =
             : "down";
 
 const unit =
-  isVIX || isUS10Y
-    ? "%"
+  isIndicator
+    ? ""
     : instrument.currency || "";
 
       return `
