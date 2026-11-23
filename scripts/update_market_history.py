@@ -30,37 +30,71 @@ def load_previous():
 
 
 def fetch_closes(ticker, start, end, token):
+
     params = urllib.parse.urlencode({
         "api_token": token,
+        "function": "splitadjusted",
         "from": start.isoformat(),
         "to": end.isoformat(),
-        "period": "d",
         "fmt": "json",
         "order": "a",
     })
-    url = "https://eodhd.com/api/eod/" + urllib.parse.quote(ticker, safe="") + "?" + params
-    request = urllib.request.Request(url, headers={"User-Agent": "NeptoonHistory/1.0"})
-    with urllib.request.urlopen(request, timeout=45) as response:
+
+    url = (
+        "https://eodhd.com/api/technical/"
+        + urllib.parse.quote(ticker, safe="")
+        + "?"
+        + params
+    )
+
+    request = urllib.request.Request(
+        url,
+        headers={"User-Agent": "NeptoonHistory/1.0"}
+    )
+
+    with urllib.request.urlopen(
+        request,
+        timeout=45
+    ) as response:
         rows = json.load(response)
+
     if not isinstance(rows, list):
         raise ValueError("EODHD response is not a list")
+
     prices = {}
+
     for row in rows:
+
         if not isinstance(row, dict):
             continue
-        day, raw = row.get("date"), row.get("close")
+
+        day = row.get("date")
+        raw = row.get("close")
+
         if not isinstance(day, str):
             continue
+
         try:
             parsed_day = date.fromisoformat(day)
             close = float(raw)
+
         except (ValueError, TypeError):
             continue
-        if start <= parsed_day <= end and math.isfinite(close) and close > 0:
+
+        if (
+            start <= parsed_day <= end
+            and math.isfinite(close)
+            and close > 0
+        ):
             prices[day] = close
+
     if not prices:
         raise ValueError("No valid closing prices")
-    return [[day, prices[day]] for day in sorted(prices)]
+
+    return [
+        [day, prices[day]]
+        for day in sorted(prices)
+    ]
 
 
 
