@@ -1,184 +1,52 @@
 
+
 {
-  "version": "1.1",
-  "tickers": [
-    "ANT.US",
-    "AAPL.US",
-    "MSFT.US",
-    "NVDA.US",
-    "GOOGL.US",
-    "AMZN.US",
-    "META.US",
-    "RHM.XETRA",
-    "NOVO-B.CO",
-    "ASML.AS",
-    "MCD.US",
-    "NKE.US",
-    "MAERSK-B.CO",
-    "DANSKE.CO",
-    "VWS.CO",
-    "LSMC.XETRA",
-    "EUNL.XETRA",
-    "8PSG.XETRA",
-    "GSPC.INDX",
-    "IXIC.INDX",
-    "OMXC25.INDX",
-    "GDAXI.INDX",
-    "DBXZ.XETRA",
-    "OMXS30.INDX",
-    "FCHI.INDX"
-  ],
-  "metadata": {
-    "ANT.US": {
-      "story": {
-        "da": "Anthropic udvikler kunstig intelligens med Claude som sit mest kendte produkt. Virksomheden arbejder med AI-assistenter til både private brugere og virksomheder og er en central aktør i konkurrencen om fremtidens AI-teknologi.",
-        "en": "Anthropic develops artificial intelligence, with Claude as its best-known product. The company builds AI assistants for consumers and businesses and is a major participant in the race to develop the next generation of AI technology."
-      }
-    },
-    "AAPL.US": {
-      "story": {
-        "da": "Apple er kendt for iPhone, Mac, iPad og Apple Watch. Virksomheden kombinerer hardware, software og digitale tjenester i et tæt forbundet økosystem, hvor loyalitet og design spiller en vigtig rolle.",
-        "en": "Apple is known for the iPhone, Mac, iPad and Apple Watch. The company combines hardware, software and digital services in a closely connected ecosystem where customer loyalty and design play an important role."
-      }
-    },
-    "MSFT.US": {
-      "story": {
-        "da": "Microsoft står bag Windows, Microsoft 365, Azure og en række AI-løsninger. Virksomheden leverer software og cloudteknologi til millioner af virksomheder og private brugere verden over.",
-        "en": "Microsoft is behind Windows, Microsoft 365, Azure and a range of AI solutions. The company provides software and cloud technology to millions of businesses and consumers worldwide."
-      }
-    },
-    "NVDA.US": {
-      "story": {
-        "da": "NVIDIA begyndte med grafikchips til computerspil, men er blevet en nøgleleverandør af processorer til kunstig intelligens. Virksomhedens teknologi bruges i datacentre, avanceret forskning og AI-modeller.",
-        "en": "NVIDIA began with graphics chips for computer games but has become a key supplier of processors for artificial intelligence. Its technology is used in data centers, advanced research and AI models."
-      }
-    },
-    "GOOGL.US": {
-      "story": {
-        "da": "Alphabet er moderselskab for Google, YouTube og flere teknologivirksomheder. Søgning og digital annoncering er centrale forretninger, mens cloudteknologi og kunstig intelligens er vigtige udviklingsområder.",
-        "en": "Alphabet is the parent company of Google, YouTube and several technology businesses. Search and digital advertising are core activities, while cloud technology and artificial intelligence are important areas of development."
-      }
-    },
-    "AMZN.US": {
-      "story": {
-        "da": "Amazon begyndte som en onlineboghandel og er i dag en global handels- og teknologivirksomhed. Foruden e-handel driver Amazon Web Services en af verdens største cloudplatforme.",
-        "en": "Amazon began as an online bookstore and has become a global commerce and technology company. Alongside e-commerce, Amazon Web Services operates one of the world's largest cloud platforms."
-      }
-    },
-    "META.US": {
-      "story": {
-        "da": "Meta ejer Facebook, Instagram og WhatsApp. Virksomheden tjener hovedparten af sine indtægter på digital annoncering og investerer samtidig betydeligt i kunstig intelligens og nye digitale platforme.",
-        "en": "Meta owns Facebook, Instagram and WhatsApp. The company earns most of its revenue from digital advertising while investing heavily in artificial intelligence and new digital platforms."
-      }
-    },
-    "RHM.XETRA": {
-      "story": {
-        "da": "Rheinmetall er en tysk industrikoncern med en central rolle i europæisk forsvarsteknologi. Virksomheden producerer blandt andet ammunition, militære køretøjer og avancerede forsvarssystemer.",
-        "en": "Rheinmetall is a German industrial group with a major role in European defense technology. Its products include ammunition, military vehicles and advanced defense systems."
-      }
-    },
-    "NOVO-B.CO": {
-      "story": {
-        "da": "Novo Nordisk er en dansk medicinalvirksomhed med speciale i diabetes, fedme og andre kroniske sygdomme. Virksomheden er blandt verdens førende inden for behandlinger baseret på GLP-1-teknologi.",
-        "en": "Novo Nordisk is a Danish pharmaceutical company specializing in diabetes, obesity and other chronic diseases. It is among the world's leading developers of treatments based on GLP-1 technology."
-      }
-    },
-    "ASML.AS": {
-      "story": {
-        "da": "ASML fra Holland producerer avancerede litografimaskiner, som bruges til fremstilling af mikrochips. Virksomhedens EUV-teknologi er afgørende for produktionen af nogle af verdens mest avancerede halvledere.",
-        "en": "ASML, based in the Netherlands, manufactures advanced lithography machines used to produce microchips. Its EUV technology is essential for manufacturing some of the world's most advanced semiconductors."
-      }
-    },
-    "MCD.US": {
-      "story": {
-        "da": "McDonald's er en af verdens mest kendte restaurantkæder. Forretningen bygger i høj grad på franchising, stærke varemærker og et globalt netværk af restauranter.",
-        "en": "McDonald's is one of the world's most recognizable restaurant chains. Its business relies heavily on franchising, strong brands and a global network of restaurants."
-      }
-    },
-    "NKE.US": {
-      "story": {
-        "da": "Nike er en global producent af sportssko, sportstøj og sportsudstyr. Virksomheden er kendt for sit Swoosh-logo, samarbejder med internationale sportsstjerner og stærk markedsføring.",
-        "en": "Nike is a global producer of athletic footwear, clothing and sports equipment. The company is known for its Swoosh logo, partnerships with international athletes and powerful marketing."
-      }
-    },
-    "MAERSK-B.CO": {
-      "story": {
-        "da": "A.P. Møller - Mærsk er en dansk transport- og logistikvirksomhed, som forbinder verdenshandlen gennem containerskibe, havneterminaler og logistiktjenester. Virksomhedens aktiviteter er tæt knyttet til udviklingen i den globale handel.",
-        "en": "A.P. Moller - Maersk is a Danish transport and logistics company connecting global trade through container ships, port terminals and logistics services. Its activities are closely linked to developments in international trade."
-      }
-    },
-    "DANSKE.CO": {
-      "story": {
-        "da": "Danske Bank er en af Nordens største finansielle virksomheder. Banken tilbyder blandt andet boliglån, opsparing, betalinger og finansielle tjenester til privatkunder og virksomheder.",
-        "en": "Danske Bank is one of the Nordic region's largest financial institutions. Its services include mortgages, savings, payments and financial solutions for individuals and businesses."
-      }
-    },
-    "VWS.CO": {
-      "story": {
-        "da": "Vestas er en dansk producent af vindmøller og leverandør af service til vindenergiprojekter verden over. Virksomheden spiller en vigtig rolle i udbygningen af vedvarende energi.",
-        "en": "Vestas is a Danish wind turbine manufacturer and service provider for wind energy projects worldwide. The company plays an important role in the expansion of renewable energy."
-      }
-    },
-    "LSMC.XETRA": {
-      "story": {
-        "da": "Beskrivelse af ETF-produktet tilføjes senere.",
-        "en": "ETF product description to be added."
-      }
-    },
-    "EUNL.XETRA": {
-      "story": {
-        "da": "Beskrivelse af ETF-produktet tilføjes senere.",
-        "en": "ETF product description to be added."
-      }
-    },
-    "8PSG.XETRA": {
-      "story": {
-        "da": "Beskrivelse af guld-ETC-produktet tilføjes senere.",
-        "en": "Gold ETC product description to be added."
-      }
-    },
-    "GSPC.INDX": {
-      "story": {
-        "da": "Beskrivelse af aktieindekset tilføjes senere.",
-        "en": "Stock index description to be added."
-      }
-    },
-    "IXIC.INDX": {
-      "story": {
-        "da": "Beskrivelse af aktieindekset tilføjes senere.",
-        "en": "Stock index description to be added."
-      }
-    },
-    "OMXC25.INDX": {
-      "story": {
-        "da": "Beskrivelse af aktieindekset tilføjes senere.",
-        "en": "Stock index description to be added."
-      }
-    },
-    "GDAXI.INDX": {
-      "story": {
-        "da": "Beskrivelse af aktieindekset tilføjes senere.",
-        "en": "Stock index description to be added."
-      }
-    },
-    "DBXZ.XETRA": {
-      "story": {
-        "da": "Beskrivelse af ETF-produktet tilføjes senere.",
-        "en": "ETF product description to be added."
-      }
-    },
-    "OMXS30.INDX": {
-      "story": {
-        "da": "Beskrivelse af aktieindekset tilføjes senere.",
-        "en": "Stock index description to be added."
-      }
-    },
-    "FCHI.INDX": {
-      "story": {
-        "da": "Beskrivelse af aktieindekset tilføjes senere.",
-        "en": "Stock index description to be added."
-      }
+  "GSPC.INDX": {
+    "story": {
+      "da": "S&P 500 følger 500 af de største børsnoterede amerikanske virksomheder og er et af verdens vigtigste pejlemærker for aktiemarkedet. Indekset spænder over mange brancher, men store teknologivirksomheder har betydelig indflydelse på udviklingen.",
+      "en": "The S&P 500 tracks 500 leading publicly traded US companies and is one of the world's most important stock market benchmarks. It covers many industries, although large technology companies have a significant influence on its performance."
+    }
+  },
+  "IXIC.INDX": {
+    "story": {
+      "da": "Nasdaq Composite omfatter tusindvis af aktier noteret på Nasdaq-børsen i USA. Indekset er særligt præget af teknologi- og vækstvirksomheder og reagerer ofte kraftigt på ændringer i renter, forventninger til indtjening og udviklingen inden for kunstig intelligens.",
+      "en": "The Nasdaq Composite includes thousands of stocks listed on the Nasdaq exchange in the United States. It has a strong concentration of technology and growth companies and often reacts sharply to changes in interest rates, earnings expectations and developments in artificial intelligence."
+    }
+  },
+  "OMXC25.INDX": {
+    "story": {
+      "da": "OMX Copenhagen 25 følger 25 af de største og mest handlede aktier på Københavns Fondsbørs. Indekset giver et billede af det danske aktiemarked, hvor især medicinalvirksomheder, industri og finans kan spille en stor rolle.",
+      "en": "The OMX Copenhagen 25 tracks 25 of the largest and most actively traded stocks on the Copenhagen Stock Exchange. It provides a picture of the Danish equity market, where pharmaceuticals, industrial companies and financial institutions can have a major influence."
+    }
+  },
+  "GDAXI.INDX": {
+    "story": {
+      "da": "DAX følger 40 store tyske børsnoterede virksomheder og er Tysklands vigtigste aktieindeks. Med selskaber inden for industri, teknologi, kemi og finans afspejler indekset både udviklingen i Europas største økonomi og efterspørgslen på verdensmarkedet.",
+      "en": "The DAX tracks 40 major publicly traded German companies and is Germany's leading stock market index. With businesses spanning industry, technology, chemicals and finance, it reflects developments in Europe's largest economy and demand across global markets."
+    }
+  },
+  "OMXS30.INDX": {
+    "story": {
+      "da": "OMX Stockholm 30 følger 30 af de mest handlede aktier på Stockholmsbørsen. Indekset er præget af svenske industrikoncerner, banker og teknologivirksomheder, som ofte har betydelige aktiviteter uden for Sverige.",
+      "en": "The OMX Stockholm 30 tracks 30 of the most actively traded stocks on the Stockholm Stock Exchange. It is shaped by Swedish industrial groups, banks and technology companies, many of which have substantial international operations."
+    }
+  },
+  "FCHI.INDX": {
+    "story": {
+      "da": "CAC 40 følger 40 store virksomheder på børsen i Paris og er Frankrigs vigtigste aktieindeks. Indekset rummer blandt andet globale luksusmærker, industrivirksomheder, energiselskaber og banker og påvirkes derfor både af europæisk økonomi og international efterspørgsel.",
+      "en": "The CAC 40 tracks 40 major companies listed in Paris and is France's leading stock market index. It includes global luxury brands, industrial businesses, energy companies and banks, making it sensitive to both European economic conditions and international demand."
+    }
+  },
+  "VIX.INDX": {
+    "story": {
+      "da": "VIX kaldes ofte Wall Streets frygtindeks. Det måler markedets forventning til udsving i S&P 500 over de kommende 30 dage ud fra priserne på aktieoptioner. Et højt VIX signalerer stor forventet uro, mens et lavt VIX typisk afspejler mere rolige markedsforhold. VIX viser ikke, om aktierne vil stige eller falde.",
+      "en": "The VIX is often called Wall Street's fear index. It measures expected fluctuations in the S&P 500 over the next 30 days using stock option prices. A high VIX signals greater expected market turbulence, while a low VIX generally reflects calmer conditions. The VIX does not predict whether stocks will rise or fall."
+    }
+  },
+  "US10Y.GBOND": {
+    "story": {
+      "da": "Den amerikanske 10-årige statsrente viser afkastkravet på amerikanske statsobligationer med cirka 10 års løbetid. Renten er et centralt pejlemærke for globale finansmarkeder og påvirker blandt andet boliglån, virksomheders finansiering og værdiansættelsen af aktier. Når obligationskurserne stiger, falder renten normalt – og omvendt.",
+      "en": "The US 10-year Treasury yield represents the market yield on US government bonds with approximately 10 years to maturity. It is a key benchmark for global financial markets, influencing mortgages, corporate financing and stock valuations. When bond prices rise, yields generally fall, and vice versa."
     }
   }
 }
-
