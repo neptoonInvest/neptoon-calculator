@@ -137,15 +137,17 @@ def main():
             "No history available; existing JSON left unchanged"
         )
 
-    payload = {
-        "version": "1.0",
-        "updatedAt": datetime.now(timezone.utc).isoformat(),
-        "priceField": "close",
-        "adjusted": False,
-        "windowStart": start.isoformat(),
-        "windowEnd": today.isoformat(),
-        "instruments": instruments,
-    }
+payload = {
+    "version": "1.0",
+    "updatedAt": datetime.now(timezone.utc).isoformat(),
+    "priceField": "close",
+    "adjusted": True,
+    "adjustmentType": "split_only",
+    "dividendAdjusted": False,
+    "windowStart": start.isoformat(),
+    "windowEnd": today.isoformat(),
+    "instruments": instruments,
+}
 
     tmp = OUTPUT.with_suffix(".json.tmp")
 
