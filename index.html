@@ -27087,6 +27087,7 @@ let strategyGamePreviousScrollY = 0;
    OPEN STRATEGY GAME PAGE
 ===================================================== */
 
+
 /* =====================================================
    OPEN STRATEGY GAME PAGE
 ===================================================== */
@@ -27101,7 +27102,10 @@ window.openStrategyGameModal = async function(){
   const root =
     document.getElementById("nt-strategy-game-root");
 
-  if(!page || !root){
+  const main =
+    document.querySelector("main.shell");
+
+  if(!page || !root || !main){
     console.error("Strategy Game page elements missing");
     return;
   }
@@ -27133,14 +27137,20 @@ window.openStrategyGameModal = async function(){
     /* SAVE PREVIOUS PAGE AND SCROLL */
 
     strategyGamePreviousView =
-      document.querySelector(".page.active");
+      document.querySelector("main.shell > .page.active");
 
     strategyGamePreviousScrollY =
       window.scrollY;
 
+    /* ENSURE GAME IS INSIDE MAIN APPLICATION */
+
+    if(page.parentElement !== main){
+      main.appendChild(page);
+    }
+
     /* DEACTIVATE MAIN APPLICATION PAGES */
 
-    document.querySelectorAll(".page").forEach(p => {
+    main.querySelectorAll(":scope > .page").forEach(p => {
       p.classList.remove("active");
     });
 
@@ -27160,6 +27170,15 @@ window.openStrategyGameModal = async function(){
 
     if(ticker){
       ticker.style.display = "none";
+    }
+
+    /* HIDE MAIN APPLICATION FOOTER */
+
+    const appFooter =
+      main.nextElementSibling;
+
+    if(appFooter?.tagName === "FOOTER"){
+      appFooter.style.display = "none";
     }
 
     /* HIDE FLOATING PLUS BUTTON */
@@ -27202,7 +27221,14 @@ window.openStrategyGameModal = async function(){
       behavior: "instant"
     });
 
-    console.log("NEPTOON STRATEGY GAME PAGE OPEN");
+    console.log(
+      "NEPTOON STRATEGY GAME PAGE OPEN",
+      {
+        gameInsideMain: main.contains(page),
+        footerHidden:
+          appFooter?.style.display === "none"
+      }
+    );
 
   } catch(error) {
 
@@ -27230,6 +27256,9 @@ window.closeStrategyGameModal = function(){
 
   const page =
     document.getElementById("nt-strategy-page");
+
+  const main =
+    document.querySelector("main.shell");
 
   if(!page) return;
 
@@ -27267,7 +27296,7 @@ window.closeStrategyGameModal = function(){
     document.querySelector("header.masthead");
 
   if(header){
-    header.style.display = "";
+    header.style.removeProperty("display");
   }
 
   /* RESTORE GLOBAL MARKET TICKER */
@@ -27277,6 +27306,15 @@ window.closeStrategyGameModal = function(){
 
   if(ticker){
     ticker.style.removeProperty("display");
+  }
+
+  /* RESTORE MAIN APPLICATION FOOTER */
+
+  const appFooter =
+    main?.nextElementSibling;
+
+  if(appFooter?.tagName === "FOOTER"){
+    appFooter.style.removeProperty("display");
   }
 
   /* RESTORE FLOATING PLUS BUTTON */
@@ -27295,9 +27333,12 @@ window.closeStrategyGameModal = function(){
     behavior: "instant"
   });
 
-  console.log("NEPTOON STRATEGY GAME PAGE CLOSED");
+  console.log(
+    "NEPTOON STRATEGY GAME PAGE CLOSED"
+  );
 
 };
+
 
 
 /* =====================================================
