@@ -67,8 +67,8 @@ def main():
     token = os.environ["EODHD_TOKEN"]
     with CONFIG.open(encoding="utf-8") as handle:
         tickers = json.load(handle)["tickers"]
-    if len(tickers) != 25 or len(set(tickers)) != 25:
-        raise ValueError("Configuration must contain 25 unique tickers")
+if not tickers or len(set(tickers)) != len(tickers):
+    raise ValueError("Configuration must contain unique tickers")
 
     today = datetime.now(COPENHAGEN).date()
     start = three_years_ago(today)
@@ -105,8 +105,14 @@ def main():
     tmp = OUTPUT.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     tmp.replace(OUTPUT)
-    print(f"History cache saved: {successful} fresh / {len(instruments)} available / 25 configured")
 
+
+print(
+    f"History cache saved: "
+    f"{successful} fresh / "
+    f"{len(instruments)} available / "
+    f"{len(tickers)} configured"
+)
 
 if __name__ == "__main__":
     main()
