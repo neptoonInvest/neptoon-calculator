@@ -18145,15 +18145,16 @@ async function loadWelcomeRotationPool(){
 
     const tickers = payload.tickers;
 
-    if(
-      !Array.isArray(tickers) ||
-      tickers.length !== 25 ||
-      new Set(tickers).size !== 25
-    ){
-      throw new Error(
-        "Invalid Welcome instrument universe"
-      );
-    }
+if(
+  !Array.isArray(tickers) ||
+  tickers.length === 0 ||
+  new Set(tickers).size !== tickers.length
+){
+  throw new Error(
+    "Invalid Welcome instrument universe"
+  );
+}
+
 
     WELCOME_ROTATION_POOL = [...tickers];
 
