@@ -19203,18 +19203,12 @@ async function renderMarketIndicesWithHistory(){
 }
 
 
-
 function bindMarketIndexHistory(){
 
-  const host =
-    document.getElementById("market-index-grid");
-
-  if(!host) return;
-
-  // Prevent duplicate listeners.
-  if(host.dataset.historyBound === "1") return;
-
-  host.dataset.historyBound = "1";
+  const hosts = [
+    document.getElementById("market-index-grid"),
+    document.getElementById("welcome-preview")
+  ].filter(Boolean);
 
   function openFromCard(card){
 
@@ -19227,39 +19221,58 @@ function bindMarketIndexHistory(){
 
   }
 
-  host.addEventListener("click", event => {
+  hosts.forEach(host => {
 
-    const card =
-      event.target.closest("[data-history-ticker]");
+    // Prevent duplicate listeners.
 
-    if(!card || !host.contains(card)) return;
+    if(host.dataset.historyBound === "1") return;
 
-    openFromCard(card);
+    host.dataset.historyBound = "1";
 
-  });
+    /*
+      CLICK / MOBILE TAP
+    */
 
-  host.addEventListener("keydown", event => {
+    host.addEventListener("click", event => {
 
-    if(
-      event.key !== "Enter" &&
-      event.key !== " "
-    ){
-      return;
-    }
+      const card =
+        event.target.closest("[data-history-ticker]");
 
-    const card =
-      event.target.closest("[data-history-ticker]");
+      if(!card || !host.contains(card)) return;
 
-    if(!card || !host.contains(card)) return;
+      openFromCard(card);
 
-    event.preventDefault();
+    });
 
-    openFromCard(card);
+    /*
+      KEYBOARD ACCESS
+    */
+
+    host.addEventListener("keydown", event => {
+
+      if(
+        event.key !== "Enter" &&
+        event.key !== " "
+      ){
+        return;
+      }
+
+      const card =
+        event.target.closest("[data-history-ticker]");
+
+      if(!card || !host.contains(card)) return;
+
+      event.preventDefault();
+
+      openFromCard(card);
+
+    });
+
+    console.log("HISTORY LISTENER BOUND:", host.id);
 
   });
 
 }
-
 
 function renderWealthPlanEmail(){
 
