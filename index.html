@@ -8497,6 +8497,28 @@ fontweight:700px
 
 }
 
+html.nt-history-open{
+  overflow:hidden !important;
+  overscroll-behavior:none;
+}
+
+html.nt-history-open body{
+  position:fixed !important;
+  left:0;
+  right:0;
+  width:100%;
+  overflow:hidden !important;
+}
+
+#nt-history-modal .nt-history-body{
+  min-height:0;
+  overflow-y:auto !important;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+  touch-action:pan-y;
+  -webkit-overflow-scrolling:touch;
+}
+
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -11572,6 +11594,8 @@ const MYWEALTH_CINEMA = {
    NEPTOON · INSTRUMENT HISTORY STATE
 ===================================================== */
 
+let ntHistoryScrollY = 0;
+
 const INSTRUMENT_HISTORY_URL =
   "https://neptooninvest.github.io/neptoon-data/instrument_history_v1.json";
 
@@ -13534,6 +13558,11 @@ async function openMarketHistoryModal(ticker){
   OPEN DEDICATED HISTORY PAGE
 */
 
+ntHistoryScrollY = window.scrollY;
+
+document.body.style.top =
+  `-${ntHistoryScrollY}px`;
+
 document.documentElement.classList.add(
   "nt-history-open"
 );
@@ -13763,9 +13792,15 @@ function closeMarketHistoryModal(){
     RELEASE DOCUMENT SCROLL LOCK
   */
 
-  document.documentElement.classList.remove(
-    "nt-history-open"
-  );
+document.documentElement.classList.remove(
+  "nt-history-open"
+);
+
+document.body.style.top = "";
+
+window.scrollTo(0, ntHistoryScrollY);
+
+
 
 }
 
