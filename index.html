@@ -18708,7 +18708,7 @@ return `
 
 `;
   }).join("");
-
+ renderWelcomeLiveQuotes();
 }
 
 
@@ -19093,66 +19093,57 @@ function renderMarketIndices({
       /*
         RENDER INDEX CARD
       */
+return `
 
-      return `
+  <article
+    class="market-index-card"
+    data-history-ticker="${esc(ticker)}"
+    role="button"
+    tabindex="0"
+    aria-label="View history for ${esc(instrument.name)}"
+  >
 
-        <article
-          class="market-index-card"
-          data-history-ticker="${esc(ticker)}"
-          role="button"
-          tabindex="0"
-          aria-label="View history for ${esc(instrument.name)}"
-        >
+    <div class="market-index-top">
 
-          <div class="market-index-top">
+      <div class="market-name">
+        ${esc(instrument.name)}
+      </div>
 
-            <div>
+      ${icon(
+        isIndicator
+          ? "activity"
+          : instrument.role === "editorial"
+            ? "cpu"
+            : instrument.role === "local"
+              ? "map-pin"
+              : "chart-no-axes-column-increasing"
+      )}
 
-              <div class="market-name">
-                ${esc(instrument.name)}
-              </div>
+    </div>
 
-              <div class="market-symbol">
-                ${esc(ticker)}
-              </div>
+    <div class="market-quote">
 
-            </div>
+      <div class="market-price">
 
-            ${icon(
-              isIndicator
-                ? "activity"
-                : instrument.role === "editorial"
-                  ? "cpu"
-                  : instrument.role === "local"
-                    ? "map-pin"
-                    : "chart-no-axes-column-increasing"
-            )}
+        ${priceText}
 
-          </div>
+        <span class="market-symbol">
+          ${esc(unit)}
+        </span>
 
-          <div class="market-quote">
+      </div>
 
-            <div class="market-price">
+      <div class="market-change ${changeClass}">
+        ${changeText}
+      </div>
 
-              ${priceText}
+    </div>
 
-              <span class="market-symbol">
-                ${esc(unit)}
-              </span>
+  </article>
 
-            </div>
+`;
 
-            <div class="market-change ${changeClass}">
-              ${changeText}
-            </div>
-
-          </div>
-
-        </article>
-
-      `;
-
-    }).join("");
+}).join("");
 
   icons();
 
@@ -27477,6 +27468,34 @@ function renderMarketHistoryLivePrice(ticker){
               ? "Seneste kurs"
               : "Latest price")
     ].filter(Boolean).join(" · ");
+
+}
+
+function renderWelcomeLiveQuotes(){
+
+  document.querySelectorAll(
+    "#welcome-preview .welcome-live-pill"
+  ).forEach(pill => {
+
+    const ticker = pill.dataset.liveTicker;
+
+    const quote = MARKET_STATE.quotes?.[ticker];
+
+    if(
+      !quote ||
+      quote.realtimePrice == null ||
+      quote.return == null
+    ){
+      return;
+    }
+
+    paintWelcomeLiveQuote(
+      ticker,
+      quote.realtimePrice,
+      Number(quote.return) * 100
+    );
+
+  });
 
 }
 
