@@ -146,7 +146,6 @@ def main():
                 previous_payload.get("adjustmentType") == "split_only"
                 and previous_payload.get("dividendAdjusted") is False
             )
-
     instruments = {}
     successful = 0
     preserved = 0
@@ -174,20 +173,26 @@ def main():
                 f"through {prices[-1][0]}"
             )
 
-     if ticker in {"VIX.INDX", "US10Y.GBOND"}:
+        except Exception as exc:
 
-        print(
-            f"SKIPPED {ticker}: "
-            "raw EOD refresh failed"
-        )
+            print(f"FAILED {ticker}: {exc}")
 
-        continue
+            if ticker in {"VIX.INDX", "US10Y.GBOND"}:
+
+                print(
+                    f"SKIPPED {ticker}: "
+                    "raw EOD refresh failed"
+                )
+
+                continue
 
             if not previous_is_split_adjusted:
+
                 print(
                     f"SKIPPED {ticker}: "
                     "previous cache is not split-adjusted"
                 )
+
                 continue
 
             old = previous.get(ticker, {})
@@ -222,23 +227,24 @@ def main():
                 )
 
     if not instruments:
+
         raise RuntimeError(
-            "No split-adjusted history available; "
+            "No valid history available; "
             "existing JSON left unchanged"
         )
 
-payload = {
-    "version": "1.0",
-    "updatedAt": datetime.now(timezone.utc).isoformat(),
-    "priceField": "close",
-    "adjusted": True,
-    "adjustmentType": "split_only",
-    "dividendAdjusted": False,
-    "unadjustedTickers": ["VIX.INDX", "US10Y.GBOND"],
-    "windowStart": start.isoformat(),
-    "windowEnd": today.isoformat(),
-    "instruments": instruments,
-}
+    payload = {
+        "version": "1.0",
+        "updatedAt": datetime.now(timezone.utc).isoformat(),
+        "priceField": "close",
+        "adjusted": True,
+        "adjustmentType": "split_only",
+        "dividendAdjusted": False,
+        "unadjustedTickers": ["VIX.INDX", "US10Y.GBOND"],
+        "windowStart": start.isoformat(),
+        "windowEnd": today.isoformat(),
+        "instruments": instruments,
+    }
 
     tmp = OUTPUT.with_suffix(".json.tmp")
 
@@ -264,3 +270,4 @@ payload = {
 
 if __name__ == "__main__":
     main()
+   
