@@ -15237,86 +15237,6 @@ function generateWealthPlanPDF(download = true){
      TEXT HELPERS
   ===================================== */
 
-function paintWelcomeLiveQuote(ticker, price, changePct){
-
-  if(
-    price == null ||
-    changePct == null ||
-    !Number.isFinite(Number(price)) ||
-    !Number.isFinite(Number(changePct))
-  ){
-    return;
-  }
-
-  const locale =
-    APP.lang === "da"
-      ? "da-DK"
-      : "en-US";
-
-  const priceText =
-    Number(price).toLocaleString(locale,{
-      minimumFractionDigits:2,
-      maximumFractionDigits:2
-    });
-
-  const change = Number(changePct);
-
-  const changeText =
-    Math.abs(change).toLocaleString(locale,{
-      minimumFractionDigits:2,
-      maximumFractionDigits:2
-    });
-
-  const direction =
-    change > 0
-      ? "positive"
-      : change < 0
-        ? "negative"
-        : "neutral";
-
-  const arrow =
-    change > 0
-      ? "▲"
-      : change < 0
-        ? "▼"
-        : "–";
-
-  const sign =
-    change > 0
-      ? "+"
-      : change < 0
-        ? "−"
-        : "";
-
-  document.querySelectorAll(
-    "#welcome-preview .welcome-live-pill"
-  ).forEach(pill => {
-
-    if(pill.dataset.liveTicker !== ticker)
-      return;
-
-    const priceEl =
-      pill.querySelector(".welcome-live-price");
-
-    const changeEl =
-      pill.querySelector(".welcome-live-change");
-
-    priceEl.textContent = priceText;
-
-    changeEl.textContent =
-      `${arrow} ${sign}${changeText}%`;
-
-    changeEl.classList.remove(
-      "positive",
-      "negative",
-      "neutral"
-    );
-
-    changeEl.classList.add(direction);
-
-  });
-
-}
 
   function heading(text){
 
@@ -27017,6 +26937,87 @@ console.log("BOOT INDEX 7");
 /* =====================================================
    MYWEALTH · GET MODEL BENCHMARK WEIGHTS
 ===================================================== */
+
+function paintWelcomeLiveQuote(ticker, price, changePct){
+
+  if(
+    price == null ||
+    changePct == null ||
+    !Number.isFinite(Number(price)) ||
+    !Number.isFinite(Number(changePct))
+  ){
+    return;
+  }
+
+  const locale =
+    APP.lang === "da"
+      ? "da-DK"
+      : "en-US";
+
+  const priceText =
+    Number(price).toLocaleString(locale,{
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    });
+
+  const change = Number(changePct);
+
+  const changeText =
+    Math.abs(change).toLocaleString(locale,{
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    });
+
+  const direction =
+    change > 0
+      ? "positive"
+      : change < 0
+        ? "negative"
+        : "neutral";
+
+  const arrow =
+    change > 0
+      ? "▲"
+      : change < 0
+        ? "▼"
+        : "–";
+
+  const sign =
+    change > 0
+      ? "+"
+      : change < 0
+        ? "−"
+        : "";
+
+  document.querySelectorAll(
+    "#welcome-preview .welcome-live-pill"
+  ).forEach(pill => {
+
+    if(pill.dataset.liveTicker !== ticker)
+      return;
+
+    const priceEl =
+      pill.querySelector(".welcome-live-price");
+
+    const changeEl =
+      pill.querySelector(".welcome-live-change");
+
+    priceEl.textContent = priceText;
+
+    changeEl.textContent =
+      `${arrow} ${sign}${changeText}%`;
+
+    changeEl.classList.remove(
+      "positive",
+      "negative",
+      "neutral"
+    );
+
+    changeEl.classList.add(direction);
+
+  });
+
+}
 
 function getMyWealthBenchmarkWeights(model){
 
