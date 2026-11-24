@@ -227,17 +227,18 @@ def main():
             "existing JSON left unchanged"
         )
 
-    payload = {
-        "version": "1.0",
-        "updatedAt": datetime.now(timezone.utc).isoformat(),
-        "priceField": "close",
-        "adjusted": True,
-        "adjustmentType": "split_only",
-        "dividendAdjusted": False,
-        "windowStart": start.isoformat(),
-        "windowEnd": today.isoformat(),
-        "instruments": instruments,
-    }
+payload = {
+    "version": "1.0",
+    "updatedAt": datetime.now(timezone.utc).isoformat(),
+    "priceField": "close",
+    "adjusted": True,
+    "adjustmentType": "split_only",
+    "dividendAdjusted": False,
+    "unadjustedTickers": ["VIX.INDX", "US10Y.GBOND"],
+    "windowStart": start.isoformat(),
+    "windowEnd": today.isoformat(),
+    "instruments": instruments,
+}
 
     tmp = OUTPUT.with_suffix(".json.tmp")
 
