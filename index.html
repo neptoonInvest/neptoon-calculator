@@ -8537,8 +8537,8 @@ html.nt-history-open body{
 .welcome-investment-head .welcome-investment-name{
   min-width:0;
 
-  font-size:16px;
-  font-weight:600;
+  font-size:13px;
+  font-weight:700;
   line-height:18px;
 
   display:-webkit-box;
@@ -8627,6 +8627,42 @@ html.nt-history-open body{
 .welcome-investment-card[data-history-ticker]{
   cursor:pointer;
 }
+
+
+.welcome-investment-identity{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.welcome-investment-identity .welcome-investment-sub{
+  font-size:10px;
+  line-height:12px;
+  margin:0;
+  padding:0;
+  color:#9fb5d1;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.welcome-investment-head{
+  height:56px;
+  min-height:56px;
+  max-height:56px;
+}
+
+
+
+
+
+
+
+
+
+
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -18575,96 +18611,102 @@ function renderWelcome(){
         Math.min(100, position * 100)
       );
 
-    return `
+return `
 
-      <article
-  class="welcome-investment-card"
-  data-history-ticker="${esc(ticker)}"
-  role="button"
-  tabindex="0"
-  aria-label="${esc(
-    APP.lang === "da"
-      ? `Vis historik for ${instrument.name}`
-      : `View history for ${instrument.name}`
-  )}"
->
-
-<div class="welcome-investment-head">
-
-  <div
-    class="welcome-investment-name"
-    title="${esc(instrument.name)}"
-  >
-    ${esc(instrument.name)}
-  </div>
-
-  <div
-    class="welcome-live-pill"
-    data-live-ticker="${esc(ticker)}"
+  <article
+    class="welcome-investment-card"
+    data-history-ticker="${esc(ticker)}"
+    role="button"
+    tabindex="0"
+    aria-label="${esc(
+      APP.lang === "da"
+        ? `Vis historik for ${instrument.name}`
+        : `View history for ${instrument.name}`
+    )}"
   >
 
-    <div class="welcome-live-price">
-      —
-    </div>
+    <div class="welcome-investment-head">
 
-    <div class="welcome-live-change">
-      —
-    </div>
+      <div class="welcome-investment-identity">
 
-  </div>
-
-</div>
+        <div
+          class="welcome-investment-name"
+          title="${esc(instrument.name)}"
+        >
+          ${esc(instrument.name)}
+        </div>
 
         <div class="welcome-investment-sub">
-          ${fmt(capital)} ${labels.invested}
-          · ${horizon} ${labels.years}
+          ${esc(
+            [instrument.isin, instrument.ccy]
+              .filter(Boolean)
+              .join(" · ")
+          )}
         </div>
 
-        <div class="welcome-investment-kicker">
-          ${labels.expected}
+      </div>
+
+      <div
+        class="welcome-live-pill"
+        data-live-ticker="${esc(ticker)}"
+      >
+
+        <div class="welcome-live-price">
+          —
         </div>
 
-        <div class="welcome-investment-value">
-          ${fmt(expectedWealth)}
+        <div class="welcome-live-change">
+          —
         </div>
 
-        <div class="welcome-range-head">
+      </div>
 
-          <span>${labels.range}</span>
-          <span>MIN–MAX</span>
+    </div>
 
-        </div>
+    <div class="welcome-investment-kicker">
+      ${labels.expected}
+    </div>
 
-        <div class="welcome-range-track">
-          <div
-            class="welcome-range-fill"
-            style="width:${width}%"
-          ></div>
-        </div>
+    <div class="welcome-investment-value">
+      ${fmt(expectedWealth)}
+    </div>
 
-        <div class="welcome-statistics">
+    <div class="welcome-range-head">
 
-          <div>
-            <span>MINIMUM</span>
-            <strong>${fmt(q10)}</strong>
-          </div>
+      <span>${labels.range}</span>
+      <span>MIN–MAX</span>
 
-          <div>
-            <span>${labels.median}</span>
-            <strong>${fmt(medianWealth)}</strong>
-          </div>
+    </div>
 
-          <div>
-            <span>MAXIMUM</span>
-            <strong>${fmt(q90)}</strong>
-          </div>
+    <div class="welcome-range-track">
+      <div
+        class="welcome-range-fill"
+        style="width:${width}%"
+      ></div>
+    </div>
 
-        </div>
+    <div class="welcome-statistics">
 
-      </article>
+      <div>
+        <span>MINIMUM</span>
+        <strong>${fmt(q10)}</strong>
+      </div>
 
-    `;
+      <div>
+        <span>${labels.median}</span>
+        <strong>${fmt(medianWealth)}</strong>
+      </div>
 
+      <div>
+        <span>MAXIMUM</span>
+        <strong>${fmt(q90)}</strong>
+      </div>
+
+    </div>
+
+  </article>
+
+`;
   }).join("");
 
 }
