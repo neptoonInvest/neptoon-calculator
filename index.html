@@ -18664,22 +18664,11 @@ const priceText =
 
           changeValue = absoluteChange;
 
-          if(isUS10Y){
-
-            const basisPoints =
-              absoluteChange * 100;
-
-            changeText =
-              `${basisPoints >= 0 ? "+" : ""}` +
-              `${basisPoints.toFixed(1)} bp`;
-
-          } else {
+if(isUS10Y){
 
 changeText =
   `${absoluteChange >= 0 ? "+" : ""}` +
-  `${formatNumber(absoluteChange)} %-pt	`;
-
-          }
+  `${formatNumber(absoluteChange)} %-pt`;
 
         }
 
