@@ -18581,37 +18581,31 @@ function renderMarketIndices({
       maximumFractionDigits: 2
     }).format(value);
 
+  const usMarketOpen =
+    isUSMarketOpen();
+
   host.innerHTML =
     instruments.map(instrument => {
 
       const ticker =
         instrument.tickerExchange;
 
-const isUSIndex =
-  ticker === "GSPC.INDX" ||
-  ticker === "IXIC.INDX";
 
-const marketClosed =
-  isUSIndex && !isUSMarketOpen();
+      /*
+        MARKET OPEN / CLOSED
+      */
 
-const liveQuote =
-  quotes[ticker] || {};
+      const isUSIndex =
+        ticker === "GSPC.INDX" ||
+        ticker === "IXIC.INDX";
 
-const historicalQuote =
-  ticker === "VIX.INDX"
-    ? {
-        realtimePrice: vixClose,
-        previousClose: vixPreviousClose
-      }
-    : ticker === "US10Y.GBOND"
-      ? {
-          realtimePrice: us10yClose,
-          previousClose: us10yPreviousClose
-        }
-      : null;
+      const marketClosed =
+        isUSIndex && !usMarketOpen;
 
-const quote =
-  historicalQuote || liveQuote;
+
+      /*
+        INDICATOR IDENTIFICATION
+      */
 
       const isVIX =
         ticker === "VIX.INDX";
@@ -18622,6 +18616,35 @@ const quote =
       const isIndicator =
         isVIX || isUS10Y;
 
+
+      /*
+        PRICE SOURCE
+      */
+
+      const liveQuote =
+        quotes[ticker] || {};
+
+      const historicalQuote =
+        isVIX
+          ? {
+              realtimePrice: vixClose,
+              previousClose: vixPreviousClose
+            }
+          : isUS10Y
+            ? {
+                realtimePrice: us10yClose,
+                previousClose: us10yPreviousClose
+              }
+            : null;
+
+      const quote =
+        historicalQuote || liveQuote;
+
+
+      /*
+        PRICE AND RETURN VALUES
+      */
+
       const price =
         Number.isFinite(quote.realtimePrice)
           ? quote.realtimePrice
@@ -18631,14 +18654,6 @@ const quote =
         Number.isFinite(quote.return)
           ? quote.return
           : null;
-
-      /*
-        VIX and US10Y:
-        Display absolute daily changes.
-
-        IMPORTANT:
-        This requires yesterday's closing value.
-      */
 
       const previousClose =
         Number.isFinite(quote.previousClose)
@@ -18651,11 +18666,20 @@ const quote =
           : null;
 
 
-const priceText =
-  price !== null
-    ? formatNumber(price) +
-      (isVIX || isUS10Y ? "%" : "")
-    : "—";
+      /*
+        PRICE FORMATTING
+      */
+
+      const priceText =
+        price !== null
+          ? formatNumber(price) +
+            (isIndicator ? "%" : "")
+          : "—";
+
+
+      /*
+        DAILY CHANGE FORMATTING
+      */
 
       let changeText = "—";
       let changeValue = null;
@@ -18666,11 +18690,9 @@ const priceText =
 
           changeValue = absoluteChange;
 
-if(isUS10Y){
-
-changeText =
-  `${absoluteChange >= 0 ? "+" : ""}` +
-  `${formatNumber(absoluteChange)} %-pt`;
+          changeText =
+            `${absoluteChange >= 0 ? "+" : ""}` +
+            `${formatNumber(absoluteChange)} %-pt`;
 
         }
 
@@ -18684,30 +18706,52 @@ changeText =
 
       }
 
-if(marketClosed){
 
-  changeText = `<span
-    class="market-closed-moon"
-    title="${APP.lang === "da" ? "Markedet er lukket" : "Market closed"}"
-  >☾</span>`;
+      /*
+        CLOSED US MARKETS
+      */
 
-}
+      if(marketClosed){
 
-const changeClass =
-  marketClosed
-    ? "closed"
-    : changeValue === null
-      ? "unknown"
-      : changeValue >= 0
-        ? "up"
-        : "down";
+        changeText = `
+          <span
+            class="market-closed-moon"
+            title="${APP.lang === "da"
+              ? "Markedet er lukket"
+              : "Market closed"}"
+          >☾</span>
+        `;
+
+      }
 
 
+      /*
+        CHANGE COLOR
+      */
 
-const unit =
-  isIndicator
-    ? ""
-    : instrument.currency || "";
+      const changeClass =
+        marketClosed
+          ? "closed"
+          : changeValue === null
+            ? "unknown"
+            : changeValue >= 0
+              ? "up"
+              : "down";
+
+
+      /*
+        CURRENCY UNIT
+      */
+
+      const unit =
+        isIndicator
+          ? ""
+          : instrument.currency || "";
+
+
+      /*
+        RENDER INDEX CARD
+      */
 
       return `
 
@@ -18764,6 +18808,7 @@ const unit =
           </div>
 
         </article>
+
       `;
 
     }).join("");
@@ -18771,7 +18816,6 @@ const unit =
   icons();
 
 }
-
 
 async function renderMarketIndicesWithHistory(){
 
