@@ -8818,7 +8818,44 @@ html.nt-history-open body{
   color:#ffffff !important;
 }
 
-	
+/* ==========================================
+   MARKET STOCK CARDS · HORIZONTAL QUOTE
+========================================== */
+
+.market-stock-card .market-stock-quote{
+  display:flex !important;
+  flex-direction:row !important;
+  align-items:baseline;
+  justify-content:space-between;
+
+  gap:6px;
+  margin-top:6px;
+}
+
+.market-stock-card .market-price{
+  display:flex;
+  align-items:baseline;
+  justify-content:flex-start;
+
+  gap:4px;
+  margin:0 !important;
+  padding:0 !important;
+  white-space:nowrap;
+}
+
+.market-stock-card .market-price-value{
+  font-size:14px;
+  font-weight:600;
+  color:#ffffff;
+}
+
+.market-stock-card .market-change{
+  font-size:12px;
+  font-weight:600;
+  margin:0 !important;
+  padding:0 !important;
+  white-space:nowrap;
+}	
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -27830,41 +27867,45 @@ function renderMarketPulse(){
     const currency = item.currency || "";
 
 
-    return `
-      <article
-        class="market-stock-card"
-        data-history-ticker="${esc(item.tickerExchange)}"
-        role="button"
-        tabindex="0"
-        aria-label="View price history for ${esc(item.name)}"
-      >
+return `
+  <article
+    class="market-stock-card"
+    data-history-ticker="${esc(item.tickerExchange)}"
+    role="button"
+    tabindex="0"
+    aria-label="View price history for ${esc(item.name)}"
+  >
 
-        <div class="market-name">
-          ${esc(item.name)}
-        </div>
+    <div class="market-name">
+      ${esc(item.name)}
+    </div>
 
-        <div class="market-symbol">
-          ${esc(item.tickerExchange)}
-        </div>
+    <div class="market-symbol">
+      ${esc(item.tickerExchange)}
+    </div>
 
-        <div class="market-price">
+    <div class="market-stock-quote">
 
-          <span class="market-price-ccy">
-            ${esc(currency)}
-          </span>
+      <div class="market-price">
 
-          <span class="market-price-value">
-            ${price}
-          </span>
+        <span class="market-price-ccy">
+          ${esc(currency)}
+        </span>
 
-        </div>
+        <span class="market-price-value">
+          ${price}
+        </span>
 
-        <div class="market-change ${direction}">
-          ${returnText}
-        </div>
+      </div>
 
-      </article>
-    `;
+      <div class="market-change ${direction}">
+        ${returnText}
+      </div>
+
+    </div>
+
+  </article>
+`;
 
   }).join("");
 
