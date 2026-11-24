@@ -28001,41 +28001,107 @@ console.log(
 
 </script>
 
-
 <script>
 if ("serviceWorker" in navigator) {
 
-  window.addEventListener("load", () => {
+  window.addEventListener("load", async () => {
 
-    navigator.serviceWorker
-      .register("/sw.js", {
+    try {
+
+      const reg = await navigator.serviceWorker.register("/sw.js", {
         scope: "/",
         updateViaCache: "none"
-      })
-      .then(reg => {
+      });
 
-        console.log(
-          "NEPTOON PWA SERVICE WORKER READY",
-          reg.scope
-        );
+      console.log(
+        "NEPTOON PWA SERVICE WORKER READY",
+        reg.scope
+      );
 
-        // Check for an updated Service Worker.
-        reg.update().catch(err => {
+      /* =====================================
+         UPDATE CHECK
+      ===================================== */
+
+      let lastUpdateCheck = 0;
+
+      async function checkForUpdate(){
+
+        const now = Date.now();
+
+        // Avoid repeated checks within 60 seconds.
+        if(now - lastUpdateCheck < 60000) return;
+
+        lastUpdateCheck = now;
+
+        try {
+
+          await reg.update();
+
+          console.log("NEPTOON PWA UPDATE CHECK OK");
+
+        } catch(err){
+
           console.warn(
             "NEPTOON PWA UPDATE CHECK FAILED",
             err
           );
-        });
 
-      })
-      .catch(err => {
+        }
 
-        console.error(
-          "NEPTOON PWA SERVICE WORKER FAILED",
-          err
-        );
+      }
+
+      // Check on initial page load.
+      checkForUpdate();
+
+      /* =====================================
+         MOBILE PWA · RETURN TO APP
+      ===================================== */
+
+      document.addEventListener("visibilitychange", () => {
+
+        if(document.visibilityState === "visible"){
+
+          checkForUpdate();
+
+        }
 
       });
+
+      /* =====================================
+         CONNECTION RESTORED
+      ===================================== */
+
+      window.addEventListener("online", () => {
+
+        lastUpdateCheck = 0;
+
+        checkForUpdate();
+
+      });
+
+      /* =====================================
+         NEW SERVICE WORKER ACTIVATED
+      ===================================== */
+
+      navigator.serviceWorker.addEventListener(
+        "controllerchange",
+        () => {
+
+          console.log(
+            "NEPTOON PWA NEW SERVICE WORKER ACTIVE"
+          );
+
+        }
+      );
+
+    } catch(err){
+
+      console.error(
+        "NEPTOON PWA SERVICE WORKER FAILED",
+        err
+      );
+
+    }
 
   });
 
