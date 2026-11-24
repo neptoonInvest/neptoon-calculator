@@ -8397,6 +8397,72 @@ fontweight:700px
   gap:9px;
 }
 
+/* ==========================================
+   MARKET HISTORY · FULLSCREEN PAGE
+========================================== */
+
+.nt-history-modal{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100dvh;
+  z-index:9999;
+  background:#0B213A;
+  overflow:hidden;
+  overscroll-behavior:none;
+}
+
+.nt-history-modal[hidden]{
+  display:none !important;
+}
+
+
+/* ==========================================
+   PAGE SHELL
+========================================== */
+
+.nt-history-shell{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  height:100%;
+  max-width:none;
+  max-height:none;
+  min-height:0;
+  margin:0;
+  border-radius:0;
+  overflow:hidden;
+  background:#0B213A;
+  box-sizing:border-box;
+}
+
+
+/* ==========================================
+   FIXED PAGE HEADER
+========================================== */
+
+.nt-history-header{
+  flex:0 0 auto;
+}
+
+
+/* ==========================================
+   INDEPENDENT VERTICAL SCROLL
+========================================== */
+
+.nt-history-body{
+  flex:1 1 auto;
+  min-height:0;
+  width:100%;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  box-sizing:border-box;
+  padding-bottom:calc(24px + env(safe-area-inset-bottom, 0px));
+}
+
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -10745,6 +10811,10 @@ fontweight:700px
      NW-111 · MARKET HISTORY MODAL
 ========================================== -->
 
+<!-- ==========================================
+     NW-111 · MARKET HISTORY PAGE
+========================================== -->
+
 <div
   id="nt-history-modal"
   class="nt-history-modal"
@@ -10752,11 +10822,8 @@ fontweight:700px
 >
   <section
     class="nt-history-shell"
-    role="dialog"
-    aria-modal="true"
     aria-labelledby="nt-history-name"
   >
-
     <header class="nt-history-header">
       <span>NEPTOON <b>WEALTH</b> · <span id="nt-history-type">AKTIE</span></span>
 
@@ -13429,8 +13496,22 @@ async function openMarketHistoryModal(ticker){
   ntHistoryHoverIndex = -1;
   ntHistoryChartGeometry = null;
 
-  modal.hidden = false;
+/*
+  OPEN DEDICATED HISTORY PAGE
+*/
 
+document.documentElement.classList.add(
+  "nt-history-open"
+);
+
+modal.hidden = false;
+
+const scrollBody =
+  modal.querySelector(".nt-history-body");
+
+if(scrollBody){
+  scrollBody.scrollTop = 0;
+}
   /*
     POPULATE MODAL CONTENT
   */
@@ -13631,9 +13712,9 @@ function initFrontDoorOrbit(){
 
 function closeMarketHistoryModal(){
 
-ntHistoryPrices = [];
-ntHistoryHoverIndex = -1;
-ntHistoryChartGeometry = null;
+  ntHistoryPrices = [];
+  ntHistoryHoverIndex = -1;
+  ntHistoryChartGeometry = null;
 
   const modal =
     document.getElementById("nt-history-modal");
@@ -13643,13 +13724,32 @@ ntHistoryChartGeometry = null;
   }
 
   ntHistoryTicker = null;
+
+  /*
+    RELEASE DOCUMENT SCROLL LOCK
+  */
+
+  document.documentElement.classList.remove(
+    "nt-history-open"
+  );
+
 }
+
+
+/* ==========================================
+   HISTORY PAGE · CLOSE BUTTON
+========================================== */
 
 document.getElementById("nt-history-close")
   ?.addEventListener(
     "click",
     closeMarketHistoryModal
   );
+
+
+/* ==========================================
+   HISTORY PAGE · HORIZON SELECTORS
+========================================== */
 
 document.querySelectorAll(
   ".nt-history-horizons button"
@@ -13666,83 +13766,21 @@ document.querySelectorAll(
     ntHistoryPeriod =
       button.dataset.period;
 
-    // Next step:
-  ntHistoryHoverIndex = -1;
+    ntHistoryHoverIndex = -1;
 
-drawMarketHistoryChart();
+    drawMarketHistoryChart();
 
   });
 
 });
 
+
+/* ==========================================
+   GLOBAL HISTORY PAGE ACCESS
+========================================== */
+
 window.openMarketHistoryModal =
   openMarketHistoryModal;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* =====================================================
-   PLAY 5-SECOND CINEMA
-===================================================== */
 
 
 function playMyWealthCinema(){
@@ -15292,14 +15330,14 @@ function generateWealthPlanPDF(download = true){
 
       pdf.text(displayName,LEFT+2,y+4);
 
-      pdf.setFontSize(6.8);
-      pdf.setTextColor(...MUTED);
+pdf.setFontSize(6.8);
+pdf.setTextColor(...MUTED);
 
-      pdf.text(
-        clean(assetClass),
-        LEFT+2,
-        y+9
-      );
+pdf.text(
+  clean(subMeta),
+  LEFT+2,
+  y+9
+);
 
       pdf.setFontSize(7.2);
       pdf.setTextColor(...NAVY);
@@ -23160,18 +23198,23 @@ function renderPlanDetails(){
         Asset class
       */
 
-      const assetClass =
-        da
-          ? (
-              h.classMajorTop ||
-              h.class_major_top_eng ||
-              "—"
-            )
-          : (
-              h.class_major_top_eng ||
-              h.classMajorTop ||
-              "—"
-            );
+const assetClass = da
+  ? h.classMajor || "—"
+  : h.class_major_eng || "—";
+
+const yesNo = value => {
+  if(value === true) return T("Yes","Ja");
+  if(value === false) return T("No","Nej");
+  return "—";
+};
+
+const subMeta = [
+  assetClass,
+  h.tickerExchange || "—",
+  `${T("Acc","Akk")}: ${yesNo(h.isAcc)}`,
+  `${T("Active","Aktiv")}: ${yesNo(h.isActive)}`,
+  `${T("Positive list","Positivliste")}: ${yesNo(h.isPositivliste)}`
+].join(" · ");
 
 
       /*
