@@ -32,20 +32,38 @@ def load_previous():
 
 def fetch_closes(ticker, start, end, token):
 
-    params = urllib.parse.urlencode({
+    is_indicator = ticker in {
+        "VIX.INDX",
+        "US10Y.GBOND"
+    }
+
+    params = {
         "api_token": token,
-        "function": "splitadjusted",
         "from": start.isoformat(),
         "to": end.isoformat(),
         "fmt": "json",
         "order": "a",
-    })
+    }
+
+    if is_indicator:
+
+        endpoint = "https://eodhd.com/api/eod/"
+
+    else:
+
+        endpoint = "https://eodhd.com/api/technical/"
+        params["function"] = "splitadjusted"
 
     url = (
-        "https://eodhd.com/api/technical/"
+        endpoint
         + urllib.parse.quote(ticker, safe="")
         + "?"
-        + params
+        + urllib.parse.urlencode(params)
+    )
+
+    print(
+        f"FETCH {ticker}: "
+        f"{'RAW EOD' if is_indicator else 'SPLIT ADJUSTED'}"
     )
 
     request = urllib.request.Request(
@@ -76,6 +94,7 @@ def fetch_closes(ticker, start, end, token):
             continue
 
         try:
+
             parsed_day = date.fromisoformat(day)
             close = float(raw)
 
@@ -85,7 +104,7 @@ def fetch_closes(ticker, start, end, token):
         if (
             start <= parsed_day <= end
             and math.isfinite(close)
-            and close > 0
+            and (is_indicator or close > 0)
         ):
             prices[day] = close
 
@@ -96,7 +115,6 @@ def fetch_closes(ticker, start, end, token):
         [day, prices[day]]
         for day in sorted(prices)
     ]
-
 
 def main():
 
