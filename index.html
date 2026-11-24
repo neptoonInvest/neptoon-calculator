@@ -8862,7 +8862,26 @@ html.nt-history-open body{
   font-weight:600 !important;
 }
 
-	
+.market-stock-card .market-session-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  flex:0 0 18px;
+}
+
+.market-session-icon svg{
+  width:14px;
+  height:14px;
+}
+
+.market-session-icon.open{
+  color:#fbbf24;
+}
+
+.market-session-icon.closed{
+  color:#91a9c5;
+}	
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -26067,10 +26086,15 @@ const MARKET_STATE = {
   page: 0
 };
 
-function isUSMarketOpen(){
+function isMarketOpen(ticker){
+
+  const isUS =
+    ticker.endsWith(".US");
 
   const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/New_York",
+    timeZone: isUS
+      ? "America/New_York"
+      : "Europe/Copenhagen",
     weekday: "short",
     hour: "2-digit",
     minute: "2-digit",
@@ -26090,7 +26114,9 @@ function isUSMarketOpen(){
     Number(get("hour")) * 60 +
     Number(get("minute"));
 
-  return minutes >= 570 && minutes < 960;
+  return isUS
+    ? minutes >= 570 && minutes < 960
+    : minutes >= 540 && minutes < 1050;
 
 }
 /* =====================================================
@@ -26260,26 +26286,11 @@ function renderGlobalMarketTicker(){
           : "—";
 
 const returnText =
-  marketFormatReturn(value);
+  marketClosed
+    ? "—"
+    : marketFormatReturn(item.return);
 
-      return `
-        <div class="market-ticker-item">
-
-          <span class="market-ticker-name">
-            ${esc(name)}
-          </span>
-
-          <span class="market-ticker-price">
-            ${priceText}
-          </span>
-
-          <span class="market-ticker-return
-            ${positive ? "positive" : "negative"}">
-            (${returnText})
-          </span>
-
-        </div>
-      `;
+     	
 
     })
     .join("");
@@ -27909,6 +27920,23 @@ return `
         ${returnText}
       </div>
 
+      <div
+        class="market-session-icon ${marketClosed ? "closed" : "open"}"
+        title="${marketClosed
+          ? closedLabel
+          : APP.lang === "da"
+            ? "Markedet er åbent"
+            : "Market open"}"
+        role="img"
+        aria-label="${marketClosed
+          ? closedLabel
+          : APP.lang === "da"
+            ? "Markedet er åbent"
+            : "Market open"}"
+      >
+        ${icon(marketClosed ? "moon" : "sun")}
+      </div>
+
     </div>
 
   </article>
@@ -28700,3 +28728,4 @@ if ("serviceWorker" in navigator) {
 </script>
 
 </body></html>
+
