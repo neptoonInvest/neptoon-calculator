@@ -13420,10 +13420,12 @@ async function openMarketHistoryModal(ticker){
       );
     }
 
-    ntHistoryPrices = history.prices;
-    ntHistoryHoverIndex = -1;
+ntHistoryPrices = history.prices;
+ntHistoryHoverIndex = -1;
 
-    drawMarketHistoryChart();
+renderMarketHistoryLivePrice(ticker);
+
+drawMarketHistoryChart();
 
     console.log(
       "HISTORY MODAL READY",
@@ -26870,13 +26872,35 @@ function renderMarketHistoryLivePrice(ticker){
       x => x.tickerExchange === ticker
     );
 
+  const isVIX =
+    ticker === "VIX.INDX";
+
+  const isUS10Y =
+    ticker === "US10Y.GBOND";
+
+  const isIndicator =
+    isVIX || isUS10Y;
+
+  /*
+    PRICE SOURCE
+    Indicators: latest historical observation
+    Others: live market quote
+  */
+
+  const rawPrice =
+    isIndicator
+      ? ntHistoryPrices.at(-1)?.[1]
+      : quote?.realtimePrice;
+
   const price =
-    quote?.realtimePrice == null
+    rawPrice == null
       ? null
-      : Number(quote.realtimePrice);
+      : Number(rawPrice);
 
   const currency =
-    instrument?.ccy || "";
+    isIndicator
+      ? ""
+      : instrument?.ccy || "";
 
   const lang =
     INIT.lang === "da" ? "da-DK" : "en-GB";
@@ -26887,20 +26911,30 @@ function renderMarketHistoryLivePrice(ticker){
   const labelEl =
     document.getElementById("nt-history-price-label");
 
+  if(!priceEl || !labelEl) return;
+
   priceEl.textContent =
     price !== null && Number.isFinite(price)
       ? new Intl.NumberFormat(lang, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2
-        }).format(price)
+        }).format(price) + (isIndicator ? "%" : "")
       : "—";
 
   labelEl.textContent =
     [
       currency,
-      INIT.lang === "da"
-        ? "Seneste kurs"
-        : "Latest price"
+      isUS10Y
+        ? (INIT.lang === "da"
+            ? "Seneste rente"
+            : "Latest yield")
+        : isVIX
+          ? (INIT.lang === "da"
+              ? "Seneste indeksniveau"
+              : "Latest index level")
+          : (INIT.lang === "da"
+              ? "Seneste kurs"
+              : "Latest price")
     ].filter(Boolean).join(" · ");
 
 }
