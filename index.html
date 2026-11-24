@@ -27542,6 +27542,19 @@ document
     15 * 60 * 1000
   );
 
+document.addEventListener("visibilitychange", () => {
+
+  if(document.visibilityState === "visible"){
+
+    loadMarketPulse();
+
+  }
+
+});
+
+
+
+
 }
 
 initializeApp();
