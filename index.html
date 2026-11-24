@@ -19184,70 +19184,85 @@ function updateMyWealthBadge(){
 
 }
 
-function openTab(tab) {
+function openTab(tab){
 
-    if (!NAV.some(x => x[0] === tab))
-        return;
+  if(!NAV.some(x => x[0] === tab))
+    return;
 
   closeFrontDoor();
 
+  /*
+    CLOSE MARKET HISTORY MODAL
+  */
 
-    APP.activeTab = tab;
+  const historyModal =
+    document.getElementById("nt-history-modal");
 
-    document.querySelectorAll('.page').forEach(p =>
-        p.classList.toggle(
-            'active',
-            p.id === `page-${tab}`
-        )
-    );
+  if(historyModal && !historyModal.hidden){
 
-    renderNav();
+    closeMarketHistoryModal();
 
-if(tab === "history"){
+  }
 
-  initTimeMachine();
+  /*
+    SWITCH ACTIVE TAB
+  */
 
-}
+  APP.activeTab = tab;
 
-if(name !== "history"){
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.toggle(
+      "active",
+      p.id === `page-${tab}`
+    )
+  );
 
-  tmPause();
+  renderNav();
 
-}
+  /*
+    TIME MACHINE
+  */
 
-    if (tab === 'mywealth') {
+  if(tab === "history"){
 
-        renderMyWealth();
-
-        syncMyWealthComparisonMode();
-
-    }
-
-if (tab === 'history') {
     initTimeMachine();
-} else {
+
+  }else{
+
     tmPause();
+
+  }
+
+  /*
+    MY WEALTH
+  */
+
+  if(tab === "mywealth"){
+
+    renderMyWealth();
+
+    syncMyWealthComparisonMode();
+
+  }
+
+  icons();
+
+  window.scrollTo({
+    top:0,
+    behavior:"instant"
+  });
+
+  requestAnimationFrame(() => {
+
+    if(tab === "mywealth")
+      paintEmptyCanvas("wealth-canvas");
+
+    if(tab === "history")
+      paintEmptyCanvas("history-canvas");
+
+  });
+
 }
-
-    icons();
-
-    window.scrollTo({
-        top: 0,
-        behavior: 'instant'
-    });
-
-    requestAnimationFrame(() => {
-
-        if (tab === 'mywealth')
-            paintEmptyCanvas('wealth-canvas');
-
-        if (tab === 'history')
-            paintEmptyCanvas('history-canvas');
-
-    });
-
-}
-
 
 
 function bindMyWealthComparisonToggle(){
