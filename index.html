@@ -18655,7 +18655,7 @@ const priceText =
       (isVIX || isUS10Y ? "%" : "")
     : "—";
 
-      let changeText = "—";
+         let changeText = "—";
       let changeValue = null;
 
       if(isIndicator){
@@ -18664,11 +18664,9 @@ const priceText =
 
           changeValue = absoluteChange;
 
-if(isUS10Y){
-
-changeText =
-  `${absoluteChange >= 0 ? "+" : ""}` +
-  `${formatNumber(absoluteChange)} %-pt`;
+          changeText =
+            `${absoluteChange >= 0 ? "+" : ""}` +
+            `${formatNumber(absoluteChange)} %-pt`;
 
         }
 
@@ -18682,24 +18680,23 @@ changeText =
 
       }
 
-if(marketClosed){
+      if(marketClosed){
 
-  changeText = `<span
-    class="market-closed-moon"
-    title="${APP.lang === "da" ? "Markedet er lukket" : "Market closed"}"
-  >☾</span>`;
+        changeText = `<span
+          class="market-closed-moon"
+          title="${APP.lang === "da" ? "Markedet er lukket" : "Market closed"}"
+        >☾</span>`;
 
-}
+      }
 
-const changeClass =
-  marketClosed
-    ? "closed"
-    : changeValue === null
-      ? "unknown"
-      : changeValue >= 0
-        ? "up"
-        : "down";
-
+      const changeClass =
+        marketClosed
+          ? "closed"
+          : changeValue === null
+            ? "unknown"
+            : changeValue >= 0
+              ? "up"
+              : "down";
 
 
 const unit =
