@@ -1,80 +1,80 @@
 {
-  "updatedAt": "2026-11-24T15:01:18.124225+00:00",
+  "updatedAt": "2026-11-24T15:15:37.890300+00:00",
   "quotes": {
     "ANT.US": {
-      "realtimePrice": 80.82,
-      "return": -0.077818,
-      "timestamp": 1795531500
+      "realtimePrice": 81.5,
+      "return": -0.070059,
+      "timestamp": 1795532340
     },
     "AAPL.US": {
-      "realtimePrice": 351.8,
-      "return": 0.007792,
-      "timestamp": 1795531500
+      "realtimePrice": 352.715,
+      "return": 0.010412999999999999,
+      "timestamp": 1795532340
     },
     "MSFT.US": {
-      "realtimePrice": 493.84,
-      "return": 0.002721,
-      "timestamp": 1795531500
+      "realtimePrice": 492.73,
+      "return": 0.00046699999999999997,
+      "timestamp": 1795532340
     },
     "NVDA.US": {
-      "realtimePrice": 154.715,
-      "return": -0.062617,
-      "timestamp": 1795531500
+      "realtimePrice": 155.71,
+      "return": -0.056589,
+      "timestamp": 1795532340
     },
     "GOOGL.US": {
-      "realtimePrice": 279.11,
-      "return": -0.010599,
-      "timestamp": 1795531500
+      "realtimePrice": 280.01,
+      "return": -0.007409,
+      "timestamp": 1795532340
     },
     "AMZN.US": {
-      "realtimePrice": 253.52,
-      "return": -0.0073219999999999995,
-      "timestamp": 1795531500
+      "realtimePrice": 254.66,
+      "return": -0.002858,
+      "timestamp": 1795532340
     },
     "META.US": {
-      "realtimePrice": 595.7432,
-      "return": -0.003107,
-      "timestamp": 1795531440
+      "realtimePrice": 598.73,
+      "return": 0.0018909999999999999,
+      "timestamp": 1795532340
     },
     "RHM.XETRA": {
-      "realtimePrice": 741.3,
-      "return": 0.022201,
-      "timestamp": 1795531560
+      "realtimePrice": 738.1,
+      "return": 0.017787999999999998,
+      "timestamp": 1795532400
     },
     "NOVO-B.CO": {
-      "realtimePrice": 275.4,
-      "return": 0.033978,
-      "timestamp": 1795531320
+      "realtimePrice": 275.25,
+      "return": 0.033415,
+      "timestamp": 1795532400
     },
     "ASML.AS": {
       "realtimePrice": 1228.0,
       "return": -0.034742999999999996,
-      "timestamp": 1795531260
+      "timestamp": 1795532340
     },
     "GSPC.INDX": {
-      "realtimePrice": 7201.8799,
-      "return": -0.004876,
-      "timestamp": 1795531560
+      "realtimePrice": 7214.0898,
+      "return": -0.003189,
+      "timestamp": 1795532400
     },
     "IXIC.INDX": {
-      "realtimePrice": 23795.916,
-      "return": -0.012190000000000001,
-      "timestamp": 1795531560
+      "realtimePrice": 23849.2949,
+      "return": -0.009974,
+      "timestamp": 1795532400
     },
     "LSMC.XETRA": {
-      "realtimePrice": 87.38,
-      "return": -0.058304,
-      "timestamp": 1795531500
+      "realtimePrice": 87.39,
+      "return": -0.058196000000000005,
+      "timestamp": 1795532280
     },
     "OMXC25.INDX": {
-      "realtimePrice": 1954.3784,
-      "return": 0.0024460000000000003,
-      "timestamp": 1795531560
+      "realtimePrice": 1951.8315,
+      "return": 0.001139,
+      "timestamp": 1795532400
     },
     "GDAXI.INDX": {
-      "realtimePrice": 25209.25,
-      "return": -0.005052999999999999,
-      "timestamp": 1795531560
+      "realtimePrice": 25179.2109,
+      "return": -0.0062380000000000005,
+      "timestamp": 1795532400
     },
     "FTSE.INDX": {
       "realtimePrice": null,
@@ -82,54 +82,54 @@
       "timestamp": "NA"
     },
     "OMXS30.INDX": {
-      "realtimePrice": 3240.4827,
-      "return": -0.00639,
-      "timestamp": 1795531560
+      "realtimePrice": 3234.0664,
+      "return": -0.008357999999999999,
+      "timestamp": 1795532400
     },
     "FCHI.INDX": {
-      "realtimePrice": 8078.79,
-      "return": 0.00422,
-      "timestamp": 1795531560
+      "realtimePrice": 8064.23,
+      "return": 0.00241,
+      "timestamp": 1795532400
     },
     "EUNL.XETRA": {
-      "realtimePrice": 125.275,
-      "return": -0.010818000000000001,
-      "timestamp": 1795531560
+      "realtimePrice": 125.41,
+      "return": -0.009752,
+      "timestamp": 1795532400
     },
     "MCD.US": {
-      "realtimePrice": 279.25,
-      "return": 0.010384,
-      "timestamp": 1795531500
+      "realtimePrice": 278.61,
+      "return": 0.008069,
+      "timestamp": 1795532400
     },
     "NKE.US": {
-      "realtimePrice": 35.16,
-      "return": 0.041469,
-      "timestamp": 1795531500
+      "realtimePrice": 34.965,
+      "return": 0.035693,
+      "timestamp": 1795532400
     },
     "MAERSK-B.CO": {
-      "realtimePrice": 19050.0,
-      "return": -0.057397000000000004,
-      "timestamp": 1795531500
+      "realtimePrice": 19070.0,
+      "return": -0.05640799999999999,
+      "timestamp": 1795532160
     },
     "DANSKE.CO": {
       "realtimePrice": 366.0,
       "return": 0.007709000000000001,
-      "timestamp": 1795531320
+      "timestamp": 1795532400
     },
     "VWS.CO": {
-      "realtimePrice": 172.2,
-      "return": -0.022424,
-      "timestamp": 1795531320
+      "realtimePrice": 171.85,
+      "return": -0.024411000000000002,
+      "timestamp": 1795532280
     },
     "8PSG.XETRA": {
-      "realtimePrice": 317.82,
-      "return": -0.019377,
-      "timestamp": 1795531440
+      "realtimePrice": 317.12,
+      "return": -0.021537,
+      "timestamp": 1795532400
     },
     "VIX.INDX": {
-      "realtimePrice": 27.55,
-      "return": 0.034935999999999995,
-      "timestamp": 1795531560
+      "realtimePrice": 27.33,
+      "return": 0.026671999999999998,
+      "timestamp": 1795532400
     }
   }
 }
