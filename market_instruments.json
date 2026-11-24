@@ -10,6 +10,17 @@
     "META.US",
     "RHM.XETRA",
     "NOVO-B.CO",
+
+    "AVGO.US",
+"TSLA.US",
+"JPM.US",
+"WMT.US",
+"XOM.US",
+"LLY.US",
+"SAP.XETRA",
+"SIE.XETRA",
+"MC.PA",
+"7203.TSE",
     "ASML.AS",
     "MCD.US",
     "NKE.US",
@@ -36,6 +47,67 @@
         "en": "Anthropic develops artificial intelligence, with Claude as its best-known product. The company builds AI assistants for consumers and businesses and is a major participant in the race to develop the next generation of AI technology."
       }
     },
+
+    "AVGO.US": {
+  "story": {
+    "da": "Broadcom udvikler avancerede halvledere og infrastruktursoftware til blandt andet datacentre, netværk og kunstig intelligens. Virksomheden leverer centrale teknologiske komponenter til den globale digitale infrastruktur.",
+    "en": "Broadcom develops advanced semiconductors and infrastructure software for data centres, networks and artificial intelligence. The company supplies essential technology components for the world's digital infrastructure."
+  }
+},
+"TSLA.US": {
+  "story": {
+    "da": "Tesla udvikler elbiler, energilagringssystemer og teknologi til selvkørende transport. Virksomheden arbejder desuden med kunstig intelligens og robotteknologi og spiller en central rolle i omstillingen til elektrisk mobilitet.",
+    "en": "Tesla develops electric vehicles, energy storage systems and autonomous driving technology. The company also works on artificial intelligence and robotics and plays a central role in the transition towards electric mobility."
+  }
+},
+"JPM.US": {
+  "story": {
+    "da": "JPMorgan Chase er en af verdens største finansielle koncerner med aktiviteter inden for bankdrift, kapitalforvaltning og investeringsbankvirksomhed. Virksomheden betjener både privatkunder, virksomheder og institutionelle kunder på tværs af verdensøkonomien.",
+    "en": "JPMorgan Chase is one of the world's largest financial institutions, operating across banking, asset management and investment banking. The company serves consumers, businesses and institutional clients throughout the global economy."
+  }
+},
+"WMT.US": {
+  "story": {
+    "da": "Walmart er en af verdens største detailhandelsvirksomheder og sælger dagligvarer, forbrugsvarer og en lang række andre produkter. Virksomheden kombinerer et omfattende fysisk butiksnetværk med digital handel og avanceret logistik.",
+    "en": "Walmart is one of the world's largest retailers, selling groceries, consumer goods and a wide range of other products. The company combines an extensive physical store network with digital commerce and advanced logistics."
+  }
+},
+"XOM.US": {
+  "story": {
+    "da": "ExxonMobil er en global energikoncern med aktiviteter inden for olie, naturgas, raffinering og kemiske produkter. Virksomheden spiller en betydelig rolle i verdens energiforsyning og arbejder samtidig med teknologier til reduktion af CO2-udledning.",
+    "en": "ExxonMobil is a global energy company operating across oil, natural gas, refining and chemical products. The company plays a significant role in the world's energy supply while also developing technologies to reduce carbon emissions."
+  }
+},
+"LLY.US": {
+  "story": {
+    "da": "Eli Lilly udvikler lægemidler til behandling af blandt andet diabetes, fedme, kræft og neurologiske sygdomme. Virksomheden investerer betydeligt i medicinsk forskning og er en central aktør inden for udviklingen af nye behandlinger af kroniske sygdomme.",
+    "en": "Eli Lilly develops medicines for conditions including diabetes, obesity, cancer and neurological diseases. The company invests heavily in medical research and is a major participant in the development of new treatments for chronic diseases."
+  }
+},
+"SAP.XETRA": {
+  "story": {
+    "da": "SAP udvikler software, der hjælper virksomheder med at styre økonomi, produktion, logistik og personale. Den tyske teknologikoncern arbejder med cloudbaserede løsninger og kunstig intelligens til digitalisering af virksomhedernes centrale forretningsprocesser.",
+    "en": "SAP develops software that helps businesses manage finance, production, logistics and human resources. The German technology company builds cloud-based solutions and artificial intelligence tools to digitalise essential business processes."
+  }
+},
+"SIE.XETRA": {
+  "story": {
+    "da": "Siemens udvikler teknologi til industriel automatisering, digital produktion, energiinfrastruktur og transport. Den tyske industrikoncern arbejder med at gøre fabrikker, bygninger og transportsystemer mere intelligente, effektive og automatiserede.",
+    "en": "Siemens develops technology for industrial automation, digital manufacturing, energy infrastructure and transportation. The German industrial group works to make factories, buildings and transport systems more intelligent, efficient and automated."
+  }
+},
+"MC.PA": {
+  "story": {
+    "da": "LVMH er en global luksuskoncern med kendte mærker som Louis Vuitton, Dior og Tiffany. Virksomheden opererer inden for mode, lædervarer, smykker, kosmetik og eksklusive drikkevarer og er tæt knyttet til den globale efterspørgsel efter luksusprodukter.",
+    "en": "LVMH is a global luxury goods group with well-known brands including Louis Vuitton, Dior and Tiffany. The company operates across fashion, leather goods, jewellery, cosmetics and premium beverages and is closely connected to global demand for luxury products."
+  }
+},
+"7203.TSE": {
+  "story": {
+    "da": "Toyota er en af verdens største bilproducenter og udvikler biler med traditionelle motorer, hybridteknologi, batterier og brintbaserede drivsystemer. Den japanske industrikoncern er kendt for sine produktionsmetoder og spiller en central rolle i udviklingen af fremtidens mobilitet.",
+    "en": "Toyota is one of the world's largest car manufacturers, developing vehicles with conventional engines, hybrid technology, batteries and hydrogen-based powertrains. The Japanese industrial group is known for its manufacturing methods and plays a central role in the development of future mobility."
+  }
+},
     "AAPL.US": {
       "story": {
         "da": "Apple er kendt for iPhone, Mac, iPad og Apple Watch. Virksomheden kombinerer hardware, software og digitale tjenester i et tæt forbundet økosystem, hvor loyalitet og design spiller en vigtig rolle.",
