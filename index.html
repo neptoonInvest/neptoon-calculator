@@ -8299,6 +8299,14 @@ fontweight:700px
 
 }
 
+.market-closed-moon {
+  color: #9ca3af;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1;
+  display: inline-block;
+}
+
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -25381,74 +25389,133 @@ const MARKET_STATE = {
   page: 0
 };
 
+function isUSMarketOpen(){
+
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23"
+  }).formatToParts(new Date());
+
+  const get = type =>
+    parts.find(p => p.type === type)?.value;
+
+  const day = get("weekday");
+
+  if(day === "Sat" || day === "Sun"){
+    return false;
+  }
+
+  const minutes =
+    Number(get("hour")) * 60 +
+    Number(get("minute"));
+
+  return minutes >= 570 && minutes < 960;
+
+}
 /* =====================================================
    28 · MARKET PULSE · FETCH GITHUB JSON
 ===================================================== */
 
-async function loadMarketPulse() {
-  if (MARKET_STATE.loading) return;
+async function loadMarketPulse(){
+
+  if(MARKET_STATE.loading) return;
+
   MARKET_STATE.loading = true;
   MARKET_STATE.error = null;
 
   try {
-    const res = await fetch('./market_pulse.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error(`Market JSON HTTP ${res.status}`);
 
-const data = await res.json();
+    const res = await fetch(
+      './market_pulse.json',
+      { cache: 'no-store' }
+    );
 
-if (!data || !data.quotes || typeof data.quotes !== 'object') {
-  throw new Error('Invalid market_pulse.json structure');
-}
+    if(!res.ok){
+      throw new Error(`Market JSON HTTP ${res.status}`);
+    }
 
-MARKET_STATE.quotes = data.quotes;
+    const data = await res.json();
+
+    if(!data || !data.quotes || typeof data.quotes !== 'object'){
+      throw new Error('Invalid market_pulse.json structure');
+    }
+
+    MARKET_STATE.quotes = data.quotes;
+
+    const usMarketOpen = isUSMarketOpen();
 
     MARKET_STATE.instruments = MARKET_INSTRUMENTS.map(item => {
-      const quote = data.quotes[item.tickerExchange] || {};
-      const price = quote.realtimePrice == null ? null : Number(quote.realtimePrice);
-      const dailyReturn = quote.return == null ? null : Number(quote.return);
+
+      const quote =
+        data.quotes[item.tickerExchange] || {};
+
+      const isUS =
+        item.tickerExchange.endsWith(".US");
+
+      const marketOpen =
+        !isUS || usMarketOpen;
+
+      const price =
+        quote.realtimePrice == null
+          ? null
+          : Number(quote.realtimePrice);
+
+      const dailyReturn =
+        quote.return == null
+          ? null
+          : Number(quote.return);
+
       return {
         ...item,
         realtimePrice: Number.isFinite(price) ? price : null,
         return: Number.isFinite(dailyReturn) ? dailyReturn : null,
+        marketOpen,
         timestamp: quote.timestamp ?? null
       };
+
     });
 
     MARKET_STATE.updatedAt = data.updatedAt || null;
-  } catch (err) {
+
+  } catch(err){
+
     MARKET_STATE.error = err.message;
+
     console.error('NW-111 Market Pulse:', err);
-  } 
-finally {
 
-  MARKET_STATE.loading = false;
+  } finally {
 
+    MARKET_STATE.loading = false;
 
+    renderMarketPulse();
 
+    try {
 
-renderMarketPulse();
+      await renderMarketIndicesWithHistory();
 
-try {
-  await renderMarketIndicesWithHistory();
-} catch(error) {
-  console.error(
-    "Market indicator history:",
-    error
-  );
+    } catch(error){
 
-  renderMarketIndices();
+      console.error(
+        "Market indicator history:",
+        error
+      );
+
+      renderMarketIndices();
+
+    }
+
+    bindMarketIndexHistory();
+    bindMarketStockHistory();
+
+    renderGlobalMarketTicker();
+
+  }
+
 }
 
-bindMarketIndexHistory();
-bindMarketStockHistory();
-
-renderGlobalMarketTicker();
-
-
-}
-
-
-}
 
 
 /* =====================================================
@@ -26861,127 +26928,251 @@ function marketFormatReturn(value) {
    30 · MARKET PULSE · RENDER STOCK CAROUSEL
 ===================================================== */
 
-function renderMarketPulse() {
+function renderMarketPulse(){
+
   const track = $('market-stock-track');
-  if (!track) return;
 
-const instruments = [...(MARKET_STATE.instruments || [])]
-  .sort((a, b) => {
-    const ra = Number.isFinite(a.return) ? a.return : -Infinity;
-    const rb = Number.isFinite(b.return) ? b.return : -Infinity;
-
-    return rb - ra;
-  });
-
-const perPage = 5;
+  if(!track) return;
 
 
+  /* =====================================================
+     SORT · ACTIVE MARKETS FIRST
+  ===================================================== */
+
+  const instruments = [...(MARKET_STATE.instruments || [])]
+    .sort((a, b) => {
+
+      const aClosed = a.marketOpen === false;
+      const bClosed = b.marketOpen === false;
+
+      // Active markets first
+      if(aClosed !== bClosed){
+        return aClosed ? 1 : -1;
+      }
+
+      // Closed markets sorted alphabetically
+      if(aClosed && bClosed){
+        return a.name.localeCompare(b.name);
+      }
+
+      // Active markets sorted by daily return
+      const ra = Number.isFinite(a.return)
+        ? a.return
+        : -Infinity;
+
+      const rb = Number.isFinite(b.return)
+        ? b.return
+        : -Infinity;
+
+      return rb - ra;
+
+    });
 
 
+  /* =====================================================
+     PAGINATION
+  ===================================================== */
 
-const totalPages = Math.max(
-  1,
-  Math.ceil(instruments.length / perPage)
-);
+  const perPage = 5;
 
-MARKET_STATE.page = Math.max(
-  0,
-  Math.min(MARKET_STATE.page, totalPages - 1)
-);
+  const totalPages = Math.max(
+    1,
+    Math.ceil(instruments.length / perPage)
+  );
 
-const start = MARKET_STATE.page * perPage;
-const visible = instruments.slice(start, start + perPage);
+  MARKET_STATE.page = Math.max(
+    0,
+    Math.min(MARKET_STATE.page, totalPages - 1)
+  );
 
-const priceFormatter = new Intl.NumberFormat(
-  APP.lang === "da" ? "da-DK" : "en-GB",
-  {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }
-);
+  const start = MARKET_STATE.page * perPage;
 
-track.innerHTML = visible.map(item => {
+  const visible = instruments.slice(
+    start,
+    start + perPage
+  );
 
-  const direction = item.return == null
-    ? "unknown"
-    : item.return >= 0 ? "up" : "down";
 
-  const price = (
-    item.realtimePrice !== null &&
-    item.realtimePrice !== undefined &&
-    item.realtimePrice !== "" &&
-    Number.isFinite(Number(item.realtimePrice))
-  )
-    ? priceFormatter.format(Number(item.realtimePrice))
-    : "—";
+  /* =====================================================
+     PRICE FORMATTER
+  ===================================================== */
 
-  const currency = item.currency || "";
+  const priceFormatter = new Intl.NumberFormat(
+    APP.lang === "da" ? "da-DK" : "en-GB",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }
+  );
 
-  return `
-    <article
-      class="market-stock-card"
-      data-history-ticker="${esc(item.tickerExchange)}"
-      role="button"
-      tabindex="0"
-      aria-label="View price history for ${esc(item.name)}"
-    >
 
-      <div class="market-name">
-        ${esc(item.name)}
-      </div>
+  /* =====================================================
+     RENDER STOCK CARDS
+  ===================================================== */
 
-      <div class="market-symbol">
-        ${esc(item.tickerExchange)}
-      </div>
+  track.innerHTML = visible.map(item => {
 
-      <div class="market-price">
+    const marketClosed =
+      item.marketOpen === false;
 
-        <span class="market-price-ccy">
-          ${esc(currency)}
-        </span>
+    const direction =
+      marketClosed
+        ? "closed"
+        : item.return == null
+          ? "unknown"
+          : item.return >= 0
+            ? "up"
+            : "down";
 
-        <span class="market-price-value">
-          ${price}
-        </span>
 
-      </div>
+    const closedLabel =
+      APP.lang === "da"
+        ? "Markedet er lukket"
+        : "Market closed";
 
-      <div class="market-change ${direction}">
-        ${marketFormatReturn(item.return)}
-      </div>
 
-    </article>
-  `;
+    const returnText =
+      marketClosed
+        ? `<span
+             class="market-closed-moon"
+             title="${closedLabel}"
+             role="img"
+             aria-label="${closedLabel}"
+           >☾</span>`
+        : marketFormatReturn(item.return);
 
-}).join("");
 
+    const price = (
+      item.realtimePrice !== null &&
+      item.realtimePrice !== undefined &&
+      item.realtimePrice !== "" &&
+      Number.isFinite(Number(item.realtimePrice))
+    )
+      ? priceFormatter.format(Number(item.realtimePrice))
+      : "—";
+
+
+    const currency = item.currency || "";
+
+
+    return `
+      <article
+        class="market-stock-card"
+        data-history-ticker="${esc(item.tickerExchange)}"
+        role="button"
+        tabindex="0"
+        aria-label="View price history for ${esc(item.name)}"
+      >
+
+        <div class="market-name">
+          ${esc(item.name)}
+        </div>
+
+        <div class="market-symbol">
+          ${esc(item.tickerExchange)}
+        </div>
+
+        <div class="market-price">
+
+          <span class="market-price-ccy">
+            ${esc(currency)}
+          </span>
+
+          <span class="market-price-value">
+            ${price}
+          </span>
+
+        </div>
+
+        <div class="market-change ${direction}">
+          ${returnText}
+        </div>
+
+      </article>
+    `;
+
+  }).join("");
+
+
+  /* =====================================================
+     PAGINATION STATUS
+  ===================================================== */
 
   $('market-stock-count').textContent =
-    `${start + 1}–${Math.min(start + perPage, instruments.length)} / ${instruments.length}`;
-  $('market-page-label').textContent = `${MARKET_STATE.page + 1} / ${totalPages}`;
-  $('market-prev').disabled = MARKET_STATE.page === 0;
-  $('market-next').disabled = MARKET_STATE.page >= totalPages - 1;
+    instruments.length
+      ? `${start + 1}–${Math.min(start + perPage, instruments.length)} / ${instruments.length}`
+      : "0 / 0";
+
+  $('market-page-label').textContent =
+    `${MARKET_STATE.page + 1} / ${totalPages}`;
+
+  $('market-prev').disabled =
+    MARKET_STATE.page === 0;
+
+  $('market-next').disabled =
+    MARKET_STATE.page >= totalPages - 1;
+
+
+  /* =====================================================
+     TIMESTAMP
+  ===================================================== */
 
   const stamp = $('market-timestamp');
-  if (MARKET_STATE.updatedAt) {
+
+  if(MARKET_STATE.updatedAt){
+
     const date = new Date(MARKET_STATE.updatedAt);
+
     stamp.textContent = Number.isNaN(date.getTime())
-      ? 'Latest available quotes'
+      ? (
+          APP.lang === 'da'
+            ? 'Seneste tilgængelige kurser'
+            : 'Latest available quotes'
+        )
       : `${APP.lang === 'da' ? 'Opdateret' : 'Updated'}: ${date.toLocaleString(APP.lang === 'da' ? 'da-DK' : 'en-GB')}`;
+
   } else {
+
     stamp.textContent = MARKET_STATE.error
-      ? (APP.lang === 'da' ? 'Kurser ikke tilgængelige' : 'Quotes unavailable')
-      : (APP.lang === 'da' ? 'Seneste tilgængelige kurser' : 'Latest available quotes');
+      ? (
+          APP.lang === 'da'
+            ? 'Kurser ikke tilgængelige'
+            : 'Quotes unavailable'
+        )
+      : (
+          APP.lang === 'da'
+            ? 'Seneste tilgængelige kurser'
+            : 'Latest available quotes'
+        );
+
   }
 
-  $('market-kicker').textContent = APP.lang === 'da' ? 'MARKEDSOVERBLIK' : 'MARKET OVERVIEW';
-  $('market-title').textContent = APP.lang === 'da' ? 'Markederne i dag' : 'Markets Today';
-  $('market-stock-title').textContent = APP.lang === 'da' ? 'Aktier i fokus' : 'Stocks in focus';
-  $('market-foot').textContent = APP.lang === 'da'
-    ? 'Kurser kan være forsinkede. Dagens kursændring i forhold til forrige handelsdags slutkurs. Udbytter indgår ikke.'
-    : 'Prices may be delayed. Daily price change versus previous trading close; dividends excluded.';
-}
 
+  /* =====================================================
+     LANGUAGE
+  ===================================================== */
+
+  $('market-kicker').textContent =
+    APP.lang === 'da'
+      ? 'MARKEDSOVERBLIK'
+      : 'MARKET OVERVIEW';
+
+  $('market-title').textContent =
+    APP.lang === 'da'
+      ? 'Markederne i dag'
+      : 'Markets Today';
+
+  $('market-stock-title').textContent =
+    APP.lang === 'da'
+      ? 'Aktier i fokus'
+      : 'Stocks in focus';
+
+  $('market-foot').textContent =
+    APP.lang === 'da'
+      ? '☾ Markedet er lukket. Kurser kan være forsinkede. Dagens kursændring i forhold til forrige handelsdags slutkurs. Udbytter indgår ikke.'
+      : '☾ Market closed. Prices may be delayed. Daily price change versus previous trading close; dividends excluded.';
+
+}
 /* =====================================================
    31 · MARKET PULSE · PAGINATION + REFRESH
 ===================================================== */
