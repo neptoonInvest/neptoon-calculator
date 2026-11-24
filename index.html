@@ -8334,6 +8334,69 @@ fontweight:700px
   line-height: 1;
 }
 
+.asset-history-result-row{
+  padding-top:13px;
+  padding-bottom:13px;
+  border-bottom:1px solid #e2e8f0;
+  align-items:center;
+  transition:background-color .15s ease;
+}
+
+.asset-history-result-row:hover{
+  background:#f0f5fb;
+}
+
+.asset-history-result-instrument{
+  gap:7px;
+  align-items:center;
+  min-width:0;
+}
+
+.asset-history-color{
+  width:9px;
+  height:9px;
+  flex-shrink:0;
+  border-radius:0;
+}
+
+.asset-history-result-identity{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  min-width:0;
+}
+
+.asset-history-result-ticker{
+  font-size:11px;
+  color:#101d3a;
+  line-height:1.3;
+}
+
+.asset-history-result-name{
+  font-size:10px;
+  color:#64748b;
+  line-height:1.2;
+  letter-spacing:.2px;
+}
+
+.asset-history-result-total{
+  font-size:13px;
+  color:#101d3a;
+  font-variant-numeric:tabular-nums;
+}
+
+.asset-history-result-annual{
+  font-size:11px;
+  color:#475569;
+  font-variant-numeric:tabular-nums;
+}
+
+.asset-history-note{
+  margin-top:18px;
+  font-size:11px;
+  gap:9px;
+}
+
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -24500,14 +24563,20 @@ function renderPlanHistoryResults(series){
       INSTRUMENT IDENTITY
     */
 
-    const subLabel =
-      s.ticker
-        ? s.ticker
-        : s.modelNo != null && s.modelNo !== ""
-          ? `${isDA ? "Modelnummer" : "Model number"}: ${s.modelNo}`
-          : isDA
-            ? "Investeringsplan"
-            : "Wealth Plan";
+const ticker =
+  String(s.ticker || "").trim();
+
+const isModel =
+  /^\d+$/.test(ticker);
+
+const subLabel =
+  isModel
+    ? `${isDA ? "Modelnummer" : "Model number"}: ${ticker}`
+    : ticker
+      ? ticker
+      : isDA
+        ? "Investeringsplan"
+        : "Wealth Plan";
 
 
     return `
