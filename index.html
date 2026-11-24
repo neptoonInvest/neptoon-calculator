@@ -506,15 +506,17 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .asset-history-result-total{
   text-align:right;
   color:#101d3a;
-  font-size:16px;
-  font-weight:800;
+  font-size:14px;
+  font-weight:500;
   white-space:nowrap;
 }
 
 .asset-history-result-annual{
   text-align:right;
   color:#334155;
-  font-size:12px;
+ font-weight:500;
+  
+ font-size:14px;
   white-space:nowrap;
 }
 
@@ -12043,7 +12045,7 @@ terTagline:
     mwChartTitle: "Forventet formue",
     mwChartCaption: "10-årig fremskrivning",
 
-    mwMarketRace: "MARKEDSKAPløBET",
+    mwMarketRace: "MARKEDSKAPLØBET",
     mwSelectInvestment: "Vælg en investering",
     mwHistoryDescription:
       "Historisk akkumuleret NAV · Fælles start ved 100",
@@ -12083,9 +12085,9 @@ terTagline:
     mwPlanDownload: "Hent PDF",
 
 yourPlans: "Dine porteføljer",
-plansHistoryKicker: "NEPTOON · INVESTERINGSPLANER  ·  OPSPARING  · NEDSPARING",
+plansHistoryKicker: "NEPTOON · INVESTERINGSPLANER",
 plansHistorySubtitle:
-  "Sammenlign op til 5 investeringsplaner. Totalafkastindeks I DKK (indeks 100). Efter omkostninger",
+  "Sammenlign op til 5 investeringsplaner. Totalafkastindeks I DKK (indeks 100). Efter omkostninger.",
 wealthPlan: "Investeringsplan",
 
   welcome: "Velkommen",
@@ -18655,7 +18657,7 @@ const priceText =
       (isVIX || isUS10Y ? "%" : "")
     : "—";
 
-         let changeText = "—";
+      let changeText = "—";
       let changeValue = null;
 
       if(isIndicator){
@@ -18664,9 +18666,11 @@ const priceText =
 
           changeValue = absoluteChange;
 
-          changeText =
-            `${absoluteChange >= 0 ? "+" : ""}` +
-            `${formatNumber(absoluteChange)} %-pt`;
+if(isUS10Y){
+
+changeText =
+  `${absoluteChange >= 0 ? "+" : ""}` +
+  `${formatNumber(absoluteChange)} %-pt`;
 
         }
 
@@ -18680,23 +18684,24 @@ const priceText =
 
       }
 
-      if(marketClosed){
+if(marketClosed){
 
-        changeText = `<span
-          class="market-closed-moon"
-          title="${APP.lang === "da" ? "Markedet er lukket" : "Market closed"}"
-        >☾</span>`;
+  changeText = `<span
+    class="market-closed-moon"
+    title="${APP.lang === "da" ? "Markedet er lukket" : "Market closed"}"
+  >☾</span>`;
 
-      }
+}
 
-      const changeClass =
-        marketClosed
-          ? "closed"
-          : changeValue === null
-            ? "unknown"
-            : changeValue >= 0
-              ? "up"
-              : "down";
+const changeClass =
+  marketClosed
+    ? "closed"
+    : changeValue === null
+      ? "unknown"
+      : changeValue >= 0
+        ? "up"
+        : "down";
+
 
 
 const unit =
@@ -24399,6 +24404,7 @@ async function initAssetHistoryViewer(){
    WEALTHPLANS · PERFORMANCE RESULTS
 ===================================================== */
 
+
 function renderPlanHistoryResults(series){
 
   const container =
@@ -24406,10 +24412,17 @@ function renderPlanHistoryResults(series){
 
   if(!container) return;
 
+  const isDA =
+    APP.lang === "da";
+
   if(!series.length){
 
     container.innerHTML =
-      '<div style="padding:20px;color:#64748b;font-size:12px;">No historical data available.</div>';
+      `<div style="padding:20px;color:#64748b;font-size:12px;">
+        ${isDA
+          ? "Ingen historiske data tilgængelige."
+          : "No historical data available."}
+      </div>`;
 
     return;
 
@@ -24438,6 +24451,21 @@ function renderPlanHistoryResults(series){
     const highlighted =
       PLAN_HISTORY_VIEW.highlighted === s.ticker;
 
+
+    /*
+      INSTRUMENT IDENTITY
+    */
+
+    const subLabel =
+      s.ticker
+        ? s.ticker
+        : s.modelNo != null && s.modelNo !== ""
+          ? `${isDA ? "Modelnummer" : "Model number"}: ${s.modelNo}`
+          : isDA
+            ? "Investeringsplan"
+            : "Wealth Plan";
+
+
     return `
       <div
         class="asset-history-result-row
@@ -24457,11 +24485,11 @@ function renderPlanHistoryResults(series){
           <div class="asset-history-result-identity">
 
             <div class="asset-history-result-ticker">
-              ${esc(s.ticker)}
+              ${esc(s.name || subLabel)}
             </div>
 
             <div class="asset-history-result-name">
-              ${esc(s.name)}
+              ${esc(subLabel)}
             </div>
 
           </div>
@@ -24482,6 +24510,8 @@ function renderPlanHistoryResults(series){
   }).join("");
 
 }
+
+
 
 
 /* =====================================================
