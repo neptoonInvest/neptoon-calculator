@@ -174,9 +174,14 @@ def main():
                 f"through {prices[-1][0]}"
             )
 
-        except Exception as exc:
+     if ticker in {"VIX.INDX", "US10Y.GBOND"}:
 
-            print(f"FAILED {ticker}: {exc}")
+        print(
+            f"SKIPPED {ticker}: "
+            "raw EOD refresh failed"
+        )
+
+        continue
 
             if not previous_is_split_adjusted:
                 print(
