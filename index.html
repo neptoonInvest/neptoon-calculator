@@ -8519,6 +8519,114 @@ html.nt-history-open body{
   -webkit-overflow-scrolling:touch;
 }
 
+/* ==========================================
+   WELCOME ROTATION · CARD HEADER
+========================================== */
+
+.welcome-investment-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 78px;
+  align-items:start;
+  gap:8px;
+
+  height:42px;
+  min-height:42px;
+  max-height:42px;
+}
+
+.welcome-investment-head .welcome-investment-name{
+  min-width:0;
+
+  font-size:13px;
+  font-weight:700;
+  line-height:18px;
+
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+
+  overflow:hidden;
+  overflow-wrap:anywhere;
+
+  max-height:36px;
+  margin:0;
+}
+
+
+/* ==========================================
+   LIVE PRICE PILL
+========================================== */
+
+.welcome-live-pill{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  justify-content:center;
+
+  gap:3px;
+  padding:5px 7px;
+
+  background:rgba(0,0,0,.20);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:0;
+
+  box-sizing:border-box;
+  font-variant-numeric:tabular-nums;
+}
+
+.welcome-live-price{
+  color:#ffffff;
+  font-size:11px;
+  font-weight:700;
+  line-height:12px;
+  white-space:nowrap;
+}
+
+.welcome-live-change{
+  color:#94a3b8;
+  font-size:10px;
+  font-weight:600;
+  line-height:12px;
+  white-space:nowrap;
+}
+
+.welcome-live-change.positive{
+  color:#4ade80;
+}
+
+.welcome-live-change.negative{
+  color:#f87171;
+}
+
+.welcome-live-change.neutral{
+  color:#94a3b8;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width:768px){
+
+  .welcome-investment-head{
+    grid-template-columns:minmax(0,1fr) 68px;
+    gap:5px;
+  }
+
+  .welcome-investment-head .welcome-investment-name{
+    font-size:12px;
+    line-height:17px;
+  }
+
+  .welcome-live-pill{
+    padding:4px;
+  }
+
+}
+.welcome-investment-card[data-history-ticker]{
+  cursor:pointer;
+}
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -15129,6 +15237,87 @@ function generateWealthPlanPDF(download = true){
      TEXT HELPERS
   ===================================== */
 
+function paintWelcomeLiveQuote(ticker, price, changePct){
+
+  if(
+    price == null ||
+    changePct == null ||
+    !Number.isFinite(Number(price)) ||
+    !Number.isFinite(Number(changePct))
+  ){
+    return;
+  }
+
+  const locale =
+    APP.lang === "da"
+      ? "da-DK"
+      : "en-US";
+
+  const priceText =
+    Number(price).toLocaleString(locale,{
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    });
+
+  const change = Number(changePct);
+
+  const changeText =
+    Math.abs(change).toLocaleString(locale,{
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    });
+
+  const direction =
+    change > 0
+      ? "positive"
+      : change < 0
+        ? "negative"
+        : "neutral";
+
+  const arrow =
+    change > 0
+      ? "▲"
+      : change < 0
+        ? "▼"
+        : "–";
+
+  const sign =
+    change > 0
+      ? "+"
+      : change < 0
+        ? "−"
+        : "";
+
+  document.querySelectorAll(
+    "#welcome-preview .welcome-live-pill"
+  ).forEach(pill => {
+
+    if(pill.dataset.liveTicker !== ticker)
+      return;
+
+    const priceEl =
+      pill.querySelector(".welcome-live-price");
+
+    const changeEl =
+      pill.querySelector(".welcome-live-change");
+
+    priceEl.textContent = priceText;
+
+    changeEl.textContent =
+      `${arrow} ${sign}${changeText}%`;
+
+    changeEl.classList.remove(
+      "positive",
+      "negative",
+      "neutral"
+    );
+
+    changeEl.classList.add(direction);
+
+  });
+
+}
+
   function heading(text){
 
     ensureSpace(17);
@@ -18468,11 +18657,43 @@ function renderWelcome(){
 
     return `
 
-      <article class="welcome-investment-card">
+      <article
+  class="welcome-investment-card"
+  data-history-ticker="${esc(ticker)}"
+  role="button"
+  tabindex="0"
+  aria-label="${esc(
+    APP.lang === "da"
+      ? `Vis historik for ${instrument.name}`
+      : `View history for ${instrument.name}`
+  )}"
+>
 
-        <div class="welcome-investment-name">
-          ${esc(instrument.name)}
-        </div>
+<div class="welcome-investment-head">
+
+  <div
+    class="welcome-investment-name"
+    title="${esc(instrument.name)}"
+  >
+    ${esc(instrument.name)}
+  </div>
+
+  <div
+    class="welcome-live-pill"
+    data-live-ticker="${esc(ticker)}"
+  >
+
+    <div class="welcome-live-price">
+      —
+    </div>
+
+    <div class="welcome-live-change">
+      —
+    </div>
+
+  </div>
+
+</div>
 
         <div class="welcome-investment-sub">
           ${fmt(capital)} ${labels.invested}
@@ -18690,18 +18911,6 @@ setTimeout(() => {
   });
 
 }, 180);
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
