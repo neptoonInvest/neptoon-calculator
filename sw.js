@@ -1,10 +1,9 @@
-
 /* =====================================================
    NEPTOON WEALTH · PWA SERVICE WORKER
-   Network-first application shell
+   Network-first application architecture
 ===================================================== */
 
-const CACHE_NAME = "neptoon-shell-v2";
+const CACHE_NAME = "neptoon-shell-v3";
 
 const SHELL_URLS = [
   "/",
@@ -16,25 +15,37 @@ const SHELL_URLS = [
   "/icons/apple-touch-icon.png"
 ];
 
-/* INSTALL */
+
+/* =====================================================
+   INSTALL
+===================================================== */
 
 self.addEventListener("install", event => {
-
-  self.skipWaiting();
 
   event.waitUntil((async () => {
 
     const cache = await caches.open(CACHE_NAME);
 
     await Promise.allSettled(
-      SHELL_URLS.map(url => cache.add(url))
+      SHELL_URLS.map(url =>
+        cache.add(
+          new Request(url, {
+            cache:"reload"
+          })
+        )
+      )
     );
+
+    await self.skipWaiting();
 
   })());
 
 });
 
-/* ACTIVATE */
+
+/* =====================================================
+   ACTIVATE
+===================================================== */
 
 self.addEventListener("activate", event => {
 
@@ -57,7 +68,85 @@ self.addEventListener("activate", event => {
 
 });
 
-/* FETCH */
+
+/* =====================================================
+   NETWORK FIRST
+===================================================== */
+
+async function networkFirst(request, fallback = null){
+
+  const cache = await caches.open(CACHE_NAME);
+
+  try {
+
+    const response = await fetch(request, {
+      cache:"no-store"
+    });
+
+    if(response.ok){
+
+      await cache.put(
+        request,
+        response.clone()
+      );
+
+    }
+
+    return response;
+
+  } catch(error){
+
+    const cached = await cache.match(request);
+
+    if(cached) return cached;
+
+    if(fallback){
+
+      const fallbackResponse =
+        await cache.match(fallback);
+
+      if(fallbackResponse) return fallbackResponse;
+
+    }
+
+    throw error;
+
+  }
+
+}
+
+
+/* =====================================================
+   CACHE FIRST
+===================================================== */
+
+async function cacheFirst(request){
+
+  const cache = await caches.open(CACHE_NAME);
+
+  const cached = await cache.match(request);
+
+  if(cached) return cached;
+
+  const response = await fetch(request);
+
+  if(response.ok){
+
+    await cache.put(
+      request,
+      response.clone()
+    );
+
+  }
+
+  return response;
+
+}
+
+
+/* =====================================================
+   FETCH
+===================================================== */
 
 self.addEventListener("fetch", event => {
 
@@ -69,51 +158,78 @@ self.addEventListener("fetch", event => {
 
   if(url.origin !== self.location.origin) return;
 
-  // Live data must never be served from shell cache.
+
+  /* =====================================
+     FINANCIAL DATA · NETWORK ONLY
+  ===================================== */
+
   if(
     url.pathname.endsWith(".json") ||
-    url.pathname.endsWith(".webmanifest") ||
     url.pathname.startsWith("/api/")
   ){
+
+    event.respondWith(
+      fetch(request, {
+        cache:"no-store"
+      })
+    );
+
     return;
+
   }
 
-  // Network-first for page navigation.
-  if(request.mode !== "navigate") return;
 
-  event.respondWith((async () => {
+  /* =====================================
+     HTML · NETWORK FIRST
+  ===================================== */
 
-    try {
+  if(request.mode === "navigate"){
 
-      const response = await fetch(request, {
-        cache:"no-store"
-      });
+    event.respondWith(
+      networkFirst(request, "/index.html")
+    );
 
-      if(response.ok){
+    return;
 
-        const cache = await caches.open(CACHE_NAME);
+  }
 
-        await cache.put(
-          "/index.html",
-          response.clone()
-        );
 
-      }
+  /* =====================================
+     APPLICATION CODE · NETWORK FIRST
+  ===================================== */
 
-      return response;
+  if(
+    request.destination === "script" ||
+    request.destination === "style" ||
+    url.pathname.endsWith(".js") ||
+    url.pathname.endsWith(".css") ||
+    url.pathname.endsWith(".webmanifest")
+  ){
 
-    } catch(error){
+    event.respondWith(
+      networkFirst(request)
+    );
 
-      const cache = await caches.open(CACHE_NAME);
+    return;
 
-      const cached = await cache.match("/index.html");
+  }
 
-      if(cached) return cached;
 
-      throw error;
+  /* =====================================
+     STATIC RESOURCES · CACHE FIRST
+  ===================================== */
 
-    }
+  if(
+    request.destination === "image" ||
+    request.destination === "font"
+  ){
 
-  })());
+    event.respondWith(
+      cacheFirst(request)
+    );
+
+    return;
+
+  }
 
 });
