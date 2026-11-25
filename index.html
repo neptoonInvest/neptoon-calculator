@@ -19141,8 +19141,6 @@ function renderMarketIndices({
       maximumFractionDigits: 2
     }).format(value);
 
-  const usMarketOpen =
-    isUSMarketOpen();
 
   host.innerHTML =
     instruments.map(instrument => {
@@ -19155,13 +19153,23 @@ function renderMarketIndices({
         MARKET OPEN / CLOSED
       */
 
-      const isUSIndex =
-        ticker === "GSPC.INDX" ||
-        ticker === "IXIC.INDX";
+/*
+  MARKET OPEN / CLOSED
+*/
 
-      const marketClosed =
-        isUSIndex && !usMarketOpen;
+const isUSIndex =
+  ticker === "GSPC.INDX" ||
+  ticker === "IXIC.INDX";
 
+const isHistoricalIndicator =
+  ticker === "VIX.INDX" ||
+  ticker === "US10Y.GBOND";
+
+const marketClosed =
+  !isHistoricalIndicator &&
+  !isMarketOpen(
+    isUSIndex ? "INDEX.US" : ticker
+  );
 
       /*
         INDICATOR IDENTIFICATION
@@ -26149,18 +26157,17 @@ async function loadMarketPulse(){
 
     MARKET_STATE.quotes = data.quotes;
 
-    const usMarketOpen = isUSMarketOpen();
-
     MARKET_STATE.instruments = MARKET_INSTRUMENTS.map(item => {
 
       const quote =
         data.quotes[item.tickerExchange] || {};
 
-      const isUS =
-        item.tickerExchange.endsWith(".US");
+      /*
+        MARKET STATUS · TWO TIME ZONES
+      */
 
       const marketOpen =
-        !isUS || usMarketOpen;
+        isMarketOpen(item.tickerExchange);
 
       const price =
         quote.realtimePrice == null
@@ -26215,6 +26222,8 @@ async function loadMarketPulse(){
     bindMarketStockHistory();
 
     renderGlobalMarketTicker();
+
+    renderWelcomeLiveQuotes();
 
   }
 
