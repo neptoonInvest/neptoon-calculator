@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-25T07:15:43.289004+00:00",
+  "updatedAt": "2026-11-25T07:31:00.218788+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 81.905,
@@ -163,12 +163,12 @@
     },
     "SAP.XETRA": {
       "realtimePrice": 190.08,
-      "return": 0.020071,
+      "return": 0.0,
       "timestamp": 1795538280
     },
     "SIE.XETRA": {
       "realtimePrice": 254.65,
-      "return": -0.039599999999999996,
+      "return": 0.0,
       "timestamp": 1795538280
     },
     "MC.PA": {
