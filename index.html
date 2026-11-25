@@ -8992,7 +8992,26 @@ html.nt-history-open body{
 }
 
 
+.market-stock-card .market-session-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  flex:0 0 18px;
+}
 
+.market-stock-card .market-session-icon svg{
+  width:14px;
+  height:14px;
+}
+
+.market-stock-card .market-session-icon.session-open{
+  color:#fbbf24;
+}
+
+.market-stock-card .market-session-icon.session-closed{
+  color:#91a9c5;
+}
 
 
 </style>
@@ -28109,14 +28128,14 @@ function renderMarketPulse(){
             ${returnText}
           </div>
 
-          <div
-            class="market-session-icon ${marketClosed ? "closed" : "open"}"
-            title="${esc(sessionLabel)}"
-            role="img"
-            aria-label="${esc(sessionLabel)}"
-          >
-            ${icon(marketClosed ? "moon" : "sun")}
-          </div>
+<div
+  class="market-session-icon ${marketClosed ? "session-closed" : "session-open"}"
+  title="${esc(sessionLabel)}"
+  role="img"
+  aria-label="${esc(sessionLabel)}"
+>
+  ${icon(marketClosed ? "moon" : "sun")}
+</div>
 
         </div>
 
