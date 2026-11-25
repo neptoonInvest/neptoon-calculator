@@ -9013,7 +9013,11 @@ html.nt-history-open body{
   color:#91a9c5;
 }
 
-
+.market-stock-card .market-session-icon .market-closed-moon{
+  font-size:14px;
+  line-height:1;
+  color:#91a9c5;
+}
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -28134,7 +28138,10 @@ function renderMarketPulse(){
   role="img"
   aria-label="${esc(sessionLabel)}"
 >
-  ${icon(marketClosed ? "moon" : "sun")}
+  ${marketClosed
+    ? `<span class="market-closed-moon">☾</span>`
+    : icon("sun")
+  }
 </div>
 
         </div>
