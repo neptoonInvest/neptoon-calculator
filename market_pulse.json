@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-25T07:45:42.034253+00:00",
+  "updatedAt": "2026-11-25T08:01:04.330299+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 81.905,
@@ -168,7 +168,7 @@
     },
     "SIE.XETRA": {
       "realtimePrice": 254.65,
-      "return": -0.039599999999999996,
+      "return": 0.0,
       "timestamp": 1795538280
     },
     "MC.PA": {
