@@ -26249,7 +26249,6 @@ const INSTRUMENT_STATE = {
    GLOBAL MARKET TICKER
    Price + Daily Return
 ===================================================== */
-
 function renderGlobalMarketTicker(){
 
   const container =
@@ -26294,12 +26293,27 @@ function renderGlobalMarketTicker(){
             })
           : "—";
 
-const returnText =
-  marketClosed
-    ? "—"
-    : marketFormatReturn(item.return);
+      const returnText =
+        marketFormatReturn(value);
 
-     	
+      return `
+        <div class="market-ticker-item">
+
+          <span class="market-ticker-name">
+            ${esc(name)}
+          </span>
+
+          <span class="market-ticker-price">
+            ${priceText}
+          </span>
+
+          <span class="market-ticker-return
+            ${positive ? "positive" : "negative"}">
+            (${returnText})
+          </span>
+
+        </div>
+      `;
 
     })
     .join("");
@@ -26326,9 +26340,6 @@ const returnText =
   `;
 
 }
-
-
-
 
 /* =====================================================
    WEALTHPLANS · VIEW METRICS + EXPECTED WEALTH EVENTS
