@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-25T07:31:00.218788+00:00",
+  "updatedAt": "2026-11-25T07:45:42.034253+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 81.905,
@@ -38,7 +38,7 @@
     },
     "RHM.XETRA": {
       "realtimePrice": 734.5,
-      "return": 0.012824,
+      "return": 0.0,
       "timestamp": 1795538280
     },
     "NOVO-B.CO": {
@@ -168,7 +168,7 @@
     },
     "SIE.XETRA": {
       "realtimePrice": 254.65,
-      "return": 0.0,
+      "return": -0.039599999999999996,
       "timestamp": 1795538280
     },
     "MC.PA": {
