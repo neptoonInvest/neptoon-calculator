@@ -27920,7 +27920,6 @@ function marketFormatReturn(value) {
   if (!Number.isFinite(value)) return '—';
   return `${value > 0 ? '+' : ''}${(value * 100).toFixed(2)}%`;
 }
-
 /* =====================================================
    30 · MARKET PULSE · RENDER STOCK CAROUSEL
 ===================================================== */
@@ -28009,30 +28008,49 @@ function renderMarketPulse(){
 
   track.innerHTML = visible.map(item => {
 
+    /*
+      MARKET SESSION STATUS
+    */
+
     const marketClosed =
       item.marketOpen === false;
 
-    const direction =
+    const sessionLabel =
       marketClosed
-        ? "closed"
-        : item.return == null
-          ? "unknown"
-          : item.return >= 0
-            ? "up"
-            : "down";
+        ? APP.lang === "da"
+          ? "Markedet er lukket"
+          : "Market closed"
+        : APP.lang === "da"
+          ? "Markedet er åbent"
+          : "Market open";
 
 
-    const closedLabel =
-      APP.lang === "da"
-        ? "Markedet er lukket"
-        : "Market closed";
+    /*
+      DAILY RETURN
+      Independent of market session status
+    */
+
+    const hasReturn =
+      item.return != null &&
+      item.return !== "" &&
+      Number.isFinite(Number(item.return));
+
+    const direction =
+      !hasReturn
+        ? "unknown"
+        : Number(item.return) >= 0
+          ? "up"
+          : "down";
+
+    const returnText =
+      hasReturn
+        ? marketFormatReturn(Number(item.return))
+        : "—";
 
 
-const returnText =
-  marketClosed
-    ? "—"
-    : marketFormatReturn(item.return);
-
+    /*
+      LATEST AVAILABLE PRICE
+    */
 
     const price = (
       item.realtimePrice !== null &&
@@ -28043,66 +28061,68 @@ const returnText =
       ? priceFormatter.format(Number(item.realtimePrice))
       : "—";
 
+    const currency =
+      item.currency || "";
 
-    const currency = item.currency || "";
 
+    /*
+      STOCK CARD
+    */
 
-return `
-  <article
-    class="market-stock-card"
-    data-history-ticker="${esc(item.tickerExchange)}"
-    role="button"
-    tabindex="0"
-    aria-label="View price history for ${esc(item.name)}"
-  >
+    return `
 
-    <div class="market-name">
-      ${esc(item.name)}
-    </div>
-
-    <div class="market-symbol">
-      ${esc(item.tickerExchange)}
-    </div>
-
-    <div class="market-stock-quote">
-
-      <div class="market-price">
-
-        <span class="market-price-ccy">
-          ${esc(currency)}
-        </span>
-
-        <span class="market-price-value">
-          ${price}
-        </span>
-
-      </div>
-
-      <div class="market-change ${direction}">
-        ${returnText}
-      </div>
-
-      <div
-        class="market-session-icon ${marketClosed ? "closed" : "open"}"
-        title="${marketClosed
-          ? closedLabel
-          : APP.lang === "da"
-            ? "Markedet er åbent"
-            : "Market open"}"
-        role="img"
-        aria-label="${marketClosed
-          ? closedLabel
-          : APP.lang === "da"
-            ? "Markedet er åbent"
-            : "Market open"}"
+      <article
+        class="market-stock-card"
+        data-history-ticker="${esc(item.tickerExchange)}"
+        role="button"
+        tabindex="0"
+        aria-label="${esc(
+          APP.lang === "da"
+            ? `Vis kurshistorik for ${item.name}`
+            : `View price history for ${item.name}`
+        )}"
       >
-        ${icon(marketClosed ? "moon" : "sun")}
-      </div>
 
-    </div>
+        <div class="market-name">
+          ${esc(item.name)}
+        </div>
 
-  </article>
-`;
+        <div class="market-symbol">
+          ${esc(item.tickerExchange)}
+        </div>
+
+        <div class="market-stock-quote">
+
+          <div class="market-price">
+
+            <span class="market-price-ccy">
+              ${esc(currency)}
+            </span>
+
+            <span class="market-price-value">
+              ${price}
+            </span>
+
+          </div>
+
+          <div class="market-change ${direction}">
+            ${returnText}
+          </div>
+
+          <div
+            class="market-session-icon ${marketClosed ? "closed" : "open"}"
+            title="${esc(sessionLabel)}"
+            role="img"
+            aria-label="${esc(sessionLabel)}"
+          >
+            ${icon(marketClosed ? "moon" : "sun")}
+          </div>
+
+        </div>
+
+      </article>
+
+    `;
 
   }).join("");
 
@@ -28138,24 +28158,24 @@ return `
 
     stamp.textContent = Number.isNaN(date.getTime())
       ? (
-          APP.lang === 'da'
-            ? 'Seneste tilgængelige kurser'
-            : 'Latest available quotes'
+          APP.lang === "da"
+            ? "Seneste tilgængelige kurser"
+            : "Latest available quotes"
         )
-      : `${APP.lang === 'da' ? 'Opdateret' : 'Updated'}: ${date.toLocaleString(APP.lang === 'da' ? 'da-DK' : 'en-GB')}`;
+      : `${APP.lang === "da" ? "Opdateret" : "Updated"}: ${date.toLocaleString(APP.lang === "da" ? "da-DK" : "en-GB")}`;
 
   } else {
 
     stamp.textContent = MARKET_STATE.error
       ? (
-          APP.lang === 'da'
-            ? 'Kurser ikke tilgængelige'
-            : 'Quotes unavailable'
+          APP.lang === "da"
+            ? "Kurser ikke tilgængelige"
+            : "Quotes unavailable"
         )
       : (
-          APP.lang === 'da'
-            ? 'Seneste tilgængelige kurser'
-            : 'Latest available quotes'
+          APP.lang === "da"
+            ? "Seneste tilgængelige kurser"
+            : "Latest available quotes"
         );
 
   }
@@ -28166,39 +28186,55 @@ return `
   ===================================================== */
 
   $('market-kicker').textContent =
-    APP.lang === 'da'
-      ? 'MARKEDSOVERBLIK'
-      : 'MARKET OVERVIEW';
+    APP.lang === "da"
+      ? "MARKEDSOVERBLIK"
+      : "MARKET OVERVIEW";
 
   $('market-title').textContent =
-    APP.lang === 'da'
-      ? 'Markederne i dag'
-      : 'Markets Today';
+    APP.lang === "da"
+      ? "Markederne i dag"
+      : "Markets Today";
 
   $('market-stock-title').textContent =
-    APP.lang === 'da'
-      ? 'Aktier i fokus'
-      : 'Stocks in focus';
+    APP.lang === "da"
+      ? "Aktier i fokus"
+      : "Stocks in focus";
 
   $('market-foot').textContent =
-    APP.lang === 'da'
-      ? '☾ Markedet er lukket. Kurser kan være forsinkede. Dagens kursændring i forhold til forrige handelsdags slutkurs. Udbytter indgår ikke.'
-      : '☾ Market closed. Prices may be delayed. Daily price change versus previous trading close; dividends excluded.';
+    APP.lang === "da"
+      ? "☀ Markedet er åbent. ☾ Markedet er lukket. Kurser kan være forsinkede. Dagens kursændring i forhold til forrige handelsdags slutkurs. Udbytter indgår ikke."
+      : "☀ Market open. ☾ Market closed. Prices may be delayed. Daily price change versus previous trading close; dividends excluded.";
+
+
+  /* =====================================================
+     INITIALIZE ICONS AFTER EVERY RENDER
+  ===================================================== */
+
+  icons();
 
 }
+
+
 /* =====================================================
    31 · MARKET PULSE · PAGINATION + REFRESH
 ===================================================== */
 
 $('market-prev').addEventListener('click', () => {
+
   MARKET_STATE.page -= 1;
+
   renderMarketPulse();
+
 });
 
 $('market-next').addEventListener('click', () => {
+
   MARKET_STATE.page += 1;
+
   renderMarketPulse();
+
 });
+
 
 window.addEventListener('resize', renderMarketPulse);
 
