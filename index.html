@@ -8882,6 +8882,119 @@ html.nt-history-open body{
 .market-session-icon.closed{
   color:#91a9c5;
 }	
+
+
+
+@media (max-width:768px){
+
+  .market-index-card .market-price{
+    font-size:13px !important;
+    font-weight:600 !important;
+    line-height:1.2 !important;
+  }
+
+}
+
+
+/* ==========================================
+   MARKET STOCK CARDS · MOBILE ALIGNMENT
+========================================== */
+
+@media (max-width:768px){
+
+  .market-stock-card{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) auto !important;
+    align-items:center !important;
+    column-gap:8px !important;
+  }
+
+  .market-stock-card .market-symbol{
+    display:none !important;
+  }
+
+  .market-stock-card .market-stock-quote{
+    display:grid !important;
+    grid-template-columns:90px 54px 18px !important;
+    align-items:center !important;
+    justify-content:end !important;
+    gap:6px !important;
+    margin:0 !important;
+  }
+
+  .market-stock-card .market-price{
+    justify-content:flex-end !important;
+    text-align:right !important;
+  }
+
+  .market-stock-card .market-change{
+    text-align:right !important;
+    margin:0 !important;
+  }
+
+  .market-stock-card .market-session-icon{
+    justify-self:end !important;
+  }
+
+}
+
+
+/* ==========================================
+   MARKET STOCK CARDS · DESKTOP LAYOUT
+========================================== */
+
+@media (min-width:769px){
+
+  .market-stock-card{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    justify-content:flex-start !important;
+    gap:4px !important;
+  }
+
+  .market-stock-card .market-name,
+  .market-stock-card .market-symbol{
+    display:block !important;
+    position:static !important;
+  }
+
+  .market-stock-card .market-name,
+  .market-stock-card .market-symbol,
+  .market-stock-card .market-stock-quote{
+    width:100% !important;
+    margin-left:0 !important;
+    padding-left:0 !important;
+    text-align:left !important;
+    box-sizing:border-box !important;
+  }
+
+  .market-stock-card .market-stock-quote{
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    margin-top:8px !important;
+    gap:4px !important;
+  }
+
+  .market-stock-card .market-price{
+    justify-content:flex-start !important;
+    text-align:left !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+
+  .market-stock-card .market-session-icon{
+    margin-left:auto !important;
+  }
+
+}
+
+
+
+
+
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -27915,15 +28028,10 @@ function renderMarketPulse(){
         : "Market closed";
 
 
-    const returnText =
-      marketClosed
-        ? `<span
-             class="market-closed-moon"
-             title="${closedLabel}"
-             role="img"
-             aria-label="${closedLabel}"
-           >☾</span>`
-        : marketFormatReturn(item.return);
+const returnText =
+  marketClosed
+    ? "—"
+    : marketFormatReturn(item.return);
 
 
     const price = (
