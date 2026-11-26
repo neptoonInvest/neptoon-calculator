@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-26T08:15:44.663690+00:00",
+  "updatedAt": "2026-11-26T08:31:02.888220+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 82.79,
@@ -37,19 +37,19 @@
       "timestamp": 1795640400
     },
     "RHM.XETRA": {
-      "realtimePrice": 735.8,
-      "return": 0.0,
-      "timestamp": 1795624740
+      "realtimePrice": 768.1,
+      "return": 0.043898,
+      "timestamp": 1795680900
     },
     "NOVO-B.CO": {
-      "realtimePrice": 277.0,
-      "return": 0.009843,
-      "timestamp": 1795680000
+      "realtimePrice": 277.25,
+      "return": 0.010754999999999999,
+      "timestamp": 1795680720
     },
     "ASML.AS": {
-      "realtimePrice": 1184.8,
-      "return": 0.047013,
-      "timestamp": 1795680000
+      "realtimePrice": 1164.2,
+      "return": 0.028809,
+      "timestamp": 1795680720
     },
     "GSPC.INDX": {
       "realtimePrice": 7182.7798,
@@ -67,14 +67,14 @@
       "timestamp": 1795624560
     },
     "OMXC25.INDX": {
-      "realtimePrice": 1954.6135,
-      "return": 0.014018999999999998,
-      "timestamp": 1795680000
+      "realtimePrice": 1953.4332,
+      "return": 0.013407,
+      "timestamp": 1795680900
     },
     "GDAXI.INDX": {
-      "realtimePrice": 24702.1309,
-      "return": -0.012618,
-      "timestamp": 1795626000
+      "realtimePrice": 25127.9609,
+      "return": 0.017239,
+      "timestamp": 1795680900
     },
     "FTSE.INDX": {
       "realtimePrice": null,
@@ -82,19 +82,19 @@
       "timestamp": "NA"
     },
     "OMXS30.INDX": {
-      "realtimePrice": 3242.2258,
-      "return": 0.016975,
-      "timestamp": 1795680000
+      "realtimePrice": 3236.8389,
+      "return": 0.015285,
+      "timestamp": 1795680900
     },
     "FCHI.INDX": {
-      "realtimePrice": 8098.96,
-      "return": 0.014835000000000001,
-      "timestamp": 1795680000
+      "realtimePrice": 8109.3198,
+      "return": 0.016132999999999998,
+      "timestamp": 1795680960
     },
     "EUNL.XETRA": {
-      "realtimePrice": 122.24,
-      "return": -0.018665,
-      "timestamp": 1795624560
+      "realtimePrice": 125.355,
+      "return": 0.025483,
+      "timestamp": 1795680900
     },
     "MCD.US": {
       "realtimePrice": 283.425,
@@ -107,29 +107,29 @@
       "timestamp": 1795640400
     },
     "MAERSK-B.CO": {
-      "realtimePrice": 19210.0,
-      "return": 0.011319,
-      "timestamp": 1795680000
+      "realtimePrice": 19185.0,
+      "return": 0.010003,
+      "timestamp": 1795680900
     },
     "DANSKE.CO": {
-      "realtimePrice": 360.0,
-      "return": 0.019541,
-      "timestamp": 1795680000
+      "realtimePrice": 361.5,
+      "return": 0.023788999999999998,
+      "timestamp": 1795680720
     },
     "VWS.CO": {
-      "realtimePrice": 167.0,
-      "return": 0.024540000000000003,
-      "timestamp": 1795680000
+      "realtimePrice": 166.65,
+      "return": 0.022393,
+      "timestamp": 1795680660
     },
     "8PSG.XETRA": {
-      "realtimePrice": 303.28,
-      "return": -0.030497,
-      "timestamp": 1795624560
+      "realtimePrice": 312.36,
+      "return": 0.029939,
+      "timestamp": 1795680900
     },
     "VIX.INDX": {
-      "realtimePrice": 28.29,
-      "return": 0.073217,
-      "timestamp": 1795641300
+      "realtimePrice": 27.22,
+      "return": -0.037823,
+      "timestamp": 1795680960
     },
     "AVGO.US": {
       "realtimePrice": 300.43,
@@ -162,19 +162,19 @@
       "timestamp": 1795640520
     },
     "SAP.XETRA": {
-      "realtimePrice": 190.8,
-      "return": 0.005163,
-      "timestamp": 1795680000
+      "realtimePrice": 191.54,
+      "return": 0.009061,
+      "timestamp": 1795680900
     },
     "SIE.XETRA": {
-      "realtimePrice": 245.5,
-      "return": 0.0,
-      "timestamp": 1795624740
+      "realtimePrice": 250.9,
+      "return": 0.021996,
+      "timestamp": 1795680900
     },
     "MC.PA": {
-      "realtimePrice": 397.4,
-      "return": 0.016368,
-      "timestamp": 1795680000
+      "realtimePrice": 399.8,
+      "return": 0.022505999999999998,
+      "timestamp": 1795680900
     }
   }
 }
