@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-26T17:01:23.742961+00:00",
+  "updatedAt": "2026-11-26T17:15:49.048651+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 82.79,
@@ -74,7 +74,7 @@
     "GDAXI.INDX": {
       "realtimePrice": 25215.5195,
       "return": 0.020783,
-      "timestamp": 1795710600
+      "timestamp": 1795712400
     },
     "FTSE.INDX": {
       "realtimePrice": null,
@@ -89,7 +89,7 @@
     "FCHI.INDX": {
       "realtimePrice": 8108.7402,
       "return": 0.01606,
-      "timestamp": 1795711560
+      "timestamp": 1795712400
     },
     "EUNL.XETRA": {
       "realtimePrice": 125.825,
