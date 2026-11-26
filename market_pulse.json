@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-26T17:15:49.048651+00:00",
+  "updatedAt": "2026-11-26T17:30:55.172893+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 82.79,
@@ -89,7 +89,7 @@
     "FCHI.INDX": {
       "realtimePrice": 8108.7402,
       "return": 0.01606,
-      "timestamp": 1795712400
+      "timestamp": 1795712700
     },
     "EUNL.XETRA": {
       "realtimePrice": 125.825,
