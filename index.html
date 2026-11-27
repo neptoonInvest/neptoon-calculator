@@ -11905,6 +11905,78 @@ html.nt-history-open body{
 
 <script>
 
+
+
+/* =====================================================
+   WEALTH · PWA INSTALLATION
+===================================================== */
+
+let deferredInstallPrompt = null;
+
+window.addEventListener("beforeinstallprompt", event => {
+
+  event.preventDefault();
+
+  deferredInstallPrompt = event;
+
+  console.log("PWA INSTALL AVAILABLE");
+
+});
+
+window.addEventListener("appinstalled", () => {
+
+  deferredInstallPrompt = null;
+
+  document.querySelectorAll(".hero-install")
+    .forEach(el => el.hidden = true);
+
+});
+
+window.installWealthApp = async function(){
+
+  if (deferredInstallPrompt){
+
+    await deferredInstallPrompt.prompt();
+
+    const result =
+      await deferredInstallPrompt.userChoice;
+
+    console.log("PWA INSTALL RESULT", result.outcome);
+
+    deferredInstallPrompt = null;
+
+    return;
+
+  }
+
+  const isIOS =
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (
+      navigator.platform === "MacIntel" &&
+      navigator.maxTouchPoints > 1
+    );
+
+  if (isIOS){
+
+    alert(
+      APP.lang === "da"
+        ? "Tryk på Del i Safari og vælg Føj til hjemmeskærm."
+        : "Tap Share in Safari and select Add to Home Screen."
+    );
+
+    return;
+
+  }
+
+  alert(
+    APP.lang === "da"
+      ? "Installér appen via browserens menu, hvis installation er tilgængelig."
+      : "Install the app from your browser menu if installation is available."
+  );
+
+};
+
+
 /* NW-111 v0.1: UI skeleton only. Replace DEMO data with real GitHub JSON. */
 
 /* =====================================================
@@ -12214,74 +12286,7 @@ const INSTRUMENT_HISTORY_STATE = {
 
 };
 
-/* =====================================================
-   WEALTH · PWA INSTALLATION
-===================================================== */
 
-let deferredInstallPrompt = null;
-
-window.addEventListener("beforeinstallprompt", event => {
-
-  event.preventDefault();
-
-  deferredInstallPrompt = event;
-
-  console.log("PWA INSTALL AVAILABLE");
-
-});
-
-window.addEventListener("appinstalled", () => {
-
-  deferredInstallPrompt = null;
-
-  document.querySelectorAll(".hero-install")
-    .forEach(el => el.hidden = true);
-
-});
-
-window.installWealthApp = async function(){
-
-  if (deferredInstallPrompt){
-
-    await deferredInstallPrompt.prompt();
-
-    const result =
-      await deferredInstallPrompt.userChoice;
-
-    console.log("PWA INSTALL RESULT", result.outcome);
-
-    deferredInstallPrompt = null;
-
-    return;
-
-  }
-
-  const isIOS =
-    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (
-      navigator.platform === "MacIntel" &&
-      navigator.maxTouchPoints > 1
-    );
-
-  if (isIOS){
-
-    alert(
-      APP.lang === "da"
-        ? "Tryk på Del i Safari og vælg Føj til hjemmeskærm."
-        : "Tap Share in Safari and select Add to Home Screen."
-    );
-
-    return;
-
-  }
-
-  alert(
-    APP.lang === "da"
-      ? "Installér appen via browserens menu, hvis installation er tilgængelig."
-      : "Install the app from your browser menu if installation is available."
-  );
-
-};
 
 
 const MYWEALTH_HISTORY = {
@@ -19431,6 +19436,39 @@ function renderMarketIndices({
 
   if(!host) return;
 
+
+  /* =====================================================
+     PERSISTENT HISTORICAL INDICATORS
+  ===================================================== */
+
+  MARKET_STATE.indicatorHistory ??= {};
+
+  const history =
+    MARKET_STATE.indicatorHistory;
+
+  if(Number.isFinite(vixClose)){
+
+    history["VIX.INDX"] = {
+      realtimePrice: vixClose,
+      previousClose: vixPreviousClose
+    };
+
+  }
+
+  if(Number.isFinite(us10yClose)){
+
+    history["US10Y.GBOND"] = {
+      realtimePrice: us10yClose,
+      previousClose: us10yPreviousClose
+    };
+
+  }
+
+
+  /* =====================================================
+     INSTRUMENTS AND LIVE QUOTES
+  ===================================================== */
+
   const instruments =
     getMarketIndexSelection();
 
@@ -19447,6 +19485,10 @@ function renderMarketIndices({
     }).format(value);
 
 
+  /* =====================================================
+     RENDER INDICES
+  ===================================================== */
+
   host.innerHTML =
     instruments.map(instrument => {
 
@@ -19454,31 +19496,9 @@ function renderMarketIndices({
         instrument.tickerExchange;
 
 
-      /*
-        MARKET OPEN / CLOSED
-      */
-
-/*
-  MARKET OPEN / CLOSED
-*/
-
-const isUSIndex =
-  ticker === "GSPC.INDX" ||
-  ticker === "IXIC.INDX";
-
-const isHistoricalIndicator =
-  ticker === "VIX.INDX" ||
-  ticker === "US10Y.GBOND";
-
-const marketClosed =
-  !isHistoricalIndicator &&
-  !isMarketOpen(
-    isUSIndex ? "INDEX.US" : ticker
-  );
-
-      /*
-        INDICATOR IDENTIFICATION
-      */
+      /* ===============================================
+         INDICATOR IDENTIFICATION
+      =============================================== */
 
       const isVIX =
         ticker === "VIX.INDX";
@@ -19489,34 +19509,59 @@ const marketClosed =
       const isIndicator =
         isVIX || isUS10Y;
 
+      const isUSIndex =
+        ticker === "GSPC.INDX" ||
+        ticker === "IXIC.INDX";
 
-      /*
-        PRICE SOURCE
-      */
+
+      /* ===============================================
+         MARKET OPEN / CLOSED
+      =============================================== */
+
+      const marketClosed =
+        !isIndicator &&
+        !isMarketOpen(
+          isUSIndex ? "INDEX.US" : ticker
+        );
+
+
+      /* ===============================================
+         PRICE SOURCE
+
+         VIX   : LIVE FIRST
+         US10Y : HISTORY ONLY
+         OTHER : LIVE
+      =============================================== */
 
       const liveQuote =
         quotes[ticker] || {};
 
       const historicalQuote =
-        isVIX
-          ? {
-              realtimePrice: vixClose,
-              previousClose: vixPreviousClose
-            }
-          : isUS10Y
-            ? {
-                realtimePrice: us10yClose,
-                previousClose: us10yPreviousClose
-              }
-            : null;
+        history[ticker] || {};
 
-      const quote =
-        historicalQuote || liveQuote;
+      let quote;
+
+      if(isUS10Y){
+
+        quote = historicalQuote;
+
+      } else if(isVIX){
+
+        quote =
+          Number.isFinite(liveQuote.realtimePrice)
+            ? liveQuote
+            : historicalQuote;
+
+      } else {
+
+        quote = liveQuote;
+
+      }
 
 
-      /*
-        PRICE AND RETURN VALUES
-      */
+      /* ===============================================
+         PRICE AND RETURN VALUES
+      =============================================== */
 
       const price =
         Number.isFinite(quote.realtimePrice)
@@ -19531,7 +19576,11 @@ const marketClosed =
       const previousClose =
         Number.isFinite(quote.previousClose)
           ? quote.previousClose
-          : null;
+          : price !== null &&
+            dailyReturn !== null &&
+            dailyReturn > -1
+              ? price / (1 + dailyReturn)
+              : null;
 
       const absoluteChange =
         price !== null && previousClose !== null
@@ -19539,9 +19588,9 @@ const marketClosed =
           : null;
 
 
-      /*
-        PRICE FORMATTING
-      */
+      /* ===============================================
+         PRICE FORMATTING
+      =============================================== */
 
       const priceText =
         price !== null
@@ -19550,9 +19599,9 @@ const marketClosed =
           : "—";
 
 
-      /*
-        DAILY CHANGE FORMATTING
-      */
+      /* ===============================================
+         DAILY CHANGE FORMATTING
+      =============================================== */
 
       let changeText = "—";
       let changeValue = null;
@@ -19580,45 +19629,38 @@ const marketClosed =
       }
 
 
-      /*
-        CLOSED US MARKETS
-      */
-/*
-  MARKET CLOSED ICON
-*/
+      /* ===============================================
+         MARKET CLOSED ICON
+      =============================================== */
 
-const marketStatusIcon =
-  marketClosed
-    ? `
-      <span
-        class="market-closed-moon"
-        title="${APP.lang === "da"
-          ? "Markedet er lukket"
-          : "Market closed"}"
-      >☾</span>
-    `
-    : "";
+      const marketStatusIcon =
+        marketClosed
+          ? `
+            <span
+              class="market-closed-moon"
+              title="${APP.lang === "da"
+                ? "Markedet er lukket"
+                : "Market closed"}"
+            >☾</span>
+          `
+          : "";
 
 
-      /*
-        CHANGE COLOR
-      */
+      /* ===============================================
+         CHANGE COLOR
+      =============================================== */
 
-/*
-  CHANGE COLOR
-*/
-
-const changeClass =
-  changeValue === null
-    ? "unknown"
-    : changeValue >= 0
-      ? "up"
-      : "down";
+      const changeClass =
+        changeValue === null
+          ? "unknown"
+          : changeValue >= 0
+            ? "up"
+            : "down";
 
 
-      /*
-        CURRENCY UNIT
-      */
+      /* ===============================================
+         CURRENCY UNIT
+      =============================================== */
 
       const unit =
         isIndicator
@@ -19626,65 +19668,67 @@ const changeClass =
           : instrument.currency || "";
 
 
-      /*
-        RENDER INDEX CARD
-      */
-return `
+      /* ===============================================
+         RENDER INDEX CARD
+      =============================================== */
 
-  <article
-    class="market-index-card"
-    data-history-ticker="${esc(ticker)}"
-    role="button"
-    tabindex="0"
-    aria-label="View history for ${esc(instrument.name)}"
-  >
+      return `
 
-    <div class="market-index-top">
+        <article
+          class="market-index-card"
+          data-history-ticker="${esc(ticker)}"
+          role="button"
+          tabindex="0"
+          aria-label="View history for ${esc(instrument.name)}"
+        >
 
-      <div class="market-name">
-        ${esc(instrument.name)}
-      </div>
+          <div class="market-index-top">
 
-      ${icon(
-        isIndicator
-          ? "activity"
-          : instrument.role === "editorial"
-            ? "cpu"
-            : instrument.role === "local"
-              ? "map-pin"
-              : "chart-no-axes-column-increasing"
-      )}
+            <div class="market-name">
+              ${esc(instrument.name)}
+            </div>
 
-    </div>
+            ${icon(
+              isIndicator
+                ? "activity"
+                : instrument.role === "editorial"
+                  ? "cpu"
+                  : instrument.role === "local"
+                    ? "map-pin"
+                    : "chart-no-axes-column-increasing"
+            )}
 
-    <div class="market-quote">
+          </div>
 
-      <div class="market-price">
+          <div class="market-quote">
 
-        ${priceText}
+            <div class="market-price">
 
-        <span class="market-symbol">
-          ${esc(unit)}
-        </span>
+              ${priceText}
 
-      </div>
+              <span class="market-symbol">
+                ${esc(unit)}
+              </span>
 
- <div class="market-change ${changeClass}">
-  ${changeText}
-  ${marketStatusIcon}
-</div>
+            </div>
 
-    </div>
+            <div class="market-change ${changeClass}">
+              ${changeText}
+              ${marketStatusIcon}
+            </div>
 
-  </article>
+          </div>
 
-`;
+        </article>
 
-}).join("");
+      `;
+
+    }).join("");
 
   icons();
 
 }
+
 
 async function renderMarketIndicesWithHistory(){
 
@@ -23124,7 +23168,7 @@ function renderHeroes(){
     ${icon("download")}
 
     <span>
-      ${APP.lang === "da" ? "INSTALLÉR" : "INSTALL"}
+      ${APP.lang === "da" ? "INSTALLÉR APP" : "INSTALL APP"}
     </span>
 
   </button>
