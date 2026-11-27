@@ -9066,6 +9066,58 @@ html.nt-history-open body{
   }
 
 }
+
+/* =====================================================
+   WEALTH · HERO INSTALL BUTTON
+===================================================== */
+
+.hero-install{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+
+  background:#4E79BD;
+  color:#fff;
+
+  border:0;
+  border-radius:0;
+
+  padding:7px 10px;
+
+  font-size:10px;
+  font-weight:600;
+  white-space:nowrap;
+
+  cursor:pointer;
+}
+
+.hero-install svg{
+  width:14px;
+  height:14px;
+}
+
+@media (max-width:600px){
+
+  .hero-install{
+    padding:6px 8px;
+    gap:4px;
+    font-size:9px;
+  }
+
+}
+
+@media (display-mode:standalone){
+
+  .hero-install{
+    display:none !important;
+  }
+
+}
+
+.hero-install[hidden]{
+  display:none !important;
+}
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -12159,6 +12211,75 @@ const INSTRUMENT_HISTORY_STATE = {
   promise: null,
 
   error: null
+
+};
+
+/* =====================================================
+   WEALTH · PWA INSTALLATION
+===================================================== */
+
+let deferredInstallPrompt = null;
+
+window.addEventListener("beforeinstallprompt", event => {
+
+  event.preventDefault();
+
+  deferredInstallPrompt = event;
+
+  console.log("PWA INSTALL AVAILABLE");
+
+});
+
+window.addEventListener("appinstalled", () => {
+
+  deferredInstallPrompt = null;
+
+  document.querySelectorAll(".hero-install")
+    .forEach(el => el.hidden = true);
+
+});
+
+window.installWealthApp = async function(){
+
+  if (deferredInstallPrompt){
+
+    await deferredInstallPrompt.prompt();
+
+    const result =
+      await deferredInstallPrompt.userChoice;
+
+    console.log("PWA INSTALL RESULT", result.outcome);
+
+    deferredInstallPrompt = null;
+
+    return;
+
+  }
+
+  const isIOS =
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (
+      navigator.platform === "MacIntel" &&
+      navigator.maxTouchPoints > 1
+    );
+
+  if (isIOS){
+
+    alert(
+      APP.lang === "da"
+        ? "Tryk på Del i Safari og vælg Føj til hjemmeskærm."
+        : "Tap Share in Safari and select Add to Home Screen."
+    );
+
+    return;
+
+  }
+
+  alert(
+    APP.lang === "da"
+      ? "Installér appen via browserens menu, hvis installation er tilgængelig."
+      : "Install the app from your browser menu if installation is available."
+  );
 
 };
 
@@ -22993,18 +23114,30 @@ function renderHeroes(){
 
         </div>
 
-        <div class="hero-right">
+<div class="hero-right">
 
-          <div class="hero-currency">
-            ${currency}
-          </div>
+  <button
+    type="button"
+    class="hero-install"
+    onclick="installWealthApp()">
 
-          <div class="hero-icon">
-            ${icon(name)}
-          </div>
+    ${icon("download")}
 
-        </div>
+    <span>
+      ${APP.lang === "da" ? "INSTALLÉR" : "INSTALL"}
+    </span>
 
+  </button>
+
+  <div class="hero-currency">
+    ${currency}
+  </div>
+
+  <div class="hero-icon">
+    ${icon(name)}
+  </div>
+
+</div>
       </div>
 
     `;
