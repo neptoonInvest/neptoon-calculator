@@ -9040,6 +9040,32 @@ html.nt-history-open body{
   }
 
 }
+
+/* =====================================================
+   MARKET PULSE · DESKTOP & TABLET SESSION ICON
+===================================================== */
+
+@media (min-width:601px){
+
+  .market-stock-card{
+    position:relative !important;
+  }
+
+  .market-stock-card .market-stock-quote{
+    position:static !important;
+  }
+
+  .market-stock-card .market-session-icon{
+    position:absolute !important;
+    top:10px !important;
+    right:10px !important;
+    bottom:auto !important;
+    left:auto !important;
+    margin:0 !important;
+    transform:none !important;
+  }
+
+}
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 
@@ -19436,33 +19462,37 @@ const marketClosed =
       /*
         CLOSED US MARKETS
       */
+/*
+  MARKET CLOSED ICON
+*/
 
-      if(marketClosed){
-
-        changeText = `
-          <span
-            class="market-closed-moon"
-            title="${APP.lang === "da"
-              ? "Markedet er lukket"
-              : "Market closed"}"
-          >☾</span>
-        `;
-
-      }
+const marketStatusIcon =
+  marketClosed
+    ? `
+      <span
+        class="market-closed-moon"
+        title="${APP.lang === "da"
+          ? "Markedet er lukket"
+          : "Market closed"}"
+      >☾</span>
+    `
+    : "";
 
 
       /*
         CHANGE COLOR
       */
 
-      const changeClass =
-        marketClosed
-          ? "closed"
-          : changeValue === null
-            ? "unknown"
-            : changeValue >= 0
-              ? "up"
-              : "down";
+/*
+  CHANGE COLOR
+*/
+
+const changeClass =
+  changeValue === null
+    ? "unknown"
+    : changeValue >= 0
+      ? "up"
+      : "down";
 
 
       /*
@@ -19518,9 +19548,10 @@ return `
 
       </div>
 
-      <div class="market-change ${changeClass}">
-        ${changeText}
-      </div>
+ <div class="market-change ${changeClass}">
+  ${changeText}
+  ${marketStatusIcon}
+</div>
 
     </div>
 
@@ -27977,7 +28008,7 @@ function renderMarketPulse(){
 
 
   /* =====================================================
-     SORT · ACTIVE MARKETS FIRST
+     SORT · ACTIVE MARKETS FIRST · RETURN DESC
   ===================================================== */
 
   const instruments = [...(MARKET_STATE.instruments || [])]
@@ -27991,12 +28022,7 @@ function renderMarketPulse(){
         return aClosed ? 1 : -1;
       }
 
-      // Closed markets sorted alphabetically
-      if(aClosed && bClosed){
-        return a.name.localeCompare(b.name);
-      }
-
-      // Active markets sorted by daily return
+      // Both market groups sorted by daily return DESC
       const ra = Number.isFinite(a.return)
         ? a.return
         : -Infinity;
