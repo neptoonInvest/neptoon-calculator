@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-27T20:01:16.446242+00:00",
+  "updatedAt": "2026-11-27T20:15:43.355955+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 91.88,
@@ -142,8 +142,8 @@
       "timestamp": 1795802400
     },
     "JPM.US": {
-      "realtimePrice": 323.17,
-      "return": 0.020301,
+      "realtimePrice": 322.96,
+      "return": 0.019638,
       "timestamp": 1795802400
     },
     "WMT.US": {
