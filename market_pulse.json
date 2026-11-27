@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-27T07:15:54.911003+00:00",
+  "updatedAt": "2026-11-27T07:31:09.887573+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 82.79,
@@ -93,7 +93,7 @@
     },
     "EUNL.XETRA": {
       "realtimePrice": 125.825,
-      "return": 0.029328,
+      "return": 0.0,
       "timestamp": 1795710960
     },
     "MCD.US": {
@@ -123,7 +123,7 @@
     },
     "8PSG.XETRA": {
       "realtimePrice": 313.08,
-      "return": 0.032313,
+      "return": 0.0,
       "timestamp": 1795710960
     },
     "VIX.INDX": {
@@ -163,7 +163,7 @@
     },
     "SAP.XETRA": {
       "realtimePrice": 194.14,
-      "return": 0.022757999999999997,
+      "return": 0.0,
       "timestamp": 1795710960
     },
     "SIE.XETRA": {
@@ -173,7 +173,7 @@
     },
     "MC.PA": {
       "realtimePrice": 401.05,
-      "return": 0.025703,
+      "return": 0.0,
       "timestamp": 1795710900
     }
   }
