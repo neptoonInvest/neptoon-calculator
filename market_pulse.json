@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-27T19:01:12.888648+00:00",
+  "updatedAt": "2026-11-27T19:15:46.501860+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 91.88,
@@ -59,7 +59,7 @@
     "IXIC.INDX": {
       "realtimePrice": 24129.5,
       "return": 0.023052000000000003,
-      "timestamp": 1795805160
+      "timestamp": 1795806000
     },
     "LSMC.XETRA": {
       "realtimePrice": 86.85,
@@ -142,8 +142,8 @@
       "timestamp": 1795802400
     },
     "JPM.US": {
-      "realtimePrice": 323.17,
-      "return": 0.020301,
+      "realtimePrice": 322.96,
+      "return": 0.019638,
       "timestamp": 1795802400
     },
     "WMT.US": {
