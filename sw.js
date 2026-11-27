@@ -3,7 +3,7 @@
    Network-first application architecture
 ===================================================== */
 
-const CACHE_NAME = "neptoon-shell-v3";
+const CACHE_NAME = "neptoon-shell-v4";
 
 const SHELL_URLS = [
   "/",
@@ -157,6 +157,16 @@ self.addEventListener("fetch", event => {
   const url = new URL(request.url);
 
   if(url.origin !== self.location.origin) return;
+
+   /* =====================================
+   APPLE INSTALLATION · DIRECT DOWNLOAD
+===================================== */
+
+if(url.pathname.toLowerCase().endsWith(".mobileconfig")){
+
+  return;
+
+}
 
 
   /* =====================================
