@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-27T18:31:05.975897+00:00",
+  "updatedAt": "2026-11-27T18:45:47.274797+00:00",
   "quotes": {
     "ANT.US": {
       "realtimePrice": 91.88,
@@ -54,12 +54,12 @@
     "GSPC.INDX": {
       "realtimePrice": 7297.4902,
       "return": 0.015969999999999998,
-      "timestamp": 1795803300
+      "timestamp": 1795803600
     },
     "IXIC.INDX": {
       "realtimePrice": 24129.5,
       "return": 0.023052000000000003,
-      "timestamp": 1795803360
+      "timestamp": 1795804200
     },
     "LSMC.XETRA": {
       "realtimePrice": 86.85,
@@ -97,13 +97,13 @@
       "timestamp": 1795797360
     },
     "MCD.US": {
-      "realtimePrice": 283.09,
-      "return": -0.001446,
+      "realtimePrice": 282.655,
+      "return": -0.0029809999999999997,
       "timestamp": 1795802400
     },
     "NKE.US": {
-      "realtimePrice": 37.315,
-      "return": 0.017867,
+      "realtimePrice": 37.305,
+      "return": 0.017594000000000002,
       "timestamp": 1795802400
     },
     "MAERSK-B.CO": {
