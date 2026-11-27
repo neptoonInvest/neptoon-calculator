@@ -11935,9 +11935,6 @@ html.nt-history-open body{
 
 
 <script>
-
-
-
 /* =====================================================
    WEALTH · PWA INSTALLATION
 ===================================================== */
@@ -11954,6 +11951,7 @@ window.addEventListener("beforeinstallprompt", event => {
 
 });
 
+
 window.addEventListener("appinstalled", () => {
 
   deferredInstallPrompt = null;
@@ -11963,7 +11961,15 @@ window.addEventListener("appinstalled", () => {
 
 });
 
+
 window.installWealthApp = async function(){
+
+  const isDA = APP.lang === "da";
+
+
+  /* =====================================
+     NATIVE INSTALLATION
+  ===================================== */
 
   if (deferredInstallPrompt){
 
@@ -11980,6 +11986,11 @@ window.installWealthApp = async function(){
 
   }
 
+
+  /* =====================================
+     APPLE INSTALLATION
+  ===================================== */
+
   const isIOS =
     /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (
@@ -11990,24 +12001,30 @@ window.installWealthApp = async function(){
   if (isIOS){
 
     alert(
-      APP.lang === "da"
-        ? "Tryk på Del i Safari og vælg Føj til hjemmeskærm."
-        : "Tap Share in Safari and select Add to Home Screen."
+      isDA
+        ? "Tillad hentning af installationsprofilen. Åbn derefter Indstillinger → Profil hentet → Installer. Neptoon Wealth vises herefter på din hjemmeskærm."
+        : "Allow the installation profile to download. Then open Settings → Profile Downloaded → Install. Neptoon Wealth will then appear on your Home Screen."
     );
+
+    window.location.href =
+      "/neptoon-wealth_ios.mobileconfig";
 
     return;
 
   }
 
+
+  /* =====================================
+     BROWSER FALLBACK
+  ===================================== */
+
   alert(
-    APP.lang === "da"
+    isDA
       ? "Installér appen via browserens menu, hvis installation er tilgængelig."
       : "Install the app from your browser menu if installation is available."
   );
 
 };
-
-
 /* NW-111 v0.1: UI skeleton only. Replace DEMO data with real GitHub JSON. */
 
 /* =====================================================
